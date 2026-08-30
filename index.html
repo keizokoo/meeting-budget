@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회의비 대시보드</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#FF4D00">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -114,18 +117,6 @@
     width:100%; border:1px solid var(--line2); border-radius:7px; padding:6px 8px; font-size:12.5px; background:var(--bg); color:var(--ink);
   }
 
-  .addrow{
-    background:var(--surface); border:1.5px dashed var(--ink3); border-radius:12px;
-    padding:12px 12px; margin-top:10px;
-    display:grid; grid-template-columns:120px 100px 1fr 130px auto; gap:10px; align-items:center;
-  }
-  .addrow input, .addrow select{
-    border:1px solid var(--line2); border-radius:8px; padding:8px 10px; font-size:12.5px; background:var(--bg); color:var(--ink); width:100%;
-  }
-  .addrow input:focus, .addrow select:focus{ outline:2px solid var(--accent); outline-offset:1px; }
-  .addrow button{
-    background:var(--ink); color:var(--bg); border:none; border-radius:8px; padding:9px 14px; font-size:12.5px; font-weight:700; white-space:nowrap;
-  }
   .empty{ text-align:center; padding:34px 10px; color:var(--ink2); font-size:13px; }
 
   .toolbar{ display:flex; gap:10px; flex-wrap:wrap; margin:22px 0 34px; }
@@ -179,9 +170,77 @@
     .erow.headrow{ display:none; }
     .erow .rowbtns{ justify-content:flex-start; margin-top:4px; }
     .erow .amt{ text-align:left; }
-    .addrow{ grid-template-columns:1fr 1fr; }
-    .addrow button{ grid-column:1/-1; }
+    .addrow-main{ grid-template-columns:1fr 1fr; }
+    .addrow-main button{ grid-column:1/-1; }
+    .filterbar{ flex-wrap:wrap; }
+    .filterbar > *{ flex:1 1 45%; }
   }
+
+  /* ---------- breakdown panel ---------- */
+  .breakdown{ margin-bottom:26px; }
+  .breakdown-title{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink2); margin-bottom:10px; }
+  .bk-row{ display:flex; align-items:center; gap:10px; margin-bottom:7px; font-size:12.5px; }
+  .bk-row .bk-name{ width:56px; font-weight:700; flex-shrink:0; }
+  .bk-row .bk-track{ flex:1; height:9px; border-radius:99px; background:var(--line); overflow:hidden; }
+  .bk-row .bk-fill{ height:100%; border-radius:99px; background:var(--ink); }
+  .bk-row .bk-amt{ width:auto; text-align:right; color:var(--ink2); font-weight:600; white-space:nowrap; }
+
+  /* ---------- filter / sort bar ---------- */
+  .filterbar{ display:flex; gap:8px; margin-bottom:14px; }
+  .filterbar input, .filterbar select{
+    border:1px solid var(--line2); border-radius:8px; padding:8px 10px; font-size:12.5px; background:var(--surface); color:var(--ink);
+  }
+  .filterbar input[type=search]{ flex:1; min-width:0; }
+
+  /* ---------- memo ---------- */
+  .erow .memo{ grid-column:3; font-size:11.5px; color:var(--ink2); margin-top:2px; }
+  .addrow{ margin-top:10px; }
+  .addrow-main{
+    background:var(--surface); border:1.5px dashed var(--ink3); border-radius:12px 12px 0 0;
+    padding:12px 12px 8px; border-bottom:none;
+    display:grid; grid-template-columns:120px 100px 1fr 130px auto; gap:10px; align-items:center;
+  }
+  .addrow-main input, .addrow-main select{
+    border:1px solid var(--line2); border-radius:8px; padding:8px 10px; font-size:12.5px; background:var(--bg); color:var(--ink); width:100%;
+  }
+  .addrow-main input:focus, .addrow-main select:focus{ outline:2px solid var(--accent); outline-offset:1px; }
+  .addrow-main button{
+    background:var(--ink); color:var(--bg); border:none; border-radius:8px; padding:9px 14px; font-size:12.5px; font-weight:700; white-space:nowrap;
+  }
+  .addrow-memo{
+    background:var(--surface); border:1.5px dashed var(--ink3); border-top:none; border-radius:0 0 12px 12px;
+    padding:0 12px 12px;
+  }
+  .addrow-memo input{
+    width:100%; border:1px solid var(--line2); border-radius:8px; padding:7px 10px; font-size:12px; background:var(--bg); color:var(--ink);
+  }
+
+  /* ---------- badges ---------- */
+  .badge-caution{ display:inline-block; margin-top:8px; background:transparent; border:1.5px solid var(--on-accent); color:var(--on-accent); font-size:11.5px; font-weight:700; padding:3.5px 10px; border-radius:999px; }
+
+  /* ---------- modal (annual summary) ---------- */
+  .modal{
+    position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.97);
+    width:min(560px,92vw); max-height:82vh; overflow-y:auto;
+    background:var(--bg); color:var(--ink); border-radius:18px; box-shadow:var(--shadow);
+    z-index:102; padding:26px 24px 28px; display:none; opacity:0; transition:opacity .18s ease, transform .18s ease;
+  }
+  .modal.show{ display:block; opacity:1; transform:translate(-50%,-50%) scale(1); }
+  .modal h2{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:16px; margin:0 0 4px; }
+  .modal .closebtn{ float:right; background:none; border:none; font-size:18px; color:var(--ink2); }
+  .modal .yearpick{ border:1px solid var(--line2); border-radius:8px; padding:6px 10px; font-size:12.5px; background:var(--surface); color:var(--ink); margin-bottom:18px; }
+  .modal .kpis{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
+  .modal .kpi{ background:var(--surface); border:1px solid var(--line2); border-radius:12px; padding:12px 14px; }
+  .modal .kpi .l{ font-size:10.5px; color:var(--ink2); text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
+  .modal .kpi .v{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:15px; font-weight:700; }
+  .modal .mrow{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:12.5px; }
+  .modal .mrow .mname{ width:66px; flex-shrink:0; color:var(--ink2); }
+  .modal .mrow .mtrack{ flex:1; height:8px; border-radius:99px; background:var(--line); overflow:hidden; }
+  .modal .mrow .mfill{ height:100%; border-radius:99px; background:var(--accent); }
+  .modal .mrow.over .mfill{ background:var(--warn); }
+  .modal .mrow .mamt{ width:110px; text-align:right; font-weight:700; }
+
+  #installBtn{ display:none; }
 </style>
 </head>
 <body>
@@ -202,11 +261,13 @@
       </div>
       <div class="big" id="heroPct">0<span>.0%</span></div>
       <div id="warnLabel" style="display:none;" class="warn-label">예산 초과</div>
+      <div id="cautionLabel" style="display:none;" class="badge-caution"></div>
     </div>
     <div class="right">
       <div class="l">잔여 예산</div>
       <div class="v tabular" id="heroRemain">₩0</div>
       <div class="iconrow">
+        <button class="iconbtn" id="installBtn">⬇ 앱 설치</button>
         <button class="iconbtn" id="themeToggle">🌓 다크모드</button>
         <button class="iconbtn" id="settingsToggle">⚙ 설정</button>
       </div>
@@ -226,9 +287,25 @@
       <div class="scard"><div class="l">건수</div><div class="v tabular" id="countView">0건</div></div>
     </div>
 
+    <div class="breakdown" id="breakdownPanel">
+      <div class="breakdown-title">카드구분별 사용</div>
+      <div id="breakdownRows"></div>
+    </div>
+
     <div class="sectionhead">
       <h3>지출 내역</h3>
       <span class="count" id="monthLabel"></span>
+    </div>
+
+    <div class="filterbar">
+      <input type="search" id="searchInput" placeholder="🔍 항목 검색">
+      <select id="filterCard"><option value="">전체 구분</option></select>
+      <select id="sortOrder">
+        <option value="date_asc">날짜 오래된순</option>
+        <option value="date_desc">날짜 최신순</option>
+        <option value="amount_desc">금액 높은순</option>
+        <option value="amount_asc">금액 낮은순</option>
+      </select>
     </div>
 
     <div class="erow headrow">
@@ -238,17 +315,25 @@
     <div id="emptyState" class="empty" style="display:none;">이번 달 지출 내역이 없습니다. 아래에서 추가해보세요.</div>
 
     <div class="addrow">
-      <input type="date" id="newDate">
-      <select id="newCard"></select>
-      <input type="text" id="newItem" placeholder="지출 항목">
-      <input type="number" id="newAmount" placeholder="결제금액" min="0" step="100">
-      <button id="addExpenseBtn">+ 추가</button>
+      <div class="addrow-main">
+        <input type="date" id="newDate">
+        <select id="newCard"></select>
+        <input type="text" id="newItem" placeholder="지출 항목" list="itemSuggestions">
+        <input type="number" id="newAmount" placeholder="결제금액" min="0" step="100">
+        <button id="addExpenseBtn">+ 추가</button>
+      </div>
+      <div class="addrow-memo">
+        <input type="text" id="newMemo" placeholder="메모 (선택)">
+      </div>
     </div>
+    <datalist id="itemSuggestions"></datalist>
 
     <div class="toolbar">
       <button class="toolbtn" id="exportBtn">⬇ 내보내기 (백업 파일)</button>
       <button class="toolbtn" id="importBtn">⬆ 가져오기 (복원)</button>
       <input type="file" id="importFile" accept="application/json" style="display:none;">
+      <button class="toolbtn" id="csvExportBtn">📄 CSV 내보내기</button>
+      <button class="toolbtn" id="annualBtn">📊 연간 요약</button>
       <button class="toolbtn" id="syncNowBtn">☁ Google Sheets로 백업</button>
     </div>
   </div>
@@ -297,10 +382,27 @@
         <button class="primary" id="drawerSyncUp">☁ 지금 백업</button>
         <button id="drawerSyncDown">↓ 시트에서 불러오기</button>
       </div>
+      <label style="display:flex; align-items:center; gap:7px; margin-top:12px; font-size:12.5px; color:var(--ink);">
+        <input type="checkbox" id="autoBackupToggle" style="width:auto;">
+        변경할 때마다 자동으로 백업
+      </label>
       <div class="synctime" id="lastSyncTime"></div>
       <p class="note" style="margin-top:10px;">URL은 Apps Script를 웹 앱으로 배포하면 발급됩니다. 별도 안내 가이드를 참고해 주세요.</p>
     </div>
   </div>
+</div>
+
+<div class="overlay" id="modalOverlay"></div>
+<div class="modal" id="annualModal">
+  <button class="closebtn" id="annualClose">✕</button>
+  <h2>연간 요약</h2>
+  <select class="yearpick" id="yearPick"></select>
+  <div class="kpis">
+    <div class="kpi"><div class="l">총 사용액</div><div class="v tabular" id="annualTotal">₩0</div></div>
+    <div class="kpi"><div class="l">월평균</div><div class="v tabular" id="annualAvg">₩0</div></div>
+    <div class="kpi"><div class="l">최고 지출월</div><div class="v tabular" id="annualMax">-</div></div>
+  </div>
+  <div id="annualMonthRows"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -327,8 +429,15 @@
         {id:"seed7", date:"2026-08-26", cardType:"원더", item:"진돗가비 불쭈꾸미", amount:101500},
         {id:"seed8", date:"2026-08-26", cardType:"MG", item:"하나마토", amount:30700}
       ],
-      settings: { sheetUrl: "", lastSync: null }
+      settings: { sheetUrl: "", lastSync: null, autoBackup: false }
     };
+  }
+
+  function normalizeSettings(d){
+    if(!d.cardTypes) d.cardTypes = DEFAULT_CARD_TYPES.slice();
+    if(!d.settings) d.settings = { sheetUrl:"", lastSync:null, autoBackup:false };
+    if(typeof d.settings.autoBackup !== 'boolean') d.settings.autoBackup = false;
+    return d;
   }
 
   function loadData(){
@@ -337,9 +446,7 @@
       if(raw){
         const parsed = JSON.parse(raw);
         if(parsed && parsed.budgets && parsed.expenses){
-          if(!parsed.cardTypes) parsed.cardTypes = DEFAULT_CARD_TYPES.slice();
-          if(!parsed.settings) parsed.settings = { sheetUrl:"", lastSync:null };
-          return parsed;
+          return normalizeSettings(parsed);
         }
       }
     }catch(e){ console.warn("load failed", e); }
@@ -348,9 +455,14 @@
     return seed;
   }
 
+  let autoBackupTimer = null;
   function saveData(d){
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
     catch(e){ console.warn("save failed", e); showToast("저장 실패: 브라우저 저장공간을 확인해주세요"); }
+    if(d.settings && d.settings.autoBackup && d.settings.sheetUrl){
+      clearTimeout(autoBackupTimer);
+      autoBackupTimer = setTimeout(() => { syncUp(true); }, 1500);
+    }
   }
 
   let data = loadData();
@@ -405,7 +517,23 @@
 
   function renderCardTypeOptions(){
     const sel = el('newCard');
+    const prevSel = sel.value;
     sel.innerHTML = data.cardTypes.map(c => `<option value="${c}">${c}</option>`).join('');
+    if(data.cardTypes.includes(prevSel)) sel.value = prevSel;
+
+    const filterSel = el('filterCard');
+    const prevFilter = filterSel.value;
+    filterSel.innerHTML = '<option value="">전체 구분</option>' + data.cardTypes.map(c => `<option value="${c}">${c}</option>`).join('');
+    filterSel.value = data.cardTypes.includes(prevFilter) ? prevFilter : '';
+  }
+
+  function renderItemSuggestions(){
+    const seen = new Set();
+    const items = [];
+    data.expenses.slice().sort((a,b)=> b.date.localeCompare(a.date)).forEach(e => {
+      if(!seen.has(e.item)){ seen.add(e.item); items.push(e.item); }
+    });
+    el('itemSuggestions').innerHTML = items.slice(0,25).map(i => `<option value="${escapeHtml(i)}">`).join('');
   }
 
   function renderChips(){
@@ -416,21 +544,59 @@
     }).join('');
   }
 
+  let searchTerm = '';
+  let filterCardType = '';
+  let sortOrder = 'date_asc';
+
+  function filteredSortedExpenses(mk){
+    let list = monthExpenses(mk);
+    if(filterCardType) list = list.filter(e => e.cardType === filterCardType);
+    if(searchTerm) list = list.filter(e => e.item.toLowerCase().includes(searchTerm.toLowerCase()) || (e.memo||'').toLowerCase().includes(searchTerm.toLowerCase()));
+    list = list.slice();
+    if(sortOrder === 'date_asc') list.sort((a,b)=> a.date.localeCompare(b.date));
+    else if(sortOrder === 'date_desc') list.sort((a,b)=> b.date.localeCompare(a.date));
+    else if(sortOrder === 'amount_desc') list.sort((a,b)=> b.amount - a.amount);
+    else if(sortOrder === 'amount_asc') list.sort((a,b)=> a.amount - b.amount);
+    return list;
+  }
+
+  function renderBreakdown(mk){
+    const list = monthExpenses(mk);
+    const totals = {};
+    list.forEach(e => { totals[e.cardType] = (totals[e.cardType]||0) + Number(e.amount||0); });
+    const entries = Object.keys(totals).map(k => ({name:k, amt:totals[k]})).sort((a,b)=> b.amt - a.amt);
+    const panel = el('breakdownPanel');
+    if(!entries.length){ panel.style.display = 'none'; return; }
+    panel.style.display = 'block';
+    const max = entries[0].amt;
+    const opacities = [1, .78, .58, .42, .3];
+    el('breakdownRows').innerHTML = entries.map((e,i) => `
+      <div class="bk-row">
+        <div class="bk-name">${escapeHtml(e.name)}</div>
+        <div class="bk-track"><div class="bk-fill" style="width:${(e.amt/max*100).toFixed(1)}%; opacity:${opacities[Math.min(i,opacities.length-1)]};"></div></div>
+        <div class="bk-amt tabular">${won(e.amt)}</div>
+      </div>`).join('');
+  }
+
   function render(){
     renderMonthPicker();
     renderCardTypeOptions();
     renderChips();
+    renderItemSuggestions();
 
     const budget = monthBudget(currentMonth);
     const spent = monthSpent(currentMonth);
     const remain = budget - spent;
     const rate = budget > 0 ? (spent/budget*100) : 0;
     const over = spent > budget && budget > 0;
+    const caution = !over && budget > 0 && rate >= 80;
 
     el('monthLabel').textContent = `${monthLabelKo(currentMonth)} · ${monthExpenses(currentMonth).length}건`;
     el('heroPct').innerHTML = `${rate.toFixed(1).split('.')[0]}<span>.${rate.toFixed(1).split('.')[1]}%</span>`;
     el('heroRemain').textContent = won(remain);
     el('warnLabel').style.display = over ? 'inline-block' : 'none';
+    el('cautionLabel').style.display = caution ? 'inline-block' : 'none';
+    if(caution) el('cautionLabel').textContent = rate >= 90 ? '예산 90% 도달' : '예산 80% 도달';
     document.querySelector('.hero').style.background = over ? 'var(--warn)' : 'var(--accent)';
     document.querySelector('.hero').style.color = over ? 'var(--on-warn)' : 'var(--on-accent)';
 
@@ -444,26 +610,40 @@
 
     el('newDate').value = currentMonth === todayMonth() ? todayStr() : (currentMonth + '-01');
 
-    const list = monthExpenses(currentMonth);
-    el('emptyState').style.display = list.length ? 'none' : 'block';
+    renderBreakdown(currentMonth);
+
+    const fullList = monthExpenses(currentMonth);
+    const list = filteredSortedExpenses(currentMonth);
+    if(!fullList.length){
+      el('emptyState').style.display = 'block';
+      el('emptyState').textContent = '이번 달 지출 내역이 없습니다. 아래에서 추가해보세요.';
+    } else if(!list.length){
+      el('emptyState').style.display = 'block';
+      el('emptyState').textContent = '검색/필터 조건에 맞는 내역이 없습니다.';
+    } else {
+      el('emptyState').style.display = 'none';
+    }
     el('expenseList').innerHTML = list.map(e => rowHtml(e)).join('');
 
     el('sheetUrlInput').value = data.settings.sheetUrl || '';
+    el('autoBackupToggle').checked = !!data.settings.autoBackup;
     el('lastSyncTime').textContent = data.settings.lastSync ? `마지막 백업: ${new Date(data.settings.lastSync).toLocaleString('ko-KR')}` : '아직 백업한 적 없음';
 
     checkNewMonthBanner();
   }
 
   function rowHtml(e){
+    const memoHtml = e.memo ? `<div class="memo">📝 ${escapeHtml(e.memo)}</div>` : '';
     return `<div class="erow" data-id="${e.id}">
       <div class="date">${e.date}</div>
-      <div class="tag">${e.cardType}</div>
+      <div class="tag">${escapeHtml(e.cardType)}</div>
       <div class="item">${escapeHtml(e.item)}</div>
       <div class="amt tabular">${won(e.amount)}</div>
       <div class="rowbtns">
         <button class="miniicon" data-edit="${e.id}" title="수정">✎</button>
         <button class="miniicon" data-del="${e.id}" title="삭제">🗑</button>
       </div>
+      ${memoHtml}
     </div>`;
   }
 
@@ -543,12 +723,18 @@
     showToast('예산이 저장되었습니다');
   });
 
+  // ---------- filter / sort ----------
+  el('searchInput').addEventListener('input', e => { searchTerm = e.target.value; render(); });
+  el('filterCard').addEventListener('change', e => { filterCardType = e.target.value; render(); });
+  el('sortOrder').addEventListener('change', e => { sortOrder = e.target.value; render(); });
+
   // ---------- add expense ----------
   el('addExpenseBtn').addEventListener('click', () => {
     const date = el('newDate').value;
     const cardType = el('newCard').value;
     const item = el('newItem').value.trim();
     const amount = Number(el('newAmount').value);
+    const memo = el('newMemo').value.trim();
     if(!date){ showToast('날짜를 선택해주세요'); return; }
     if(!item){ showToast('지출 항목을 입력해주세요'); return; }
     if(!amount || amount <= 0){ showToast('결제금액을 입력해주세요'); return; }
@@ -558,10 +744,10 @@
       const last = months[months.length-1];
       data.budgets[mk] = last ? monthBudget(last) : 550000;
     }
-    data.expenses.push({ id: uid(), date, cardType, item, amount });
+    data.expenses.push({ id: uid(), date, cardType, item, amount, memo });
     saveData(data);
     currentMonth = mk;
-    el('newItem').value=''; el('newAmount').value='';
+    el('newItem').value=''; el('newAmount').value=''; el('newMemo').value='';
     render();
     showToast('지출 내역이 추가되었습니다');
   });
@@ -595,14 +781,16 @@
       <div class="rowbtns">
         <button class="miniicon" data-save="${id}" title="저장">✔</button>
         <button class="miniicon" data-cancel="${id}" title="취소">✕</button>
-      </div>`;
+      </div>
+      <input type="text" value="${escapeHtml(exp.memo||'')}" data-f="memo" placeholder="메모 (선택)" style="grid-column:3; margin-top:2px;">`;
     row.querySelector('[data-save]').addEventListener('click', () => {
       const date = row.querySelector('[data-f="date"]').value;
       const cardType = row.querySelector('[data-f="cardType"]').value;
       const item = row.querySelector('[data-f="item"]').value.trim();
       const amount = Number(row.querySelector('[data-f="amount"]').value);
+      const memo = row.querySelector('[data-f="memo"]').value.trim();
       if(!date || !item || !amount || amount<=0){ showToast('입력값을 확인해주세요'); return; }
-      exp.date = date; exp.cardType = cardType; exp.item = item; exp.amount = amount;
+      exp.date = date; exp.cardType = cardType; exp.item = item; exp.amount = amount; exp.memo = memo;
       saveData(data);
       currentMonth = monthKey(date);
       render();
@@ -676,9 +864,7 @@
         const parsed = JSON.parse(reader.result);
         if(!parsed.budgets || !parsed.expenses){ throw new Error('invalid'); }
         if(!confirm('현재 데이터를 가져온 파일로 덮어씁니다. 계속할까요?')) return;
-        if(!parsed.cardTypes) parsed.cardTypes = DEFAULT_CARD_TYPES.slice();
-        if(!parsed.settings) parsed.settings = { sheetUrl:"", lastSync:null };
-        data = parsed;
+        data = normalizeSettings(parsed);
         saveData(data);
         const months = allMonthsSorted();
         currentMonth = months.length ? months[months.length-1] : todayMonth();
@@ -701,11 +887,15 @@
   }
   el('sheetUrlInput').addEventListener('change', saveSheetUrl);
 
-  async function syncUp(){
+  function persistOnly(d){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }catch(e){}
+  }
+
+  async function syncUp(silent){
     const url = data.settings.sheetUrl;
-    if(!url){ showToast('먼저 Apps Script URL을 입력해주세요'); return; }
+    if(!url){ if(!silent) showToast('먼저 Apps Script URL을 입력해주세요'); return; }
     try{
-      showToast('백업 중...');
+      if(!silent) showToast('백업 중...');
       await fetch(url, {
         method:'POST',
         mode:'no-cors',
@@ -713,10 +903,10 @@
         body: JSON.stringify(data)
       });
       data.settings.lastSync = new Date().toISOString();
-      saveData(data);
-      render();
-      showToast('Google Sheets로 백업했습니다');
-    }catch(e){ showToast('백업 실패: URL과 배포 설정을 확인해주세요'); }
+      persistOnly(data); // lastSync 기록만 반영 (자동백업 재귀 방지)
+      el('lastSyncTime').textContent = `마지막 백업: ${new Date(data.settings.lastSync).toLocaleString('ko-KR')}`;
+      showToast(silent ? '자동 백업 완료' : 'Google Sheets로 백업했습니다');
+    }catch(e){ if(!silent) showToast('백업 실패: URL과 배포 설정을 확인해주세요'); }
   }
   async function syncDown(){
     const url = data.settings.sheetUrl;
@@ -727,10 +917,8 @@
       const json = await res.json();
       if(!json || !json.budgets || !json.expenses){ throw new Error('invalid'); }
       if(!confirm('시트에 백업된 데이터로 현재 데이터를 덮어씁니다. 계속할까요?')) return;
-      if(!json.cardTypes) json.cardTypes = DEFAULT_CARD_TYPES.slice();
-      if(!json.settings) json.settings = { sheetUrl: url, lastSync:null };
-      json.settings.sheetUrl = url;
-      data = json;
+      data = normalizeSettings(json);
+      data.settings.sheetUrl = url;
       saveData(data);
       const months = allMonthsSorted();
       currentMonth = months.length ? months[months.length-1] : todayMonth();
@@ -739,8 +927,97 @@
     }catch(e){ showToast('불러오기 실패: URL과 배포 설정을 확인해주세요 (CORS/권한)'); }
   }
   el('syncNowBtn').addEventListener('click', () => { openDrawer(); });
-  el('drawerSyncUp').addEventListener('click', syncUp);
+  el('drawerSyncUp').addEventListener('click', () => syncUp(false));
   el('drawerSyncDown').addEventListener('click', syncDown);
+  el('autoBackupToggle').addEventListener('change', e => {
+    data.settings.autoBackup = e.target.checked;
+    saveData(data);
+    if(e.target.checked && data.settings.sheetUrl) showToast('자동 백업이 켜졌습니다');
+  });
+
+  // ---------- CSV export ----------
+  function doCsvExport(){
+    const rows = [['월','지출일','카드구분','지출항목','메모','결제금액']];
+    data.expenses.slice().sort((a,b)=> a.date.localeCompare(b.date)).forEach(e => {
+      rows.push([monthKey(e.date), e.date, e.cardType, e.item, e.memo||'', e.amount]);
+    });
+    const csv = rows.map(r => r.map(v => {
+      const s = String(v);
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+    }).join(',')).join('\r\n');
+    const blob = new Blob(['﻿' + csv], {type:'text/csv;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `회의비_지출내역_${todayStr()}.csv`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('CSV 파일을 내려받았습니다');
+  }
+  el('csvExportBtn').addEventListener('click', doCsvExport);
+
+  // ---------- annual summary ----------
+  function openModal(){ el('annualModal').classList.add('show'); el('modalOverlay').classList.add('show'); }
+  function closeModal(){ el('annualModal').classList.remove('show'); el('modalOverlay').classList.remove('show'); }
+
+  function renderAnnual(year){
+    const monthsInYear = [];
+    for(let m=1; m<=12; m++){
+      const mk = `${year}-${String(m).padStart(2,'0')}`;
+      if(data.budgets[mk] || monthExpenses(mk).length) monthsInYear.push(mk);
+    }
+    const spentByMonth = monthsInYear.map(mk => ({ mk, budget: monthBudget(mk), spent: monthSpent(mk) }));
+    const total = spentByMonth.reduce((s,m)=>s+m.spent,0);
+    const avg = spentByMonth.length ? total / spentByMonth.length : 0;
+    let maxMonth = null;
+    spentByMonth.forEach(m => { if(!maxMonth || m.spent > maxMonth.spent) maxMonth = m; });
+
+    el('annualTotal').textContent = won(total);
+    el('annualAvg').textContent = won(avg);
+    el('annualMax').textContent = maxMonth ? `${monthLabelKo(maxMonth.mk)} (${won(maxMonth.spent)})` : '-';
+
+    el('annualMonthRows').innerHTML = spentByMonth.map(m => {
+      const rate = m.budget > 0 ? Math.min(100, m.spent/m.budget*100) : 0;
+      const over = m.budget > 0 && m.spent > m.budget;
+      return `<div class="mrow ${over?'over':''}">
+        <div class="mname">${parseInt(m.mk.split('-')[1],10)}월</div>
+        <div class="mtrack"><div class="mfill" style="width:${rate.toFixed(1)}%;"></div></div>
+        <div class="mamt tabular">${won(m.spent)}</div>
+      </div>`;
+    }).join('') || '<p class="note">해당 연도 데이터가 없습니다.</p>';
+  }
+
+  function openAnnualModal(){
+    const years = Array.from(new Set(allMonthsSorted().map(m => m.split('-')[0]))).sort();
+    const curYear = currentMonth.split('-')[0];
+    el('yearPick').innerHTML = years.map(y => `<option value="${y}" ${y===curYear?'selected':''}>${y}년</option>`).join('');
+    renderAnnual(el('yearPick').value || curYear);
+    openModal();
+  }
+  el('annualBtn').addEventListener('click', openAnnualModal);
+  el('yearPick').addEventListener('change', e => renderAnnual(e.target.value));
+  el('annualClose').addEventListener('click', closeModal);
+  el('modalOverlay').addEventListener('click', closeModal);
+
+  // ---------- PWA: install prompt + service worker ----------
+  let deferredInstallPrompt = null;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    el('installBtn').style.display = 'inline-flex';
+  });
+  el('installBtn').addEventListener('click', async () => {
+    if(!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    el('installBtn').style.display = 'none';
+  });
+  window.addEventListener('appinstalled', () => { el('installBtn').style.display = 'none'; });
+  if('serviceWorker' in navigator && location.protocol !== 'file:'){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    });
+  }
 
   // ---------- init ----------
   render();
