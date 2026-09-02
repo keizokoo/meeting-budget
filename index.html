@@ -214,6 +214,18 @@
 
   /* ---------- memo ---------- */
   .erow .memo{ grid-column:3; font-size:11.5px; color:var(--ink2); margin-top:2px; }
+
+  /* ---------- 문자 붙여넣기 자동인식 ---------- */
+  .smspaste{ margin-top:18px; }
+  .smspaste textarea{
+    width:100%; resize:vertical; min-height:38px; max-height:120px;
+    border:1px dashed var(--ink3); border-radius:10px; padding:9px 12px; font-size:12.5px;
+    background:var(--surface); color:var(--ink); line-height:1.5;
+  }
+  .smspaste textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; border-style:solid; }
+  .smspaste-note{ display:block; font-size:11.5px; color:var(--good); margin-top:5px; min-height:14px; }
+  .smspaste-note.warn{ color:var(--warn); }
+
   .addrow{ margin-top:10px; }
   .addrow-main{
     background:var(--surface); border:1px solid var(--ink); box-shadow:none; border-radius:10px 10px 0 0;
@@ -362,6 +374,10 @@
     <div class="elist" id="expenseList"></div>
     <div id="emptyState" class="empty" style="display:none;">이번 달 지출 내역이 없습니다. 아래에서 추가해보세요.</div>
 
+    <div class="smspaste">
+      <textarea id="smsPasteInput" rows="1" placeholder="📩 카드 승인 문자를 여기에 붙여넣으면 아래 입력칸에 자동으로 채워집니다"></textarea>
+      <span class="smspaste-note" id="smsPasteNote"></span>
+    </div>
     <div class="addrow">
       <div class="addrow-main">
         <input type="date" id="newDate">
@@ -803,6 +819,90 @@
   el('filterCard').addEventListener('change', e => { filterCardType = e.target.value; render(); });
   el('sortOrder').addEventListener('change', e => { sortOrder = e.target.value; render(); });
 
+  // ---------- 카드 승인 문자 붙여넣기 자동인식 ----------
+  // "[Web발신]\nMG+ 하나8*9*승인 고*희 81,800원 일시불 09/02 21:27 누나홀닭 누적2,743,887원" 같은
+  // 카드사 승인 문자를 붙여넣으면 날짜/금액/가맹점명/카드구분을 뽑아 입력창에 채워준다.
+  // 문자 형식은 카드사마다 조금씩 달라서, 잘못 인식될 수 있으니 항상 사람이 확인 후 "+추가"를 눌러야 실제로 등록된다.
+  function parseSmsExpense(text){
+    const t = (text || '').replace(/\s+/g, ' ').trim();
+    if(!t) return null;
+
+    // 금액: "81,800원 일시불" / "5,000원 3개월" 처럼 결제방식 문구 앞의 금액을 우선으로 찾는다
+    // (문자 맨 뒤 "누적2,743,887원"과 헷갈리지 않기 위함)
+    let amount = null;
+    let m = t.match(/([\d,]{3,})\s*원\s*(?:일시불|\d+\s*개월)/);
+    if(m){ amount = parseInt(m[1].replace(/,/g,''), 10); }
+    if(!amount){
+      const all = [...t.matchAll(/([\d,]{3,})\s*원/g)].map(x => parseInt(x[1].replace(/,/g,''), 10));
+      const nonAccum = all.filter((_, i) => !/누적\s*[\d,]*\s*원\s*$/.test(t.slice(0, t.indexOf(String(all[i])) + 20)));
+      amount = (nonAccum.length ? nonAccum[0] : all[0]) || null;
+    }
+
+    // 날짜: MM/DD (뒤에 HH:MM이 붙는 경우가 많음)
+    let date = null;
+    const dm = t.match(/(\d{1,2})\/(\d{1,2})(?:\s+\d{1,2}:\d{2})?/);
+    if(dm){
+      const mm = dm[1].padStart(2,'0'), dd = dm[2].padStart(2,'0');
+      const now = new Date();
+      let year = now.getFullYear();
+      const candidate = new Date(`${year}-${mm}-${dd}T00:00:00`);
+      if(candidate.getTime() - now.getTime() > 86400000) year -= 1; // 미래 날짜면 작년 문자로 간주
+      date = `${year}-${mm}-${dd}`;
+    }
+
+    // 가맹점명(지출항목): 시간(HH:MM) 뒤 ~ "누적" 앞 텍스트
+    let item = '';
+    const timeIdx = t.search(/\d{1,2}:\d{2}/);
+    if(timeIdx >= 0){
+      let tail = t.slice(timeIdx).replace(/^\d{1,2}:\d{2}/, '').trim();
+      tail = tail.split('누적')[0].trim();
+      item = tail;
+    }
+    if(!item && dm){
+      // 시간 없이 날짜만 있는 경우: 날짜 뒤 ~ 누적 앞
+      let tail = t.slice(t.indexOf(dm[0]) + dm[0].length).trim();
+      item = tail.split('누적')[0].trim();
+    }
+
+    // 카드구분 추정: 문자에 등록된 카드구분 이름이 그대로 들어있으면 그걸 사용
+    let cardType = null;
+    for(const c of data.cardTypes){
+      if(c && t.includes(c)){ cardType = c; break; }
+    }
+    if(!cardType && /MG\+?/i.test(t) && data.cardTypes.includes('MG')) cardType = 'MG';
+
+    if(!amount && !item && !date) return null;
+    return { date, amount, item, cardType };
+  }
+
+  function applySmsParse(){
+    const raw = el('smsPasteInput').value;
+    const note = el('smsPasteNote');
+    if(!raw.trim()){ note.textContent = ''; note.classList.remove('warn'); return; }
+    const parsed = parseSmsExpense(raw);
+    if(!parsed || (!parsed.amount && !parsed.item)){
+      note.textContent = '문자에서 금액/가맹점을 못 찾았어요. 직접 입력해주세요.';
+      note.classList.add('warn');
+      return;
+    }
+    if(parsed.date) el('newDate').value = parsed.date;
+    if(parsed.cardType) el('newCard').value = parsed.cardType;
+    if(parsed.item) el('newItem').value = parsed.item;
+    if(parsed.amount) el('newAmount').value = parsed.amount;
+    const parts = [];
+    if(parsed.date) parts.push(parsed.date.slice(5).replace('-','.'));
+    if(parsed.cardType) parts.push(parsed.cardType);
+    if(parsed.item) parts.push(parsed.item);
+    if(parsed.amount) parts.push(won(parsed.amount));
+    note.textContent = `✓ 인식됨: ${parts.join(' · ')} — 확인 후 "+ 추가"를 눌러주세요`;
+    note.classList.remove('warn');
+  }
+  let smsParseTimer = null;
+  el('smsPasteInput').addEventListener('input', () => {
+    clearTimeout(smsParseTimer);
+    smsParseTimer = setTimeout(applySmsParse, 150);
+  });
+
   // ---------- add expense ----------
   el('addExpenseBtn').addEventListener('click', () => {
     const date = el('newDate').value;
@@ -823,6 +923,7 @@
     saveData(data);
     currentMonth = mk;
     el('newItem').value=''; el('newAmount').value=''; el('newMemo').value='';
+    el('smsPasteInput').value=''; el('smsPasteNote').textContent=''; el('smsPasteNote').classList.remove('warn');
     render();
     showToast('지출 내역이 추가되었습니다');
   });
@@ -958,9 +1059,12 @@
   // ---------- google sheets sync ----------
   let urlSaveTimer = null;
   let urlSavedNoteTimer = null;
-  function saveSheetUrl(showNote){
+  function saveSheetUrl(showNote, allowClear){
     const val = el('sheetUrlInput').value.trim();
     if(data.settings.sheetUrl === val) return;
+    // 이미 저장되어 있던 URL이 있는데 입력값이 비어버린 경우, 타이핑 중 순간적으로 빈 값이 찍히는 상황(자동완성/붙여넣기 등)에
+    // 저장이 걸려서 URL이 조용히 지워지는 것을 막기 위해 - 명시적으로 필드를 벗어날 때(blur)만 "비우기"를 허용한다.
+    if(!val && data.settings.sheetUrl && !allowClear) return;
     const hadNoUrlBefore = !data.settings.sheetUrl;
     data.settings.sheetUrl = val;
     // URL을 처음 등록하는 순간, 별도 토글 조작 없이도 "새 지출을 넣으면 자동 백업"이 바로 켜지도록 기본 활성화
@@ -983,7 +1087,7 @@
     clearTimeout(urlSaveTimer);
     urlSaveTimer = setTimeout(() => saveSheetUrl(true), 500);
   });
-  el('sheetUrlInput').addEventListener('blur', () => { clearTimeout(urlSaveTimer); saveSheetUrl(true); });
+  el('sheetUrlInput').addEventListener('blur', () => { clearTimeout(urlSaveTimer); saveSheetUrl(true, true); });
 
   function persistOnly(d){
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }catch(e){}
