@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>회의비 대시보드</title>
+<title>내 생활 대시보드</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#FF4D00">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -301,9 +301,160 @@
     .addrow-main input, .addrow-main select{ min-width:0; }
     .addrow-main button{ grid-column:1/-1; justify-content:center; }
   }
+
+  /* =====================================================================
+     [신규] 모드 스위치(회의비 | 가격 체크 | 쇼핑 이력) + 신규 영역 공통 스타일
+     - 기존 회의비 CSS는 그대로 두고 아래는 전부 새 클래스(modebar, pc-*, sh-*)만 사용
+     - 색은 회의비와 동일(var(--accent) 주황), 다크모드도 회의비 토글을 그대로 공유
+     ===================================================================== */
+  [hidden]{ display:none !important; }
+  .modebar{ position:sticky; top:0; z-index:40; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 14px; }
+  .modebar-in{ max-width:920px; margin:0 auto; display:flex; gap:4px; background:var(--line); padding:4px; border-radius:12px; }
+  .modebtn{ flex:1; border:none; background:transparent; color:var(--ink2); font-weight:800; font-size:13.5px; padding:9px 6px; border-radius:9px; min-height:40px; letter-spacing:-.01em; white-space:nowrap; }
+  .modebtn.on{ background:var(--accent); color:var(--on-accent); }
+  #priceView, #shopView{
+    --pc:var(--accent); --pc-soft:#FFF1E8; --pc-on:var(--on-accent);
+    --pc-up:#D83A41; --pc-up-bg:#FDECEC; --pc-down:#2F6BEB; --pc-down-bg:#E7EFFD; --pc-flat:#5C5C5C; --pc-flat-bg:#F1F1F1;
+    padding-bottom:20px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) #priceView, :root:not([data-theme="light"]) #shopView{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; --pc-up-bg:#3A1D22; --pc-down:#7DA6FF; --pc-down-bg:#1B2742; --pc-flat:#B4B0CA; --pc-flat-bg:#26272A; }
+  }
+  [data-theme="dark"] #priceView, [data-theme="dark"] #shopView{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; --pc-up-bg:#3A1D22; --pc-down:#7DA6FF; --pc-down-bg:#1B2742; --pc-flat:#B4B0CA; --pc-flat-bg:#26272A; }
+  .pc-wrap{ max-width:920px; margin:0 auto; padding:16px 16px 0; }
+  .appver{ max-width:920px; margin:0 auto; padding:6px 16px 24px; font-size:11.5px; color:var(--ink3); text-align:center; }
+  .pc-tabs{ display:flex; gap:6px; margin:14px 0 12px; }
+  .pc-tabs button{ flex:1; border:1px solid var(--line2); background:var(--surface); color:var(--ink2); font-weight:700; font-size:13px; padding:9px 6px; border-radius:999px; min-height:40px; }
+  .pc-tabs button.on{ background:var(--pc); border-color:var(--pc); color:var(--pc-on); }
+  .pc-sec{ display:none; } .pc-sec.on{ display:block; }
+  .pc-card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:16px; margin-bottom:14px; box-shadow:var(--shadow); }
+  .pc-card h3{ margin:0 0 10px; font-size:15px; }
+  .pc-f{ display:flex; flex-direction:column; gap:4px; font-size:12.5px; color:var(--ink2); margin-top:10px; min-width:0; }
+  .pc-f input, .pc-f select, #pc-dlg input, #pc-dlg select{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
+  .pc-f input:focus-visible, .pc-f select:focus-visible, .pc-btn:focus-visible, .pc-tabs button:focus-visible{ outline:3px solid var(--pc); outline-offset:2px; }
+  .pc-row2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .pc-btn{ font:inherit; font-weight:700; font-size:14px; min-height:42px; padding:9px 14px; border-radius:8px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); }
+  .pc-btn.primary{ background:var(--pc); border-color:var(--pc); color:var(--pc-on); }
+  .pc-btn.small{ min-height:34px; padding:5px 12px; font-size:13px; }
+  .pc-btn.danger{ color:var(--pc-up); }
+  .pc-btn.wide{ width:100%; margin-top:14px; }
+  .pc-btn.photo{ width:100%; background:var(--pc-soft); border-color:var(--pc-soft); color:var(--pc); }
+  .pc-btn:disabled{ opacity:.45; }
+  .pc-hint{ font-size:12.5px; color:var(--ink2); margin:8px 0; }
+  .pc-preview{ margin:10px 2px 0; font-size:13.5px; color:var(--ink2); }
+  .pc-newbox{ border:1px dashed var(--line2); border-radius:8px; padding:0 12px 12px; margin-top:10px; }
+  .pc-thumbnote{ font-size:12.5px; color:var(--pc); margin:8px 0 0; font-weight:600; }
+  .pc-verdict{ border-radius:10px; padding:16px; margin-top:14px; }
+  .pc-big{ font-size:22px; font-weight:800; line-height:1.3; letter-spacing:-.02em; margin:0; }
+  .pc-verdict p.pc-sm{ margin:6px 0 0; font-size:13.5px; }
+  .pc-v-down{ background:var(--pc-down-bg); color:var(--pc-down); }
+  .pc-v-up{ background:var(--pc-up-bg); color:var(--pc-up); }
+  .pc-v-flat{ background:var(--pc-flat-bg); color:var(--pc-flat); }
+  .pc-tag{ display:inline-block; font-size:12px; font-weight:800; padding:3px 9px; border-radius:999px; margin-top:8px; background:var(--surface); color:inherit; }
+  .pc-rb{ margin:20px 6px 4px; }
+  .pc-rb-track{ position:relative; height:10px; border-radius:5px; background:var(--line); }
+  .pc-rb-band{ position:absolute; top:0; bottom:0; border-radius:5px; background:var(--ink3); opacity:.4; }
+  .pc-rb-avg{ position:absolute; top:-5px; width:2px; height:20px; background:var(--ink); transform:translateX(-1px); }
+  .pc-rb-cur{ position:absolute; top:-7px; width:24px; height:24px; border-radius:50%; transform:translateX(-12px); border:3px solid var(--surface); box-shadow:0 0 0 2px currentColor; background:currentColor; }
+  .pc-rb-ends{ display:flex; justify-content:space-between; margin-top:14px; font-size:12px; color:var(--ink2); }
+  .pc-legend{ font-size:12px; color:var(--ink3); margin:2px 0 0; }
+  dl.pc-dl{ margin:14px 0 0; display:grid; grid-template-columns:1fr auto; gap:8px 14px; font-size:13.5px; }
+  dl.pc-dl dt{ color:var(--ink2); } dl.pc-dl dd{ margin:0; text-align:right; white-space:nowrap; font-weight:700; }
+  .pc-cup{ color:var(--pc-up); } .pc-cdown{ color:var(--pc-down); } .pc-cflat{ color:var(--ink2); }
+  .pc-warn{ margin-top:12px; padding:10px 12px; border-radius:8px; background:var(--pc-flat-bg); font-size:12.5px; color:var(--pc-flat); }
+  .pc-chips{ display:flex; gap:6px; flex-wrap:wrap; margin:4px 0 10px; }
+  .pc-chip{ font:inherit; font-size:12.5px; font-weight:700; padding:6px 12px; border-radius:999px; border:1px solid var(--line2); background:var(--surface); color:var(--ink2); min-height:32px; }
+  .pc-chip.on{ background:var(--pc); border-color:var(--pc); color:var(--pc-on); }
+  .pc-headrow{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px; }
+  .pc-headrow h3{ margin:0; }
+  .pc-tblwrap{ overflow-x:auto; margin:0 -4px; padding:0 4px; }
+  table.pc-tbl{ border-collapse:collapse; width:100%; font-size:12px; }
+  .pc-tbl th{ font-size:11px; font-weight:800; color:var(--ink2); text-align:right; padding:8px 4px; border-bottom:2px solid var(--line); white-space:nowrap; background:var(--surface); }
+  .pc-tbl th:first-child, .pc-tbl th.pc-pcell{ text-align:left; }
+  .pc-tbl td{ padding:9px 4px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
+  .pc-tbl td:first-child{ text-align:left; }
+  .pc-tbl td.pc-pcell{ text-align:left; white-space:normal; min-width:110px; }
+  .pc-tbl tbody tr[data-pc]{ cursor:pointer; }
+  .pc-tbl tbody tr[data-pc]:hover td{ background:var(--pc-soft); }
+  .pc-tbl td.pc-u{ font-weight:800; }
+  .pc-tbl td.pc-dim{ color:var(--ink3); }
+  .pc-tbl tr.pc-grp td{ background:var(--pc-soft); color:var(--pc); font-weight:800; text-align:left; padding:7px 8px; border-bottom:0; }
+  .pc-tbl tr.pc-grp small{ font-weight:500; color:var(--ink2); }
+  @media (max-width:640px){ .pc-tbl th.pc-pcell, .pc-tbl td.pc-pcell{ display:none; } }
+  @media (min-width:641px){ .pc-tbl tr.pc-grp{ display:none; } .pc-tbl{ font-size:13px; } .pc-tbl td{ padding:10px 8px; } .pc-tbl th{ font-size:12px; padding:8px 8px; } .pc-wrap{ padding:20px 28px 0; } }
+  .pc-tbl td:last-child, .pc-tbl th:last-child{ position:sticky; right:0; background:var(--surface); box-shadow:-6px 0 6px -6px rgba(0,0,0,.18); }
+  .pc-tbl tr.pc-grp td:last-child{ position:static; box-shadow:none; background:var(--pc-soft); }
+  .pc-chartcard h3 .pc-badge{ font-size:12px; font-weight:800; padding:3px 9px; border-radius:999px; margin-left:6px; vertical-align:middle; }
+  .pc-sub{ font-size:12.5px; color:var(--ink2); margin:0 0 6px; }
+  .pc-chartcard svg{ display:block; width:100%; height:auto; }
+  .pc-stats{ display:flex; gap:8px; margin-top:8px; }
+  .pc-stat{ flex:1; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:12px; color:var(--ink2); }
+  .pc-stat b{ display:block; font-size:15px; color:var(--ink); }
+  #pc-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(92vw,440px); background:var(--surface); color:var(--ink); }
+  #pc-dlg::backdrop{ background:rgba(0,0,0,.45); }
+  #pc-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #pc-toast{ position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 16px; border-radius:999px; font-size:13.5px; max-width:90vw; opacity:0; pointer-events:none; transition:opacity .15s; z-index:90; }
+  #pc-toast.show{ opacity:1; }
+
+  /* ---------- 쇼핑 이력 ---------- */
+  #sh-summary{ margin-bottom:18px; }
+  #sh-summary .scard .v{ font-size:14px; }
+  .scard .sub{ font-size:11px; color:var(--ink2); margin-top:6px; line-height:1.4; }
+  .sh-banner{ background:var(--ink); color:var(--bg); border-radius:10px; padding:12px 14px; font-size:13px; margin-bottom:12px; }
+  .sh-banner b{ color:var(--accent); }
+  .sh-banner .it{ padding:3px 0; }
+  .sh-banner .tg{ display:inline-block; font-size:10.5px; font-weight:800; border:1px solid var(--accent); color:var(--accent); border-radius:999px; padding:1px 7px; margin-right:6px; }
+  .sh-row{ display:grid; grid-template-columns:1fr auto; gap:10px; padding:14px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
+  .sh-row:hover{ background:var(--pc-soft); }
+  .sh-top{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+  .sh-name{ font-weight:700; font-size:14px; }
+  .sh-badge{ font-size:10.5px; font-weight:700; border-radius:999px; padding:2px 8px; border:1px solid var(--line2); color:var(--ink2); }
+  .sh-badge.sold{ color:var(--good); border-color:var(--good); }
+  .sh-meta{ font-size:12px; color:var(--ink2); margin-top:4px; display:flex; flex-wrap:wrap; gap:2px 12px; }
+  .sh-meta b{ color:var(--ink); font-weight:600; }
+  .sh-benefit{ font-size:12px; margin-top:4px; color:var(--ink2); }
+  .sh-benefit.due{ color:var(--accent); font-weight:700; }
+  .sh-penalty{ font-size:12px; color:var(--warn); margin-top:4px; }
+  .sh-right{ text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
+  .sh-price{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-weight:700; font-size:13.5px; }
+  .sh-price.strike{ text-decoration:line-through; color:var(--ink3); font-size:11.5px; }
+  .sh-real{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-weight:700; font-size:13.5px; color:var(--accent); }
+  .sh-profit{ font-size:12.5px; font-weight:700; }
+  .sh-profit.pos{ color:var(--good); } .sh-profit.neg{ color:var(--warn); }
+  .sh-cnt{ opacity:.75; margin-left:3px; }
+  #sh-dlg, #pc-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
+  #sh-dlg::backdrop{ background:rgba(0,0,0,.45); }
+  #sh-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #sh-dlg .pc-f input, #sh-dlg .pc-f select{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
+  #sh-dlg .grp{ margin-top:14px; font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--ink2); }
+  .pc-sync{ font-size:12px; color:var(--ink2); align-self:center; }
+
+  /* ---------- 공용 상태줄 + 공통 알림 ---------- */
+  .gbar{ max-width:920px; margin:0 auto; padding:8px 14px 0; }
+  .gbar-in{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--ink2); }
+  .gdot{ width:8px; height:8px; border-radius:50%; background:var(--ink3); flex:none; }
+  .gdot.ok{ background:var(--good); } .gdot.warn{ background:var(--warn); }
+  .gsync{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .gbtn{ border:1px solid var(--line2); background:var(--bg); color:var(--ink2); border-radius:9px; padding:5px 10px; font-size:12px; font-weight:700; }
+  .galerts{ display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+  .galert{ display:flex; align-items:center; gap:8px; border:1px solid var(--ink); border-radius:10px; background:var(--surface); padding:9px 12px; font-size:12.5px; text-align:left; width:100%; color:var(--ink); cursor:pointer; }
+  .galert .t{ flex:1; min-width:0; line-height:1.45; }
+  .galert b{ color:var(--accent); }
+  .galert .x{ border:none; background:none; color:var(--ink3); font-size:15px; padding:0 4px; }
 </style>
 </head>
 <body>
+<!-- ===== [신규] 모드 스위치: 회의비 / 가격 체크 / 쇼핑 이력 ===== -->
+<div class="modebar" id="modeBar"><div class="modebar-in">
+  <button class="modebtn on" data-mode="meeting" id="modeMeeting">회의비</button>
+  <button class="modebtn" data-mode="price" id="modePrice">가격 체크</button>
+  <button class="modebtn" data-mode="shop" id="modeShop">쇼핑 이력</button>
+</div></div>
+<div class="gbar" id="gBar">
+  <div class="gbar-in"><span class="gdot" id="gDot"></span><span class="gsync" id="gSync"></span><button class="gbtn" id="gSettings" type="button">⚙ 설정</button></div>
+  <div class="galerts" id="gAlerts"></div>
+</div>
+<div id="mtgView">
 
 <div class="banner" id="newMonthBanner" style="display:none;">
   <span id="newMonthText"></span>
@@ -403,6 +554,142 @@
   </div>
 </div>
 
+</div><!-- /mtgView -->
+
+<!-- ===== [신규] 가격 체크 영역 ===== -->
+<div id="priceView" hidden>
+ <div class="pc-wrap">
+  <div class="pc-tabs">
+    <button class="on" data-pc="tab" data-t="analyze">구매 분석</button>
+    <button data-pc="tab" data-t="history">구매 이력</button>
+    <button data-pc="tab" data-t="trend">가격 추이</button>
+  </div>
+
+  <section class="pc-sec on" id="pc-analyze">
+    <div class="pc-card">
+      <h3>새로 살 제품 분석</h3>
+      <label class="pc-f">상품<select id="pc-item"></select></label>
+      <div id="pc-new" class="pc-newbox" hidden>
+        <label class="pc-f">새 상품 이름<input id="pc-name" type="text" placeholder="예: 피지오겔 데일리뮨"></label>
+        <div class="pc-row2">
+          <label class="pc-f">단위<select id="pc-unit"></select></label>
+          <label class="pc-f">비교 기준<select id="pc-basis"></select></label>
+        </div>
+      </div>
+      <div class="pc-row2">
+        <label class="pc-f">구매일<input id="pc-date" type="date"></label>
+        <label class="pc-f"><span id="pc-amount-label">용량</span><input id="pc-amount" type="number" inputmode="decimal" min="0" step="any"></label>
+      </div>
+      <div class="pc-row2">
+        <label class="pc-f"><span id="pc-bonus-label">증정</span><input id="pc-bonus" type="number" inputmode="decimal" min="0" step="any"></label>
+        <label class="pc-f">결제금(원)<input id="pc-paid" type="number" inputmode="numeric" min="0" step="any"></label>
+      </div>
+      <label class="pc-f">적립금(원)<input id="pc-points" type="number" inputmode="numeric" min="0" step="any"></label>
+      <p id="pc-preview" class="pc-preview"></p>
+      <div id="pc-result"></div>
+      <button id="pc-save" class="pc-btn primary wide" data-pc="save-new" disabled>이 구매 등록</button>
+    </div>
+  </section>
+
+  <section class="pc-sec" id="pc-history">
+    <div class="pc-card">
+      <div class="pc-headrow"><h3>구매 이력</h3><button class="pc-btn small primary" data-pc="add-rec">+ 기록 추가</button></div>
+      <div id="pc-filter" class="pc-chips"></div>
+      <div id="pc-table" class="pc-tblwrap"></div>
+      <p class="pc-hint">행을 누르면 수정·삭제할 수 있어요. 단가 = (결제금 − 적립금) ÷ (용량 + 증정). 상품별 최저는 파랑, 최고는 빨강이에요.</p>
+    </div>
+  </section>
+
+  <section class="pc-sec" id="pc-trend"><div id="pc-charts"></div></section>
+
+  <div class="toolbar" style="margin:6px 0 10px">
+    <button class="toolbtn" data-pc="backup">☁ 지금 백업</button>
+    <span class="pc-sync" id="pc-sync"></span>
+  </div>
+ </div>
+</div>
+
+<!-- ===== [신규] 쇼핑 이력 영역 (구매·재판매 이력 대시보드 이관) ===== -->
+<div id="shopView" hidden>
+ <div class="pc-wrap">
+  <div id="sh-banner" class="sh-banner" hidden></div>
+  <div class="pc-tabs" id="sh-tabs"></div>
+  <div class="strip" id="sh-summary"></div>
+  <div class="sectionhead"><h3 id="sh-title">전자제품 품목</h3><button class="pc-btn small primary" data-sh="add">+ 항목 추가</button></div>
+  <div id="sh-list"></div>
+  <div class="toolbar">
+    <button class="toolbtn" data-sh="notify" id="sh-notify">🔔 혜택 알림 꺼짐</button>
+    <button class="toolbtn" data-sh="csv-out">⬇ CSV 내보내기</button>
+    <button class="toolbtn" data-sh="csv-in">⬆ CSV 가져오기</button>
+    <button class="toolbtn" data-sh="backup">☁ 지금 백업</button>
+  </div>
+  <input id="sh-csv" type="file" accept=".csv,text/csv" hidden>
+  <p class="pc-hint" id="sh-note"></p>
+  <p class="pc-sync" id="sh-sync"></p>
+ </div>
+</div>
+
+<dialog id="pc-dlg">
+  <h3 id="pc-e-title">구매 기록</h3>
+  <label class="pc-f">상품<select id="pc-e-item"></select></label>
+  <div class="pc-row2">
+    <label class="pc-f">구매일<input id="pc-e-date" type="date"></label>
+    <label class="pc-f"><span id="pc-e-amount-label">용량</span><input id="pc-e-amount" type="number" inputmode="decimal" min="0" step="any"></label>
+  </div>
+  <div class="pc-row2">
+    <label class="pc-f"><span id="pc-e-bonus-label">증정</span><input id="pc-e-bonus" type="number" inputmode="decimal" min="0" step="any"></label>
+    <label class="pc-f">결제금(원)<input id="pc-e-paid" type="number" inputmode="numeric" min="0" step="any"></label>
+  </div>
+  <label class="pc-f">적립금(원)<input id="pc-e-points" type="number" inputmode="numeric" min="0" step="any"></label>
+  <p id="pc-e-preview" class="pc-preview"></p>
+  <div class="pc-row2" style="margin-top:14px">
+    <button class="pc-btn" data-pc="rec-cancel">취소</button>
+    <button class="pc-btn primary" data-pc="rec-save">저장</button>
+  </div>
+  <button id="pc-e-delete" class="pc-btn danger wide" data-pc="rec-delete">이 기록 삭제</button>
+</dialog>
+
+<dialog id="sh-dlg">
+  <h3 id="sh-d-title">항목 추가</h3>
+  <label class="pc-f">분류<select id="sh-f-cat"></select></label>
+  <label class="pc-f">품목명<input id="sh-f-item" type="text"></label>
+  <div class="pc-row2">
+    <label class="pc-f">구매처<input id="sh-f-store" type="text"></label>
+    <label class="pc-f">수량<input id="sh-f-qty" type="number" min="1" step="1"></label>
+  </div>
+  <div class="pc-row2">
+    <label class="pc-f">구매일<input id="sh-f-purchaseDate" type="date"></label>
+    <label class="pc-f">구매금액(원)<input id="sh-f-purchasePrice" type="number" inputmode="numeric" min="0" step="any"></label>
+  </div>
+  <label class="pc-f">실구매금액(원, 혜택 반영 후 · 없으면 비움)<input id="sh-f-actualPrice" type="number" inputmode="numeric" min="0" step="any"></label>
+  <div class="grp">혜택 1</div>
+  <div class="pc-row2">
+    <label class="pc-f">혜택명<input id="sh-f-b1name" type="text"></label>
+    <label class="pc-f">금액(원)<input id="sh-f-b1amount" type="number" inputmode="numeric" min="0" step="any"></label>
+  </div>
+  <label class="pc-f">지급일<input id="sh-f-b1date" type="date"></label>
+  <div class="grp">혜택 2</div>
+  <div class="pc-row2">
+    <label class="pc-f">혜택명<input id="sh-f-b2name" type="text"></label>
+    <label class="pc-f">금액(원)<input id="sh-f-b2amount" type="number" inputmode="numeric" min="0" step="any"></label>
+  </div>
+  <label class="pc-f">지급일<input id="sh-f-b2date" type="date"></label>
+  <div class="grp">재판매</div>
+  <label class="pc-f">상태<select id="sh-f-status"><option value="hold">보유중</option><option value="sold">판매완료</option></select></label>
+  <div class="pc-row2">
+    <label class="pc-f">판매일<input id="sh-f-saleDate" type="date"></label>
+    <label class="pc-f">판매금액(원)<input id="sh-f-salePrice" type="number" inputmode="numeric" min="0" step="any"></label>
+  </div>
+  <label class="pc-f">위약금(원)<input id="sh-f-penalty" type="number" inputmode="numeric" min="0" step="any"></label>
+  <div class="pc-row2" style="margin-top:14px">
+    <button class="pc-btn" data-sh="d-cancel">취소</button>
+    <button class="pc-btn primary" data-sh="d-save">저장</button>
+  </div>
+  <button id="sh-d-delete" class="pc-btn danger wide" data-sh="d-delete">이 항목 삭제</button>
+</dialog>
+
+<div class="appver" id="appVer"></div>
+<div id="pc-toast" role="status" aria-live="polite"></div>
 <div class="overlay" id="overlay"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-inner">
@@ -547,6 +834,7 @@
 
   let autoBackupTimer = null;
   function saveData(d){
+    if(window.AppMerge){ window.AppMerge.stamp(d); }
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
     catch(e){ console.warn("save failed", e); showToast("저장 실패: 브라우저 저장공간을 확인해주세요"); }
     if(d.settings && d.settings.autoBackup && d.settings.sheetUrl){
@@ -1024,7 +1312,7 @@
 
   // ---------- export / import ----------
   function doExport(){
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const blob = new Blob([JSON.stringify(window.AppExtras ? Object.assign({}, data, window.AppExtras.exportSync()) : data, null, 2)], {type:'application/json'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     const stamp = todayStr();
@@ -1040,6 +1328,8 @@
         const parsed = JSON.parse(reader.result);
         if(!parsed.budgets || !parsed.expenses){ throw new Error('invalid'); }
         if(!confirm('현재 데이터를 가져온 파일로 덮어씁니다. 계속할까요?')) return;
+        if(window.AppExtras){ window.AppExtras.importSync(parsed); }
+        delete parsed.priceCheck; delete parsed.shopping;
         data = normalizeSettings(parsed);
         saveData(data);
         const months = allMonthsSorted();
@@ -1102,7 +1392,7 @@
         method:'POST',
         mode:'no-cors',
         headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify(data)
+        body: JSON.stringify(window.AppExtras ? Object.assign({}, data, window.AppExtras.exportSync()) : data)
       });
       data.settings.lastSync = new Date().toISOString();
       persistOnly(data); // lastSync 기록만 반영 (자동백업 재귀 방지)
@@ -1118,8 +1408,10 @@
       const res = await fetch(url, { method:'GET' });
       const json = await res.json();
       if(!json || !json.budgets || !json.expenses){ throw new Error('invalid'); }
-      if(!confirm('시트에 백업된 데이터로 현재 데이터를 덮어씁니다. 계속할까요?')) return;
-      data = normalizeSettings(json);
+      if(!confirm('시트의 백업과 현재 데이터를 합칩니다.\n(같은 항목은 최근에 수정한 쪽이 우선이고, 지운 항목은 계속 지워진 상태로 유지됩니다) 계속할까요?')) return;
+      if(window.AppExtras){ window.AppExtras.importSync(json); }
+      delete json.priceCheck; delete json.shopping;
+      data = normalizeSettings(window.AppMerge ? window.AppMerge.merge(data, json) : json);
       data.settings.sheetUrl = url;
       saveData(data);
       const months = allMonthsSorted();
@@ -1248,8 +1540,763 @@
   }
 
   // ---------- init ----------
+  window.AppSync = {
+    up: syncUp,
+    auto: () => !!(data.settings.autoBackup && data.settings.sheetUrl),
+    hasUrl: () => !!data.settings.sheetUrl,
+    last: () => data.settings.lastSync,
+    openSettings: () => { openDrawer(); setTimeout(() => { const u = el('sheetUrlInput'); if(u && u.scrollIntoView) u.scrollIntoView({block:'center'}); }, 300); },
+    newMonth: () => { const b = el('newMonthBanner'); return (b && b.style.display !== 'none') ? (el('newMonthText').textContent || '').trim() : ''; }
+  };
   render();
   schedulePeriodicBackup();
+})();
+</script>
+<script>
+/* =====================================================================
+   [신규] 모드 스위치 + 가격 체크 + 쇼핑 이력 + 구글 시트 동기화 연결
+   - 위쪽 회의비 스크립트(IIFE)와 분리된 별도 블록. 회의비 변수를 직접 읽거나 바꾸지 않고,
+     회의비 쪽에서 열어 준 window.AppSync(백업 호출)만 사용함.
+   - 저장소: 회의비 meeting_budget_app_v1 / 가격 체크 price_check_app_v2 / 쇼핑 이력 shopping_history_app_v1
+   ===================================================================== */
+// <CALC>
+const Calc = (() => {
+  const EPS = 1e-9;
+  function num(v){
+    if (v == null || v === '') return null;
+    const t = String(v).replace(/[^0-9.\-]/g, '');
+    if (t === '') return null;
+    const x = Number(t);
+    return isFinite(x) ? x : null;
+  }
+  function mean(a){ return a.length ? a.reduce((s, x) => s + x, 0) / a.length : null; }
+  function validRec(r, basis){
+    const paid = Number(r.paid), a = Number(r.amount), bs = Number(basis);
+    const pts = r.points == null || r.points === '' ? 0 : Number(r.points);
+    const b = r.bonus == null || r.bonus === '' ? 0 : Number(r.bonus);
+    if (![paid, a, bs, pts, b].every(isFinite)) return null;
+    if (paid <= 0 || a <= 0 || bs <= 0 || pts < 0 || b < 0 || pts >= paid) return null;
+    return { paid, a, bs, pts, b };
+  }
+  function netOf(r){ const v = validRec(r, 1); return v ? v.paid - v.pts : null; }
+  function volOf(r){ const v = validRec(r, 1); return v ? v.a + v.b : null; }
+  function unitOf(r, basis){ const v = validRec(r, basis); return v ? (v.paid - v.pts) / (v.a + v.b) * v.bs : null; }
+  function grossUnitOf(r, basis){ const v = validRec(r, basis); return v ? v.paid / (v.a + v.b) * v.bs : null; }
+  function analyze(cur, hist, thr){
+    thr = thr == null ? 5 : thr;
+    if (!cur || !(cur.u > 0) || !hist || !hist.length) return null;
+    const us = hist.map(h => h.u), n = us.length;
+    const avg = mean(us), min = Math.min.apply(null, us), max = Math.max.apply(null, us), last = us[n - 1];
+    const pc = (a, b) => (a / b - 1) * 100;
+    const vsAvg = pc(cur.u, avg);
+    const verdict = vsAvg <= -thr + EPS ? 'cheap' : (vsAvg >= thr - EPS ? 'pricey' : 'fair');
+    const gs = hist.map(h => h.g).filter(g => g > 0);
+    const gAvg = gs.length ? mean(gs) : null;
+    return { n, avg, min, max, last, vsAvg, vsLast: pc(cur.u, last), vsMin: pc(cur.u, min), vsMax: pc(cur.u, max),
+      pricierCount: us.filter(u => u > cur.u + EPS).length, verdict,
+      isLowest: cur.u < min - EPS, isHighest: cur.u > max + EPS, sameAsMin: Math.abs(cur.u - min) <= EPS,
+      saveVsAvg: (avg - cur.u) * cur.vol, gAvg, gVsAvg: gAvg && cur.g > 0 ? pc(cur.g, gAvg) : null };
+  }
+  function validDate(s){
+    const m = String(s == null ? '' : s).trim().match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!m) return null;
+    const y = +m[1], mo = +m[2], d = +m[3], t = new Date(Date.UTC(y, mo - 1, d));
+    return t.getUTCFullYear() === y && t.getUTCMonth() === mo - 1 && t.getUTCDate() === d ? m[0] : null;
+  }
+  function normUnit(u){
+    const s = String(u == null ? '' : u).trim().toLowerCase();
+    if (/^(ml|㎖|밀리리터|밀리)$/.test(s)) return 'ml';
+    if (/^(g|그램|gram|grams)$/.test(s)) return 'g';
+    if (/^(개|ea|pcs|piece|pieces)$/.test(s)) return '개';
+    if (/^(매|장|sheet|sheets)$/.test(s)) return '매';
+    return null;
+  }
+  function parseVision(text){
+    if (!text) return null;
+    let s = String(text).trim();
+    const fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    if (fence) s = fence[1].trim();
+    const i = s.indexOf('{'), j = s.lastIndexOf('}');
+    if (i < 0 || j < i) return null;
+    let o;
+    try { o = JSON.parse(s.slice(i, j + 1)); } catch (e) { return null; }
+    if (!o || typeof o !== 'object') return null;
+    return { product: String(o.product == null ? '' : o.product).trim(), amount: num(o.amount), unit: normUnit(o.unit),
+      bonus: num(o.bonus) || 0, paid: num(o.paid), points: num(o.points) || 0, date: validDate(o.date) };
+  }
+  function normName(s){ return String(s == null ? '' : s).toLowerCase().replace(/[\s\-_·.,()\[\]\/]+/g, ''); }
+  function bigrams(s){ const r = new Set(); for (let i = 0; i < s.length - 1; i++) r.add(s.slice(i, i + 2)); return r; }
+  function matchItem(name, items){
+    const a = normName(name);
+    if (a.length < 2) return null;
+    let best = null, bestScore = 0;
+    items.forEach(it => {
+      const b = normName(it.name);
+      if (!b) return;
+      let score = 0;
+      if (a === b) score = 100;
+      else if (Math.min(a.length, b.length) >= 3 && (a.indexOf(b) >= 0 || b.indexOf(a) >= 0)) score = 60 + Math.min(a.length, b.length);
+      else {
+        const A = bigrams(a), B = bigrams(b);
+        let inter = 0; A.forEach(x => { if (B.has(x)) inter++; });
+        const dice = A.size && B.size ? 2 * inter / (A.size + B.size) : 0;
+        score = dice >= 0.6 ? Math.round(dice * 50) : 0;
+      }
+      if (score > bestScore) { bestScore = score; best = it; }
+    });
+    return best;
+  }
+  return { num, mean, netOf, volOf, unitOf, grossUnitOf, analyze, validDate, normUnit, parseVision, normName, matchItem };
+})();
+// </CALC>
+
+// <SHOPCALC>
+const Shop = (() => {
+  const CATS = { electronics: '전자제품', fashion: '패션', golf: '골프' };
+  const CAT_KEYS = ['electronics', 'fashion', 'golf'];
+  const HEADER = ['카테고리', '품목', '구매처', '수량', '구매일', '구매금액', '실구매금액', '혜택1명', '혜택1금액', '혜택1일', '혜택2명', '혜택2금액', '혜택2일', '상태', '판매일', '판매금액', '위약금', '재판매손익'];
+  function num(v){ if (v === '' || v == null) return null; const x = Number(v); return isFinite(x) ? x : null; }
+  function netPurchase(i){ const a = num(i.actualPrice); return a !== null ? a : (num(i.purchasePrice) || 0); }
+  function itemProfit(i){ if (i.status !== 'sold') return null; return ((num(i.salePrice) || 0) - (num(i.penalty) || 0)) - netPurchase(i); }
+  function summarize(items){
+    const totalListed = items.reduce((s, i) => s + (num(i.purchasePrice) || 0), 0);
+    const totalNet = items.reduce((s, i) => s + netPurchase(i), 0);
+    const sold = items.filter(i => i.status === 'sold');
+    return { count: items.length, totalListed, totalNet, saved: totalListed - totalNet, soldCount: sold.length,
+      totalSale: sold.reduce((s, i) => s + (num(i.salePrice) || 0), 0), profit: sold.reduce((s, i) => s + itemProfit(i), 0) };
+  }
+  function dueBenefits(items, today){
+    const due = [];
+    items.forEach(i => { [['b1name', 'b1amount', 'b1date'], ['b2name', 'b2amount', 'b2date']].forEach(p => {
+      if (i[p[0]] && i[p[2]] && i[p[2]] <= today) due.push({ id: i.id, cat: i.cat, item: i.item, name: i[p[0]], amount: i[p[1]], date: i[p[2]] });
+    }); });
+    return due;
+  }
+  function csvEscape(v){ if (v === null || v === undefined) return ''; const s = String(v); return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+  function toCsv(items){
+    const rows = [HEADER];
+    CAT_KEYS.forEach(cat => items.filter(i => i.cat === cat).forEach(i => {
+      const p = itemProfit(i);
+      rows.push([CATS[cat], i.item, i.store, i.qty, i.purchaseDate, i.purchasePrice, i.actualPrice, i.b1name, i.b1amount, i.b1date, i.b2name, i.b2amount, i.b2date,
+        i.status === 'sold' ? '판매완료' : '보유중', i.saleDate, i.salePrice, i.penalty, p !== null ? p : '']);
+    }));
+    return rows.map(r => r.map(csvEscape).join(',')).join('\n');
+  }
+  function parseCsvRows(text){
+    const rows = []; let row = [], cur = '', q = false;
+    const s = String(text == null ? '' : text).replace(/^\uFEFF/, '');
+    for (let k = 0; k < s.length; k++) {
+      const c = s[k];
+      if (q) { if (c === '"') { if (s[k + 1] === '"') { cur += '"'; k++; } else q = false; } else cur += c; }
+      else if (c === '"') q = true;
+      else if (c === ',') { row.push(cur); cur = ''; }
+      else if (c === '\n' || c === '\r') { if (c === '\r' && s[k + 1] === '\n') k++; row.push(cur); cur = ''; if (row.some(x => x !== '')) rows.push(row); row = []; }
+      else cur += c;
+    }
+    row.push(cur); if (row.some(x => x !== '')) rows.push(row);
+    return rows;
+  }
+  function parseCsv(text){
+    const rows = parseCsvRows(text);
+    if (!rows.length) return { items: [], errors: ['빈 파일'] };
+    const head = rows[0].map(x => x.trim());
+    if (head[0] !== '카테고리' || head.indexOf('품목') < 0) return { items: [], errors: ['헤더가 맞지 않아요(카테고리, 품목, …)'] };
+    const col = n => head.indexOf(n), catOf = {}; CAT_KEYS.forEach(k => { catOf[CATS[k]] = k; });
+    const items = [], errors = [];
+    const numOrBlank = v => { v = String(v == null ? '' : v).trim(); if (v === '') return ''; const x = Number(v.replace(/,/g, '')); return isFinite(x) ? x : ''; };
+    rows.slice(1).forEach((r, idx) => {
+      const g = n => (r[col(n)] == null ? '' : String(r[col(n)]).trim());
+      const cat = catOf[g('카테고리')];
+      if (!cat || !g('품목')) { errors.push((idx + 2) + '번째 줄: 카테고리/품목 확인 필요'); return; }
+      items.push({ cat, item: g('품목'), store: g('구매처'), qty: numOrBlank(g('수량')) || 1, purchaseDate: g('구매일'), purchasePrice: numOrBlank(g('구매금액')), actualPrice: numOrBlank(g('실구매금액')),
+        b1name: g('혜택1명'), b1amount: numOrBlank(g('혜택1금액')), b1date: g('혜택1일'), b2name: g('혜택2명'), b2amount: numOrBlank(g('혜택2금액')), b2date: g('혜택2일'),
+        status: g('상태') === '판매완료' ? 'sold' : 'hold', saleDate: g('판매일'), salePrice: numOrBlank(g('판매금액')), penalty: numOrBlank(g('위약금')) });
+    });
+    return { items, errors };
+  }
+  const FIELDS = ['qty', 'purchaseDate', 'purchasePrice', 'actualPrice', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'status', 'saleDate', 'salePrice', 'penalty'];
+  function importRows(local, rows, uidFn, nowIso){
+    const keyOf = i => [i.cat, i.item, i.store, i.purchaseDate].join('|'), seen = Object.create(null), idx = Object.create(null);
+    local.forEach(i => { const k = keyOf(i); (idx[k] = idx[k] || []).push(i); });
+    let added = 0, updated = 0, same = 0;
+    rows.forEach(r => {
+      const k = keyOf(r), n = seen[k] = (seen[k] || 0) + 1, hit = idx[k] && idx[k][n - 1];
+      if (hit) {
+        const diff = FIELDS.some(f => String(hit[f]) !== String(r[f]));
+        if (diff) { FIELDS.forEach(f => { hit[f] = r[f]; }); hit.u = nowIso; updated++; } else same++;
+      } else {
+        const ni = Object.assign({ id: uidFn() , u: nowIso }, r); local.push(ni); (idx[k] = idx[k] || []).push(ni); added++;
+      }
+    });
+    return { added, updated, same };
+  }
+  function mergeById(local, remote, delL, delR){
+    const del = Object.assign({}, delR || {});
+    Object.keys(delL || {}).forEach(k => { if (!del[k] || delL[k] > del[k]) del[k] = delL[k]; });
+    const map = new Map();
+    (local || []).concat(remote || []).forEach(x => { if (!x || !x.id) return; const cur = map.get(x.id); if (!cur || String(x.u || '') > String(cur.u || '')) map.set(x.id, x); });
+    const out = [];
+    map.forEach((x, id) => { if (del[id] && String(del[id]) >= String(x.u || '')) return; out.push(x); });
+    return { items: out, del };
+  }
+  return { CATS, CAT_KEYS, HEADER, netPurchase, itemProfit, summarize, dueBenefits, toCsv, parseCsv, importRows, mergeById };
+})();
+// </SHOPCALC>
+
+// <MERGECALC>
+const MergeM = (() => {
+  const hx = e => { const o = {}; Object.keys(e).sort().forEach(k => { if (k !== 'u') o[k] = e[k]; }); return JSON.stringify(o); };
+  function snapOf(d){
+    const s = { e: {}, b: {} };
+    (d.expenses || []).forEach(x => { if (x && x.id) s.e[x.id] = hx(x); });
+    Object.keys(d.budgets || {}).forEach(m => { s.b[m] = d.budgets[m]; });
+    return s;
+  }
+  function stamp(d, snap, now){
+    if (!snap) return snapOf(d);
+    d.del = d.del && typeof d.del === 'object' ? d.del : {};
+    d.bu = d.bu && typeof d.bu === 'object' ? d.bu : {};
+    const next = { e: {}, b: {} };
+    (d.expenses || []).forEach(x => { if (!x || !x.id) return; const h = hx(x); if (snap.e[x.id] !== h) x.u = now; next.e[x.id] = h; });
+    Object.keys(snap.e).forEach(id => { if (!(id in next.e)) d.del[id] = now; });
+    Object.keys(d.budgets || {}).forEach(m => { if (snap.b[m] !== d.budgets[m]) d.bu[m] = now; next.b[m] = d.budgets[m]; });
+    return next;
+  }
+  function merge(local, remote){
+    const out = Object.assign({}, local);
+    const ex = Shop.mergeById(local.expenses, remote.expenses, local.del, remote.del);
+    out.expenses = ex.items; out.del = ex.del;
+    const lb = local.budgets || {}, rb = remote.budgets || {}, lbu = local.bu || {}, rbu = remote.bu || {}, budgets = {}, bu = {};
+    new Set(Object.keys(lb).concat(Object.keys(rb))).forEach(m => {
+      const inL = m in lb, inR = m in rb;
+      if (inL && !inR) { budgets[m] = lb[m]; if (lbu[m]) bu[m] = lbu[m]; }
+      else if (!inL && inR) { budgets[m] = rb[m]; if (rbu[m]) bu[m] = rbu[m]; }
+      else if (String(rbu[m] || '') > String(lbu[m] || '')) { budgets[m] = rb[m]; bu[m] = rbu[m]; }
+      else { budgets[m] = lb[m]; if (lbu[m]) bu[m] = lbu[m]; }
+    });
+    out.budgets = budgets; out.bu = bu;
+    const ct = (local.cardTypes || []).slice();
+    (remote.cardTypes || []).forEach(c => { if (ct.indexOf(c) < 0) ct.push(c); });
+    out.cardTypes = ct; out.settings = local.settings;
+    return out;
+  }
+  return { snapOf, stamp, merge };
+})();
+// </MERGECALC>
+
+(function(){
+"use strict";
+const APP_BUILD_VERSION = '2026-10-17-b (회의비 · 가격 체크 · 쇼핑 이력)';
+const APP_NAME = '내 생활 대시보드';
+const $ = id => document.getElementById(id);
+const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
+const UNITS = ['ml', 'g', '개', '매'], BASES = [1, 10, 100], THR = 5, SEED_U = '2026-10-17T00:00:00.000Z';
+const nowIso = () => new Date().toISOString();
+function uid(p){ return (p || 'x') + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function todayStr(){ const d = new Date(), p = n => String(n).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()); }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function fmt(n){ return Math.round(n).toLocaleString('ko-KR'); }
+function won(n){ return n === '' || n == null || isNaN(n) ? '-' : Number(n).toLocaleString('ko-KR') + '원'; }
+let toastTimer = null;
+function toast(msg){ const t = $('pc-toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2600); }
+function fillSelect(sel, opts, cur){ sel.innerHTML = opts.map(o => '<option value="' + esc(o.v) + '"' + (o.v === cur ? ' selected' : '') + '>' + esc(o.t) + '</option>').join(''); }
+function cleanDel(d){ const o = {}; if (d && typeof d === 'object') Object.keys(d).forEach(k => { if (typeof d[k] === 'string') o[k] = d[k]; }); return o; }
+
+/* ---------- 동기화 연결(회의비 쪽 window.AppSync 사용) ---------- */
+let syncTimer = null;
+function syncNote(){
+  const t = !window.AppSync ? '' : (!window.AppSync.hasUrl() ? '☁ 시트 연결 전 — 회의비 화면의 ⚙ 설정에서 Apps Script URL을 입력하세요' :
+    (window.AppSync.last() ? '☁ 마지막 백업: ' + new Date(window.AppSync.last()).toLocaleString('ko-KR') + (window.AppSync.auto() ? ' · 변경 시 자동 백업' : ' · 자동 백업 꺼짐') : '☁ 아직 백업 전 · ' + (window.AppSync.auto() ? '변경 시 자동 백업' : '자동 백업 꺼짐')));
+  ['pc-sync', 'sh-sync'].forEach(id => { const el = $(id); if (el) el.textContent = t; });
+}
+function changed(){
+  try {
+    const len = JSON.stringify(window.AppExtras.exportSync()).length;
+    if (len > 30000) toast('가격 체크·쇼핑 데이터가 커졌어요(시트 한 칸 5만 자 한도). 정리가 필요해요.');
+    if (window.AppSync && window.AppSync.auto()) { clearTimeout(syncTimer); syncTimer = setTimeout(() => { window.AppSync.up(true); setTimeout(syncNote, 300); }, 1500); }
+  } catch (e) { /* 동기화 연결이 없으면 로컬 저장만 */ }
+  syncNote(); renderGlobal();
+}
+function doBackup(){ if (!window.AppSync) { toast('동기화 기능을 찾지 못했어요.'); return; } window.AppSync.up(false); setTimeout(() => { syncNote(); renderGlobal(); }, 600); }
+
+/* =====================================================================
+   가격 체크
+   ===================================================================== */
+const PRICE_SEED = {
+  items: [ { id: 'i1', name: '피지오겔 데일리뮨', unit: 'ml', basis: 1, u: SEED_U }, { id: 'i2', name: '앰플앤 팹타이드샷 2X', unit: 'ml', basis: 1, u: SEED_U } ],
+  records: [
+    { id: 's1', itemId: 'i1', date: '2026-06-24', amount: 50, bonus: 0, paid: 64400, points: 9660, u: SEED_U },
+    { id: 's2', itemId: 'i1', date: '2026-10-09', amount: 50, bonus: 7, paid: 82000, points: 10469, u: SEED_U },
+    { id: 's3', itemId: 'i1', date: '2026-10-13', amount: 50, bonus: 7, paid: 75775, points: 9594, u: SEED_U },
+    { id: 's4', itemId: 'i2', date: '2026-06-21', amount: 100, bonus: 0, paid: 19600, points: 980, u: SEED_U },
+    { id: 's5', itemId: 'i2', date: '2026-10-08', amount: 100, bonus: 0, paid: 18500, points: 925, u: SEED_U }
+  ], del: {}
+};
+function pNormalize(o){
+  o = o && typeof o === 'object' ? o : {};
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && i.name && UNITS.indexOf(i.unit) >= 0)
+    .map(i => ({ id: String(i.id), name: String(i.name), unit: i.unit, basis: BASES.indexOf(Number(i.basis)) >= 0 ? Number(i.basis) : 1, u: String(i.u || '') }));
+  const ids = Object.create(null); items.forEach(i => { ids[i.id] = true; });
+  const records = (Array.isArray(o.records) ? o.records : []).filter(r => r && r.id && ids[r.itemId] && Calc.validDate(r.date))
+    .map(r => ({ id: String(r.id), itemId: r.itemId, date: r.date, amount: Number(r.amount), bonus: Number(r.bonus) || 0, paid: Number(r.paid), points: Number(r.points) || 0, u: String(r.u || '') }))
+    .filter(r => Calc.unitOf(r, 1) != null);
+  return { items, records, del: cleanDel(o.del) };
+}
+function pLoad(){
+  try { const raw = localStorage.getItem(PRICE_KEY); if (raw) return pNormalize(JSON.parse(raw)); } catch (e) { /* 시드로 시작 */ }
+  const s = pNormalize(JSON.parse(JSON.stringify(PRICE_SEED))); try { localStorage.setItem(PRICE_KEY, JSON.stringify(s)); } catch (e) { /* 무시 */ } return s;
+}
+let S = pLoad();
+function pSave(){ try { localStorage.setItem(PRICE_KEY, JSON.stringify(S)); } catch (e) { toast('저장하지 못했어요.'); } }
+let ptab = 'analyze', filterId = 'all', editingId = null;
+function pcls(x){ return x > 0.05 ? 'pc-cup' : (x < -0.05 ? 'pc-cdown' : 'pc-cflat'); }
+function fmtU(v){ return v >= 100 ? fmt(v) : v.toLocaleString('ko-KR', { minimumFractionDigits: v >= 10 ? 1 : 2, maximumFractionDigits: v >= 10 ? 1 : 2 }); }
+function pctText(x){ return (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1) + '%'; }
+function perLabel(it){ return (it.basis === 1 ? '' : it.basis) + it.unit + '당'; }
+function unitLabel(it){ return '원/' + (it.basis === 1 ? '' : it.basis) + it.unit; }
+function dateLabel(d){ const p = d.split('-'); return p[1] + '월 ' + p[2] + '일' + (p[0] !== todayStr().slice(0, 4) ? " <small class='pc-dim'>'" + p[0].slice(2) + '</small>' : ''); }
+function itemById(id){ return S.items.find(i => i.id === id) || null; }
+function recsOf(itemId){ return S.records.filter(r => r.itemId === itemId).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : (a.id < b.id ? -1 : 1)); }
+function readN(id){ const el = $(id); return el.value === '' ? null : Calc.num(el.value); }
+
+function renderAnalyze(){
+  const cur = $('pc-item').value;
+  const opts = S.items.map(i => ({ v: i.id, t: i.name })).concat([{ v: '__new__', t: '＋ 새 상품 등록' }]);
+  fillSelect($('pc-item'), opts, opts.some(o => o.v === cur) ? cur : (S.items[0] ? S.items[0].id : '__new__'));
+  if (!$('pc-unit').options.length) {
+    fillSelect($('pc-unit'), UNITS.map(u => ({ v: u, t: u })), 'ml');
+    fillSelect($('pc-basis'), BASES.map(b => ({ v: String(b), t: b === 1 ? '1(원/단위)' : b + '단위당' })), '1');
+  }
+  if (!$('pc-date').value) $('pc-date').value = todayStr();
+  computeAnalyze();
+}
+function currentNewItem(){
+  const sel = $('pc-item').value;
+  if (sel === '__new__') return { id: null, name: $('pc-name').value.trim(), unit: $('pc-unit').value, basis: Number($('pc-basis').value) || 1 };
+  return itemById(sel);
+}
+function rangeBar(a, curU, cls){
+  const vals = [a.min, a.max, curU];
+  let lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals), span = hi - lo;
+  if (span <= 0) span = lo * 0.1 || 1;
+  lo -= span * 0.1; hi += span * 0.1;
+  const p = v => ((v - lo) / (hi - lo) * 100);
+  return '<div class="pc-rb"><div class="pc-rb-track">' +
+    '<div class="pc-rb-band" style="left:' + p(a.min).toFixed(2) + '%;width:' + (p(a.max) - p(a.min)).toFixed(2) + '%"></div>' +
+    '<div class="pc-rb-avg" style="left:' + p(a.avg).toFixed(2) + '%"></div>' +
+    '<div class="pc-rb-cur pc-v-' + cls + '" style="left:' + p(curU).toFixed(2) + '%"></div></div>' +
+    '<div class="pc-rb-ends"><span>내 최저 ' + fmtU(a.min) + '</span><span>내 최고 ' + fmtU(a.max) + '</span></div>' +
+    '<p class="pc-legend">큰 점: 이번 단가 · 세로선: 내 평균</p></div>';
+}
+function computeAnalyze(){
+  const item = currentNewItem(), isNew = $('pc-item').value === '__new__', res = $('pc-result');
+  $('pc-new').hidden = !isNew;
+  if (!item) { res.innerHTML = ''; $('pc-save').disabled = true; return; }
+  const ul = unitLabel(item);
+  $('pc-amount-label').textContent = '용량(' + item.unit + ')';
+  $('pc-bonus-label').textContent = '증정(' + item.unit + ')';
+  const rec = { amount: readN('pc-amount'), bonus: readN('pc-bonus') || 0, paid: readN('pc-paid'), points: readN('pc-points') || 0 };
+  const u = Calc.unitOf(rec, item.basis);
+  $('pc-save').disabled = u == null || (isNew && !item.name);
+  if (u == null) { $('pc-preview').textContent = '용량·결제금을 입력하면 바로 분석해요. (적립금은 결제금보다 작아야 해요)'; res.innerHTML = ''; return; }
+  const g = Calc.grossUnitOf(rec, item.basis), vol = Calc.volOf(rec);
+  $('pc-preview').textContent = '적립금감안 ' + fmt(Calc.netOf(rec)) + '원 · 단가 ' + fmtU(u) + ul;
+  const histRecs = isNew ? [] : recsOf(item.id).filter(r => Calc.unitOf(r, item.basis) != null);
+  const hist = histRecs.map(r => ({ u: Calc.unitOf(r, item.basis), g: Calc.grossUnitOf(r, item.basis), date: r.date }));
+  const a = Calc.analyze({ u, g, vol }, hist, THR);
+  if (!a) { res.innerHTML = '<div class="pc-verdict pc-v-flat"><p class="pc-big">처음 사는 상품이에요</p><p class="pc-sm">이 구매를 등록하면 다음부터 이 가격과 비교해서 알려드려요.</p></div>'; return; }
+  const cls = a.verdict === 'cheap' ? 'down' : (a.verdict === 'pricey' ? 'up' : 'flat');
+  const title = a.verdict === 'cheap' ? '평소보다 ' + Math.abs(a.vsAvg).toFixed(1) + '% 싸요'
+    : a.verdict === 'pricey' ? '평소보다 ' + Math.abs(a.vsAvg).toFixed(1) + '% 비싸요' : '평소와 비슷해요 (' + pctText(a.vsAvg) + ')';
+  let html = '<div class="pc-verdict pc-v-' + cls + '"><p class="pc-big">' + title + '</p><p class="pc-sm">내 평균 ' + fmtU(a.avg) + ' → 이번 ' + fmtU(u) + ' ' + esc(ul) + '</p>';
+  if (a.isLowest) html += '<span class="pc-tag">역대 최저가예요</span>';
+  else if (a.sameAsMin) html += '<span class="pc-tag">역대 최저가와 같아요</span>';
+  else if (a.isHighest) html += '<span class="pc-tag">역대 최고가예요</span>';
+  html += '</div>' + rangeBar(a, u, cls);
+  const lastDate = hist[hist.length - 1].date;
+  html += '<dl class="pc-dl">' +
+    '<dt>직전 구매(' + esc(lastDate.slice(5).replace('-', '/')) + ') ' + fmtU(a.last) + ' 대비</dt><dd class="' + pcls(a.vsLast) + '">' + pctText(a.vsLast) + '</dd>' +
+    '<dt>최저가 ' + fmtU(a.min) + ' 대비</dt><dd class="' + pcls(a.vsMin) + '">' + pctText(a.vsMin) + '</dd>' +
+    '<dt>최고가 ' + fmtU(a.max) + ' 대비</dt><dd class="' + pcls(a.vsMax) + '">' + pctText(a.vsMax) + '</dd>' +
+    '<dt>지금보다 비쌌던 구매</dt><dd>' + a.pricierCount + ' / ' + a.n + '건</dd>' +
+    '<dt>평균 단가로 샀을 때와 차이</dt><dd class="' + (a.saveVsAvg > 0.5 ? 'pc-cdown' : (a.saveVsAvg < -0.5 ? 'pc-cup' : 'pc-cflat')) + '">' +
+      (a.saveVsAvg > 0.5 ? fmt(a.saveVsAvg) + '원 절약' : (a.saveVsAvg < -0.5 ? fmt(-a.saveVsAvg) + '원 더 비쌈' : '차이 없음')) + '</dd>' +
+    (a.gAvg ? '<dt>결제금 기준(적립 제외) 평균 ' + fmtU(a.gAvg) + ' 대비</dt><dd class="' + pcls(a.gVsAvg) + '">이번 ' + fmtU(g) + ' · ' + pctText(a.gVsAvg) + '</dd>' : '') +
+    '</dl>';
+  if (!(rec.points > 0) && histRecs.some(r => r.points > 0)) html += '<div class="pc-warn">적립금을 입력하지 않았어요. 이력은 적립금을 뺀 단가라서, 이번 구매가 실제보다 비싸게 보일 수 있어요.</div>';
+  if (a.n < 3) html += '<div class="pc-warn">이력이 ' + a.n + '건뿐이라 참고용이에요. 기록이 쌓일수록 정확해져요.</div>';
+  res.innerHTML = html;
+}
+function saveNew(){
+  const isNew = $('pc-item').value === '__new__';
+  let item = currentNewItem();
+  if (!item) return;
+  const rec = { amount: readN('pc-amount'), bonus: readN('pc-bonus') || 0, paid: readN('pc-paid'), points: readN('pc-points') || 0 };
+  if (Calc.unitOf(rec, item.basis) == null) { toast('용량·결제금·적립금을 확인해 주세요.'); return; }
+  const t = nowIso();
+  if (isNew) {
+    if (!item.name) { toast('새 상품 이름을 입력해 주세요.'); return; }
+    item = { id: uid('pi'), name: item.name, unit: item.unit, basis: item.basis, u: t }; S.items.push(item);
+  }
+  S.records.push({ id: uid('pr'), itemId: item.id, date: Calc.validDate($('pc-date').value) || todayStr(), amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points, u: t });
+  pSave(); changed();
+  ['pc-bonus', 'pc-paid', 'pc-points', 'pc-amount', 'pc-name'].forEach(id => { $(id).value = ''; });
+  $('pc-item').value = item.id; $('pc-date').value = todayStr();
+  toast('구매를 등록했어요.'); renderAll();
+}
+function renderHistory(){
+  if (filterId !== 'all' && !itemById(filterId)) filterId = 'all';
+  const chips = [{ id: 'all', name: '전체' }].concat(S.items.map(i => ({ id: i.id, name: i.name })));
+  $('pc-filter').innerHTML = chips.map(c => '<button class="pc-chip' + (c.id === filterId ? ' on' : '') + '" data-pc="filter" data-id="' + esc(c.id) + '">' + esc(c.name) + '</button>').join('');
+  const items = S.items.filter(i => filterId === 'all' || i.id === filterId), rows = [];
+  items.forEach(it => {
+    const rs = recsOf(it.id), us = rs.map(r => Calc.unitOf(r, it.basis)), valid = us.filter(u => u != null);
+    const mn = Math.min.apply(null, valid), mx = Math.max.apply(null, valid);
+    rs.forEach((r, i) => rows.push({ it, r, u: us[i], isMin: valid.length > 1 && us[i] === mn, isMax: valid.length > 1 && us[i] === mx }));
+  });
+  if (!rows.length) { $('pc-table').innerHTML = '<p class="pc-hint">아직 기록이 없어요. 구매 분석 탭에서 등록해 보세요.</p>'; return; }
+  const labels = {}; items.forEach(i => { labels[perLabel(i)] = true; });
+  const ls = Object.keys(labels), head = ls.length === 1 ? ls[0] : '단가', mixed = ls.length > 1;
+  let prevId = null;
+  $('pc-table').innerHTML = '<table class="pc-tbl"><thead><tr><th>구매일</th><th class="pc-pcell">상품</th><th>용량</th><th>증정</th><th>결제금</th><th>적립금</th><th>적립금감안</th><th>' + esc(head) + '</th></tr></thead><tbody>' +
+    rows.map(x => {
+      const r = x.r, it = x.it, uc = x.isMin ? 'pc-cdown' : (x.isMax ? 'pc-cup' : '');
+      let grp = '';
+      if (it.id !== prevId) { prevId = it.id; grp = '<tr class="pc-grp"><td colspan="8">' + esc(it.name) + ' <small>' + esc(unitLabel(it)) + '</small></td></tr>'; }
+      return grp + '<tr tabindex="0" data-pc="edit-rec" data-id="' + esc(r.id) + '"><td>' + dateLabel(r.date) + '</td><td class="pc-pcell">' + esc(it.name) + '</td><td>' + r.amount + it.unit + '</td>' +
+        '<td>' + (r.bonus ? r.bonus + it.unit : '') + '</td><td>' + fmt(r.paid) + '</td><td class="pc-dim">' + (r.points ? fmt(r.points) : '') + '</td>' +
+        '<td>' + fmt(r.paid - r.points) + '</td><td class="pc-u ' + uc + '">' + fmtU(x.u) + (mixed ? ' <small class="pc-dim">' + esc(unitLabel(it)) + '</small>' : '') + '</td></tr>';
+    }).join('') + '</tbody></table>';
+}
+function chartSVG(it, pts){
+  const W = 340, H = 190, L = 46, R = 16, T = 26, B = 30;
+  const ts = pts.map(p => Date.parse(p.date + 'T00:00:00Z')), t0 = Math.min.apply(null, ts), t1 = Math.max.apply(null, ts);
+  const us = pts.map(p => p.u), avg = Calc.mean(us);
+  let lo = Math.min.apply(null, us.concat([avg])), hi = Math.max.apply(null, us.concat([avg])), span = hi - lo;
+  if (span <= 0) span = hi * 0.1 || 1;
+  lo -= span * 0.28; hi += span * 0.28;
+  const X = t => t1 === t0 ? L + (W - L - R) / 2 : L + (t - t0) / (t1 - t0) * (W - L - R);
+  const Y = v => T + (hi - v) / (hi - lo) * (H - T - B);
+  let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(it.name) + ' 단가 추이">';
+  [lo + (hi - lo) * 0.1, (lo + hi) / 2, hi - (hi - lo) * 0.1].forEach(v => {
+    s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v).toFixed(1) + '" y2="' + Y(v).toFixed(1) + '" stroke="var(--line)"/>' +
+      '<text x="' + (L - 6) + '" y="' + (Y(v) + 4).toFixed(1) + '" font-size="10" text-anchor="end" fill="var(--ink2)">' + fmtU(v) + '</text>';
+  });
+  s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(avg).toFixed(1) + '" y2="' + Y(avg).toFixed(1) + '" stroke="var(--ink3)" stroke-dasharray="4 4"/>';
+  if (pts.length > 1) s += '<path d="' + pts.map((p, i) => (i ? 'L' : 'M') + X(ts[i]).toFixed(1) + ' ' + Y(p.u).toFixed(1)).join(' ') + '" fill="none" stroke="var(--pc)" stroke-width="2.5" stroke-linejoin="round"/>';
+  const n = pts.length, xs = ts.map(X), labeled = pts.map((p, i) => i === 0 || i === n - 1);
+  let prevX = xs[0];
+  for (let i = 1; i < n - 1; i++) { if (xs[i] - prevX >= 44 && xs[n - 1] - xs[i] >= 44) { labeled[i] = true; prevX = xs[i]; } }
+  pts.forEach((p, i) => {
+    const x = xs[i], y = Y(p.u), nb = [];
+    if (i > 0) nb.push(pts[i - 1].u);
+    if (i < n - 1) nb.push(pts[i + 1].u);
+    const above = !nb.length || p.u >= Calc.mean(nb);
+    let anchor = n === 1 ? 'middle' : (i === 0 ? 'start' : (i === n - 1 ? 'end' : 'middle'));
+    if (anchor === 'middle' && !labeled[i]) anchor = x > W - R - 90 ? 'end' : (x < L + 90 ? 'start' : 'middle');
+    const dl = p.date.slice(5).replace('-', '/');
+    s += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="4.5" fill="var(--pc)" stroke="var(--surface)" stroke-width="2"/>' +
+      '<text x="' + x.toFixed(1) + '" y="' + (above ? y - 9 : y + 18).toFixed(1) + '" font-size="11" font-weight="700" text-anchor="' + anchor + '" fill="var(--ink)">' + fmtU(p.u) +
+      (labeled[i] ? '' : '<tspan font-weight="400" fill="var(--ink2)" font-size="10"> · ' + dl + '</tspan>') + '</text>';
+    if (labeled[i]) s += '<text x="' + x.toFixed(1) + '" y="' + (H - 8) + '" font-size="10" text-anchor="' + anchor + '" fill="var(--ink2)">' + dl + '</text>';
+  });
+  return s + '</svg>';
+}
+function renderTrend(){
+  let html = '';
+  S.items.forEach(it => {
+    const pts = recsOf(it.id).map(r => ({ date: r.date, u: Calc.unitOf(r, it.basis) })).filter(p => p.u != null);
+    if (!pts.length) return;
+    const us = pts.map(p => p.u), st = { avg: Calc.mean(us), min: Math.min.apply(null, us), last: us[us.length - 1] };
+    const ch = pts.length > 1 ? (us[us.length - 1] / us[us.length - 2] - 1) * 100 : null, minIdx = us.indexOf(st.min);
+    html += '<div class="pc-card pc-chartcard"><h3>' + esc(it.name) +
+      (ch != null ? '<span class="pc-badge ' + (ch > 0.05 ? 'pc-v-up' : (ch < -0.05 ? 'pc-v-down' : 'pc-v-flat')) + '">직전 대비 ' + pctText(ch) + '</span>' : '') + '</h3>' +
+      '<p class="pc-sub">' + esc(pts[0].date) + ' ~ ' + esc(pts[pts.length - 1].date) + ' · ' + pts.length + '건 · ' + esc(unitLabel(it)) + '(적립금감안) · 점선은 평균</p>' +
+      chartSVG(it, pts) +
+      '<div class="pc-stats"><div class="pc-stat">최근<b>' + fmtU(st.last) + '</b></div><div class="pc-stat">평균<b>' + fmtU(st.avg) + '</b></div>' +
+      '<div class="pc-stat">최저<b class="pc-cdown">' + fmtU(st.min) + '</b>' + esc(pts[minIdx].date.slice(5).replace('-', '/')) + '</div></div></div>';
+  });
+  $('pc-charts').innerHTML = html || '<div class="pc-card"><p class="pc-hint" style="margin:0">기록이 있으면 상품별 가격 추이 그래프가 여기에 나와요.</p></div>';
+}
+function updateEditPreview(){
+  const item = itemById($('pc-e-item').value);
+  if (!item) return;
+  $('pc-e-amount-label').textContent = '용량(' + item.unit + ')'; $('pc-e-bonus-label').textContent = '증정(' + item.unit + ')';
+  const rec = { amount: readN('pc-e-amount'), bonus: readN('pc-e-bonus') || 0, paid: readN('pc-e-paid'), points: readN('pc-e-points') || 0 };
+  const u = Calc.unitOf(rec, item.basis);
+  $('pc-e-preview').textContent = u == null ? '용량·결제금을 확인해 주세요. (적립금은 결제금보다 작아야 해요)' : '적립금감안 ' + fmt(Calc.netOf(rec)) + '원 · 단가 ' + fmtU(u) + unitLabel(item);
+}
+function openRec(id){
+  if (!S.items.length) { toast('먼저 구매 분석 탭에서 상품을 등록해 주세요.'); return; }
+  editingId = id;
+  const r = id ? S.records.find(x => x.id === id) : null;
+  if (id && !r) return;
+  fillSelect($('pc-e-item'), S.items.map(i => ({ v: i.id, t: i.name })), r ? r.itemId : (filterId !== 'all' ? filterId : S.items[0].id));
+  $('pc-e-title').textContent = r ? '구매 기록 수정' : '구매 기록 추가';
+  $('pc-e-date').value = r ? r.date : todayStr();
+  $('pc-e-amount').value = r ? r.amount : ''; $('pc-e-bonus').value = r && r.bonus ? r.bonus : '';
+  $('pc-e-paid').value = r ? r.paid : ''; $('pc-e-points').value = r && r.points ? r.points : '';
+  $('pc-e-delete').hidden = !r; updateEditPreview(); $('pc-dlg').showModal();
+}
+function saveRec(){
+  const item = itemById($('pc-e-item').value);
+  if (!item) return;
+  const rec = { amount: readN('pc-e-amount'), bonus: readN('pc-e-bonus') || 0, paid: readN('pc-e-paid'), points: readN('pc-e-points') || 0 };
+  const date = Calc.validDate($('pc-e-date').value);
+  if (!date || Calc.unitOf(rec, item.basis) == null) { toast('날짜·용량·결제금·적립금을 확인해 주세요.'); return; }
+  const t = nowIso();
+  if (editingId) { const r = S.records.find(x => x.id === editingId); if (r) { r.itemId = item.id; r.date = date; r.amount = rec.amount; r.bonus = rec.bonus; r.paid = rec.paid; r.points = rec.points; r.u = t; } }
+  else S.records.push({ id: uid('pr'), itemId: item.id, date, amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points, u: t });
+  pSave(); changed(); $('pc-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function delRec(){
+  if (!editingId || !confirm('이 구매 기록을 삭제할까요?')) return;
+  S.records = S.records.filter(r => r.id !== editingId); S.del[editingId] = nowIso();
+  pSave(); changed(); $('pc-dlg').close(); renderAll();
+}
+
+/* =====================================================================
+   쇼핑 이력 (구매·재판매 이력 대시보드 이관 — 기존 DB 24건 포함)
+   ===================================================================== */
+const SHOP_SEED = [{"id": "sh_el_1", "cat": "electronics", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "삼성포인트", "b1amount": 41000, "b1date": "2026-10-05", "b2name": "기업카드 캐시백", "b2amount": 140000, "b2date": "2026-10-31", "actualPrice": 1027100, "item": "갤럭시 폴드8", "store": "사내모바일스토어", "purchaseDate": "2026-08-04", "purchasePrice": 1278100, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_el_2", "cat": "electronics", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "갤럭시 폴드7", "store": "패밀리넷", "purchaseDate": "2025-11-04", "purchasePrice": 1776400, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_el_3", "cat": "electronics", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "버즈4 Pro", "store": "패밀리넷", "purchaseDate": "2026-07-01", "purchasePrice": 260474, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_el_4", "cat": "electronics", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "Watch9", "store": "사내모바일스토어", "purchaseDate": "2026-08-07", "purchasePrice": 179100, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_el_5", "cat": "electronics", "status": "sold", "saleDate": "2026-08-07", "salePrice": 220000, "penalty": 213480, "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "Watch8", "store": "11번가", "purchaseDate": "2026-05-12", "purchasePrice": 173700, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_el_6", "cat": "electronics", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "Tab S10", "store": "", "purchaseDate": "", "purchasePrice": "", "qty": 2, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_el_7", "cat": "electronics", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "S25", "store": "", "purchaseDate": "", "purchasePrice": "", "qty": 2, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_fa_1", "cat": "fashion", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "다잉 라운드 반소매니트", "store": "11st", "purchaseDate": "2026-07-07", "purchasePrice": 10000, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_fa_2", "cat": "fashion", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "청바지", "store": "무신사", "purchaseDate": "2026-07-01", "purchasePrice": 22500, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_fa_3", "cat": "fashion", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "벨트", "store": "무신사", "purchaseDate": "2026-06-27", "purchasePrice": 13270, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_fa_4", "cat": "fashion", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "아이보리 바지, 스트라이프 반소매 니트", "store": "", "purchaseDate": "2026-06-20", "purchasePrice": 41860, "qty": 2, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_fa_5", "cat": "fashion", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "아이보리 반소매니트, 밴딩신축슬랙스 x2", "store": "무신사", "purchaseDate": "2026-05-24", "purchasePrice": 101930, "qty": 3, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_fa_6", "cat": "fashion", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "다잉 반소매/긴소매니트", "store": "Hmall", "purchaseDate": "2026-05-17", "purchasePrice": 108695, "qty": 2, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_fa_7", "cat": "fashion", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "바지 (카고 or 카키)", "store": "", "purchaseDate": "2026-05-02", "purchasePrice": 53910, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_fa_8", "cat": "fashion", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "바지 (카고 or 카키)", "store": "", "purchaseDate": "2026-04-06", "purchasePrice": 66400, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_fa_9", "cat": "fashion", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "후드집업, 연청 청바지", "store": "SSF", "purchaseDate": "2026-04-05", "purchasePrice": 98600, "qty": 2, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_go_1", "cat": "golf", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "G430MAX 10K 드라이버 (S)", "store": "삼양정품", "purchaseDate": "2024-06-09", "purchasePrice": 600000, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_go_2", "cat": "golf", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "G425 3번 유틸 (R)", "store": "삼양정품", "purchaseDate": "2024-05-19", "purchasePrice": 179334, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_go_3", "cat": "golf", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "PXG GEN6 0311XP I7", "store": "카네정품", "purchaseDate": "2024-04-06", "purchasePrice": 1700000, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_go_4", "cat": "golf", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "PXG 블랙잭 퍼터", "store": "카네정품", "purchaseDate": "2024-04-07", "purchasePrice": 350000, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_go_5", "cat": "golf", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "PXG 슈가대디2 52도", "store": "직구(네이버)", "purchaseDate": "2024-04-17", "purchasePrice": 459000, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_go_6", "cat": "golf", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "PXG 슈가대디2 52도", "store": "직구(네이버)", "purchaseDate": "2024-04-17", "purchasePrice": 459000, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_go_7", "cat": "golf", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "PXG 스컬 스탠드백", "store": "카네정품", "purchaseDate": "2024-05-06", "purchasePrice": 799100, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}, {"id": "sh_go_8", "cat": "golf", "status": "hold", "saleDate": "", "salePrice": "", "penalty": "", "b1name": "", "b1amount": "", "b1date": "", "b2name": "", "b2amount": "", "b2date": "", "actualPrice": "", "item": "브리지스톤 V300 9세대", "store": "석교정품", "purchaseDate": "2025-11-16", "purchasePrice": 770000, "qty": 1, "u": "2026-10-17T00:00:00.000Z"}];
+function sNormalize(o){
+  o = o && typeof o === 'object' ? o : {};
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && i.item && Shop.CATS[i.cat]).map(i => {
+    const b = Object.assign({ store: '', qty: 1, purchaseDate: '', purchasePrice: '', actualPrice: '', b1name: '', b1amount: '', b1date: '', b2name: '', b2amount: '', b2date: '', status: 'hold', saleDate: '', salePrice: '', penalty: '', u: '' }, i);
+    b.status = b.status === 'sold' ? 'sold' : 'hold'; b.id = String(b.id); b.u = String(b.u || ''); b.qty = Number(b.qty) || 1; return b;
+  });
+  return { items, del: cleanDel(o.del) };
+}
+function sLoad(){
+  try { const raw = localStorage.getItem(SHOP_KEY); if (raw) return sNormalize(JSON.parse(raw)); } catch (e) { /* 시드로 시작 */ }
+  const s = sNormalize({ items: JSON.parse(JSON.stringify(SHOP_SEED)), del: {} }); try { localStorage.setItem(SHOP_KEY, JSON.stringify(s)); } catch (e) { /* 무시 */ } return s;
+}
+let SH = sLoad(), shCat = 'electronics', notifyOn = false, shEditing = null;
+try { notifyOn = localStorage.getItem(NOTIFY_KEY) === '1'; } catch (e) { /* 기본값 */ }
+function sSave(){ try { localStorage.setItem(SHOP_KEY, JSON.stringify(SH)); } catch (e) { toast('저장하지 못했어요.'); } }
+function shItems(cat){ return SH.items.filter(i => i.cat === cat); }
+function renderShop(){
+  $('sh-tabs').innerHTML = Shop.CAT_KEYS.map(c => '<button class="' + (c === shCat ? 'on' : '') + '" data-sh="cat" data-cat="' + c + '">' + Shop.CATS[c] + '<span class="sh-cnt">' + shItems(c).length + '</span></button>').join('');
+  $('sh-title').textContent = Shop.CATS[shCat] + ' 품목';
+  const s = Shop.summarize(shItems(shCat));
+  $('sh-summary').innerHTML =
+    '<div class="scard"><div class="l">보유+판매 품목 수</div><div class="v tabular">' + s.count + '개</div></div>' +
+    '<div class="scard"><div class="l">총 실구매금액</div><div class="v tabular" style="color:var(--accent)">' + won(s.totalNet) + '</div>' + (s.saved > 0 ? '<div class="sub">정가 합계 ' + won(s.totalListed) + ' · ' + won(s.saved) + ' 절감</div>' : '') + '</div>' +
+    '<div class="scard"><div class="l">판매완료 · 총 판매금액</div><div class="v tabular">' + s.soldCount + '건 · ' + won(s.totalSale) + '</div></div>' +
+    '<div class="scard"><div class="l">재판매 손익 (위약금·실구매 반영)</div><div class="v tabular" style="color:' + (s.profit >= 0 ? 'var(--good)' : 'var(--warn)') + '">' + (s.profit >= 0 ? '+' : '') + won(s.profit) + '</div></div>';
+  const items = shItems(shCat).slice().sort((a, b) => (b.purchaseDate || '').localeCompare(a.purchaseDate || '')), today = todayStr();
+  $('sh-list').innerHTML = items.length ? items.map(i => {
+    const profit = Shop.itemProfit(i), ben = [];
+    if (i.b1name || i.b1amount !== '') ben.push({ n: i.b1name, a: i.b1amount, d: i.b1date });
+    if (i.b2name || i.b2amount !== '') ben.push({ n: i.b2name, a: i.b2amount, d: i.b2date });
+    const benHtml = ben.map(b => { const due = b.d && b.d <= today; return '<div class="sh-benefit' + (due ? ' due' : '') + '">' + (due ? '🔔' : '🎁') + ' ' + (esc(b.n) || '혜택') + ' ' + won(b.a) + ' · 지급일 ' + esc(b.d || '-') + (due ? ' (도래)' : '') + '</div>'; }).join('');
+    const hasActual = i.actualPrice !== '' && !isNaN(i.actualPrice) && Number(i.actualPrice) !== Number(i.purchasePrice);
+    return '<div class="sh-row" data-sh="edit" data-id="' + esc(i.id) + '" tabindex="0"><div><div class="sh-top"><span class="sh-name">' + (esc(i.item) || '(이름 없음)') + '</span>' +
+      '<span class="sh-badge ' + (i.status === 'sold' ? 'sold' : '') + '">' + (i.status === 'sold' ? '판매완료' : '보유중') + '</span>' + (i.qty > 1 ? '<span class="sh-badge">수량 ' + i.qty + '</span>' : '') + '</div>' +
+      '<div class="sh-meta"><span>구매처 <b>' + (esc(i.store) || '-') + '</b></span><span>구매일 <b>' + esc(i.purchaseDate || '-') + '</b></span>' + (i.status === 'sold' ? '<span>판매일 <b>' + esc(i.saleDate || '-') + '</b></span>' : '') + '</div>' +
+      benHtml + (i.status === 'sold' && Number(i.penalty) > 0 ? '<div class="sh-penalty">⚠ 위약금 ' + won(i.penalty) + '</div>' : '') + '</div>' +
+      '<div class="sh-right">' + (hasActual ? '<div class="sh-price strike">' + won(i.purchasePrice) + '</div><div class="sh-real">실구매 ' + won(i.actualPrice) + '</div>' : '<div class="sh-price">' + won(i.purchasePrice) + '</div>') +
+      (profit !== null ? '<div class="sh-profit ' + (profit >= 0 ? 'pos' : 'neg') + '">' + (profit >= 0 ? '+' : '') + won(profit) + '</div>' : '') + '</div></div>';
+  }).join('') : '<div class="empty">아직 등록된 품목이 없어요. 위의 “+ 항목 추가”로 등록해 보세요.</div>';
+  $('sh-notify').textContent = notifyOn ? '🔔 혜택 알림 켜짐' : '🔔 혜택 알림 꺼짐';
+  $('sh-note').textContent = 'CSV는 기존 대시보드와 같은 형식이에요. 기존 대시보드에서 내보낸 CSV를 “CSV 가져오기”로 넣으면 같은 품목은 갱신되고 새 품목은 추가돼요.';
+  checkBenefits();
+}
+function checkBenefits(){
+  const due = Shop.dueBenefits(SH.items, todayStr()), b = $('sh-banner');
+  if (!due.length) { b.hidden = true; b.innerHTML = ''; return; }
+  b.hidden = false;
+  b.innerHTML = due.map(d => '<div class="it"><span class="tg">' + esc(Shop.CATS[d.cat]) + '</span><b>' + esc(d.item) + '</b> 혜택 지급일 도래 — ' + esc(d.name) + ' ' + won(d.amount) + ' (' + esc(d.date) + ')</div>').join('');
+  if (notifyOn && 'Notification' in window && Notification.permission === 'granted') {
+    due.forEach(d => { const k = 'notified:' + d.id + ':' + d.name + ':' + d.date; let seen = false; try { seen = sessionStorage.getItem(k); } catch (e) { /* 무시 */ }
+      if (!seen) { try { new Notification('혜택 지급일 도착', { body: d.item + ' — ' + d.name + ' ' + won(d.amount) }); sessionStorage.setItem(k, '1'); } catch (e) { /* 무시 */ } } });
+  }
+}
+function toggleNotify(){
+  if (!notifyOn) {
+    if ('Notification' in window) { Notification.requestPermission().then(p => { notifyOn = p === 'granted'; try { localStorage.setItem(NOTIFY_KEY, notifyOn ? '1' : '0'); } catch (e) { /* 무시 */ } renderShop(); }); return; }
+    toast('이 브라우저는 알림을 지원하지 않아요. 배너로 안내해 드릴게요.'); notifyOn = true;
+  } else notifyOn = false;
+  try { localStorage.setItem(NOTIFY_KEY, notifyOn ? '1' : '0'); } catch (e) { /* 무시 */ }
+  renderShop();
+}
+const SF = ['item', 'store', 'qty', 'purchaseDate', 'purchasePrice', 'actualPrice', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'status', 'saleDate', 'salePrice', 'penalty'];
+function openShop(id){
+  shEditing = id || null;
+  fillSelect($('sh-f-cat'), Shop.CAT_KEYS.map(c => ({ v: c, t: Shop.CATS[c] })), shCat);
+  const i = id ? SH.items.find(x => x.id === id) : null;
+  if (id && !i) return;
+  $('sh-d-title').textContent = i ? '항목 수정' : Shop.CATS[shCat] + ' 항목 추가';
+  if (i) $('sh-f-cat').value = i.cat;
+  SF.forEach(f => { $('sh-f-' + f).value = i ? (i[f] == null ? '' : i[f]) : (f === 'qty' ? 1 : (f === 'status' ? 'hold' : '')); });
+  $('sh-d-delete').hidden = !i; $('sh-dlg').showModal();
+}
+function saveShop(){
+  const d = {}; SF.forEach(f => { d[f] = $('sh-f-' + f).value; });
+  d.item = d.item.trim(); d.store = d.store.trim(); d.b1name = d.b1name.trim(); d.b2name = d.b2name.trim(); d.qty = Number(d.qty) || 1;
+  ['purchasePrice', 'actualPrice', 'b1amount', 'b2amount', 'salePrice', 'penalty'].forEach(f => { d[f] = d[f] === '' ? '' : (isFinite(Number(d[f])) ? Number(d[f]) : ''); });
+  if (!d.item) { toast('품목명을 입력해 주세요.'); return; }
+  d.cat = $('sh-f-cat').value; d.u = nowIso();
+  if (shEditing) { const i = SH.items.find(x => x.id === shEditing); if (i) Object.assign(i, d); }
+  else SH.items.push(Object.assign({ id: uid('sh') }, d));
+  shCat = d.cat; sSave(); changed(); $('sh-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function delShop(){
+  if (!shEditing || !confirm('이 항목을 삭제할까요?')) return;
+  SH.items = SH.items.filter(x => x.id !== shEditing); SH.del[shEditing] = nowIso();
+  sSave(); changed(); $('sh-dlg').close(); renderAll();
+}
+function download(name, text, type){
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function csvOut(){ download('구매재판매이력_' + todayStr() + '.csv', '\uFEFF' + Shop.toCsv(SH.items), 'text/csv;charset=utf-8'); toast('CSV 파일을 내보냈어요.'); }
+function csvIn(file){
+  const fr = new FileReader();
+  fr.onload = () => {
+    const r = Shop.parseCsv(String(fr.result));
+    if (!r.items.length) { toast(r.errors[0] || 'CSV에서 읽은 항목이 없어요.'); return; }
+    const res = Shop.importRows(SH.items, r.items, () => uid('sh'), nowIso());
+    sSave(); if (res.added || res.updated) changed(); renderAll();
+    toast('추가 ' + res.added + ' · 갱신 ' + res.updated + ' · 동일 ' + res.same + (r.errors.length ? ' · 확인 필요 ' + r.errors.length : ''));
+  };
+  fr.readAsText(file);
+}
+
+/* ---------- 동기화 API(회의비 쪽 syncUp/syncDown이 호출) ---------- */
+window.AppExtras = {
+  exportSync(){ return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del } }; },
+  importSync(json){
+    let ch = false;
+    if (json && json.priceCheck && typeof json.priceCheck === 'object') {
+      const r = json.priceCheck, mi = Shop.mergeById(S.items, r.items, S.del, cleanDel(r.del)), mr = Shop.mergeById(S.records, r.records, S.del, cleanDel(r.del));
+      S = pNormalize({ items: mi.items, records: mr.items, del: mi.del }); pSave(); ch = true;
+    }
+    if (json && json.shopping && typeof json.shopping === 'object') {
+      const r = json.shopping, m = Shop.mergeById(SH.items, r.items, SH.del, cleanDel(r.del));
+      SH = sNormalize({ items: m.items, del: m.del }); sSave(); ch = true;
+    }
+    if (ch) renderAll();
+    return ch;
+  }
+};
+
+/* ---------- 회의비 데이터: 변경 감지(수정시각·삭제 기록) + 합치기 ---------- */
+const SNAP_KEY = 'meeting_snap_v1', MTG_KEY = 'meeting_budget_app_v1';
+function readSnap(){ try { return JSON.parse(localStorage.getItem(SNAP_KEY) || 'null'); } catch (e) { return null; } }
+function writeSnap(s){ try { localStorage.setItem(SNAP_KEY, JSON.stringify(s)); } catch (e) { /* 무시 */ } }
+window.AppMerge = {
+  stamp(d){ writeSnap(MergeM.stamp(d, readSnap(), nowIso())); },
+  merge(local, remote){ const m = MergeM.merge(local, remote); writeSnap(MergeM.snapOf(m)); return m; }
+};
+(function initSnap(){
+  if (readSnap()) return;
+  try { const d = JSON.parse(localStorage.getItem(MTG_KEY) || 'null'); if (d && Array.isArray(d.expenses)) writeSnap(MergeM.snapOf(d)); } catch (e) { /* 무시 */ }
+})();
+
+/* ---------- 공용 상태줄 + 공통 알림 (모든 모드 위에 표시) ---------- */
+function dismissed(k){ try { return sessionStorage.getItem('gdis:' + k) === '1'; } catch (e) { return false; } }
+function renderGlobal(){
+  const A = window.AppSync, gs = $('gSync'), dot = $('gDot');
+  if (!A) { gs.textContent = ''; return; }
+  const gbox = $('gAlerts');
+  const last = A.last(), age = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : null;
+  if (!A.hasUrl()) { gs.textContent = '☁ 시트 연결 전'; dot.className = 'gdot'; }
+  else if (age === null) { gs.textContent = '☁ 아직 백업 전'; dot.className = 'gdot warn'; }
+  else { gs.textContent = '☁ 마지막 백업 ' + (age === 0 ? '오늘' : age + '일 전') + (A.auto() ? ' · 자동 백업 켜짐' : ' · 자동 백업 꺼짐'); dot.className = 'gdot ' + (age <= 1 ? 'ok' : (age >= 7 ? 'warn' : '')); }
+  const list = [];
+  if (mode !== 'shop') {
+    const due = Shop.dueBenefits(SH.items, todayStr());
+    if (due.length) list.push({ key: 'due:' + due.map(d => d.id + d.date).join(','), act: 'shop', html: '🔔 쇼핑 혜택 지급일 도래 <b>' + due.length + '건</b> — ' + esc(due[0].name) + ' ' + won(due[0].amount) + '(' + esc(due[0].item) + ')' + (due.length > 1 ? ' 외' : '') });
+  }
+  if (A.hasUrl()) { if (age === null || age >= 7) list.push({ key: 'bk:' + (age === null ? 'never' : 'old'), act: 'backup', html: '☁ ' + (age === null ? '아직 백업한 적이 없어요' : '마지막 백업이 <b>' + age + '일 전</b>이에요') + ' — 눌러서 지금 백업' }); }
+  else list.push({ key: 'nourl', act: 'settings', html: '☁ 시트 연결이 안 되어 있어요 — 눌러서 ⚙ 설정에서 Apps Script URL 입력' });
+  if (mode !== 'meeting') { const nm = A.newMonth(); if (nm) list.push({ key: 'nm:' + nm, act: 'meeting', html: '📅 회의비: ' + esc(nm) }); }
+  const html = list.filter(a => !dismissed(a.key)).map(a => '<div class="galert" data-g="' + a.act + '" data-key="' + esc(a.key) + '" role="button" tabindex="0"><span class="t">' + a.html + '</span><button class="x" data-g="x" data-key="' + esc(a.key) + '" aria-label="닫기">✕</button></div>').join('');
+  if (gbox.dataset.sig !== html) { gbox.dataset.sig = html; gbox.innerHTML = html; }
+}
+$('gBar').addEventListener('click', e => {
+  const x = e.target.closest('[data-g="x"]');
+  if (x) { try { sessionStorage.setItem('gdis:' + x.dataset.key, '1'); } catch (er) { /* 무시 */ } renderGlobal(); e.stopPropagation(); return; }
+  const el = e.target.closest('[data-g]'); if (!el) return;
+  const a = el.dataset.g;
+  if (a === 'shop') setMode('shop'); else if (a === 'meeting') setMode('meeting'); else if (a === 'backup') doBackup(); else if (a === 'settings') window.AppSync.openSettings();
+});
+$('gSettings').addEventListener('click', () => { if (window.AppSync) window.AppSync.openSettings(); });
+['drawerClose', 'overlay'].forEach(id => { const el = $(id); if (el) el.addEventListener('click', () => setTimeout(renderGlobal, 80)); });
+const urlIn = $('sheetUrlInput'); if (urlIn) { urlIn.addEventListener('input', () => setTimeout(renderGlobal, 800)); urlIn.addEventListener('blur', () => setTimeout(renderGlobal, 80)); }
+const autoIn = $('autoBackupToggle'); if (autoIn) autoIn.addEventListener('change', () => setTimeout(renderGlobal, 80));
+$('gBar').addEventListener('keydown', e => { if (e.key === 'Enter') { const el = e.target.closest('.galert'); if (el) el.click(); } });
+
+/* ---------- 모드 / 화면 ---------- */
+let mode = 'meeting';
+function setMode(m){
+  mode = m;
+  $('mtgView').hidden = m !== 'meeting'; $('priceView').hidden = m !== 'price'; $('shopView').hidden = m !== 'shop';
+  document.querySelectorAll('.modebtn').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+  try { localStorage.setItem(MODE_KEY, m); } catch (e) { /* 저장 불가 환경 */ }
+  renderAll(); window.scrollTo(0, 0);
+}
+function setTab(t){
+  ptab = t;
+  document.querySelectorAll('.pc-tabs button[data-pc="tab"]').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  document.querySelectorAll('.pc-sec').forEach(s => s.classList.toggle('on', s.id === 'pc-' + t));
+  renderAll();
+}
+function renderAll(){
+  if (mode === 'price') { if (ptab === 'analyze') renderAnalyze(); else if (ptab === 'history') renderHistory(); else renderTrend(); }
+  else if (mode === 'shop') renderShop();
+  syncNote(); renderGlobal();
+}
+
+/* ---------- 이벤트 ---------- */
+document.querySelectorAll('.modebtn').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+$('priceView').addEventListener('click', e => {
+  const el = e.target.closest('[data-pc]'); if (!el) return;
+  const a = el.dataset.pc;
+  if (a === 'tab') setTab(el.dataset.t);
+  else if (a === 'save-new') saveNew();
+  else if (a === 'filter') { filterId = el.dataset.id; renderHistory(); }
+  else if (a === 'add-rec') openRec(null);
+  else if (a === 'edit-rec') openRec(el.dataset.id);
+  else if (a === 'backup') doBackup();
+});
+$('pc-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-pc]'); if (!el) return;
+  if (el.dataset.pc === 'rec-cancel') $('pc-dlg').close(); else if (el.dataset.pc === 'rec-save') saveRec(); else if (el.dataset.pc === 'rec-delete') delRec();
+});
+$('shopView').addEventListener('click', e => {
+  const el = e.target.closest('[data-sh]'); if (!el) return;
+  const a = el.dataset.sh;
+  if (a === 'cat') { shCat = el.dataset.cat; renderShop(); }
+  else if (a === 'add') openShop(null);
+  else if (a === 'edit') openShop(el.dataset.id);
+  else if (a === 'notify') toggleNotify();
+  else if (a === 'csv-out') csvOut();
+  else if (a === 'csv-in') $('sh-csv').click();
+  else if (a === 'backup') doBackup();
+});
+$('sh-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-sh]'); if (!el) return;
+  if (el.dataset.sh === 'd-cancel') $('sh-dlg').close(); else if (el.dataset.sh === 'd-save') saveShop(); else if (el.dataset.sh === 'd-delete') delShop();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || !e.target.matches) return;
+  if (e.target.matches('tr[data-pc="edit-rec"]')) openRec(e.target.dataset.id); else if (e.target.matches('.sh-row')) openShop(e.target.dataset.id);
+});
+$('pc-item').addEventListener('change', () => { const it = itemById($('pc-item').value); if (it) { const rs = recsOf(it.id); $('pc-amount').value = rs.length ? rs[rs.length - 1].amount : ''; } computeAnalyze(); });
+['pc-name', 'pc-unit', 'pc-basis', 'pc-amount', 'pc-bonus', 'pc-paid', 'pc-points'].forEach(id => $(id).addEventListener('input', computeAnalyze));
+['pc-e-amount', 'pc-e-bonus', 'pc-e-paid', 'pc-e-points'].forEach(id => $(id).addEventListener('input', updateEditPreview));
+$('pc-e-item').addEventListener('change', updateEditPreview);
+$('sh-csv').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) csvIn(f); });
+
+$('appVer').textContent = APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION;
+try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
+setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
+setInterval(renderGlobal, 2000);
+let startMode = 'meeting';
+try { const v = localStorage.getItem(MODE_KEY); startMode = v === 'price' || v === 'shop' ? v : 'meeting'; } catch (e) { /* 기본값 */ }
+setMode(startMode);
 })();
 </script>
 </body>
