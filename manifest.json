@@ -1,7 +1,7 @@
 {
-  "name": "내 생활 대시보드",
-  "short_name": "생활대시보드",
-  "description": "회의비 · 가격 체크 · 쇼핑 이력을 한 곳에서",
+  "name": "마이라이프",
+  "short_name": "마이라이프",
+  "description": "회의비 · 가격 · 쇼핑 · 구독 · 인맥을 한 곳에서",
   "lang": "ko",
   "start_url": "./",
   "scope": "./",

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>내 생활 대시보드</title>
+<title>마이라이프</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#FF4D00">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -441,14 +441,64 @@
   .galert .t{ flex:1; min-width:0; line-height:1.45; }
   .galert b{ color:var(--accent); }
   .galert .x{ border:none; background:none; color:var(--ink3); font-size:15px; padding:0 4px; }
+
+  /* ---------- 골프장 이력 ---------- */
+  .gf-row{ padding:12px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
+  .gf-row:hover{ background:var(--pc-soft); }
+  .gf-top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; flex-wrap:wrap; }
+  .gf-top b{ font-size:14px; } .gf-dist{ font-size:12px; color:var(--ink2); }
+  .gf-parts{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
+  .gf-p{ border:1px solid var(--line2); border-radius:9px; padding:6px 8px; text-align:center; }
+  .gf-p.none{ opacity:.55; }
+  .gf-p span{ display:block; font-size:10.5px; font-weight:700; color:var(--ink2); }
+  .gf-p b{ display:block; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:14px; }
+  .gf-p small{ display:block; font-size:10.5px; color:var(--ink2); min-height:13px; }
+  .gf-rev{ margin-top:8px; font-size:12.5px; color:var(--ink2); }
+  .gd-round{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px; }
+  /* ---------- 구독·결제 ---------- */
+  .sb-monthbar{ display:flex; align-items:center; gap:8px; margin-bottom:12px; } .sb-monthbar b{ flex:1; text-align:center; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:14px; }
+  #sb-summary{ margin-bottom:12px; } #sb-summary .scard .v{ font-size:14px; }
+  .sb-head{ display:none; }
+  .sb-row{ display:grid; grid-template-columns:40px 1fr auto 36px; align-items:center; gap:2px 10px; padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
+  .sb-row:hover{ background:var(--pc-soft); } .sb-row.done{ opacity:.55; }
+  .sb-day{ grid-column:1; grid-row:1 / 3; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-weight:700; font-size:14px; } .sb-day small{ font-family:inherit; font-size:10px; color:var(--ink2); margin-left:1px; }
+  .sb-main{ grid-column:2; grid-row:1; font-weight:700; font-size:14px; } .sb-memo{ font-weight:500; font-size:12px; color:var(--ink2); margin-left:4px; } .sb-cat{ font-size:10.5px; font-weight:700; border:1px solid var(--line2); border-radius:999px; padding:0 6px; margin-left:6px; color:var(--ink2); }
+  .sb-sub{ grid-column:2; grid-row:2; display:flex; gap:4px 10px; flex-wrap:wrap; font-size:12px; color:var(--ink2); } .sb-disc{ color:var(--accent); font-weight:600; }
+  .sb-cost{ grid-column:3; grid-row:1 / 3; text-align:right; } .sb-cost b{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:13.5px; display:block; } .sb-cost small{ font-size:11px; color:var(--ink2); }
+  .sb-ck{ grid-column:4; grid-row:1 / 3; width:30px; height:30px; border-radius:50%; border:1.5px solid var(--line2); background:var(--surface); color:var(--ink3); font-size:14px; font-weight:800; } .sb-row.done .sb-ck{ background:var(--good); border-color:var(--good); color:#fff; }
+  @media (min-width:641px){
+    .sb-head, .sb-row{ grid-template-columns:56px 1.6fr 1fr 1fr 1.2fr 40px; }
+    .sb-head{ display:grid; gap:10px; padding:0 2px 8px; border-bottom:1.5px solid var(--line2); font-size:10.5px; font-weight:700; color:var(--ink2); }
+    .sb-day{ grid-row:1; } .sb-main{ grid-column:2; grid-row:1; } .sb-sub{ display:contents; }
+    .sb-card{ grid-column:3; grid-row:1; } .sb-cost{ grid-column:4; grid-row:1; } .sb-disc{ grid-column:5; grid-row:1; } .sb-ck{ grid-column:6; grid-row:1; }
+  }
+  /* ---------- 인맥 ---------- */
+  .pp-prog{ height:10px; border-radius:5px; background:var(--line); overflow:hidden; margin-top:8px; } .pp-prog > i{ display:block; height:100%; background:var(--accent); }
+  .pp-big{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:22px; font-weight:800; }
+  .pp-row{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
+  .pp-row:hover{ background:var(--pc-soft); } .pp-info{ min-width:0; flex:1; } .pp-name{ font-weight:700; font-size:14px; }
+  .pp-meta{ font-size:12px; color:var(--ink2); margin-top:2px; } .pp-warn{ font-size:11.5px; color:var(--warn); margin-top:2px; }
+  .pp-tag{ font-size:10.5px; font-weight:700; border:1px solid var(--line2); border-radius:999px; padding:1px 7px; margin-left:6px; color:var(--ink2); }
+  .pp-st{ font-size:11px; font-weight:800; border-radius:999px; padding:3px 9px; white-space:nowrap; }
+  .pp-st.ok{ background:var(--pc-down-bg); color:var(--pc-down); } .pp-st.soon{ background:var(--pc-flat-bg); color:var(--accent); } .pp-st.over{ background:var(--pc-up-bg); color:var(--pc-up); }
+  .pp-bar{ display:flex; align-items:center; gap:8px; font-size:12.5px; margin:6px 0; } .pp-bar span{ width:52px; color:var(--ink2); } .pp-bar i{ display:block; height:8px; border-radius:4px; background:var(--accent); } .pp-bar em{ font-style:normal; color:var(--ink2); font-size:11.5px; }
+  #mt-f-people label{ display:flex; align-items:center; gap:8px; padding:6px 0; font-size:14px; color:var(--ink); } #mt-f-people input, #pp-f-prefs input{ width:auto; min-height:0; }
+  #mt-f-people .gname{ font-size:11px; font-weight:700; color:var(--ink2); margin-top:8px; }
+  #gf-dlg, #gr-dlg, #sb-dlg, #pp-dlg, #mt-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
+  #gf-dlg::backdrop, #gr-dlg::backdrop, #sb-dlg::backdrop, #pp-dlg::backdrop, #mt-dlg::backdrop{ background:rgba(0,0,0,.45); }
+  #gf-dlg h3, #gr-dlg h3, #sb-dlg h3, #pp-dlg h3, #mt-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #gf-dlg .pc-f input, #gr-dlg .pc-f input, #gr-dlg .pc-f select, #sb-dlg .pc-f input, #sb-dlg .pc-f select, #pp-dlg .pc-f input, #pp-dlg .pc-f select, #mt-dlg .pc-f input, #mt-dlg .pc-f select{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
+  #pp-f-prefs .pc-chip{ display:inline-flex; align-items:center; gap:5px; } #gr-dlg, #sb-dlg{ z-index:5; }
 </style>
 </head>
 <body>
 <!-- ===== [신규] 모드 스위치: 회의비 / 가격 체크 / 쇼핑 이력 ===== -->
 <div class="modebar" id="modeBar"><div class="modebar-in">
   <button class="modebtn on" data-mode="meeting" id="modeMeeting">회의비</button>
-  <button class="modebtn" data-mode="price" id="modePrice">가격 체크</button>
-  <button class="modebtn" data-mode="shop" id="modeShop">쇼핑 이력</button>
+  <button class="modebtn" data-mode="price" id="modePrice">가격</button>
+  <button class="modebtn" data-mode="shop" id="modeShop">쇼핑</button>
+  <button class="modebtn" data-mode="sub" id="modeSub">구독</button>
+  <button class="modebtn" data-mode="people" id="modePeople">인맥</button>
 </div></div>
 <div class="gbar" id="gBar">
   <div class="gbar-in"><span class="gdot" id="gDot"></span><span class="gsync" id="gSync"></span><button class="gbtn" id="gSettings" type="button">⚙ 설정</button></div>
@@ -598,6 +648,11 @@
       <div id="pc-table" class="pc-tblwrap"></div>
       <p class="pc-hint">행을 누르면 수정·삭제할 수 있어요. 단가 = (결제금 − 적립금) ÷ (용량 + 증정). 상품별 최저는 파랑, 최고는 빨강이에요.</p>
     </div>
+    <div class="pc-card" id="gf-card">
+      <div class="pc-headrow"><h3>골프장 이력</h3><span style="display:flex;gap:6px"><button class="pc-btn small" data-gf="add-round">+ 요금</button><button class="pc-btn small primary" data-gf="add-course">+ 골프장</button></span></div>
+      <p class="pc-hint" style="margin-top:0">1부·2부·3부별 가격, 거리, 간단 후기를 정리해요. 카드를 누르면 수정하고 요금을 추가할 수 있어요.</p>
+      <div id="gf-list"></div>
+    </div>
   </section>
 
   <section class="pc-sec" id="pc-trend"><div id="pc-charts"></div></section>
@@ -628,6 +683,151 @@
   <p class="pc-sync" id="sh-sync"></p>
  </div>
 </div>
+
+<!-- ===== [신규] 구독·결제 영역 ===== -->
+<div id="subView" hidden>
+ <div class="pc-wrap">
+  <div class="sb-monthbar"><button class="toolbtn" data-sb="prev" aria-label="이전 달">‹</button><b id="sb-month-label"></b><button class="toolbtn" data-sb="next" aria-label="다음 달">›</button><button class="toolbtn" data-sb="today">이번 달</button></div>
+  <div class="strip" id="sb-summary"></div>
+  <div class="pc-chips" id="sb-cards"></div>
+  <div class="sectionhead"><h3>정기결제 · 구독</h3><button class="pc-btn small primary" data-sb="add">+ 항목 추가</button></div>
+  <div class="sb-head"><span>날짜</span><span>내용</span><span>카드</span><span style="text-align:right">비용</span><span>할인정보</span><span></span></div>
+  <div id="sb-list"></div>
+  <div class="sectionhead" style="margin-top:22px"><h3>보험료</h3></div>
+  <div id="sb-ins"></div>
+  <div class="pc-card" style="margin-top:18px">
+    <h3>비용 표시 기준</h3>
+    <label class="pc-f" style="margin-top:0"><select id="sb-costmode"><option value="gross">비용 = 청구금액(할인 전) · 할인은 따로 표시하고 실부담을 계산</option><option value="net">비용 = 이미 할인이 반영된 실결제액</option></select></label>
+  </div>
+  <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-sb="backup">☁ 지금 백업</button></div>
+  <p class="pc-sync" id="sb-sync"></p>
+ </div>
+</div>
+
+<!-- ===== [신규] 인맥 영역 ===== -->
+<div id="peopleView" hidden>
+ <div class="pc-wrap">
+  <div class="pc-tabs">
+    <button class="on" data-pp="tab" data-t="today">오늘</button>
+    <button data-pp="tab" data-t="list">사람</button>
+    <button data-pp="tab" data-t="log">이력</button>
+  </div>
+  <section class="pc-sec on" id="pp-today"><div id="pp-today-body"></div></section>
+  <section class="pc-sec" id="pp-list">
+    <div class="pc-card">
+      <div class="pc-headrow"><h3>사람</h3><button class="pc-btn small primary" data-pp="add-person">+ 사람 추가</button></div>
+      <div id="pp-filter" class="pc-chips"></div>
+      <div id="pp-people"></div>
+    </div>
+    <div class="pc-card">
+      <h3>기본 설정</h3>
+      <label class="pc-f" style="margin-top:0">이번 달 만남 목표(회)<input id="pp-cfg-target" type="number" min="0" max="60" step="1" inputmode="numeric"></label>
+      <div class="pc-row2">
+        <label class="pc-f">친구 기본 주기(일)<input id="pp-cfg-0" type="number" min="1" max="365" inputmode="numeric"></label>
+        <label class="pc-f">지인 기본 주기(일)<input id="pp-cfg-1" type="number" min="1" max="365" inputmode="numeric"></label>
+        <label class="pc-f">동료 기본 주기(일)<input id="pp-cfg-2" type="number" min="1" max="365" inputmode="numeric"></label>
+        <label class="pc-f">유관부서 기본 주기(일)<input id="pp-cfg-3" type="number" min="1" max="365" inputmode="numeric"></label>
+      </div>
+    </div>
+  </section>
+  <section class="pc-sec" id="pp-log">
+    <div class="pc-card">
+      <div class="pc-headrow"><h3>만남 이력</h3><button class="pc-btn small primary" data-pp="add-meet">+ 만남 기록</button></div>
+      <div id="pp-meets"></div>
+    </div>
+  </section>
+  <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-pp="backup">☁ 지금 백업</button></div>
+  <p class="pc-sync" id="pp-sync"></p>
+ </div>
+</div>
+
+<dialog id="gf-dlg">
+  <h3 id="gf-d-title">골프장</h3>
+  <label class="pc-f">골프장 이름<input id="gf-f-name" type="text"></label>
+  <div class="pc-row2">
+    <label class="pc-f">편도 거리(분)<input id="gf-f-go" type="number" min="0" step="1" inputmode="numeric"></label>
+    <label class="pc-f">귀가 시간(분)<input id="gf-f-back" type="number" min="0" step="1" inputmode="numeric"></label>
+  </div>
+  <p class="pc-hint">분 단위로 입력해요(1시간 = 60). 귀가 시간은 비워 둬도 돼요.</p>
+  <label class="pc-f">간단 후기<input id="gf-f-review" type="text"></label>
+  <div class="grp" style="margin-top:14px;font-size:11.5px;font-weight:700;color:var(--ink2)">요금 기록</div>
+  <div id="gf-d-rounds"></div>
+  <button class="pc-btn wide" data-gf="d-add-round" style="margin-top:8px">+ 요금 기록 추가</button>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-gf="d-cancel">취소</button><button class="pc-btn primary" data-gf="d-save">저장</button></div>
+  <button id="gf-d-delete" class="pc-btn danger wide" data-gf="d-delete">이 골프장 삭제 (요금 기록 포함)</button>
+</dialog>
+
+<dialog id="gr-dlg">
+  <h3 id="gr-d-title">요금 기록</h3>
+  <label class="pc-f">골프장<select id="gr-f-course"></select></label>
+  <div class="pc-row2">
+    <label class="pc-f">날짜(선택)<input id="gr-f-date" type="date"></label>
+    <label class="pc-f">요일<select id="gr-f-day"><option value="">선택 안 함</option><option>평일</option><option>주말</option><option>월</option><option>화</option><option>수</option><option>목</option><option>금</option><option>토</option><option>일</option></select></label>
+  </div>
+  <div class="pc-row2">
+    <label class="pc-f">티타임<input id="gr-f-tee" type="time"></label>
+    <label class="pc-f">부<select id="gr-f-part"><option value="auto">자동(티타임으로)</option><option value="1">1부</option><option value="2">2부</option><option value="3">3부</option></select></label>
+  </div>
+  <label class="pc-f">가격(원)<input id="gr-f-price" type="number" min="0" step="1000" inputmode="numeric"></label>
+  <p class="pc-preview" id="gr-f-prev"></p>
+  <label class="pc-f">메모<input id="gr-f-note" type="text"></label>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-gf="r-cancel">취소</button><button class="pc-btn primary" data-gf="r-save">저장</button></div>
+  <button id="gr-d-delete" class="pc-btn danger wide" data-gf="r-delete">이 요금 기록 삭제</button>
+</dialog>
+
+<dialog id="sb-dlg">
+  <h3 id="sb-d-title">정기결제 항목</h3>
+  <div class="pc-row2">
+    <label class="pc-f">결제일(매월 몇 일)<input id="sb-f-day" type="number" min="1" max="31" step="1" inputmode="numeric"></label>
+    <label class="pc-f">분류<select id="sb-f-cat"><option>구독</option><option>통신</option><option>생활</option><option>보험</option></select></label>
+  </div>
+  <label class="pc-f">내용<input id="sb-f-name" type="text"></label>
+  <label class="pc-f">메모(선택)<input id="sb-f-memo" type="text" placeholder="예: 건강보험"></label>
+  <label class="pc-f">카드<input id="sb-f-card" type="text" list="sb-cardlist"></label>
+  <datalist id="sb-cardlist"></datalist>
+  <label class="pc-f">현재 금액(원, 비우면 매달 입력하는 변동 항목)<input id="sb-f-amount" type="number" min="0" step="any" inputmode="numeric"></label>
+  <div class="pc-row2">
+    <label class="pc-f">할인 종류<select id="sb-f-dkind"><option value="">없음</option><option value="pct">% 할인</option><option value="point">적립 금액(원)</option><option value="text">기타(글로만 표시)</option></select></label>
+    <label class="pc-f">값(% 또는 원)<input id="sb-f-dvalue" type="number" min="0" step="any" inputmode="decimal"></label>
+  </div>
+  <label class="pc-f">할인 설명(선택)<input id="sb-f-dtext" type="text" placeholder="예: 카드 청구할인"></label>
+  <div class="grp" style="margin-top:14px;font-size:11.5px;font-weight:700;color:var(--ink2)">금액이 바뀌었을 때</div>
+  <div class="pc-row2">
+    <label class="pc-f">적용 월(예: 2024-07)<input id="sb-f-hfrom" type="text" maxlength="7" placeholder="YYYY-MM"></label>
+    <label class="pc-f"><span id="sb-f-mlabel">이 달 금액만 다르게</span><input id="sb-f-mamount" type="number" min="0" step="any" inputmode="numeric"></label>
+  </div>
+  <p class="pc-hint" id="sb-f-hist"></p>
+  <p class="pc-hint">현재 금액을 바꾸고 적용 월을 적으면 그 달부터 새 금액으로 계산하고 이전 금액은 이력으로 남아요. 적용 월을 비우면 단순 수정으로 처리해요.</p>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-sb="d-cancel">취소</button><button class="pc-btn primary" data-sb="d-save">저장</button></div>
+  <button id="sb-d-delete" class="pc-btn danger wide" data-sb="d-delete">이 항목 삭제 (구독 종료)</button>
+</dialog>
+
+<dialog id="pp-dlg">
+  <h3 id="pp-d-title">사람</h3>
+  <label class="pc-f">이름(별칭도 좋아요)<input id="pp-f-name" type="text"></label>
+  <div class="pc-row2">
+    <label class="pc-f">그룹<select id="pp-f-group"></select></label>
+    <label class="pc-f">목표 주기(일, 비우면 그룹 기본)<input id="pp-f-cycle" type="number" min="1" max="365" inputmode="numeric"></label>
+  </div>
+  <div class="pc-f">자주 하는 방식<div id="pp-f-prefs" class="pc-chips" style="margin:2px 0 0"></div></div>
+  <label class="pc-f">메모(선택)<input id="pp-f-memo" type="text"></label>
+  <label class="pc-f">등록일(만난 적 없을 때 기준)<input id="pp-f-since" type="date"></label>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-pp="p-cancel">취소</button><button class="pc-btn primary" data-pp="p-save">저장</button></div>
+  <button id="pp-d-delete" class="pc-btn danger wide" data-pp="p-delete">이 사람 삭제</button>
+</dialog>
+
+<dialog id="mt-dlg">
+  <h3 id="mt-d-title">만남 기록</h3>
+  <label class="pc-f">날짜<input id="mt-f-date" type="date"></label>
+  <div class="pc-f">함께한 사람<div id="mt-f-people"></div></div>
+  <div class="pc-row2">
+    <label class="pc-f">방식<select id="mt-f-type"></select></label>
+    <label class="pc-f">만난 뒤 에너지(선택)<select id="mt-f-energy"><option value="">기록 안 함</option><option value="charge">충전됐어요</option><option value="normal">보통</option><option value="drain">방전됐어요</option></select></label>
+  </div>
+  <label class="pc-f">한 줄 메모<input id="mt-f-memo" type="text"></label>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-pp="m-cancel">취소</button><button class="pc-btn primary" data-pp="m-save">저장</button></div>
+  <button id="mt-d-delete" class="pc-btn danger wide" data-pp="m-delete">이 기록 삭제</button>
+</dialog>
 
 <dialog id="pc-dlg">
   <h3 id="pc-e-title">구매 기록</h3>
@@ -1328,8 +1528,7 @@
         const parsed = JSON.parse(reader.result);
         if(!parsed.budgets || !parsed.expenses){ throw new Error('invalid'); }
         if(!confirm('현재 데이터를 가져온 파일로 덮어씁니다. 계속할까요?')) return;
-        if(window.AppExtras){ window.AppExtras.importSync(parsed); }
-        delete parsed.priceCheck; delete parsed.shopping;
+        if(window.AppExtras){ window.AppExtras.importSync(parsed); window.AppExtras.strip(parsed); }
         data = normalizeSettings(parsed);
         saveData(data);
         const months = allMonthsSorted();
@@ -1409,8 +1608,7 @@
       const json = await res.json();
       if(!json || !json.budgets || !json.expenses){ throw new Error('invalid'); }
       if(!confirm('시트의 백업과 현재 데이터를 합칩니다.\n(같은 항목은 최근에 수정한 쪽이 우선이고, 지운 항목은 계속 지워진 상태로 유지됩니다) 계속할까요?')) return;
-      if(window.AppExtras){ window.AppExtras.importSync(json); }
-      delete json.priceCheck; delete json.shopping;
+      if(window.AppExtras){ window.AppExtras.importSync(json); window.AppExtras.strip(json); }
       data = normalizeSettings(window.AppMerge ? window.AppMerge.merge(data, json) : json);
       data.settings.sheetUrl = url;
       saveData(data);
@@ -1784,10 +1982,101 @@ const MergeM = (() => {
 })();
 // </MERGECALC>
 
+// <LIFECALC>
+const Life = (() => {
+  const dd = (a, b) => { const x = Date.parse(a + 'T00:00:00Z'), y = Date.parse(b + 'T00:00:00Z'); return isFinite(x) && isFinite(y) ? Math.round((y - x) / 86400000) : null; };
+  const pad = n => String(n).padStart(2, '0');
+  /* ---- 골프 ---- */
+  function partOf(tee){
+    const s = String(tee == null ? '' : tee).replace(':', '').trim();
+    if (!/^\d{3,4}$/.test(s)) return null;
+    const t = s.padStart(4, '0'), h = +t.slice(0, 2), m = +t.slice(2);
+    if (h > 23 || m > 59) return null;
+    const v = h * 60 + m;
+    return v < 480 ? 1 : (v < 780 ? 2 : 3);
+  }
+  function fmtMan(n){ if (n === '' || n == null || !isFinite(Number(n))) return '-'; return String(Math.round(Number(n) / 100) / 100) + '만'; }
+  function teeLabel(tee){ const s = String(tee || '').replace(':', ''); return /^\d{3,4}$/.test(s) ? s.padStart(4, '0').slice(0, 2) + ':' + s.padStart(4, '0').slice(2) : ''; }
+  function partPrices(rounds){
+    const o = {};
+    [1, 2, 3].forEach(p => {
+      const l = rounds.filter(r => Number(r.part) === p && Number(r.price) > 0);
+      if (l.length) { const best = l.reduce((a, b) => Number(b.price) < Number(a.price) ? b : a); o[p] = { min: Number(best.price), count: l.length, tee: best.tee || '', day: best.day || '' }; }
+    });
+    return o;
+  }
+  /* ---- 정기결제 ---- */
+  function lastDay(month){ const a = month.split('-').map(Number); return new Date(Date.UTC(a[0], a[1], 0)).getUTCDate(); }
+  function amountAt(it, month){
+    const h = (it.hist || []).filter(x => x && x.from && x.from <= month).sort((a, b) => a.from < b.from ? -1 : 1);
+    if (h.length) return Number(h[h.length - 1].amount);
+    return it.amount === '' || it.amount == null ? null : Number(it.amount);
+  }
+  const payKey = (id, month) => id + '|' + month;
+  function payMap(pays){ const m = {}; (pays || []).forEach(p => { if (p && p.itemId && p.month) m[payKey(p.itemId, p.month)] = p; }); return m; }
+  function effAmount(it, month, pm){
+    const p = pm && pm[payKey(it.id, month)];
+    if (p && p.amount !== '' && p.amount != null && isFinite(Number(p.amount))) return Number(p.amount);
+    return amountAt(it, month);
+  }
+  function discountOf(it, amount){
+    const d = it.disc || {};
+    if (amount == null) return 0;
+    if (d.kind === 'pct' && Number(d.value) > 0) return Math.round(amount * Number(d.value) / 100);
+    if (d.kind === 'point' && Number(d.value) > 0) return Math.round(Number(d.value));
+    return 0;
+  }
+  function netOf(it, amount, costIsNet){ if (amount == null) return null; return costIsNet ? amount : amount - discountOf(it, amount); }
+  function monthTotals(items, pm, month, costIsNet){
+    const r = { gross: 0, net: 0, saved: 0, count: 0, variable: 0, byCard: {} };
+    items.filter(i => i.active !== false).forEach(it => {
+      const a = effAmount(it, month, pm); r.count++;
+      if (a == null) { r.variable++; return; }
+      const n = netOf(it, a, costIsNet), c = it.card || '기타';
+      r.gross += a; r.net += n; r.saved += a - n;
+      const b = r.byCard[c] = r.byCard[c] || { gross: 0, net: 0 }; b.gross += a; b.net += n;
+    });
+    return r;
+  }
+  function dueDate(it, month){ return month + '-' + pad(Math.min(Math.max(Number(it.day) || 1, 1), lastDay(month))); }
+  function upcoming(items, pm, today, ahead){
+    const month = today.slice(0, 7), out = [];
+    items.filter(i => i.active !== false).forEach(it => {
+      const d = dueDate(it, month), diff = dd(today, d);
+      if (diff === null || diff < 0 || diff > ahead) return;
+      const p = pm[payKey(it.id, month)]; if (p && p.done) return;
+      out.push({ id: it.id, name: it.name, card: it.card, amount: effAmount(it, month, pm), diff, date: d });
+    });
+    return out.sort((a, b) => a.diff - b.diff);
+  }
+  /* ---- 인맥 ---- */
+  const TYPES = ['커피', '점심', '저녁', '술자리', '통화', '기타'], GROUPS = ['친구', '지인', '동료', '유관부서'];
+  const DEFAULT_CFG = { target: 4, cycles: { 친구: 30, 지인: 60, 동료: 21, 유관부서: 30 } };
+  function cycleOf(p, cfg){ const c = Number(p.cycle); if (c > 0) return c; const g = cfg && cfg.cycles && Number(cfg.cycles[p.group]); return g > 0 ? g : 30; }
+  function lastMeet(p, meets){ let l = ''; meets.forEach(m => { if ((m.pids || []).indexOf(p.id) >= 0 && m.date > l) l = m.date; }); return l; }
+  function status(p, meets, cfg, today){
+    const last = lastMeet(p, meets), base = last || p.since || today, since = dd(base, today), cycle = cycleOf(p, cfg);
+    const ratio = since === null ? 0 : since / cycle;
+    return { last, since, cycle, ratio, never: !last, state: ratio >= 1 ? 'over' : (ratio >= 0.8 - 1e-9 ? 'soon' : 'ok') };
+  }
+  function dueList(people, meets, cfg, today){ return people.map(p => Object.assign({ p }, status(p, meets, cfg, today))).filter(x => x.state !== 'ok').sort((a, b) => b.ratio - a.ratio); }
+  function monthCount(meets, month){ return meets.filter(m => String(m.date).slice(0, 7) === month).length; }
+  function typeShares(meets, from, to){ const c = {}; let n = 0; meets.filter(m => m.date >= from && m.date <= to).forEach(m => { c[m.type] = (c[m.type] || 0) + 1; n++; }); return { counts: c, total: n }; }
+  function energyShares(meets, from, to){ const c = { charge: 0, normal: 0, drain: 0 }; meets.filter(m => m.date >= from && m.date <= to && c[m.energy] !== undefined).forEach(m => { c[m.energy]++; }); return c; }
+  function avgInterval(p, meets){
+    const ds = meets.filter(m => (m.pids || []).indexOf(p.id) >= 0).map(m => m.date).sort();
+    if (ds.length < 2) return null;
+    let s = 0; for (let i = 1; i < ds.length; i++) s += dd(ds[i - 1], ds[i]);
+    return s / (ds.length - 1);
+  }
+  return { dd, partOf, fmtMan, teeLabel, partPrices, lastDay, amountAt, payMap, effAmount, discountOf, netOf, monthTotals, dueDate, upcoming, TYPES, GROUPS, DEFAULT_CFG, cycleOf, lastMeet, status, dueList, monthCount, typeShares, energyShares, avgInterval };
+})();
+// </LIFECALC>
+
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-17-b (회의비 · 가격 체크 · 쇼핑 이력)';
-const APP_NAME = '내 생활 대시보드';
+const APP_BUILD_VERSION = '2026-10-17-c (회의비 · 가격 · 쇼핑 · 구독 · 인맥)';
+const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
 const UNITS = ['ml', 'g', '개', '매'], BASES = [1, 10, 100], THR = 5, SEED_U = '2026-10-17T00:00:00.000Z';
@@ -1807,7 +2096,7 @@ let syncTimer = null;
 function syncNote(){
   const t = !window.AppSync ? '' : (!window.AppSync.hasUrl() ? '☁ 시트 연결 전 — 회의비 화면의 ⚙ 설정에서 Apps Script URL을 입력하세요' :
     (window.AppSync.last() ? '☁ 마지막 백업: ' + new Date(window.AppSync.last()).toLocaleString('ko-KR') + (window.AppSync.auto() ? ' · 변경 시 자동 백업' : ' · 자동 백업 꺼짐') : '☁ 아직 백업 전 · ' + (window.AppSync.auto() ? '변경 시 자동 백업' : '자동 백업 꺼짐')));
-  ['pc-sync', 'sh-sync'].forEach(id => { const el = $(id); if (el) el.textContent = t; });
+  ['pc-sync', 'sh-sync', 'sb-sync', 'pp-sync'].forEach(id => { const el = $(id); if (el) el.textContent = t; });
 }
 function changed(){
   try {
@@ -2163,18 +2452,317 @@ function csvIn(file){
   fr.readAsText(file);
 }
 
+/* =====================================================================
+   골프장 이력 / 구독·결제 / 인맥  (신규 3기능 — 회의비·가격·쇼핑과 저장소·화면 모두 분리)
+   ===================================================================== */
+const GOLF_KEY = 'golf_history_v1', SUBS_KEY = 'subscriptions_v1', PEOPLE_KEY = 'people_v1';
+const numB = v => (v === '' || v == null || !isFinite(Number(v))) ? '' : Number(v);
+function loadK(key, seed, norm){
+  try { const raw = localStorage.getItem(key); if (raw) return norm(JSON.parse(raw)); } catch (e) { /* 시드로 시작 */ }
+  const s = norm(JSON.parse(JSON.stringify(seed))); try { localStorage.setItem(key, JSON.stringify(s)); } catch (e) { /* 무시 */ } return s;
+}
+function saveK(key, v){ try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) { toast('저장하지 못했어요.'); } }
+
+/* ---------- 골프장 ---------- */
+const GOLF_SEED = {
+  courses: [
+    { id: 'gc1', name: '포웰CC', go: '', back: '', review: '백돌이성지', u: SEED_U },
+    { id: 'gc2', name: '대영힐스CC', go: 60, back: 120, review: '멀고 그린상태 별로', u: SEED_U },
+    { id: 'gc3', name: '은화삼CC', go: 27, back: '', review: '', u: SEED_U } ],
+  rounds: [
+    { id: 'gr1', courseId: 'gc1', date: '', day: '', tee: '0620', part: 1, price: 110000, note: '', u: SEED_U },
+    { id: 'gr2', courseId: 'gc1', date: '', day: '', tee: '', part: 3, price: 130000, note: '', u: SEED_U },
+    { id: 'gr3', courseId: 'gc2', date: '', day: '', tee: '0800', part: 2, price: 129000, note: '', u: SEED_U },
+    { id: 'gr4', courseId: 'gc3', date: '', day: '일', tee: '1356', part: 3, price: 230000, note: '', u: SEED_U } ],
+  del: {}
+};
+function gNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const courses = (Array.isArray(o.courses) ? o.courses : []).filter(c => c && c.id && c.name).map(c => ({ id: String(c.id), name: String(c.name), go: numB(c.go), back: numB(c.back), review: String(c.review || ''), u: String(c.u || '') }));
+  const ids = {}; courses.forEach(c => { ids[c.id] = 1; });
+  const rounds = (Array.isArray(o.rounds) ? o.rounds : []).filter(r => r && r.id && ids[r.courseId]).map(r => ({ id: String(r.id), courseId: r.courseId, date: String(r.date || ''), day: String(r.day || ''), tee: String(r.tee || ''), part: [1, 2, 3].indexOf(Number(r.part)) >= 0 ? Number(r.part) : null, price: Number(r.price) > 0 ? Number(r.price) : 0, note: String(r.note || ''), u: String(r.u || '') }));
+  return { courses, rounds, del: cleanDel(o.del) };
+}
+let G = loadK(GOLF_KEY, GOLF_SEED, gNorm), gcEditing = null, grEditing = null;
+function gSave(){ saveK(GOLF_KEY, G); }
+function renderGolf(){
+  const box = $('gf-list');
+  if (!G.courses.length) { box.innerHTML = '<p class="pc-hint">아직 골프장이 없어요. “+ 골프장”으로 등록해 보세요.</p>'; return; }
+  box.innerHTML = G.courses.map(c => {
+    const pp = Life.partPrices(G.rounds.filter(r => r.courseId === c.id));
+    const dist = (c.go !== '' ? '편도 ' + c.go + '분' : '') + (c.back !== '' ? (c.go !== '' ? ' · ' : '') + '귀가 ' + c.back + '분' : '');
+    const part = n => { const x = pp[n]; return '<div class="gf-p' + (x ? '' : ' none') + '"><span>' + n + '부</span><b>' + (x ? Life.fmtMan(x.min) : '-') + '</b><small>' + (x ? esc([x.day, Life.teeLabel(x.tee)].filter(Boolean).join(' ') || (x.count > 1 ? x.count + '건' : '')) : '') + '</small></div>'; };
+    return '<div class="gf-row" data-gf="course" data-id="' + esc(c.id) + '" tabindex="0"><div class="gf-top"><b>' + esc(c.name) + '</b>' + (dist ? '<span class="gf-dist">' + esc(dist) + '</span>' : '') + '</div><div class="gf-parts">' + part(1) + part(2) + part(3) + '</div>' + (c.review ? '<div class="gf-rev">' + esc(c.review) + '</div>' : '') + '</div>';
+  }).join('');
+}
+function renderCourseRounds(){
+  const rs = gcEditing ? G.rounds.filter(r => r.courseId === gcEditing) : [];
+  $('gf-d-rounds').innerHTML = rs.length ? rs.map(r => '<div class="gd-round"><span>' + (r.part ? r.part + '부' : '부 미정') + ' · ' + esc([r.day, Life.teeLabel(r.tee), r.date].filter(Boolean).join(' ') || '시간 미입력') + ' · <b>' + won(r.price) + '</b>' + (r.note ? ' · ' + esc(r.note) : '') + '</span><button class="pc-btn small" data-gf="edit-round" data-id="' + esc(r.id) + '">수정</button></div>').join('') : '<p class="pc-hint">아직 요금 기록이 없어요.</p>';
+}
+function openCourse(id){
+  const c = id ? G.courses.find(x => x.id === id) : null;
+  if (id && !c) return;
+  gcEditing = id || null;
+  $('gf-d-title').textContent = c ? '골프장 수정' : '골프장 추가';
+  $('gf-f-name').value = c ? c.name : ''; $('gf-f-go').value = c ? c.go : ''; $('gf-f-back').value = c ? c.back : ''; $('gf-f-review').value = c ? c.review : '';
+  $('gf-d-delete').hidden = !c; renderCourseRounds(); $('gf-dlg').showModal();
+}
+function saveCourse(close){
+  const name = $('gf-f-name').value.trim();
+  if (!name) { toast('골프장 이름을 입력해 주세요.'); return null; }
+  const d = { name, go: numB($('gf-f-go').value), back: numB($('gf-f-back').value), review: $('gf-f-review').value.trim(), u: nowIso() };
+  if (gcEditing) Object.assign(G.courses.find(x => x.id === gcEditing), d); else { gcEditing = uid('gc'); G.courses.push(Object.assign({ id: gcEditing }, d)); }
+  gSave(); changed(); if (close) $('gf-dlg').close(); renderAll(); return gcEditing;
+}
+function delCourse(){
+  const c = G.courses.find(x => x.id === gcEditing); if (!c || !confirm('“' + c.name + '”과 요금 기록을 모두 삭제할까요?')) return;
+  const t = nowIso(); G.rounds.filter(r => r.courseId === c.id).forEach(r => { G.del[r.id] = t; });
+  G.rounds = G.rounds.filter(r => r.courseId !== c.id); G.courses = G.courses.filter(x => x.id !== c.id); G.del[c.id] = t;
+  gSave(); changed(); $('gf-dlg').close(); renderAll();
+}
+const teeStr = v => String(v || '').replace(':', '');
+function grPreview(){
+  const manual = $('gr-f-part').value !== 'auto', p = manual ? Number($('gr-f-part').value) : Life.partOf(teeStr($('gr-f-tee').value));
+  $('gr-f-prev').textContent = '→ ' + (p ? p + '부' : '부 미정(티타임을 넣거나 부를 선택하세요)') + ' · ' + Life.fmtMan($('gr-f-price').value);
+}
+function openRound(id, courseId){
+  if (!G.courses.length) { toast('먼저 골프장을 등록해 주세요.'); return; }
+  const r = id ? G.rounds.find(x => x.id === id) : null;
+  if (id && !r) return;
+  grEditing = id || null;
+  fillSelect($('gr-f-course'), G.courses.map(c => ({ v: c.id, t: c.name })), r ? r.courseId : (courseId || G.courses[0].id));
+  $('gr-d-title').textContent = r ? '요금 기록 수정' : '요금 기록 추가';
+  $('gr-f-date').value = r ? r.date : ''; $('gr-f-day').value = r ? r.day : ''; $('gr-f-tee').value = r && r.tee ? Life.teeLabel(r.tee) : '';
+  $('gr-f-part').value = r && r.part && !(r.tee && Life.partOf(r.tee) === r.part) ? String(r.part) : 'auto';
+  $('gr-f-price').value = r && r.price ? r.price : ''; $('gr-f-note').value = r ? r.note : '';
+  $('gr-d-delete').hidden = !r; grPreview(); $('gr-dlg').showModal();
+}
+function saveRound(){
+  const price = Number($('gr-f-price').value);
+  if (!(price > 0)) { toast('가격을 입력해 주세요.'); return; }
+  const tee = teeStr($('gr-f-tee').value), manual = $('gr-f-part').value !== 'auto', part = manual ? Number($('gr-f-part').value) : Life.partOf(tee);
+  const d = { courseId: $('gr-f-course').value, date: $('gr-f-date').value, day: $('gr-f-day').value, tee, part, price, note: $('gr-f-note').value.trim(), u: nowIso() };
+  if (grEditing) Object.assign(G.rounds.find(x => x.id === grEditing), d); else G.rounds.push(Object.assign({ id: uid('gr') }, d));
+  gcEditing = $('gf-dlg').open ? d.courseId : gcEditing;
+  gSave(); changed(); $('gr-dlg').close(); if ($('gf-dlg').open) renderCourseRounds(); toast('저장했어요.'); renderAll();
+}
+function delRound(){
+  if (!grEditing || !confirm('이 요금 기록을 삭제할까요?')) return;
+  G.rounds = G.rounds.filter(r => r.id !== grEditing); G.del[grEditing] = nowIso();
+  gSave(); changed(); $('gr-dlg').close(); if ($('gf-dlg').open) renderCourseRounds(); renderAll();
+}
+
+/* ---------- 구독·결제 ---------- */
+const SUBS_ITEMS_SEED = [{"id": "b1", "day": 2, "name": "삼케플곤쥬", "memo": "", "card": "하나MG", "amount": 7500, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b2", "day": 4, "name": "티빙구독", "memo": "", "card": "하나원더", "amount": 4000, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b3", "day": 5, "name": "쿠팡", "memo": "", "card": "하나MG", "amount": 7890, "disc": {"kind": "pct", "value": 50, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b4", "day": 5, "name": "토스", "memo": "", "card": "하나MG", "amount": 5900, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b5", "day": 10, "name": "정수기", "memo": "", "card": "KB비즈티타늄", "amount": 41900, "disc": {"kind": "point", "value": 4190, "text": ""}, "cat": "생활", "hist": [], "active": true}, {"id": "b6", "day": 10, "name": "휴대폰", "memo": "", "card": "KB비즈티타늄", "amount": 7690, "disc": {"kind": "point", "value": 769, "text": ""}, "cat": "통신", "hist": [], "active": true}, {"id": "b7", "day": 11, "name": "인터넷", "memo": "", "card": "하나원더", "amount": 16500, "disc": {"kind": "pct", "value": 10, "text": ""}, "cat": "통신", "hist": [], "active": true}, {"id": "b8", "day": 11, "name": "휴대폰", "memo": "", "card": "하나원더", "amount": 44590, "disc": {"kind": "pct", "value": 10, "text": ""}, "cat": "통신", "hist": [], "active": true}, {"id": "b9", "day": 13, "name": "넷플릭스(네이버멤버스)", "memo": "", "card": "하나MG", "amount": 8000, "disc": {"kind": "pct", "value": 50, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b10", "day": 15, "name": "민팃_New 갤럭시AI구독클럽", "memo": "", "card": "하나MG", "amount": 8900, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b11", "day": 18, "name": "T우주패스 쇼핑 11번가(WAVVE)", "memo": "", "card": "하나원더", "amount": 1000, "disc": {"kind": "pct", "value": 10, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b12", "day": 20, "name": "유튜브", "memo": "", "card": "하나원더", "amount": 21603, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b13", "day": 20, "name": "비데", "memo": "", "card": "KB비즈티타늄", "amount": 9900, "disc": {"kind": "point", "value": 990, "text": ""}, "cat": "생활", "hist": [], "active": true}, {"id": "b14", "day": 21, "name": "BTV", "memo": "", "card": "KB비즈티타늄", "amount": 12100, "disc": {"kind": "point", "value": 1210, "text": ""}, "cat": "통신", "hist": [], "active": true}, {"id": "b15", "day": 29, "name": "관리비", "memo": "", "card": "하나원더", "amount": null, "disc": {"kind": "", "value": null, "text": ""}, "cat": "생활", "hist": [], "active": true}, {"id": "b16", "day": 5, "name": "메리츠", "memo": "", "card": "하나MG", "amount": 61200, "disc": {"kind": "", "value": null, "text": ""}, "cat": "보험", "hist": [{"from": "0000-01", "amount": 46480}, {"from": "2024-07", "amount": 61200}], "active": true}, {"id": "b17", "day": 5, "name": "메리츠", "memo": "건강보험", "card": "하나MG", "amount": 87220, "disc": {"kind": "", "value": null, "text": ""}, "cat": "보험", "hist": [], "active": true}, {"id": "b18", "day": 5, "name": "메리츠", "memo": "운전자보험", "card": "하나MG", "amount": 11350, "disc": {"kind": "", "value": null, "text": ""}, "cat": "보험", "hist": [], "active": true}, {"id": "b19", "day": 11, "name": "한화", "memo": "", "card": "하나MG", "amount": 62600, "disc": {"kind": "", "value": null, "text": ""}, "cat": "보험", "hist": [], "active": true}];
+const SUBS_SEED = { items: SUBS_ITEMS_SEED.map(i => Object.assign({ u: SEED_U }, i)), pays: [], cfg: { costIsNet: false, u: SEED_U }, del: {} };
+const pk = (id, m) => id + '|' + m;
+function bNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && i.name).map(i => { const d = i.disc || {}; return {
+    id: String(i.id), day: Math.min(31, Math.max(1, Number(i.day) || 1)), name: String(i.name), memo: String(i.memo || ''), card: String(i.card || ''),
+    cat: ['구독', '통신', '생활', '보험'].indexOf(i.cat) >= 0 ? i.cat : '구독', amount: numB(i.amount) === '' ? null : numB(i.amount),
+    disc: { kind: ['pct', 'point', 'text'].indexOf(d.kind) >= 0 ? d.kind : '', value: numB(d.value) === '' ? null : numB(d.value), text: String(d.text || '') },
+    hist: (Array.isArray(i.hist) ? i.hist : []).filter(h => h && h.from && isFinite(Number(h.amount))).map(h => ({ from: String(h.from), amount: Number(h.amount) })),
+    active: i.active !== false, u: String(i.u || '') }; });
+  const ids = {}; items.forEach(i => { ids[i.id] = 1; });
+  const pays = (Array.isArray(o.pays) ? o.pays : []).filter(p => p && p.itemId && p.month && ids[p.itemId]).map(p => ({ id: pk(p.itemId, p.month), itemId: String(p.itemId), month: String(p.month), amount: numB(p.amount), done: !!p.done, u: String(p.u || '') }));
+  return { items, pays, cfg: { costIsNet: !!(o.cfg && o.cfg.costIsNet), u: String((o.cfg && o.cfg.u) || '') }, del: cleanDel(o.del) };
+}
+let SB = loadK(SUBS_KEY, SUBS_SEED, bNorm), sbMonth = todayStr().slice(0, 7), sbEditing = null;
+function bSave(){ saveK(SUBS_KEY, SB); }
+const discText = it => { const d = it.disc || {}; return d.kind === 'pct' ? d.value + '% 할인' : (d.kind === 'point' ? fmt(d.value) + '원 적립' : (d.kind === 'text' ? d.text : '')); };
+function renderSub(){
+  const pm = Life.payMap(SB.pays), net = SB.cfg.costIsNet, M = sbMonth, t = Life.monthTotals(SB.items, pm, M, net);
+  $('sb-month-label').textContent = M.slice(0, 4) + '년 ' + Number(M.slice(5)) + '월';
+  const done = SB.items.filter(i => i.active !== false && pm[pk(i.id, M)] && pm[pk(i.id, M)].done).length;
+  $('sb-summary').innerHTML = '<div class="scard"><div class="l">' + (net ? '결제 합계' : '청구 합계') + '</div><div class="v tabular">' + won(t.gross) + '</div></div>' +
+    (net ? '' : '<div class="scard"><div class="l">실부담(할인·적립 반영)</div><div class="v tabular" style="color:var(--accent)">' + won(t.net) + '</div><div class="sub">할인·적립 ' + won(t.saved) + '</div></div>') +
+    '<div class="scard"><div class="l">결제 확인</div><div class="v tabular">' + done + ' / ' + t.count + '건</div></div>' + (t.variable ? '<div class="scard"><div class="l">금액 입력 필요</div><div class="v tabular">' + t.variable + '건</div></div>' : '');
+  $('sb-cards').innerHTML = Object.keys(t.byCard).sort().map(c => '<span class="pc-chip">' + esc(c) + ' ' + won(t.byCard[c].gross) + (net ? '' : ' → ' + won(t.byCard[c].net)) + '</span>').join('');
+  const row = it => {
+    const a = Life.effAmount(it, M, pm), n = Life.netOf(it, a, net), p = pm[pk(it.id, M)];
+    return '<div class="sb-row' + (p && p.done ? ' done' : '') + '" data-sb="edit" data-id="' + esc(it.id) + '" tabindex="0"><div class="sb-day">' + String(it.day).padStart(2, '0') + '<small>일</small></div>' +
+      '<div class="sb-main">' + esc(it.name) + (it.memo ? '<span class="sb-memo">' + esc(it.memo) + '</span>' : '') + (it.cat !== '보험' ? '<span class="sb-cat">' + esc(it.cat) + '</span>' : '') + '</div>' +
+      '<div class="sb-sub"><span class="sb-card">' + esc(it.card || '-') + '</span><span class="sb-disc">' + esc(discText(it)) + '</span></div>' +
+      '<div class="sb-cost"><b>' + (a == null ? '입력 필요' : won(a)) + '</b>' + (a != null && !net && n !== a ? '<small>실부담 ' + won(n) + '</small>' : '') + '</div>' +
+      '<button class="sb-ck" data-sb="check" data-id="' + esc(it.id) + '" aria-label="결제 확인">✓</button></div>';
+  };
+  const sorted = SB.items.filter(i => i.active !== false).sort((a, b) => a.day - b.day || a.name.localeCompare(b.name, 'ko'));
+  $('sb-list').innerHTML = sorted.filter(i => i.cat !== '보험').map(row).join('') || '<div class="empty">등록된 항목이 없어요.</div>';
+  $('sb-ins').innerHTML = sorted.filter(i => i.cat === '보험').map(row).join('') || '<div class="empty">등록된 보험료가 없어요.</div>';
+  $('sb-costmode').value = net ? 'net' : 'gross';
+}
+function openSub(id){
+  const it = id ? SB.items.find(x => x.id === id) : null;
+  if (id && !it) return;
+  sbEditing = id || null;
+  const cards = {}; ['하나MG', '하나원더', 'KB비즈티타늄'].concat(SB.items.map(i => i.card)).filter(Boolean).forEach(c => { cards[c] = 1; });
+  $('sb-cardlist').innerHTML = Object.keys(cards).map(c => '<option value="' + esc(c) + '"></option>').join('');
+  $('sb-d-title').textContent = it ? '항목 수정' : '항목 추가';
+  const d = it ? it.disc : { kind: '', value: null, text: '' };
+  $('sb-f-day').value = it ? it.day : new Date().getDate(); $('sb-f-cat').value = it ? it.cat : '구독'; $('sb-f-name').value = it ? it.name : ''; $('sb-f-memo').value = it ? it.memo : '';
+  $('sb-f-card').value = it ? it.card : ''; $('sb-f-amount').value = it && it.amount != null ? it.amount : '';
+  $('sb-f-dkind').value = d.kind; $('sb-f-dvalue').value = d.value == null ? '' : d.value; $('sb-f-dtext').value = d.text; $('sb-f-hfrom').value = '';
+  const pay = it ? Life.payMap(SB.pays)[pk(it.id, sbMonth)] : null;
+  $('sb-f-mlabel').textContent = sbMonth + ' 금액만 다르게'; $('sb-f-mamount').value = pay && pay.amount !== '' ? pay.amount : '';
+  $('sb-f-hist').textContent = it && it.hist.length ? '금액 변경 이력: ' + it.hist.map(h => (h.from === '0000-01' ? '처음' : h.from + '부터') + ' ' + won(h.amount)).join(' → ') : '';
+  $('sb-d-delete').hidden = !it; $('sb-dlg').showModal();
+}
+function saveSub(){
+  const name = $('sb-f-name').value.trim();
+  if (!name) { toast('내용을 입력해 주세요.'); return; }
+  const amt = $('sb-f-amount').value === '' ? null : Number($('sb-f-amount').value);
+  if (amt !== null && !(amt >= 0)) { toast('금액을 확인해 주세요.'); return; }
+  const hfrom = $('sb-f-hfrom').value.trim();
+  if (hfrom && !/^\d{4}-(0[1-9]|1[0-2])$/.test(hfrom)) { toast('적용 월은 2024-07 형식으로 적어 주세요.'); return; }
+  const it = sbEditing ? SB.items.find(x => x.id === sbEditing) : null, t = nowIso();
+  const base = { day: Math.min(31, Math.max(1, Number($('sb-f-day').value) || 1)), cat: $('sb-f-cat').value, name, memo: $('sb-f-memo').value.trim(), card: $('sb-f-card').value.trim(),
+    disc: { kind: $('sb-f-dkind').value, value: $('sb-f-dvalue').value === '' ? null : Number($('sb-f-dvalue').value), text: $('sb-f-dtext').value.trim() }, u: t };
+  let cur = it;
+  if (it) {
+    if (amt !== null && it.amount !== null && amt !== it.amount) {
+      if (hfrom) { const h = it.hist.length ? it.hist.slice() : [{ from: '0000-01', amount: it.amount }]; it.hist = h.filter(x => x.from !== hfrom).concat([{ from: hfrom, amount: amt }]).sort((a, b) => a.from < b.from ? -1 : 1); }
+      else if (it.hist.length) { it.hist[it.hist.length - 1].amount = amt; }
+    }
+    Object.assign(it, base, { amount: amt });
+  } else { cur = Object.assign({ id: uid('sb'), amount: amt, hist: [], active: true }, base); SB.items.push(cur); }
+  const mv = $('sb-f-mamount').value, key = pk(cur.id, sbMonth), pay = SB.pays.find(p => p.id === key);
+  if (mv !== '') { if (pay) { pay.amount = Number(mv); pay.u = t; } else SB.pays.push({ id: key, itemId: cur.id, month: sbMonth, amount: Number(mv), done: false, u: t }); }
+  else if (pay && pay.amount !== '') { pay.amount = ''; pay.u = t; }
+  bSave(); changed(); $('sb-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function delSub(){
+  const it = SB.items.find(x => x.id === sbEditing); if (!it || !confirm('“' + it.name + '” 항목을 삭제할까요? (구독 종료)')) return;
+  const t = nowIso(); SB.pays.filter(p => p.itemId === it.id).forEach(p => { SB.del[p.id] = t; });
+  SB.pays = SB.pays.filter(p => p.itemId !== it.id); SB.items = SB.items.filter(x => x.id !== it.id); SB.del[it.id] = t;
+  bSave(); changed(); $('sb-dlg').close(); renderAll();
+}
+function togglePay(id){
+  const key = pk(id, sbMonth), p = SB.pays.find(x => x.id === key), t = nowIso();
+  if (p) { p.done = !p.done; p.u = t; } else SB.pays.push({ id: key, itemId: id, month: sbMonth, amount: '', done: true, u: t });
+  bSave(); changed(); renderSub();
+}
+function shiftMonth(n){ const a = sbMonth.split('-').map(Number), d = new Date(Date.UTC(a[0], a[1] - 1 + n, 1)); sbMonth = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0'); renderSub(); }
+
+/* ---------- 인맥 ---------- */
+const PEOPLE_SEED = { people: [], meets: [], cfg: { target: 4, cycles: Object.assign({}, Life.DEFAULT_CFG.cycles), u: SEED_U }, del: {} };
+const ENERGY = { charge: '충전', normal: '보통', drain: '방전' };
+function qNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const people = (Array.isArray(o.people) ? o.people : []).filter(p => p && p.id && p.name && Life.GROUPS.indexOf(p.group) >= 0).map(p => ({ id: String(p.id), name: String(p.name), group: p.group, cycle: Number(p.cycle) > 0 ? Number(p.cycle) : '', prefs: (Array.isArray(p.prefs) ? p.prefs : []).filter(x => Life.TYPES.indexOf(x) >= 0), memo: String(p.memo || ''), since: Calc.validDate(p.since) || '', u: String(p.u || '') }));
+  const meets = (Array.isArray(o.meets) ? o.meets : []).filter(m => m && m.id && Calc.validDate(m.date)).map(m => ({ id: String(m.id), date: m.date, pids: (Array.isArray(m.pids) ? m.pids : []).map(String), type: Life.TYPES.indexOf(m.type) >= 0 ? m.type : '기타', memo: String(m.memo || ''), energy: ENERGY[m.energy] ? m.energy : '', u: String(m.u || '') }));
+  const c = o.cfg || {}, cy = {}; Life.GROUPS.forEach(g => { cy[g] = Number(c.cycles && c.cycles[g]) > 0 ? Number(c.cycles[g]) : Life.DEFAULT_CFG.cycles[g]; });
+  return { people, meets, cfg: { target: Number(c.target) >= 0 && c.target !== '' && c.target != null ? Math.round(Number(c.target)) : 4, cycles: cy, u: String(c.u || '') }, del: cleanDel(o.del) };
+}
+let Q = loadK(PEOPLE_KEY, PEOPLE_SEED, qNorm), ppTab = 'today', ppFilter = 'all', ppEditing = null, mtEditing = null;
+function qSave(){ saveK(PEOPLE_KEY, Q); }
+const personById = id => Q.people.find(p => p.id === id) || null;
+const stLabel = { ok: '여유', soon: '임박', over: '지남' };
+function ago(s){ return s.last ? '마지막 만남 ' + (s.since === 0 ? '오늘' : s.since + '일 전') : '아직 만난 적 없음(등록 ' + s.since + '일째)'; }
+function renderPeople(){
+  document.querySelectorAll('#peopleView .pc-tabs button[data-pp="tab"]').forEach(b => b.classList.toggle('on', b.dataset.t === ppTab));
+  document.querySelectorAll('#peopleView .pc-sec').forEach(s => s.classList.toggle('on', s.id === 'pp-' + ppTab));
+  const t = todayStr(), cfg = Q.cfg;
+  if (ppTab === 'today') {
+    const month = t.slice(0, 7), cnt = Life.monthCount(Q.meets, month), tg = cfg.target, pct = tg > 0 ? Math.min(100, Math.round(cnt / tg * 100)) : 0;
+    const due = Life.dueList(Q.people, Q.meets, cfg, t);
+    const from = new Date(Date.parse(t + 'T00:00:00Z') - 90 * 86400000).toISOString().slice(0, 10), ts = Life.typeShares(Q.meets, from, t), en = Life.energyShares(Q.meets, from, t);
+    let h = '<div class="pc-card"><h3>이번 달 만남</h3><div class="pp-big">' + cnt + (tg > 0 ? ' / ' + tg + '회' : '회') + '</div>' + (tg > 0 ? '<div class="pp-prog"><i style="width:' + pct + '%"></i></div><p class="pc-hint">' + (cnt >= tg ? '이번 달 목표를 채웠어요.' : (tg - cnt) + '번 더 만나면 목표예요.') + '</p>' : '') + '</div>';
+    h += '<div class="pc-card"><h3>연락할 때가 된 사람</h3>' + (due.length ? due.map(x => '<div class="pp-row" data-pp="edit-person" data-id="' + esc(x.p.id) + '"><div class="pp-info"><div class="pp-name">' + esc(x.p.name) + '<span class="pp-tag">' + esc(x.p.group) + '</span></div><div class="pp-meta">' + esc(ago(x)) + ' · 목표 ' + x.cycle + '일</div></div><span class="pp-st ' + (x.state === 'over' ? 'over' : 'soon') + '">' + stLabel[x.state] + '</span><button class="pc-btn small" data-pp="quick" data-id="' + esc(x.p.id) + '">만났어요</button></div>').join('') : '<p class="pc-hint" style="margin:0">' + (Q.people.length ? '지금 연락할 때가 된 사람은 없어요.' : '“사람” 탭에서 만나고 싶은 사람을 등록해 보세요.') + '</p>') + '</div>';
+    if (ts.total) h += '<div class="pc-card"><h3>최근 90일 방식별</h3>' + Life.TYPES.filter(k => ts.counts[k]).map(k => '<div class="pp-bar"><span>' + k + '</span><i style="width:' + Math.round(ts.counts[k] / ts.total * 100) * 1.6 + 'px"></i><em>' + ts.counts[k] + '회</em></div>').join('') + (en.charge + en.normal + en.drain ? '<p class="pc-hint">만난 뒤 에너지: 충전 ' + en.charge + ' · 보통 ' + en.normal + ' · 방전 ' + en.drain + '</p>' : '') + '</div>';
+    $('pp-today-body').innerHTML = h;
+  } else if (ppTab === 'list') {
+    $('pp-filter').innerHTML = ['all'].concat(Life.GROUPS).map(g => '<button class="pc-chip' + (g === ppFilter ? ' on' : '') + '" data-pp="filter" data-g="' + g + '">' + (g === 'all' ? '전체' : g) + '</button>').join('');
+    const list = Q.people.filter(p => ppFilter === 'all' || p.group === ppFilter).map(p => Object.assign({ p }, Life.status(p, Q.meets, cfg, t))).sort((a, b) => b.ratio - a.ratio);
+    $('pp-people').innerHTML = list.length ? list.map(x => { const avg = Life.avgInterval(x.p, Q.meets); return '<div class="pp-row" data-pp="edit-person" data-id="' + esc(x.p.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(x.p.name) + '<span class="pp-tag">' + esc(x.p.group) + '</span></div><div class="pp-meta">' + esc(ago(x)) + ' · 주기 ' + x.cycle + '일' + (avg ? ' · 실제 평균 ' + Math.round(avg) + '일' : '') + (x.p.prefs.length ? ' · ' + esc(x.p.prefs.join('/')) : '') + '</div>' + (avg && avg > x.cycle * 1.3 ? '<div class="pp-warn">실제 평균 간격이 목표보다 길어요. 주기를 ' + Math.round(avg / 5) * 5 + '일쯤으로 늘려 볼까요?</div>' : '') + '</div><span class="pp-st ' + x.state + '">' + stLabel[x.state] + '</span><button class="pc-btn small" data-pp="quick" data-id="' + esc(x.p.id) + '">만났어요</button></div>'; }).join('') : '<p class="pc-hint">아직 등록된 사람이 없어요. “+ 사람 추가”로 시작해 보세요.</p>';
+    $('pp-cfg-target').value = cfg.target; Life.GROUPS.forEach((g, i) => { $('pp-cfg-' + i).value = cfg.cycles[g]; });
+  } else {
+    const ms = Q.meets.slice().sort((a, b) => a.date < b.date ? 1 : (a.date > b.date ? -1 : 0));
+    $('pp-meets').innerHTML = ms.length ? ms.map(m => '<div class="pp-row" data-pp="edit-meet" data-id="' + esc(m.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(m.date.slice(5).replace('-', '/')) + ' · ' + esc(m.type) + '<span class="pp-tag">' + esc(m.pids.map(id => (personById(id) || { name: '(삭제된 사람)' }).name).join(', ')) + '</span></div>' + (m.memo || m.energy ? '<div class="pp-meta">' + esc(m.memo) + (m.energy ? (m.memo ? ' · ' : '') + '에너지 ' + ENERGY[m.energy] : '') + '</div>' : '') + '</div></div>').join('') : '<p class="pc-hint">아직 만남 기록이 없어요. “+ 만남 기록”이나 사람 카드의 “만났어요”를 눌러 보세요.</p>';
+  }
+}
+function openPerson(id){
+  const p = id ? personById(id) : null; if (id && !p) return;
+  ppEditing = id || null;
+  $('pp-d-title').textContent = p ? '사람 수정' : '사람 추가';
+  fillSelect($('pp-f-group'), Life.GROUPS.map(g => ({ v: g, t: g })), p ? p.group : (ppFilter !== 'all' ? ppFilter : '친구'));
+  $('pp-f-name').value = p ? p.name : ''; $('pp-f-cycle').value = p && p.cycle ? p.cycle : ''; $('pp-f-memo').value = p ? p.memo : ''; $('pp-f-since').value = p && p.since ? p.since : todayStr();
+  $('pp-f-prefs').innerHTML = Life.TYPES.map(k => '<label class="pc-chip"><input type="checkbox" value="' + k + '"' + (p && p.prefs.indexOf(k) >= 0 ? ' checked' : '') + '>' + k + '</label>').join('');
+  $('pp-d-delete').hidden = !p; $('pp-dlg').showModal();
+}
+function savePerson(){
+  const name = $('pp-f-name').value.trim(); if (!name) { toast('이름을 입력해 주세요.'); return; }
+  const prefs = [...$('pp-f-prefs').querySelectorAll('input:checked')].map(x => x.value), cyc = Number($('pp-f-cycle').value);
+  const d = { name, group: $('pp-f-group').value, cycle: cyc > 0 ? cyc : '', prefs, memo: $('pp-f-memo').value.trim(), since: Calc.validDate($('pp-f-since').value) || todayStr(), u: nowIso() };
+  if (ppEditing) Object.assign(personById(ppEditing), d); else Q.people.push(Object.assign({ id: uid('pp') }, d));
+  qSave(); changed(); $('pp-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function delPerson(){
+  const p = personById(ppEditing); if (!p || !confirm('“' + p.name + '”을(를) 삭제할까요? 만남 기록에서도 이름이 빠져요.')) return;
+  const t = nowIso();
+  Q.meets.forEach(m => { if (m.pids.indexOf(p.id) >= 0) { m.pids = m.pids.filter(x => x !== p.id); m.u = t; } });
+  Q.meets.filter(m => !m.pids.length).forEach(m => { Q.del[m.id] = t; }); Q.meets = Q.meets.filter(m => m.pids.length);
+  Q.people = Q.people.filter(x => x.id !== p.id); Q.del[p.id] = t; qSave(); changed(); $('pp-dlg').close(); renderAll();
+}
+function openMeet(id, presetPid){
+  if (!Q.people.length) { toast('먼저 “사람” 탭에서 사람을 등록해 주세요.'); return; }
+  const m = id ? Q.meets.find(x => x.id === id) : null; if (id && !m) return;
+  mtEditing = id || null;
+  $('mt-d-title').textContent = m ? '만남 기록 수정' : '만남 기록';
+  $('mt-f-date').value = m ? m.date : todayStr();
+  const sel = m ? m.pids : (presetPid ? [presetPid] : []);
+  $('mt-f-people').innerHTML = Life.GROUPS.map(g => { const ps = Q.people.filter(p => p.group === g); return ps.length ? '<div class="gname">' + g + '</div>' + ps.map(p => '<label><input type="checkbox" value="' + esc(p.id) + '"' + (sel.indexOf(p.id) >= 0 ? ' checked' : '') + '>' + esc(p.name) + '</label>').join('') : ''; }).join('');
+  fillSelect($('mt-f-type'), Life.TYPES.map(k => ({ v: k, t: k })), m ? m.type : ((presetPid && personById(presetPid) && personById(presetPid).prefs[0]) || '커피'));
+  $('mt-f-energy').value = m ? m.energy : ''; $('mt-f-memo').value = m ? m.memo : ''; $('mt-d-delete').hidden = !m; $('mt-dlg').showModal();
+}
+function saveMeet(){
+  const pids = [...$('mt-f-people').querySelectorAll('input:checked')].map(x => x.value), date = Calc.validDate($('mt-f-date').value);
+  if (!pids.length) { toast('함께한 사람을 한 명 이상 선택해 주세요.'); return; }
+  if (!date) { toast('날짜를 확인해 주세요.'); return; }
+  const d = { date, pids, type: $('mt-f-type').value, memo: $('mt-f-memo').value.trim(), energy: $('mt-f-energy').value, u: nowIso() };
+  if (mtEditing) Object.assign(Q.meets.find(x => x.id === mtEditing), d); else Q.meets.push(Object.assign({ id: uid('mt') }, d));
+  qSave(); changed(); $('mt-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function delMeet(){ if (!mtEditing || !confirm('이 만남 기록을 삭제할까요?')) return; Q.meets = Q.meets.filter(m => m.id !== mtEditing); Q.del[mtEditing] = nowIso(); qSave(); changed(); $('mt-dlg').close(); renderAll(); }
+function saveCfg(){
+  const t = Number($('pp-cfg-target').value); Q.cfg.target = isFinite(t) && t >= 0 ? Math.round(t) : 4;
+  Life.GROUPS.forEach((g, i) => { const v = Number($('pp-cfg-' + i).value); Q.cfg.cycles[g] = v > 0 ? Math.round(v) : Life.DEFAULT_CFG.cycles[g]; });
+  Q.cfg.u = nowIso(); qSave(); changed(); renderAll();
+}
+
+
 /* ---------- 동기화 API(회의비 쪽 syncUp/syncDown이 호출) ---------- */
 window.AppExtras = {
-  exportSync(){ return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del } }; },
+  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people'],
+  exportSync(){
+    return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
+      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, cfg: Q.cfg, del: Q.del } };
+  },
+  strip(obj){ this.keys.forEach(k => { delete obj[k]; }); },
   importSync(json){
     let ch = false;
-    if (json && json.priceCheck && typeof json.priceCheck === 'object') {
+    const ok = k => json && json[k] && typeof json[k] === 'object';
+    if (ok('priceCheck')) {
       const r = json.priceCheck, mi = Shop.mergeById(S.items, r.items, S.del, cleanDel(r.del)), mr = Shop.mergeById(S.records, r.records, S.del, cleanDel(r.del));
       S = pNormalize({ items: mi.items, records: mr.items, del: mi.del }); pSave(); ch = true;
     }
-    if (json && json.shopping && typeof json.shopping === 'object') {
+    if (ok('shopping')) {
       const r = json.shopping, m = Shop.mergeById(SH.items, r.items, SH.del, cleanDel(r.del));
       SH = sNormalize({ items: m.items, del: m.del }); sSave(); ch = true;
+    }
+    if (ok('golf')) {
+      const r = json.golf, mc = Shop.mergeById(G.courses, r.courses, G.del, cleanDel(r.del)), mr = Shop.mergeById(G.rounds, r.rounds, G.del, cleanDel(r.del));
+      G = gNorm({ courses: mc.items, rounds: mr.items, del: mc.del }); gSave(); ch = true;
+    }
+    if (ok('subs')) {
+      const r = json.subs, mi = Shop.mergeById(SB.items, r.items, SB.del, cleanDel(r.del)), mp = Shop.mergeById(SB.pays, r.pays, SB.del, cleanDel(r.del));
+      const cfg = r.cfg && String(r.cfg.u || '') > String(SB.cfg.u || '') ? r.cfg : SB.cfg;
+      SB = bNorm({ items: mi.items, pays: mp.items, cfg, del: mi.del }); bSave(); ch = true;
+    }
+    if (ok('people')) {
+      const r = json.people, mp = Shop.mergeById(Q.people, r.people, Q.del, cleanDel(r.del)), mm = Shop.mergeById(Q.meets, r.meets, Q.del, cleanDel(r.del));
+      const cfg = r.cfg && String(r.cfg.u || '') > String(Q.cfg.u || '') ? r.cfg : Q.cfg;
+      Q = qNorm({ people: mp.items, meets: mm.items, cfg, del: mp.del }); qSave(); ch = true;
     }
     if (ch) renderAll();
     return ch;
@@ -2212,6 +2800,14 @@ function renderGlobal(){
   if (A.hasUrl()) { if (age === null || age >= 7) list.push({ key: 'bk:' + (age === null ? 'never' : 'old'), act: 'backup', html: '☁ ' + (age === null ? '아직 백업한 적이 없어요' : '마지막 백업이 <b>' + age + '일 전</b>이에요') + ' — 눌러서 지금 백업' }); }
   else list.push({ key: 'nourl', act: 'settings', html: '☁ 시트 연결이 안 되어 있어요 — 눌러서 ⚙ 설정에서 Apps Script URL 입력' });
   if (mode !== 'meeting') { const nm = A.newMonth(); if (nm) list.push({ key: 'nm:' + nm, act: 'meeting', html: '📅 회의비: ' + esc(nm) }); }
+  if (mode !== 'sub') {
+    const up = Life.upcoming(SB.items, Life.payMap(SB.pays), todayStr(), 2);
+    if (up.length) list.push({ key: 'sb:' + up.map(x => x.id + x.date).join(','), act: 'sub', html: '💳 결제 임박 <b>' + up.length + '건</b> — ' + esc(up[0].name) + ' ' + (up[0].amount == null ? '(금액 입력 필요)' : won(up[0].amount)) + ' (' + (up[0].diff === 0 ? '오늘' : up[0].diff + '일 뒤') + ')' + (up.length > 1 ? ' 외' : '') });
+  }
+  if (mode !== 'people') {
+    const du = Life.dueList(Q.people, Q.meets, Q.cfg, todayStr());
+    if (du.length) list.push({ key: 'pp:' + du.map(x => x.p.id).join(','), act: 'people', html: '👥 연락할 때가 된 사람 <b>' + du.length + '명</b> — ' + esc(du[0].p.name) + (du.length > 1 ? ' 외' : '') });
+  }
   const html = list.filter(a => !dismissed(a.key)).map(a => '<div class="galert" data-g="' + a.act + '" data-key="' + esc(a.key) + '" role="button" tabindex="0"><span class="t">' + a.html + '</span><button class="x" data-g="x" data-key="' + esc(a.key) + '" aria-label="닫기">✕</button></div>').join('');
   if (gbox.dataset.sig !== html) { gbox.dataset.sig = html; gbox.innerHTML = html; }
 }
@@ -2220,7 +2816,7 @@ $('gBar').addEventListener('click', e => {
   if (x) { try { sessionStorage.setItem('gdis:' + x.dataset.key, '1'); } catch (er) { /* 무시 */ } renderGlobal(); e.stopPropagation(); return; }
   const el = e.target.closest('[data-g]'); if (!el) return;
   const a = el.dataset.g;
-  if (a === 'shop') setMode('shop'); else if (a === 'meeting') setMode('meeting'); else if (a === 'backup') doBackup(); else if (a === 'settings') window.AppSync.openSettings();
+  if (a === 'shop' || a === 'meeting' || a === 'sub' || a === 'people') setMode(a); else if (a === 'backup') doBackup(); else if (a === 'settings') window.AppSync.openSettings();
 });
 $('gSettings').addEventListener('click', () => { if (window.AppSync) window.AppSync.openSettings(); });
 ['drawerClose', 'overlay'].forEach(id => { const el = $(id); if (el) el.addEventListener('click', () => setTimeout(renderGlobal, 80)); });
@@ -2230,22 +2826,26 @@ $('gBar').addEventListener('keydown', e => { if (e.key === 'Enter') { const el =
 
 /* ---------- 모드 / 화면 ---------- */
 let mode = 'meeting';
+const MODE_VIEWS = { meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', people: 'peopleView' };
 function setMode(m){
+  if (!MODE_VIEWS[m]) m = 'meeting';
   mode = m;
-  $('mtgView').hidden = m !== 'meeting'; $('priceView').hidden = m !== 'price'; $('shopView').hidden = m !== 'shop';
+  Object.keys(MODE_VIEWS).forEach(k => { $(MODE_VIEWS[k]).hidden = k !== m; });
   document.querySelectorAll('.modebtn').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
   try { localStorage.setItem(MODE_KEY, m); } catch (e) { /* 저장 불가 환경 */ }
   renderAll(); window.scrollTo(0, 0);
 }
 function setTab(t){
   ptab = t;
-  document.querySelectorAll('.pc-tabs button[data-pc="tab"]').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  document.querySelectorAll('.pc-sec').forEach(s => s.classList.toggle('on', s.id === 'pc-' + t));
+  document.querySelectorAll('#priceView .pc-tabs button[data-pc="tab"]').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  document.querySelectorAll('#priceView .pc-sec').forEach(s => s.classList.toggle('on', s.id === 'pc-' + t));
   renderAll();
 }
 function renderAll(){
-  if (mode === 'price') { if (ptab === 'analyze') renderAnalyze(); else if (ptab === 'history') renderHistory(); else renderTrend(); }
+  if (mode === 'price') { if (ptab === 'analyze') renderAnalyze(); else if (ptab === 'history') { renderHistory(); renderGolf(); } else renderTrend(); }
   else if (mode === 'shop') renderShop();
+  else if (mode === 'sub') renderSub();
+  else if (mode === 'people') renderPeople();
   syncNote(); renderGlobal();
 }
 
@@ -2282,7 +2882,7 @@ $('sh-dlg').addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter' || !e.target.matches) return;
-  if (e.target.matches('tr[data-pc="edit-rec"]')) openRec(e.target.dataset.id); else if (e.target.matches('.sh-row')) openShop(e.target.dataset.id);
+  if (e.target.matches('tr[data-pc="edit-rec"]')) openRec(e.target.dataset.id); else if (e.target.matches('.sh-row')) openShop(e.target.dataset.id); else if (e.target.matches('.gf-row')) openCourse(e.target.dataset.id); else if (e.target.matches('.sb-row')) openSub(e.target.dataset.id); else if (e.target.matches('.pp-row')) { const r = e.target; if (r.dataset.pp === 'edit-person') openPerson(r.dataset.id); else if (r.dataset.pp === 'edit-meet') openMeet(r.dataset.id); }
 });
 $('pc-item').addEventListener('change', () => { const it = itemById($('pc-item').value); if (it) { const rs = recsOf(it.id); $('pc-amount').value = rs.length ? rs[rs.length - 1].amount : ''; } computeAnalyze(); });
 ['pc-name', 'pc-unit', 'pc-basis', 'pc-amount', 'pc-bonus', 'pc-paid', 'pc-points'].forEach(id => $(id).addEventListener('input', computeAnalyze));
@@ -2290,12 +2890,53 @@ $('pc-item').addEventListener('change', () => { const it = itemById($('pc-item')
 $('pc-e-item').addEventListener('change', updateEditPreview);
 $('sh-csv').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) csvIn(f); });
 
+$('priceView').addEventListener('click', e => {
+  const el = e.target.closest('[data-gf]'); if (!el) return;
+  const a = el.dataset.gf;
+  if (a === 'add-course') openCourse(null); else if (a === 'add-round') openRound(null, null); else if (a === 'course') openCourse(el.dataset.id);
+});
+$('gf-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-gf]'); if (!el) return;
+  const a = el.dataset.gf;
+  if (a === 'd-cancel') $('gf-dlg').close(); else if (a === 'd-save') saveCourse(true); else if (a === 'd-delete') delCourse();
+  else if (a === 'd-add-round') { const id = gcEditing || saveCourse(false); if (id) { gcEditing = id; renderCourseRounds(); openRound(null, id); } }
+  else if (a === 'edit-round') openRound(el.dataset.id, null);
+});
+$('gr-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-gf]'); if (!el) return;
+  if (el.dataset.gf === 'r-cancel') $('gr-dlg').close(); else if (el.dataset.gf === 'r-save') saveRound(); else if (el.dataset.gf === 'r-delete') delRound();
+});
+['gr-f-tee', 'gr-f-part', 'gr-f-price'].forEach(id => { $(id).addEventListener('input', grPreview); $(id).addEventListener('change', grPreview); });
+$('subView').addEventListener('click', e => {
+  const el = e.target.closest('[data-sb]'); if (!el) return;
+  const a = el.dataset.sb;
+  if (a === 'prev') shiftMonth(-1); else if (a === 'next') shiftMonth(1); else if (a === 'today') { sbMonth = todayStr().slice(0, 7); renderSub(); }
+  else if (a === 'add') openSub(null); else if (a === 'edit') openSub(el.dataset.id); else if (a === 'check') togglePay(el.dataset.id); else if (a === 'backup') doBackup();
+});
+$('sb-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-sb]'); if (!el) return;
+  if (el.dataset.sb === 'd-cancel') $('sb-dlg').close(); else if (el.dataset.sb === 'd-save') saveSub(); else if (el.dataset.sb === 'd-delete') delSub();
+});
+$('sb-costmode').addEventListener('change', e => { SB.cfg.costIsNet = e.target.value === 'net'; SB.cfg.u = nowIso(); bSave(); changed(); renderSub(); });
+$('peopleView').addEventListener('click', e => {
+  const el = e.target.closest('[data-pp]'); if (!el) return;
+  const a = el.dataset.pp;
+  if (a === 'tab') { ppTab = el.dataset.t; renderPeople(); }
+  else if (a === 'add-person') openPerson(null); else if (a === 'edit-person') openPerson(el.dataset.id);
+  else if (a === 'add-meet') openMeet(null, null); else if (a === 'edit-meet') openMeet(el.dataset.id, null);
+  else if (a === 'quick') { e.stopPropagation(); openMeet(null, el.dataset.id); }
+  else if (a === 'filter') { ppFilter = el.dataset.g; renderPeople(); } else if (a === 'backup') doBackup();
+});
+$('pp-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; if (el.dataset.pp === 'p-cancel') $('pp-dlg').close(); else if (el.dataset.pp === 'p-save') savePerson(); else if (el.dataset.pp === 'p-delete') delPerson(); });
+$('mt-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; if (el.dataset.pp === 'm-cancel') $('mt-dlg').close(); else if (el.dataset.pp === 'm-save') saveMeet(); else if (el.dataset.pp === 'm-delete') delMeet(); });
+['pp-cfg-target', 'pp-cfg-0', 'pp-cfg-1', 'pp-cfg-2', 'pp-cfg-3'].forEach(id => $(id).addEventListener('change', saveCfg));
+
 $('appVer').textContent = APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION;
 try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 let startMode = 'meeting';
-try { const v = localStorage.getItem(MODE_KEY); startMode = v === 'price' || v === 'shop' ? v : 'meeting'; } catch (e) { /* 기본값 */ }
+try { const v = localStorage.getItem(MODE_KEY); startMode = MODE_VIEWS[v] ? v : 'meeting'; } catch (e) { /* 기본값 */ }
 setMode(startMode);
 })();
 </script>
