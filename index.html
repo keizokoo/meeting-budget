@@ -2700,7 +2700,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-18-n (패션 구매이력 · Hmall·11st 주문)';
+const APP_BUILD_VERSION = '2026-10-18-o (시트 등록대기 자동 반영)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4278,7 +4278,7 @@ window.AppExtras = {
     return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
       golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
   },
-  strip(obj){ this.keys.forEach(k => { delete obj[k]; }); },
+  strip(obj){ this.keys.forEach(k => { delete obj[k]; }); delete obj.inbox; },
   importSync(json){
     let ch = false;
     const ok = k => json && json[k] && typeof json[k] === 'object';
@@ -4290,6 +4290,20 @@ window.AppExtras = {
     if (ok('shopping')) {
       const r = json.shopping, m = Shop.mergeById(SH.items, r.items, SH.del, cleanDel(r.del));
       SH = sNormalize({ items: m.items, del: m.del }); sSave(); ch = true;
+    }
+    if (Array.isArray(json && json.inbox)) {   /* 시트 '등록대기' 탭에 적어 둔 새 소비 기록 — 같은 id는 더 최근에 수정한 쪽이 우선 */
+      let ic = false;
+      json.inbox.forEach(r => {
+        try {
+          if (!r || r.kind !== 'shop' || !r.item || !r.item.id) return;
+          const o = r.item, id = String(o.id); if (SH.del[id]) return;
+          const ex = SH.items.find(x => x.id === id);
+          if (ex && String(ex.u || '') >= String(o.u || '')) return;
+          if (ex) Object.assign(ex, o); else SH.items.push(Object.assign({ cat: 'fashion', status: 'hold', qty: 1 }, o));
+          ic = true;
+        } catch (e) { /* 한 줄이 잘못돼도 나머지는 계속 */ }
+      });
+      if (ic) { SH = sNormalize(SH); sSave(); ch = true; }
     }
     if (ok('golf')) {
       const r = json.golf, mc = Shop.mergeById(G.courses, r.courses, G.del, cleanDel(r.del)), mr = Shop.mergeById(G.rounds, r.rounds, G.del, cleanDel(r.del));
