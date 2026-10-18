@@ -2,7 +2,7 @@
    - 항상 네트워크 최신본을 먼저 받아오고, 인터넷이 안 될 때만 저장해 둔 사본을 보여 줍니다.
    - 예전 버전이 남긴 캐시(옛 앱 이름·옛 화면)는 이 파일이 적용되는 순간 모두 지웁니다.
    - Apps Script·구글 폰트 등 다른 사이트 요청은 건드리지 않습니다. */
-const VER = 'mylife-2026-10-18-f';
+const VER = 'mylife-2026-10-18-g';
 
 self.addEventListener('install', () => { self.skipWaiting(); });
 

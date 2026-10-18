@@ -565,18 +565,55 @@
   .sh-autobox .calc.diff{ color:var(--accent); }
   #sh-dlg input[readonly]{ background:var(--bg); color:var(--ink2); }
   .gsync.pending{ cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+  /* ---- 2026-10-18-g: 하단 탭 + 더보기, 빠른 가이드, 도수치료, 연봉 ---- */
+  .modebar{ position:sticky; top:0; z-index:40; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 14px 0; }
+  .modebar-in{ max-width:920px; margin:0 auto; display:flex; gap:4px; background:var(--line); padding:4px; border-radius:12px; }
+  .grpbtn{ flex:1; min-width:0; border:none; background:transparent; color:var(--ink2); font-weight:800; font-size:14px; padding:9px 6px; border-radius:9px; min-height:42px; white-space:nowrap; }
+  .grpbtn.on{ background:var(--accent); color:var(--on-accent); }
+  .modesub{ max-width:920px; margin:0 auto; display:flex; gap:6px; overflow-x:auto; padding:8px 0; scrollbar-width:none; }
+  .modesub[hidden]{ display:none; }
+  .modebtn{ flex:none; border:1px solid var(--line2); background:var(--surface); color:var(--ink2); font-weight:700; font-size:13px; padding:7px 14px; border-radius:999px; min-height:38px; white-space:nowrap; letter-spacing:-.01em; }
+  .modebtn.on{ background:var(--pc-soft); color:var(--accent); border-color:var(--accent); font-weight:800; }
+  .mb-sheet{ position:fixed; inset:0; z-index:70; background:rgba(0,0,0,.4); display:flex; align-items:flex-end; }
+  .mb-sheet[hidden]{ display:none; }
+  .mb-sheet-in{ width:100%; max-width:920px; margin:0 auto; max-height:80vh; overflow-y:auto; background:var(--surface); color:var(--ink); border-radius:18px 18px 0 0; padding:14px 14px calc(18px + env(safe-area-inset-bottom,0px)); box-shadow:0 -8px 24px rgba(0,0,0,.25); }
+  .mb-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:15px; }
+  .mb-x{ border:0; background:none; font-size:20px; color:var(--ink2); min-width:40px; min-height:40px; }
+  .quick-fab{ position:fixed; right:14px; bottom:calc(20px + env(safe-area-inset-bottom,0px)); z-index:55; width:48px; height:48px; border-radius:50%; border:0; background:var(--accent); color:var(--on-accent); font-size:21px; box-shadow:0 4px 12px rgba(0,0,0,.3); }
+  .quick-fab[hidden]{ display:none; }
+  .nv-grp{ font-size:12px; font-weight:800; color:var(--ink2); margin:10px 0 2px; }
+  .nv-row{ display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:13px; flex-wrap:wrap; }
+  .nv-row .nv-n{ flex:1; min-width:96px; font-weight:700; } .nv-row label{ display:flex; align-items:center; gap:5px; font-size:12.5px; color:var(--ink); }
+  .nv-row input, .nv-fab input{ width:auto; min-height:0; } .nv-fab{ display:flex; align-items:center; gap:7px; margin-top:10px; font-size:12.5px; }
+  .gd-card{ background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:var(--shadow); }
+  .gd-h{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px; } .gd-h b{ font-size:15px; }
+  .gd-l{ margin:0; padding-left:20px; font-size:14px; line-height:1.7; } .gd-l li{ margin:1px 0; }
+  .gd-empty{ color:var(--ink2); font-size:13px; padding:14px 2px; }
+  .mp-st{ border-radius:10px; padding:10px 12px; font-size:13px; line-height:1.55; margin:0 0 12px; border:1px solid var(--line); background:var(--surface); }
+  .mp-st.lock{ border-color:var(--warn); color:var(--warn); font-weight:700; } .mp-st.ok{ border-color:var(--good); }
+  .mp-bar{ height:8px; background:var(--line); border-radius:6px; overflow:hidden; margin:6px 0 2px; } .mp-bar i{ display:block; height:100%; background:var(--accent); }
+  .mp-row{ display:flex; justify-content:space-between; gap:8px; padding:10px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
+  .mp-row:hover{ background:var(--pc-soft); } .mp-row .l{ min-width:0; } .mp-row .l b{ font-size:14px; } .mp-row .l small{ display:block; font-size:11.5px; color:var(--ink2); margin-top:2px; }
+  .mp-row .r{ text-align:right; font-size:12.5px; flex:none; } .mp-row .r b{ display:block; font-size:14px; }
+  .mp-chip{ display:inline-block; font-size:10.5px; font-weight:800; padding:1px 7px; border-radius:999px; border:1px solid var(--line2); color:var(--ink2); margin-left:4px; }
+  .mp-chip.warn{ border-color:var(--warn); color:var(--warn); }
+  .mp-cyc{ font-size:12.5px; padding:8px 2px; border-bottom:1px solid var(--line); line-height:1.5; }
+  .mp-warn{ margin-top:8px; font-size:12.5px; color:var(--warn); font-weight:700; }
+  .py-row{ padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; } .py-row:hover{ background:var(--pc-soft); }
+  .py-top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; } .py-top b{ font-size:15px; } .py-top span{ font-size:12.5px; color:var(--ink2); } .py-top .py-sal{ margin-left:auto; font-size:15px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .py-sub{ font-size:12px; color:var(--ink2); margin-top:3px; line-height:1.5; } .py-sub .tag{ display:inline-block; font-weight:800; border:1px solid var(--line2); border-radius:999px; padding:0 7px; margin-right:5px; color:var(--ink); }
+  #py-chart svg{ width:100%; height:auto; display:block; } #py-chart{ margin:0 0 8px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:8px; }
+  #mp-dlg, #gd-dlg, #py-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
+  #mp-dlg::backdrop, #gd-dlg::backdrop, #py-dlg::backdrop{ background:rgba(0,0,0,.45); }
+  #mp-dlg h3, #gd-dlg h3, #py-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #mp-dlg .pc-f input, #mp-dlg .pc-f select, #gd-dlg .pc-f input, #gd-dlg .pc-f select, #gd-dlg .pc-f textarea, #py-dlg .pc-f input{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
+  #gd-dlg textarea{ min-height:150px; line-height:1.5; resize:vertical; }
+  #mp-dlg .mp-chk, #gd-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #mp-dlg .mp-chk input, #gd-dlg .mp-chk input{ width:auto; min-height:0; }
 </style>
 </head>
 <body>
-<!-- ===== [신규] 모드 스위치: 회의비 / 가격 체크 / 쇼핑 이력 ===== -->
-<div class="modebar" id="modeBar"><div class="modebar-in">
-  <button class="modebtn on" data-mode="meeting" id="modeMeeting">회의비</button>
-  <button class="modebtn" data-mode="price" id="modePrice">가격</button>
-  <button class="modebtn" data-mode="shop" id="modeShop">쇼핑</button>
-  <button class="modebtn" data-mode="sub" id="modeSub">구독</button>
-  <button class="modebtn" data-mode="people" id="modePeople">인맥</button>
-  <button class="modebtn" data-mode="skin" id="modeSkin">피부</button>
-</div></div>
+<!-- ===== 상단 3묶음(돈 · 소비 · 나) + 하위 탭 (보이는 기능은 ⚙ 설정 → 화면 구성에서 고름) ===== -->
+<nav class="modebar" id="modeBar" aria-label="화면 이동"><div class="modebar-in" id="modeBarIn"></div><div id="modeSubs"></div></nav>
 <div class="gbar" id="gBar">
   <div class="gbar-in"><span class="gdot" id="gDot"></span><span class="gsync" id="gSync"></span><button class="gbtn" id="themeToggle" type="button">🌓 다크모드</button><button class="gbtn" id="gSettings" type="button">⚙ 설정</button></div>
   <div class="galerts" id="gAlerts"></div>
@@ -735,11 +772,6 @@
       <div id="pc-table" class="pc-tblwrap"></div>
       <p class="pc-hint">행을 누르면 수정·삭제할 수 있어요. 단가 = (결제금 − 적립금) ÷ (용량 + 증정). 상품별 최저는 파랑, 최고는 빨강이에요.</p>
     </div>
-    <div class="pc-card" id="gf-card">
-      <div class="pc-headrow"><h3>골프장 이력</h3><span style="display:flex;gap:6px"><button class="pc-btn small" data-gf="add-round">+ 요금</button><button class="pc-btn small primary" data-gf="add-course">+ 골프장</button></span></div>
-      <p class="pc-hint" style="margin-top:0">1부·2부·3부별 가격, 거리, 간단 후기를 정리해요. 카드를 누르면 수정하고 요금을 추가할 수 있어요.</p>
-      <div id="gf-list"></div>
-    </div>
   </section>
 
   <section class="pc-sec" id="pc-trend"><div id="pc-charts"></div></section>
@@ -758,7 +790,7 @@
   <div class="pc-tabs" id="sh-tabs"></div>
   <div id="sh-main">
   <div class="strip" id="sh-summary"></div>
-  <div class="sectionhead"><h3 id="sh-title">전자제품 품목</h3><span class="sh-hbtns"><button class="pc-btn small" data-sh="sz" id="sh-sz-btn" hidden>📏 내 치수표</button><button class="pc-btn small primary" data-sh="add">+ 항목 추가</button></span></div>
+  <div class="sectionhead"><h3 id="sh-title">전자제품 품목</h3><span class="sh-hbtns"><button class="pc-btn small" data-sh="swing" id="sh-swing-btn" hidden>⛳ 스윙 포인트</button><button class="pc-btn small" data-sh="sz" id="sh-sz-btn" hidden>📏 내 치수표</button><button class="pc-btn small primary" data-sh="add">+ 항목 추가</button></span></div>
   <div id="sh-list"></div>
   </div>
   <div id="sz-panel" hidden>
@@ -769,6 +801,13 @@
       <label>브랜드<select id="sz-f-brand" aria-label="브랜드 필터"></select></label>
     </div>
     <div id="sz-list"></div>
+  </div>
+  <div id="gf-wrap" hidden>
+    <div class="pc-card" id="gf-card">
+      <div class="pc-headrow"><h3>⛳ 골프장 이력</h3><span style="display:flex;gap:6px"><button class="pc-btn small" data-gf="add-round">+ 요금</button><button class="pc-btn small primary" data-gf="add-course">+ 골프장</button></span></div>
+      <p class="pc-hint" style="margin-top:0">1부·2부·3부별 가격, 거리, 간단 후기를 정리해요. 카드를 누르면 수정하고 요금을 추가할 수 있어요.</p>
+      <div id="gf-list"></div>
+    </div>
   </div>
   <div class="toolbar">
     <button class="toolbtn" data-sh="csv-out">⬇ CSV 내보내기</button>
@@ -836,6 +875,8 @@
 <!-- ===== [신규] 피부관리 영역 ===== -->
 <div id="skinView" hidden>
  <div class="pc-wrap">
+  <div class="pc-tabs" id="sk-tabs"><button type="button" class="on" data-sk="tab" data-t="skin">✨ 피부관리</button><button type="button" data-sk="tab" data-t="manual">🦵 도수치료</button></div>
+  <div id="sk-skin">
   <div class="strip" id="sk-summary"></div>
   <div class="sectionhead"><h3>피부관리 패키지</h3><button class="pc-btn small primary" data-sk="add">+ 관리 추가</button></div>
   <div class="sk-filters">
@@ -846,8 +887,101 @@
   <div id="sk-list"></div>
   <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-sk="backup">☁ 지금 백업</button></div>
   <p class="pc-sync" id="sk-sync"></p>
+  </div>
+  <div id="mp-panel" hidden>
+   <div class="strip" id="mp-summary"></div>
+   <div id="mp-status"></div>
+   <div class="sectionhead"><h3>도수치료 기록</h3><button class="pc-btn small primary" data-mp="add">+ 기록 추가</button></div>
+   <div id="mp-list"></div>
+   <div id="mp-cycles"></div>
+   <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-mp="backup">☁ 지금 백업</button></div>
+   <p class="pc-sync" id="mp-sync"></p>
+   <p class="pc-hint">실비 조건: 같은 질병은 365일·30회 한도(질병·사고별로 따로 계산). 기간이나 횟수를 채우면 마지막 보상일부터 180일은 보상되지 않아요. 첫 청구일부터 카운팅하며, 정확한 판단은 보험사 약관을 기준으로 하세요.</p>
+  </div>
  </div>
 </div>
+
+<!-- ===== [신규] 연봉 이력 ===== -->
+<div id="payView" hidden>
+ <div class="pc-wrap">
+  <div class="strip" id="py-summary"></div>
+  <div class="sectionhead"><h3>💼 연봉 이력</h3><span class="sh-hbtns"><button class="pc-btn small" data-py="hide" id="py-hide">👁 금액 보기</button><button class="pc-btn small primary" data-py="add">+ 연도 추가</button></span></div>
+  <div id="py-chart"></div>
+  <div id="py-list"></div>
+  <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-py="backup">☁ 지금 백업</button></div>
+  <p class="pc-sync" id="py-sync"></p>
+  <p class="pc-hint">금액은 처음에 가려져 있어요. 시트 백업에 포함할지는 ⚙ 설정 → 연봉에서 고를 수 있어요.</p>
+ </div>
+</div>
+
+<!-- ===== [신규] 가이드(골프 · 피부 루틴 등) ===== -->
+<div id="guideView" hidden>
+ <div class="pc-wrap">
+  <div class="sectionhead"><h3>📌 가이드</h3><button class="pc-btn small primary" data-gd="add">+ 카드 추가</button></div>
+  <div class="pc-tabs" id="gd-tabs"></div>
+  <div id="gd-list"></div>
+  <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-gd="backup">☁ 지금 백업</button></div>
+  <p class="pc-sync" id="gd-sync"></p>
+ </div>
+</div>
+
+<dialog id="mp-dlg">
+  <h3 id="mp-d-title">도수치료 기록</h3>
+  <div class="pc-row2">
+    <label class="pc-f">진료일<input id="mp-f-date" type="date"></label>
+    <label class="pc-f">횟수(일수)<input id="mp-f-cnt" type="number" inputmode="numeric" min="1" step="1" value="1"></label>
+  </div>
+  <div class="pc-row2">
+    <label class="pc-f">부위<select id="mp-f-part"></select></label>
+    <label class="pc-f">병원<input id="mp-f-clinic" type="text" placeholder="병원 이름"></label>
+  </div>
+  <div class="pc-row2">
+    <label class="pc-f">청구금액(원)<input id="mp-f-cost" type="number" inputmode="numeric" min="0" step="any"></label>
+    <label class="pc-f">지급 보험금(원)<input id="mp-f-paid" type="number" inputmode="numeric" min="0" step="any"></label>
+  </div>
+  <label class="mp-chk"><input type="checkbox" id="mp-f-claimed" checked> 보험 청구함 (한도 횟수에 포함)</label>
+  <label class="pc-f">청구·지급일 (비우면 진료일 기준)<input id="mp-f-cdate" type="date"></label>
+  <label class="pc-f">질병·사고 (같은 질병끼리 한도 계산)<input id="mp-f-dz" type="text" list="mp-dz-list" autocomplete="off" placeholder="예: 경추간판장애 (M50)"></label>
+  <datalist id="mp-dz-list"></datalist>
+  <label class="pc-f">증상<input id="mp-f-symptom" type="text" placeholder="예: 고관절 우측 다리 통증"></label>
+  <label class="pc-f">메모(선택)<input id="mp-f-memo" type="text"></label>
+  <div class="mp-warn" id="mp-f-warn" aria-live="polite"></div>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-mp="d-cancel">취소</button><button class="pc-btn primary" data-mp="d-save">저장</button></div>
+  <button id="mp-d-delete" class="pc-btn danger wide" data-mp="d-delete">이 기록 삭제</button>
+</dialog>
+
+<dialog id="gd-dlg">
+  <h3 id="gd-d-title">가이드 카드</h3>
+  <label class="pc-f">제목<input id="gd-f-title" type="text" placeholder="예: 드라이버"></label>
+  <label class="pc-f">분류<select id="gd-f-kind"><option value="golf">⛳ 골프</option><option value="skin">🧴 피부</option><option value="etc">기타</option></select></label>
+  <label class="pc-f">내용 (한 줄에 한 항목)<textarea id="gd-f-lines"></textarea></label>
+  <label class="mp-chk"><input type="checkbox" id="gd-f-ordered"> 1, 2, 3 번호로 보기 (순서가 중요한 루틴)</label>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-gd="d-cancel">취소</button><button class="pc-btn primary" data-gd="d-save">저장</button></div>
+  <button id="gd-d-delete" class="pc-btn danger wide" data-gd="d-delete">이 카드 삭제</button>
+</dialog>
+
+<dialog id="py-dlg">
+  <h3 id="py-d-title">연봉 기록</h3>
+  <div class="pc-row2">
+    <label class="pc-f">연도<input id="py-f-year" type="number" inputmode="numeric" min="1990" max="2100" step="1"></label>
+    <label class="pc-f">연봉(만원)<input id="py-f-salary" type="number" inputmode="numeric" min="0" step="any" placeholder="예: 11526"></label>
+  </div>
+  <div class="pc-row2">
+    <label class="pc-f">직급<input id="py-f-cl" type="text" placeholder="예: CL4"></label>
+    <label class="pc-f">연차<input id="py-f-tenure" type="text" placeholder="예: 2y"></label>
+  </div>
+  <div class="pc-row2">
+    <label class="pc-f">인상률(%) (비우면 자동 계산)<input id="py-f-rate" type="number" inputmode="decimal" step="any"></label>
+    <label class="pc-f">업무성과급(원)<input id="py-f-bonus" type="number" inputmode="numeric" min="0" step="any"></label>
+  </div>
+  <label class="pc-f">인상률 구성<input id="py-f-parts" type="text" placeholder="예: 3% + 2.8%(나)"></label>
+  <label class="pc-f">메모(선택)<input id="py-f-memo" type="text"></label>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-py="d-cancel">취소</button><button class="pc-btn primary" data-py="d-save">저장</button></div>
+  <button id="py-d-delete" class="pc-btn danger wide" data-py="d-delete">이 기록 삭제</button>
+</dialog>
+
+<div class="mb-sheet" id="quickSheet" hidden><div class="mb-sheet-in" role="dialog" aria-label="빠른 가이드"><div class="mb-head"><b>📌 빠른 가이드</b><button type="button" class="mb-x" id="quickClose" aria-label="닫기">✕</button></div><div class="pc-tabs" id="qk-tabs"></div><div id="qk-body"></div></div></div>
+<button type="button" class="quick-fab" id="quickFab" aria-label="빠른 가이드 열기">📌</button>
 
 <dialog id="sk-dlg">
   <h3 id="sk-d-title">피부관리</h3>
@@ -1155,7 +1289,12 @@
       <button class="toolbtn" id="saveBudgetBtn" style="width:100%; justify-content:center;">예산 저장</button>
     </div>
 
-    <div class="dsec">쇼핑</div>
+    <div class="dsec">화면 구성</div>
+    <div class="block">
+      <h4>보여줄 기능 고르기</h4>
+      <div id="nav-cfg"></div>
+    </div>
+    <div class="dsec">소비</div>
     <div class="block">
       <h4>혜택 알림</h4>
       <button class="toolbtn" id="sh-notify" type="button" style="width:100%; justify-content:center;">🔔 혜택 알림 꺼짐</button>
@@ -1171,6 +1310,12 @@
       <h4>이번 달 만남 목표</h4>
       <div class="fieldrow"><label for="pp-cfg-target">이번 달 만남 목표(회)</label><input id="pp-cfg-target" type="number" min="0" max="60" step="1" inputmode="numeric"></div>
       <p class="note">그룹 이름과 그룹별 기본 연락 주기는 인맥 → 사람 탭의 “⚙ 그룹 관리”에서 바꿔요.</p>
+    </div>
+    <div class="dsec">연봉</div>
+    <div class="block">
+      <h4>시트 백업</h4>
+      <label class="nv-fab"><input type="checkbox" id="py-sync-chk" checked> 연봉 이력을 구글시트 백업에 포함</label>
+      <p class="note" style="margin-top:8px;">끄면 연봉은 이 기기에만 저장돼요(앱을 지우면 사라져요). 켜 두면 재설치·다른 기기에서도 복원돼요.</p>
     </div>
   </div>
 </div>
@@ -2416,7 +2561,7 @@ const Life = (() => {
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-18-f (회의비 · 가격 · 쇼핑 · 구독 · 인맥 · 피부)';
+const APP_BUILD_VERSION = '2026-10-18-g (돈 · 소비 · 나 — 회의비·구독·연봉 / 소비·가격 / 인맥·피부·도수·가이드)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -2437,7 +2582,7 @@ let syncTimer = null;
 function syncNote(){
   const t = !window.AppSync ? '' : (!window.AppSync.hasUrl() ? '☁ 시트 연결 전 — 상단의 ⚙ 설정에서 Apps Script URL을 입력하세요' :
     (window.AppSync.last() ? '☁ 마지막 백업: ' + new Date(window.AppSync.last()).toLocaleString('ko-KR') + (window.AppSync.auto() ? ' · 변경 시 자동 백업' : ' · 자동 백업 꺼짐') : '☁ 아직 백업 전 · ' + (window.AppSync.auto() ? '변경 시 자동 백업' : '자동 백업 꺼짐')));
-  ['pc-sync', 'sh-sync', 'sb-sync', 'pp-sync', 'sk-sync'].forEach(id => { const el = $(id); if (el) el.textContent = t; });
+  ['pc-sync', 'sh-sync', 'sb-sync', 'pp-sync', 'sk-sync', 'mp-sync', 'py-sync', 'gd-sync'].forEach(id => { const el = $(id); if (el) el.textContent = t; });
 }
 function changed(){
   try {
@@ -2814,6 +2959,7 @@ function renderShop(){
   window.AppSettings.refresh();
   const fashion = shCat === 'fashion', showSz = fashion && szOpen;
   $('sh-sz-btn').hidden = !fashion; $('sh-main').hidden = showSz; $('sz-panel').hidden = !showSz; if (showSz) renderSizes();
+  $('sh-swing-btn').hidden = shCat !== 'golf'; $('gf-wrap').hidden = shCat !== 'golf' || showSz; if (shCat === 'golf') renderGolf();
   $('sh-note').textContent = 'CSV는 기존 대시보드와 같은 형식이에요. 기존 대시보드에서 내보낸 CSV를 “CSV 가져오기”로 넣으면 같은 품목은 갱신되고 새 품목은 추가돼요.';
   checkBenefits();
 }
@@ -3337,6 +3483,7 @@ let SK = loadK(SKIN_KEY, SKIN_SEED, skNorm), skEditing = null, skDraft = [], skF
 function skSave(){ saveK(SKIN_KEY, SK); }
 function skFilterSave(){ try { localStorage.setItem('sk_filter_v1', JSON.stringify(skFilter)); } catch (e) { /* 무시 */ } }
 function renderSkin(){
+  skTabApply(); if (skTab === 'manual') { renderManual(); return; }
   const items = SK.items, ses = SK.sessions, sm = Skin.summarize(items, ses);
   $('sk-summary').innerHTML = '<div class="scard"><div class="l">총 결제금</div><div class="v tabular">' + won(sm.cost) + '</div><div class="sub">패키지 ' + sm.count + '개</div></div>' +
     '<div class="scard"><div class="l">진행중 · 남은 횟수</div><div class="v tabular" style="color:var(--accent)">' + sm.active + '개 · ' + sm.remain + '회</div></div>' +
@@ -3407,6 +3554,64 @@ function skToday(id){
   SK.sessions.push({ id: uid('ss'), itemId: id, date: td, memo: '', u: nowIso() }); skSave(); changed();
   const n = Skin.stats(it, SK.sessions); toast(it.name + ' ' + n.used + '회차 기록 · ' + (n.remain ? '남은 ' + n.remain + '회' : '모두 소진')); renderAll();
 }
+// <MANUALCALC>
+const Manual = (() => {
+  const DEF = { limitDays: 365, limitCnt: 30, lockDays: 180 };
+  const D0 = s => Date.parse(s + 'T00:00:00Z');
+  function addDays(s, n){ return new Date(D0(s) + n * 86400000).toISOString().slice(0, 10); }
+  function diff(a, b){ return Math.round((D0(b) - D0(a)) / 86400000); }   // b - a (일)
+  const keyOf = r => r.cdate || r.date;
+  // 보험 한도 주기 계산: 첫 청구일부터 365일 · 30회. 기간 또는 횟수를 채우면 마지막 보상일부터 180일은 보상 불가.
+  function cycles(recs, cfg, today){
+    const c = Object.assign({}, DEF, cfg || {});
+    const list = recs.filter(r => r.claimed && r.date).slice().sort((a, b) => keyOf(a).localeCompare(keyOf(b)) || a.date.localeCompare(b.date) || String(a.id).localeCompare(String(b.id)));
+    const out = [], ignored = [];
+    let cur = null, lockUntil = '';
+    const close = x => { x.closed = true; x.closedBy = x.used >= c.limitCnt ? 'count' : 'period'; x.lockStart = x.lastComp; x.lockEnd = addDays(x.lastComp, c.lockDays); lockUntil = x.lockEnd; };
+    list.forEach(r => {
+      const k = keyOf(r), n = Math.max(1, Math.round(Number(r.cnt)) || 1);
+      if (cur && (k > cur.end || cur.used >= c.limitCnt)) { close(cur); cur = null; }
+      if (!cur) {
+        if (lockUntil && k <= lockUntil) { ignored.push(r.id); return; }
+        cur = { start: k, end: addDays(k, c.limitDays - 1), used: 0, lastComp: k, ids: [], closed: false }; out.push(cur);
+      }
+      cur.used += n; cur.lastComp = k; cur.ids.push(r.id);
+    });
+    if (cur && (cur.used >= c.limitCnt || today > cur.end)) close(cur);
+    const last = out[out.length - 1];
+    let status;
+    if (!last) status = { state: 'ready' };
+    else if (!last.closed) status = { state: 'active', used: last.used, remain: Math.max(0, c.limitCnt - last.used), start: last.start, end: last.end, daysLeft: diff(today, last.end) };
+    else if (last.lockEnd >= today) status = { state: 'locked', lockStart: last.lockStart, lockEnd: last.lockEnd, nextEligible: addDays(last.lockEnd, 1), daysLeft: diff(today, addDays(last.lockEnd, 1)), closedBy: last.closedBy };
+    else status = { state: 'ready', prevEnd: last.lockEnd };
+    return { cycles: out, ignored, status, limit: c };
+  }
+  // 이 날짜가 어느 주기의 보상 불가기간 안에 있으면 그 주기를 돌려줌
+  function lockAt(cy, k){ return cy.cycles.find(x => x.closed && k > x.lockStart && k <= x.lockEnd) || null; }
+  return { DEF, addDays, diff, cycles, lockAt };
+})();
+// </MANUALCALC>
+// <PAYCALC>
+const Pay = (() => {
+  function rows(items){
+    const s = items.slice().sort((a, b) => a.year - b.year);
+    return s.map((x, i) => {
+      const p = i > 0 ? s[i - 1] : null;
+      const calc = p && p.salary > 0 && x.salary > 0 ? Math.round((x.salary / p.salary - 1) * 1000) / 10 : null;
+      const given = x.rate !== '' && x.rate != null && isFinite(Number(x.rate));
+      return Object.assign({}, x, { calcRate: calc, given, shownRate: given ? Number(x.rate) : calc, total: x.salary > 0 ? x.salary * 10000 + (Number(x.bonus) > 0 ? Number(x.bonus) : 0) : null });
+    });
+  }
+  function summary(items){
+    const s = items.filter(x => x.salary > 0).sort((a, b) => a.year - b.year);
+    if (!s.length) return null;
+    const f = s[0], l = s[s.length - 1], yrs = l.year - f.year;
+    return { first: f, last: l, years: yrs, mult: Math.round(l.salary / f.salary * 100) / 100, cagr: yrs > 0 ? Math.round((Math.pow(l.salary / f.salary, 1 / yrs) - 1) * 1000) / 10 : null,
+      bonusSum: items.reduce((t, x) => t + (Number(x.bonus) > 0 ? Number(x.bonus) : 0), 0), gain: l.salary - f.salary };
+  }
+  return { rows, summary };
+})();
+// </PAYCALC>
 // <SIZECALC>
 const Size = (() => {
   const KINDS = { '티셔츠': ['어깨', '가슴', '기장', '소매'], '셔츠': ['어깨', '가슴', '기장', '소매'], '니트·맨투맨': ['어깨', '가슴', '기장', '소매'], '아우터': ['어깨', '가슴', '기장', '소매'],
@@ -3473,17 +3678,280 @@ function delSize(){
   if (!szEditing || !confirm('이 치수를 삭제할까요?')) return;
   SZ.items = SZ.items.filter(x => x.id !== szEditing); SZ.del[szEditing] = nowIso(); szSave(); changed(); $('sz-dlg').close(); renderAll();
 }
+/* =====================================================================
+   화면 구성(보이기 · 하단 고정) / 가이드 / 도수치료 / 연봉
+   ===================================================================== */
+const FEATURES = [
+  { k: 'meeting', label: '회의비', ic: '💰', id: 'modeMeeting' }, { k: 'shop', label: '소비', ic: '🛍', id: 'modeShop' }, { k: 'price', label: '가격', ic: '📈', id: 'modePrice' },
+  { k: 'sub', label: '구독·보험', ic: '🔁', id: 'modeSub' }, { k: 'people', label: '인맥', ic: '👥', id: 'modePeople' }, { k: 'skin', label: '피부·도수', ic: '🧴', id: 'modeSkin' },
+  { k: 'pay', label: '연봉', ic: '💼', id: 'modePay' }, { k: 'guide', label: '가이드', ic: '📌', id: 'modeGuide' }];
+const NAV_KEY = 'nav_cfg_v1';
+const GROUPS = [{ g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'pay'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'skin', 'guide'] }];
+const groupOf = k => GROUPS.find(x => x.ks.indexOf(k) >= 0), lastIn = {};
+function navNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const keys = FEATURES.map(f => f.k);
+  let hidden = (Array.isArray(o.hidden) ? o.hidden : []).filter(k => keys.indexOf(k) >= 0);
+  if (hidden.length >= keys.length) hidden = [];
+  return { hidden, fab: o.fab !== false };
+}
+let NAV = (function () { try { return navNorm(JSON.parse(localStorage.getItem(NAV_KEY) || 'null')); } catch (e) { return navNorm(null); } })();
+function navSave(){ try { localStorage.setItem(NAV_KEY, JSON.stringify(NAV)); } catch (e) { /* 무시 */ } }
+const navVisible = k => NAV.hidden.indexOf(k) < 0;
+const grpVisible = g => g.ks.filter(navVisible);
+function markNav(){
+  const cg = groupOf(mode);
+  document.querySelectorAll('.grpbtn').forEach(b => b.classList.toggle('on', !!cg && b.dataset.grp === cg.g));
+  document.querySelectorAll('.modesub').forEach(d => { d.hidden = !(cg && d.dataset.grp === cg.g); });
+  document.querySelectorAll('.modebtn[data-mode]').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
+}
+function renderNav(){
+  $('modeBarIn').innerHTML = GROUPS.filter(g => grpVisible(g).length).map(g => '<button type="button" class="grpbtn" data-grp="' + g.g + '">' + g.label + '</button>').join('');
+  $('modeSubs').innerHTML = GROUPS.map(g => '<div class="modesub" data-grp="' + g.g + '" hidden>' + grpVisible(g).map(k => { const f = FEATURES.find(x => x.k === k); return '<button type="button" class="modebtn" data-mode="' + f.k + '" id="' + f.id + '">' + f.label + '</button>'; }).join('') + '</div>').join('');
+  $('quickFab').hidden = !NAV.fab || mode === 'guide';
+  markNav();
+}
+function renderNavCfg(){
+  const box = $('nav-cfg'); if (!box) return;
+  box.innerHTML = GROUPS.map(g => '<div class="nv-grp">' + g.label + '</div>' + g.ks.map(k => { const f = FEATURES.find(x => x.k === k); return '<div class="nv-row"><span class="nv-n">' + f.label + '</span><label><input type="checkbox" data-nv="show" data-k="' + k + '"' + (navVisible(k) ? ' checked' : '') + '> 보이기</label></div>'; }).join('')).join('') +
+    '<label class="nv-fab"><input type="checkbox" data-nv="fab"' + (NAV.fab ? ' checked' : '') + '> 📌 빠른 가이드 버튼(오른쪽 아래) 보이기</label>' +
+    '<p class="note" style="margin-top:8px;">끄면 상단 메뉴에서 그 기능이 사라져요. 한 묶음의 기능을 모두 끄면 그 묶음도 사라져요.</p>';
+}
+function firstVisibleMode(){ const f = FEATURES.find(x => navVisible(x.k)); return f ? f.k : 'meeting'; }
+
+/* ---------- 가이드 ---------- */
+const GUIDE_KEY = 'guide_v1';
+const GUIDE_SEED = { items: [
+  { id: 'gd_seed_golf_swing', kind: 'golf', title: '스윙 기본', ordered: false, lines: ['백스윙 천천히 하나! 둘! 셋! 세고', '백스윙 시 얼굴도 조금 돌리고', '손목부터 펴줘야 됨', '다운부터 피니시까지 동일 속도로'], u: '' },
+  { id: 'gd_seed_golf_driver', kind: 'golf', title: '드라이버', ordered: false, lines: ['공보다 채가 살짝 왼쪽 각도로', '손목부터 펴줘야 됨', '오른쪽으로 가면 손목 돌리기를 해야 되고, 적응되면 줄여야 됨'], u: '' },
+  { id: 'gd_seed_skin_am', kind: 'skin', title: '🌞 아침 루틴', ordered: true, lines: ['세안 (마담행 비누)', '속수분 앰플', '비타민C 세럼', '닥터지 올인원 로션 (나이아신아마이드는 아침만)', '앰플엔 펩타이드샷 2X', '선크림 (얼굴 전체 넉넉히 · 눈가 · 목)'], u: '' },
+  { id: 'gd_seed_skin_pm1', kind: 'skin', title: '🌙 저녁 · 레티날 밤 (주 5~6회)', ordered: true, lines: ['세안 (마담행 비누)', '속수분 앰플', '레티날 포르테 0.1% (컨디션 좋은 날 포르테시모 0.15%) · 눈가 · 목'], u: '' },
+  { id: 'gd_seed_skin_pm2', kind: 'skin', title: '🌙 저녁 · 회복 밤 (주 1~2회)', ordered: true, lines: ['세안 (마담행 비누)', '속수분 앰플', '앰플엔 펩타이드샷 2X', '아토팜 판테놀 로션'], u: '' },
+  { id: 'gd_seed_skin_note', kind: 'skin', title: '참고', ordered: false, lines: ['순서와 제품은 지금까지 상담한 내용을 바탕으로 만든 초안이에요. 다르면 ✎ 편집으로 고쳐 주세요.', '레티날은 밤에만, 선크림은 매일 아침'], u: '' }
+], del: {} };
+const GD_KINDS = { golf: '⛳ 골프', skin: '🧴 피부', etc: '기타' };
+function gdNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && String(i.title || '').trim()).map(i => ({ id: String(i.id), kind: GD_KINDS[i.kind] ? i.kind : 'etc', title: String(i.title).trim(), ordered: !!i.ordered,
+    lines: (Array.isArray(i.lines) ? i.lines : []).map(x => String(x == null ? '' : x).trim()).filter(Boolean), u: String(i.u || '') }));
+  return { items, del: cleanDel(o.del) };
+}
+let GD = loadK(GUIDE_KEY, GUIDE_SEED, gdNorm), gdEditing = null, gdFilter = 'all', qkKind = 'golf';
+function gdSave(){ saveK(GUIDE_KEY, GD); }
+function gdCardHtml(i, edit){
+  const tag = i.ordered ? 'ol' : 'ul';
+  return '<div class="gd-card"><div class="gd-h"><b>' + esc(i.title) + '</b>' + (edit ? '<button type="button" class="pc-btn small" data-gd="edit" data-id="' + esc(i.id) + '">✎ 편집</button>' : '') + '</div><' + tag + ' class="gd-l">' + i.lines.map(l => '<li>' + esc(l) + '</li>').join('') + '</' + tag + '></div>';
+}
+function renderGuide(){
+  const tabs = [['all', '전체']].concat(Object.keys(GD_KINDS).map(k => [k, GD_KINDS[k]]));
+  $('gd-tabs').innerHTML = tabs.map(t => '<button type="button" class="' + (gdFilter === t[0] ? 'on' : '') + '" data-gd="tab" data-k="' + t[0] + '">' + t[1] + '</button>').join('');
+  const list = GD.items.filter(i => gdFilter === 'all' || i.kind === gdFilter);
+  $('gd-list').innerHTML = list.length ? list.map(i => gdCardHtml(i, true)).join('') : '<div class="gd-empty">카드가 없어요. “+ 카드 추가”로 만들어 보세요.</div>';
+}
+function openGuide(id){
+  gdEditing = id || null; const i = id ? GD.items.find(x => x.id === id) : null;
+  $('gd-d-title').textContent = i ? '가이드 카드 수정' : '가이드 카드 추가';
+  $('gd-f-title').value = i ? i.title : ''; $('gd-f-kind').value = i ? i.kind : (gdFilter !== 'all' ? gdFilter : 'golf'); $('gd-f-lines').value = i ? i.lines.join('\n') : ''; $('gd-f-ordered').checked = i ? i.ordered : false;
+  $('gd-d-delete').hidden = !i; $('gd-dlg').showModal();
+}
+function saveGuide(){
+  const title = $('gd-f-title').value.trim();
+  if (!title) { toast('제목을 입력해 주세요.'); return; }
+  const d = { kind: $('gd-f-kind').value, title, ordered: $('gd-f-ordered').checked, lines: $('gd-f-lines').value.split('\n').map(x => x.trim()).filter(Boolean), u: nowIso() };
+  if (gdEditing) { const i = GD.items.find(x => x.id === gdEditing); if (i) Object.assign(i, d); } else GD.items.push(Object.assign({ id: uid('gd') }, d));
+  GD = gdNorm(GD); gdSave(); changed(); $('gd-dlg').close(); toast('저장했어요.'); renderAll(); renderQuick();
+}
+function delGuide(){
+  if (!gdEditing || !confirm('이 카드를 삭제할까요?')) return;
+  GD.items = GD.items.filter(x => x.id !== gdEditing); GD.del[gdEditing] = nowIso(); gdSave(); changed(); $('gd-dlg').close(); renderAll(); renderQuick();
+}
+function renderQuick(){
+  const kinds = Object.keys(GD_KINDS).filter(k => GD.items.some(i => i.kind === k));
+  if (kinds.indexOf(qkKind) < 0) qkKind = kinds[0] || 'golf';
+  $('qk-tabs').innerHTML = kinds.map(k => '<button type="button" class="' + (qkKind === k ? 'on' : '') + '" data-qk="' + k + '">' + GD_KINDS[k] + '</button>').join('');
+  const list = GD.items.filter(i => i.kind === qkKind);
+  $('qk-body').innerHTML = list.length ? list.map(i => gdCardHtml(i, false)).join('') : '<div class="gd-empty">가이드 카드가 없어요. 📌 가이드 탭에서 추가해 주세요.</div>';
+}
+function openQuick(kind){ if (kind) qkKind = kind; renderQuick(); $('quickSheet').hidden = false; }
+
+/* ---------- 도수치료 (실비 한도 카운팅) ---------- */
+const MP_KEY = 'manual_care_v1', MP_PARTS = ['어깨', '다리', '허리', '목', '기타'];
+const MP_DZA = '경추간판장애 (M50)', MP_DZB = '고관절·다리 통증 (M79.168)', MP_CLINIC = '광교삼성에이치정형외과의원';
+const mpS = (id, no, dz, part, symptom, date, cdate, cnt, cost, paid, clinic) => ({ id, dz, date, cdate, cnt, part, clinic: clinic || '', cost, paid, claimed: true, symptom, memo: '보험금 지급 설명서 순번 ' + no, u: '' });
+const MP_SEED = { items: [
+  /* 사고 2025-08-11 · 경추간판장애(M50) — 지급일 기준 2025-08-12 ~ 2026-06-29, 30회 */
+  [1, '2025-08-11', '2025-08-12', 2, 210000, 205000], [2, '2025-08-23', '2025-09-16', 7, 801120, 776100], [3, '2025-09-13', '2025-09-25', 1, 154700, 149700], [4, '2025-09-27', '2025-09-29', 1, 154700, 149700],
+  [5, '2025-10-09', '2025-12-08', 3, 314600, 304600], [7, '2025-12-13', '2025-12-15', 1, 154700, 149700], [8, '2026-01-19', '2026-02-24', 1, 154000, 149000], [9, '2026-02-28', '2026-03-03', 1, 154800, 149800],
+  [10, '2026-03-02', '2026-03-03', 1, 154800, 149800], [11, '2026-03-21', '2026-03-23', 1, 154800, 149800], [12, '2026-04-04', '2026-04-13', 1, 154800, 149800], [13, '2026-04-25', '2026-04-27', 1, 154800, 149800],
+  [14, '2026-05-02', '2026-05-04', 1, 154800, 149800], [15, '2026-05-25', '2026-05-26', 2, 121500, 116500], [16, '2026-05-26', '2026-05-27', 1, 154000, 149000], [17, '2026-05-09', '2026-05-27', 1, 154800, 149800],
+  [18, '2026-05-30', '2026-06-01', 1, 154800, 149800], [19, '2026-06-20', '2026-06-22', 1, 154800, 149800], [20, '2026-06-25', '2026-06-25', 1, 154000, 149000], [21, '2026-06-27', '2026-06-29', 1, 154800, 149800]
+].map(r => mpS('mp_seed_a' + r[0], r[0], MP_DZA, '목', '경추간판장애 (M50)', r[1], r[2], r[3], r[4], r[5])).concat([
+  /* 사고 2026-07-17 · 고관절·다리 통증(M79.168) — 지급일 기준 2026-07-20 ~ */
+  [1, '2026-07-17', '2026-07-20', 1, 6500, 1500, MP_CLINIC], [3, '2026-08-13', '2026-08-14', 1, 46450, 41450, MP_CLINIC], [4, '2026-08-25', '2026-08-25', 1, 45650, 40650],
+  [5, '2026-09-02', '2026-09-03', 2, 165550, 160550], [6, '2026-10-05', '2026-10-06', 1, 171150, 166150]
+].map(r => mpS('mp_seed_b' + r[0], r[0], MP_DZB, '다리', '고관절 우측 다리 통증 (M79.168)', r[1], r[2], r[3], r[4], r[5], r[6]))), del: {} };
+function mpNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const nn = v => (Number(v) >= 0 && v !== '' && v != null ? Number(v) : 0);
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Calc.validDate(i.date)).map(i => ({ id: String(i.id), date: i.date, dz: String(i.dz || ''), part: String(i.part || '기타'), cnt: Math.max(1, Math.round(Number(i.cnt)) || 1), clinic: String(i.clinic || ''),
+    cost: nn(i.cost), paid: nn(i.paid), claimed: i.claimed !== false, cdate: Calc.validDate(i.cdate) || '', symptom: String(i.symptom || ''), memo: String(i.memo || ''), u: String(i.u || '') }));
+  return { items, del: cleanDel(o.del) };
+}
+let MP = loadK(MP_KEY, MP_SEED, mpNorm), mpEditing = null, skTab = (function () { try { return localStorage.getItem('sk_tab_v1') === 'manual' ? 'manual' : 'skin'; } catch (e) { return 'skin'; } })();
+function mpSave(){ saveK(MP_KEY, MP); }
+function skTabApply(){
+  $('sk-skin').hidden = skTab !== 'skin'; $('mp-panel').hidden = skTab !== 'manual';
+  document.querySelectorAll('#sk-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === skTab));
+}
+function mpGroups(){
+  const g = {}; MP.items.forEach(i => { const k = i.dz || '미분류'; (g[k] = g[k] || []).push(i); });
+  return Object.keys(g).map(k => ({ name: k, items: g[k], last: g[k].reduce((m, x) => (x.date > m ? x.date : m), '') })).sort((a, b) => b.last.localeCompare(a.last));
+}
+function mpGroupHtml(g, t, ign){
+  const cy = Manual.cycles(g.items, null, t), st = cy.status, LIM = cy.limit.limitCnt, cycles = cy.cycles, lastC = cycles[cycles.length - 1];
+  cy.ignored.forEach(id => { ign[id] = true; });
+  const byId = {}; g.items.forEach(i => { byId[i.id] = i; });
+  const sums = c => { let cost = 0, paid = 0; (c ? c.ids : []).forEach(id => { const r = byId[id]; if (r) { cost += r.cost; paid += r.paid; } }); return { cost, paid }; };
+  const card = (l, v, s2) => '<div class="scard"><div class="l">' + l + '</div><div class="v tabular">' + v + '</div>' + (s2 ? '<div class="sub">' + s2 + '</div>' : '') + '</div>';
+  const sm = sums(lastC); let cards = '', msg = '';
+  if (st.state === 'active') {
+    cards = card('이번 주기 사용', st.used + ' / ' + LIM + '회', '남은 ' + st.remain + '회') + card('주기 기간', st.start + ' ~ ' + st.end, '종료까지 D-' + st.daysLeft) + card('지급 보험금', won(sm.paid), '청구 ' + won(sm.cost));
+    msg = '<div class="mp-st ok">✅ 보상 가능 · <b>' + st.used + '회</b> 사용, <b>' + st.remain + '회</b> 남았어요.<div class="mp-bar"><i style="width:' + Math.min(100, Math.round(st.used / LIM * 100)) + '%"></i></div>' +
+      '<small>' + LIM + '회를 채우거나 ' + st.end + '이 지나면 마지막 보상일부터 ' + cy.limit.lockDays + '일은 보상되지 않아요.' + (st.remain <= 5 && st.remain > 0 ? ' <b>한도가 얼마 안 남았어요.</b>' : '') + '</small></div>';
+  } else if (st.state === 'locked') {
+    cards = card('보상 불가기간', st.lockStart + ' ~ ' + st.lockEnd, '마지막 보상일부터 ' + cy.limit.lockDays + '일') + card('보상 재개일', st.nextEligible, 'D-' + st.daysLeft) + card('직전 주기 사용', lastC.used + ' / ' + LIM + '회', lastC.closedBy === 'count' ? '횟수 한도 도달' : '기간 종료');
+    msg = '<div class="mp-st lock">🚫 이 질병은 보상 불가기간이에요 · <b>' + st.lockEnd + '</b>까지<br><small>' + st.nextEligible + '부터 청구하면 새 주기(' + cy.limit.limitDays + '일·' + LIM + '회)가 시작돼요. (D-' + st.daysLeft + ') 직전 주기: ' + esc(lastC.start) + ' ~ ' + esc(lastC.lastComp) + ', 지급 ' + won(sm.paid) + '</small></div>';
+  } else {
+    cards = card('이번 주기 사용', '0 / ' + LIM + '회', '새 주기 시작 가능');
+    msg = '<div class="mp-st ok">✅ 불가기간이 끝났어요. 다음 청구일부터 ' + cy.limit.limitDays + '일 · ' + LIM + '회가 새로 카운팅돼요.</div>';
+  }
+  const hist = cycles.length > 1 || (cycles.length === 1 && cycles[0].closed) ? cycles.slice().reverse().map((c, i) => { const s2 = sums(c), n = cycles.length - i;
+    return '<div class="mp-cyc"><b>' + n + '번째 주기</b> ' + esc(c.start) + ' ~ ' + esc(c.closed && c.closedBy === 'count' ? c.lastComp : c.end) + ' · ' + c.used + '/' + LIM + '회 · 지급 ' + won(s2.paid) + (c.closed ? '<br><small>' + (c.closedBy === 'count' ? '횟수 한도 도달' : '기간 종료') + ' → 불가기간 ' + esc(c.lockStart) + ' ~ ' + esc(c.lockEnd) + '</small>' : '<br><small>진행중</small>') + '</div>'; }).join('') : '';
+  return '<div class="grp" style="margin-top:14px">' + esc(g.name) + '</div>' + msg + '<div class="strip">' + cards + '</div>' + hist;
+}
+function renderManual(){
+  const t = todayStr(), ign = {}, groups = mpGroups();
+  const card = (l, v, s2) => '<div class="scard"><div class="l">' + l + '</div><div class="v tabular">' + v + '</div>' + (s2 ? '<div class="sub">' + s2 + '</div>' : '') + '</div>';
+  let visits = 0, cost = 0, paid = 0; MP.items.forEach(r => { visits += r.cnt; cost += r.cost; paid += r.paid; });
+  $('mp-summary').innerHTML = card('전체 진료', visits + '회', MP.items.length + '건 · 질병 ' + groups.length + '개') + card('총 청구금액', won(cost), '') + card('총 지급 보험금', won(paid), '') + card('본인 부담 합계', won(cost - paid), '');
+  $('mp-status').innerHTML = groups.map(g => mpGroupHtml(g, t, ign)).join('');
+  $('mp-dz-list').innerHTML = groups.map(g => g.name !== '미분류' ? '<option value="' + esc(g.name) + '">' : '').join('');
+  const recs = MP.items.slice().sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  $('mp-list').innerHTML = recs.length ? recs.map(r => {
+    const chip = ign[r.id] ? '<span class="mp-chip warn">불가기간 청구(미반영)</span>' : (r.claimed ? '<span class="mp-chip">청구</span>' : '<span class="mp-chip warn">미청구</span>');
+    return '<div class="mp-row" data-mp="edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="l"><b>' + esc(r.date) + ' · ' + esc(r.part) + (r.cnt > 1 ? ' ' + r.cnt + '회' : '') + '</b>' + chip + '<small>' + esc([r.dz, r.clinic].filter(Boolean).join(' · ') || '질병·병원 미입력') + (r.claimed && r.cdate ? ' · 지급 ' + esc(r.cdate) : '') + '</small></div>' +
+      '<div class="r"><b>' + won(r.paid) + '</b>청구 ' + won(r.cost) + '</div></div>';
+  }).join('') : '<div class="empty">아직 기록이 없어요. “+ 기록 추가”로 등록해 보세요.</div>';
+  $('mp-cycles').innerHTML = '';
+}
+function mpWarnUpdate(){
+  const box = $('mp-f-warn'); const date = $('mp-f-date').value, cd = $('mp-f-cdate').value || date;
+  if (!date || !$('mp-f-claimed').checked) { box.textContent = ''; return; }
+  const dz = $('mp-f-dz').value.trim(), others = MP.items.filter(x => x.id !== mpEditing && (x.dz || '') === dz), cy = Manual.cycles(others, null, todayStr()), lk = Manual.lockAt(cy, cd);
+  box.textContent = lk ? '🚫 이 날짜는 보상 불가기간(' + lk.lockStart + ' ~ ' + lk.lockEnd + ')이에요. 청구해도 보상되지 않고, 횟수에도 반영하지 않아요.' : '';
+}
+function openMp(id){
+  mpEditing = id || null; const r = id ? MP.items.find(x => x.id === id) : null;
+  $('mp-d-title').textContent = r ? '도수치료 기록 수정' : '도수치료 기록 추가';
+  $('mp-f-part').innerHTML = MP_PARTS.map(p => '<option>' + p + '</option>').join('');
+  $('mp-f-date').value = r ? r.date : todayStr(); $('mp-f-cnt').value = r ? r.cnt : 1; $('mp-f-part').value = r ? (MP_PARTS.indexOf(r.part) >= 0 ? r.part : '기타') : '어깨';
+  $('mp-f-clinic').value = r ? r.clinic : ''; $('mp-f-cost').value = r && r.cost ? r.cost : ''; $('mp-f-paid').value = r && r.paid ? r.paid : ''; $('mp-f-claimed').checked = r ? r.claimed : true; $('mp-f-dz').value = r ? r.dz : '';
+  $('mp-f-cdate').value = r ? r.cdate : ''; $('mp-f-symptom').value = r ? r.symptom : ''; $('mp-f-memo').value = r ? r.memo : '';
+  $('mp-d-delete').hidden = !r; mpWarnUpdate(); $('mp-dlg').showModal();
+}
+function saveMp(){
+  const date = $('mp-f-date').value;
+  if (!date) { toast('진료일을 입력해 주세요.'); return; }
+  const d = { date, cnt: Math.max(1, Math.round(Number($('mp-f-cnt').value)) || 1), part: $('mp-f-part').value, clinic: $('mp-f-clinic').value.trim(), dz: $('mp-f-dz').value.trim(), cost: Number($('mp-f-cost').value) || 0, paid: Number($('mp-f-paid').value) || 0,
+    claimed: $('mp-f-claimed').checked, cdate: $('mp-f-cdate').value, symptom: $('mp-f-symptom').value.trim(), memo: $('mp-f-memo').value.trim(), u: nowIso() };
+  if (mpEditing) { const r = MP.items.find(x => x.id === mpEditing); if (r) Object.assign(r, d); } else MP.items.push(Object.assign({ id: uid('mp') }, d));
+  MP = mpNorm(MP); mpSave(); changed(); $('mp-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function delMp(){
+  if (!mpEditing || !confirm('이 기록을 삭제할까요?')) return;
+  MP.items = MP.items.filter(x => x.id !== mpEditing); MP.del[mpEditing] = nowIso(); mpSave(); changed(); $('mp-dlg').close(); renderAll();
+}
+
+/* ---------- 연봉 이력 ---------- */
+const PAY_KEY = 'salary_hist_v1', PAY_HIDE_KEY = 'py_hide_v1', PAY_NOSYNC_KEY = 'py_nosync_v1';
+const pyI = (year, cl, ten, salary, rate, parts, bonus, memo) => ({ id: 'py_seed_' + year, year, cl, tenure: ten, salary, rate: rate == null ? '' : rate, parts: parts || '', bonus: bonus || 0, memo: memo || '', u: '' });
+const PAY_SEED = { items: [
+  pyI(2013, 'CL2', '8y', 5514, null, '', 0, '46.9% · 2,356만'), pyI(2014, 'CL3', '1y', 5944, null, '', 0, '42% · 2,115만'), pyI(2015, 'CL3', '2y', 6035, null, '', 0, '42% · 2,093만'),
+  pyI(2016, 'CL3', '3y', 6248, null, '', 0, '47% · 2,261만'), pyI(2017, 'CL3', '4y', 6492, null, '', 0, '45% · 2,286만'),
+  pyI(2018, 'CL3', '5y', 7176, 10.5, '물가 3.5% + 고과 7%', 7176000, '40% · 2,105만 (환급 190만 → 2,295만)'),
+  pyI(2019, 'CL3', '6y', 7788, 8.4, '물가 3.4% + 고과 5%(나)', 0, ''), pyI(2020, 'CL3', '7y', 8219, 5.5, '물가 2.5% + 고과 3%(나)', 4109000, ''),
+  pyI(2021, 'CL3', '8y', 8878, 8, '물가 4.5% + 고과 3.5%(나)', 5327000, ''), pyI(2022, 'CL3', '9y', 9991, 12.5, '물가 5% + 고과 7.5%(가)', 11988000, ''),
+  pyI(2023, 'CL4', '1y', 10892, 8.6, '2% + 2.1%(나) + 4.5%(승격인상)', 3813000, ''), pyI(2024, 'CL4', '2y', 11526, 5.8, '3% + 2.8%(나)', 5879000, '')
+], del: {} };
+function pyNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Number(i.year) >= 1990 && Number(i.year) <= 2100).map(i => ({ id: String(i.id), year: Math.round(Number(i.year)), cl: String(i.cl || ''), tenure: String(i.tenure || ''),
+    salary: Number(i.salary) >= 0 && i.salary !== '' && i.salary != null ? Number(i.salary) : 0, rate: i.rate !== '' && i.rate != null && isFinite(Number(i.rate)) ? Number(i.rate) : '', parts: String(i.parts || ''),
+    bonus: Number(i.bonus) >= 0 && i.bonus !== '' && i.bonus != null ? Number(i.bonus) : 0, memo: String(i.memo || ''), u: String(i.u || '') }));
+  return { items, del: cleanDel(o.del) };
+}
+let PY = loadK(PAY_KEY, PAY_SEED, pyNorm), pyEditing = null;
+let pyHide = (function () { try { return localStorage.getItem(PAY_HIDE_KEY) !== '0'; } catch (e) { return true; } })();
+const pyNoSync = () => { try { return localStorage.getItem(PAY_NOSYNC_KEY) === '1'; } catch (e) { return false; } };
+function pySave(){ saveK(PAY_KEY, PY); }
+function renderPay(){
+  const mask = '••••', mn = v => (pyHide ? mask : fmt(v) + '만'), wn = v => (pyHide ? mask : won(v));
+  $('py-hide').textContent = pyHide ? '👁 금액 보기' : '🙈 금액 가리기';
+  const sm = Pay.summary(PY.items), rows = Pay.rows(PY.items);
+  const card = (l, v, s) => '<div class="scard"><div class="l">' + l + '</div><div class="v tabular">' + v + '</div>' + (s ? '<div class="sub">' + s + '</div>' : '') + '</div>';
+  const lastRow = rows.length ? rows[rows.length - 1] : null;
+  $('py-summary').innerHTML = sm ? card('최근 연봉 (' + sm.last.year + ')', mn(sm.last.salary), (lastRow && lastRow.shownRate != null ? '인상률 ' + lastRow.shownRate + '%' : '')) +
+    card(sm.first.year + '년 대비', sm.mult + '배', sm.cagr != null ? '연평균 ' + sm.cagr + '% · ' + sm.years + '년' : '') +
+    card('누적 업무성과급', wn(sm.bonusSum), '입력된 연도 합계') + card('기록 연도', rows.length + '개', sm.first.year + ' ~ ' + sm.last.year) : '';
+  const sal = rows.filter(r => r.salary > 0);
+  if (sal.length >= 2) {
+    const W = 320, H = 110, pad = 14, mn0 = Math.min.apply(null, sal.map(r => r.salary)), mx = Math.max.apply(null, sal.map(r => r.salary)), span = (mx - mn0) || 1;
+    const pt = (r, i) => [pad + i * (W - pad * 2) / (sal.length - 1), H - 24 - (r.salary - mn0) / span * (H - 44)];
+    const pts = sal.map(pt);
+    $('py-chart').innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="연봉 추이 그래프"><polyline fill="none" stroke="var(--accent)" stroke-width="2.5" points="' + pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + '"/>' +
+      pts.map((p, i) => '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3" fill="var(--accent)"/>' + ((i === 0 || i === pts.length - 1 || sal.length <= 6) ? '<text x="' + p[0].toFixed(1) + '" y="' + (H - 6) + '" font-size="9" text-anchor="middle" fill="var(--ink2)">' + String(sal[i].year).slice(2) + '</text>' : '')).join('') + '</svg>';
+  } else $('py-chart').innerHTML = '<div class="gd-empty">연봉이 2개 연도 이상 있으면 추이 그래프가 보여요.</div>';
+  $('py-list').innerHTML = rows.length ? rows.slice().reverse().map(r => {
+    const rate = r.shownRate != null ? '<span class="tag">' + r.shownRate + '%' + (r.given ? '' : ' (계산)') + '</span>' : '';
+    const bits = [r.parts, r.bonus > 0 ? '업무성과급 ' + wn(r.bonus) : (r.given && r.bonus === 0 && r.year >= 2018 ? '업무성과급 0원' : ''), r.total && r.bonus > 0 ? '연봉+성과급 ' + (pyHide ? mask : fmt(Math.round(r.total / 10000)) + '만') : ''].filter(Boolean).map(esc).join(' · ');
+    return '<div class="py-row" data-py="edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="py-top"><b>' + r.year + '</b><span>' + esc([r.cl, r.tenure].filter(Boolean).join(' · ')) + '</span><span class="py-sal">' + (r.salary > 0 ? mn(r.salary) : '-') + '</span></div>' +
+      '<div class="py-sub">' + rate + bits + '</div>' + (r.memo ? '<div class="py-sub">' + esc(r.memo) + '</div>' : '') + '</div>';
+  }).join('') : '<div class="empty">아직 기록이 없어요. “+ 연도 추가”로 등록해 보세요.</div>';
+}
+function openPay(id){
+  pyEditing = id || null; const r = id ? PY.items.find(x => x.id === id) : null;
+  $('py-d-title').textContent = r ? '연봉 기록 수정' : '연봉 기록 추가';
+  const ys = PY.items.map(x => x.year); const ny = ys.length ? Math.max.apply(null, ys) + 1 : new Date().getFullYear();
+  $('py-f-year').value = r ? r.year : ny; $('py-f-salary').value = r && r.salary ? r.salary : ''; $('py-f-cl').value = r ? r.cl : ''; $('py-f-tenure').value = r ? r.tenure : '';
+  $('py-f-rate').value = r && r.rate !== '' ? r.rate : ''; $('py-f-bonus').value = r && r.bonus ? r.bonus : ''; $('py-f-parts').value = r ? r.parts : ''; $('py-f-memo').value = r ? r.memo : '';
+  $('py-d-delete').hidden = !r; $('py-dlg').showModal();
+}
+function savePay(){
+  const year = Math.round(Number($('py-f-year').value));
+  if (!(year >= 1990 && year <= 2100)) { toast('연도를 입력해 주세요.'); return; }
+  if (PY.items.some(x => x.year === year && x.id !== pyEditing)) { toast(year + '년 기록이 이미 있어요. 목록에서 눌러 수정해 주세요.'); return; }
+  const d = { year, salary: Number($('py-f-salary').value) || 0, cl: $('py-f-cl').value.trim(), tenure: $('py-f-tenure').value.trim(), rate: $('py-f-rate').value === '' ? '' : Number($('py-f-rate').value),
+    bonus: Number($('py-f-bonus').value) || 0, parts: $('py-f-parts').value.trim(), memo: $('py-f-memo').value.trim(), u: nowIso() };
+  if (pyEditing) { const r = PY.items.find(x => x.id === pyEditing); if (r) Object.assign(r, d); } else PY.items.push(Object.assign({ id: uid('py') }, d));
+  PY = pyNorm(PY); pySave(); changed(); $('py-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function delPay(){
+  if (!pyEditing || !confirm('이 기록을 삭제할까요?')) return;
+  PY.items = PY.items.filter(x => x.id !== pyEditing); PY.del[pyEditing] = nowIso(); pySave(); changed(); $('py-dlg').close(); renderAll();
+}
+
 seedClubs(true);
 window.AppSettings = { refresh: function () {
   $('sh-notify').textContent = notifyOn ? '🔔 혜택 알림 켜짐 (눌러서 끄기)' : '🔔 혜택 알림 꺼짐 (눌러서 켜기)';
   $('sb-costmode').value = SB.cfg.costIsNet ? 'net' : 'gross';
   $('pp-cfg-target').value = Q.cfg.target;
+  renderNavCfg(); const pc = $('py-sync-chk'); if (pc) pc.checked = !pyNoSync();
 } };
 window.AppExtras = {
-  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes'],
+  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'guide', 'pay'],
   exportSync(){
     return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
-      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del } };
+      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, guide: { items: GD.items, del: GD.del }, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
   },
   strip(obj){ this.keys.forEach(k => { delete obj[k]; }); },
   importSync(json){
@@ -3519,6 +3987,18 @@ window.AppExtras = {
     if (ok('sizes')) {
       const r = json.sizes, m = Shop.mergeById(SZ.items, r.items, SZ.del, cleanDel(r.del));
       SZ = szNorm({ items: m.items, del: m.del }); szSave(); ch = true;
+    }
+    if (ok('manual')) {
+      const r = json.manual, m = Shop.mergeById(MP.items, r.items, MP.del, cleanDel(r.del));
+      MP = mpNorm({ items: m.items, del: m.del }); mpSave(); ch = true;
+    }
+    if (ok('guide')) {
+      const r = json.guide, m = Shop.mergeById(GD.items, r.items, GD.del, cleanDel(r.del));
+      GD = gdNorm({ items: m.items, del: m.del }); gdSave(); ch = true; renderQuick();
+    }
+    if (ok('pay') && !pyNoSync()) {
+      const r = json.pay, m = Shop.mergeById(PY.items, r.items, PY.del, cleanDel(r.del));
+      PY = pyNorm({ items: m.items, del: m.del }); pySave(); ch = true;
     }
     if (ch) renderAll();
     return ch;
@@ -3558,9 +4038,9 @@ function renderGlobal(){
   else if (age === null) { gs.textContent = '☁ 아직 백업 전'; dot.className = 'gdot warn'; }
   else { gs.textContent = '☁ 시트 저장 확인 ' + (age === 0 ? '오늘 ' + new Date(last).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : age + '일 전') + (A.auto() ? ' · 자동 백업 켜짐' : ' · 자동 백업 꺼짐'); dot.className = 'gdot ' + (age <= 1 ? 'ok' : (age >= 7 ? 'warn' : '')); }
   const list = [];
-  if (mode !== 'shop') {
+  if (mode !== 'shop' && navVisible('shop')) {
     const due = Shop.dueBenefits(SH.items, todayStr());
-    if (due.length) list.push({ key: shopDueKey(due), act: 'shop', html: '🔔 쇼핑 혜택 지급일 도래 <b>' + due.length + '건</b> — ' + esc(due[0].name) + ' ' + won(due[0].amount) + '(' + esc(due[0].item) + ')' + (due.length > 1 ? ' 외' : '') });
+    if (due.length) list.push({ key: shopDueKey(due), act: 'shop', html: '🔔 소비 혜택 지급일 도래 <b>' + due.length + '건</b> — ' + esc(due[0].name) + ' ' + won(due[0].amount) + '(' + esc(due[0].item) + ')' + (due.length > 1 ? ' 외' : '') });
   }
   if (A.hasUrl()) { if (age === null || age >= 7) list.push({ key: 'bk:' + (age === null ? 'never' : 'old'), act: 'backup', html: '☁ ' + (age === null ? '아직 백업한 적이 없어요' : '마지막 백업이 <b>' + age + '일 전</b>이에요') + ' — 눌러서 지금 백업' }); }
   else list.push({ key: 'nourl', act: 'settings', html: '☁ 시트 연결이 안 되어 있어요 — 눌러서 ⚙ 설정에서 Apps Script URL 입력' });
@@ -3568,11 +4048,11 @@ function renderGlobal(){
   { const nm = A.newMonth(); if (nm) list.push({ key: 'nm:' + nm, act: 'meeting', html: '📅 회의비: ' + esc(nm) }); }
   {
     const up = Life.upcoming(SB.items, Life.payMap(SB.pays), todayStr(), 2);
-    if (up.length) list.push({ key: 'sb:' + up.map(x => x.id + x.date).join(','), act: 'sub', html: '💳 결제 임박 <b>' + up.length + '건</b> — ' + esc(up[0].name) + ' ' + (up[0].amount == null ? '(금액 입력 필요)' : won(up[0].amount)) + ' (' + (up[0].diff === 0 ? '오늘' : up[0].diff + '일 뒤') + ')' + (up.length > 1 ? ' 외' : '') });
+    if (up.length && navVisible('sub')) list.push({ key: 'sb:' + up.map(x => x.id + x.date).join(','), act: 'sub', html: '💳 결제 임박 <b>' + up.length + '건</b> — ' + esc(up[0].name) + ' ' + (up[0].amount == null ? '(금액 입력 필요)' : won(up[0].amount)) + ' (' + (up[0].diff === 0 ? '오늘' : up[0].diff + '일 뒤') + ')' + (up.length > 1 ? ' 외' : '') });
   }
   {
     const du = Life.dueList(Q.people, Q.meets, Q.cfg, todayStr());
-    if (du.length) list.push({ key: 'pp:' + du.map(x => x.p.id).join(','), act: 'people', html: '👥 연락할 때가 된 사람 <b>' + du.length + '명</b> — ' + esc(du[0].p.name) + (du.length > 1 ? ' 외' : '') });
+    if (du.length && navVisible('people')) list.push({ key: 'pp:' + du.map(x => x.p.id).join(','), act: 'people', html: '👥 연락할 때가 된 사람 <b>' + du.length + '명</b> — ' + esc(du[0].p.name) + (du.length > 1 ? ' 외' : '') });
   }
   const html = list.filter(a => !dismissed(a.key)).map(a => '<div class="galert" data-g="' + a.act + '" data-key="' + esc(a.key) + '" role="button" tabindex="0"><span class="t">' + a.html + '</span><button class="x" data-g="x" data-key="' + esc(a.key) + '" aria-label="닫기">✕</button></div>').join('');
   if (gbox.dataset.sig !== html) { gbox.dataset.sig = html; gbox.innerHTML = html; }
@@ -3593,12 +4073,12 @@ $('gBar').addEventListener('keydown', e => { if (e.key === 'Enter') { const el =
 
 /* ---------- 모드 / 화면 ---------- */
 let mode = 'meeting';
-const MODE_VIEWS = { meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', people: 'peopleView', skin: 'skinView' };
+const MODE_VIEWS = { meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', people: 'peopleView', skin: 'skinView', pay: 'payView', guide: 'guideView' };
 function setMode(m){
-  if (!MODE_VIEWS[m]) m = 'meeting';
-  mode = m;
+  if (!MODE_VIEWS[m] || !navVisible(m)) m = firstVisibleMode();
+  mode = m; { const g = groupOf(m); if (g) lastIn[g.g] = m; }
   Object.keys(MODE_VIEWS).forEach(k => { $(MODE_VIEWS[k]).hidden = k !== m; });
-  document.querySelectorAll('.modebtn').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+  markNav(); $('quickFab').hidden = !NAV.fab || m === 'guide';
   try { localStorage.setItem(MODE_KEY, m); } catch (e) { /* 저장 불가 환경 */ }
   renderAll(); window.scrollTo(0, 0);
 }
@@ -3609,11 +4089,13 @@ function setTab(t){
   renderAll();
 }
 function renderAll(){
-  if (mode === 'price') { if (ptab === 'analyze') renderAnalyze(); else if (ptab === 'history') { renderHistory(); renderGolf(); } else renderTrend(); }
+  if (mode === 'price') { if (ptab === 'analyze') renderAnalyze(); else if (ptab === 'history') { renderHistory(); } else renderTrend(); }
   else if (mode === 'shop') renderShop();
   else if (mode === 'sub') renderSub();
   else if (mode === 'people') renderPeople();
   else if (mode === 'skin') renderSkin();
+  else if (mode === 'pay') renderPay();
+  else if (mode === 'guide') renderGuide();
   syncNote(); renderGlobal();
 }
 
@@ -3626,7 +4108,6 @@ document.querySelectorAll('dialog').forEach(d => {
   d.insertBefore(x, d.firstChild);
 });
 /* ---------- 이벤트 ---------- */
-document.querySelectorAll('.modebtn').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
 $('priceView').addEventListener('click', e => {
   const el = e.target.closest('[data-pc]'); if (!el) return;
   const a = el.dataset.pc;
@@ -3647,6 +4128,7 @@ $('shopView').addEventListener('click', e => {
   const a = el.dataset.sh;
   if (a === 'cat') { shCat = el.dataset.cat; szOpen = false; renderShop(); }
   else if (a === 'sz') { szOpen = true; renderShop(); window.scrollTo(0, 0); }
+  else if (a === 'swing') openQuick('golf');
   else if (a === 'add') openShop(null);
   else if (a === 'photo') { const it = SH.items.find(x => x.id === el.dataset.id); if (it && it.photo) { $('ph-big').src = it.photo; $('ph-dlg').showModal(); } }
   else if (a === 'done') toggleBenefitDone(el.dataset.id, el.dataset.k);
@@ -3716,11 +4198,11 @@ $('sh-csv').addEventListener('change', e => { const f = e.target.files[0]; e.tar
 ['sh-f-listPrice', 'sh-f-purchasePrice', 'sh-f-b1amount', 'sh-f-b2amount', 'sh-f-points', 'sh-f-points2', 'sh-f-actualPrice'].forEach(id => $(id).addEventListener('input', shRecalc));
 $('sh-f-auto').addEventListener('change', shRecalc);
 
-$('priceView').addEventListener('click', e => {
+[$('priceView'), $('shopView')].forEach(v => v.addEventListener('click', e => {
   const el = e.target.closest('[data-gf]'); if (!el) return;
   const a = el.dataset.gf;
   if (a === 'add-course') openCourse(null); else if (a === 'add-round') openRound(null, null); else if (a === 'course') openCourse(el.dataset.id);
-});
+}));
 $('gf-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-gf]'); if (!el) return;
   const a = el.dataset.gf;
@@ -3767,6 +4249,74 @@ $('gp-dlg').addEventListener('click', e => {
 $('cl-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; if (el.dataset.pp === 'c-cancel') $('cl-dlg').close(); else if (el.dataset.pp === 'c-save') saveClub(); else if (el.dataset.pp === 'c-delete') delClub(); });
 $('mt-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; if (el.dataset.pp === 'm-club') { const c = Q.clubs.find(x => x.id === el.dataset.id); if (c) $('mt-f-people').querySelectorAll('input').forEach(i => { if (c.pids.indexOf(i.value) >= 0) i.checked = true; }); return; } if (el.dataset.pp === 'm-cancel') $('mt-dlg').close(); else if (el.dataset.pp === 'm-save') saveMeet(); else if (el.dataset.pp === 'm-delete') delMeet(); });
 $('pp-cfg-target').addEventListener('change', saveCfg);
+
+/* ---------- 새 화면 이벤트 (하단 탭 · 가이드 · 도수치료 · 연봉) ---------- */
+document.addEventListener('click', e => {
+  const gb = e.target.closest('.grpbtn');
+  if (gb) { const g = GROUPS.find(x => x.g === gb.dataset.grp), ks = grpVisible(g); setMode(ks.indexOf(lastIn[g.g]) >= 0 ? lastIn[g.g] : ks[0]); return; }
+  const b = e.target.closest('.modebtn[data-mode]'); if (b) setMode(b.dataset.mode);
+});
+$('quickSheet').addEventListener('click', e => {
+  if (e.target === $('quickSheet') || e.target.closest('#quickClose')) { $('quickSheet').hidden = true; return; }
+  const t = e.target.closest('[data-qk]'); if (t) { qkKind = t.dataset.qk; renderQuick(); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('quickSheet').hidden = true; });
+$('quickFab').addEventListener('click', () => openQuick());
+$('nav-cfg').addEventListener('change', e => {
+  const t = e.target, k = t.dataset.k, a = t.dataset.nv; if (!a) return;
+  if (a === 'fab') NAV.fab = t.checked;
+  else if (a === 'show') {
+    if (!t.checked) {
+      if (FEATURES.filter(f => navVisible(f.k)).length <= 1) { toast('최소 1개는 보여야 해요.'); t.checked = true; return; }
+      NAV.hidden.push(k);
+    } else NAV.hidden = NAV.hidden.filter(x => x !== k);
+  }
+  NAV = navNorm(NAV); navSave();
+  if (!navVisible(mode)) setMode(firstVisibleMode());
+  renderNav(); renderNavCfg(); renderGlobal();
+});
+$('skinView').addEventListener('click', e => {
+  const t = e.target.closest('[data-sk="tab"]'); if (!t) return;
+  skTab = t.dataset.t === 'manual' ? 'manual' : 'skin'; try { localStorage.setItem('sk_tab_v1', skTab); } catch (er) { /* 무시 */ }
+  renderSkin();
+});
+$('mp-panel').addEventListener('click', e => {
+  const el = e.target.closest('[data-mp]'); if (!el) return;
+  const a = el.dataset.mp;
+  if (a === 'add') openMp(null); else if (a === 'edit') openMp(el.dataset.id); else if (a === 'backup') doBackup();
+});
+$('mp-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-mp]'); if (!el) return;
+  const a = el.dataset.mp;
+  if (a === 'd-cancel') $('mp-dlg').close(); else if (a === 'd-save') saveMp(); else if (a === 'd-delete') delMp();
+});
+['mp-f-date', 'mp-f-cdate', 'mp-f-claimed', 'mp-f-dz'].forEach(id => { $(id).addEventListener('change', mpWarnUpdate); $(id).addEventListener('input', mpWarnUpdate); });
+$('guideView').addEventListener('click', e => {
+  const el = e.target.closest('[data-gd]'); if (!el) return;
+  const a = el.dataset.gd;
+  if (a === 'tab') { gdFilter = el.dataset.k; renderGuide(); } else if (a === 'add') openGuide(null); else if (a === 'edit') openGuide(el.dataset.id); else if (a === 'backup') doBackup();
+});
+$('gd-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-gd]'); if (!el) return;
+  const a = el.dataset.gd;
+  if (a === 'd-cancel') $('gd-dlg').close(); else if (a === 'd-save') saveGuide(); else if (a === 'd-delete') delGuide();
+});
+$('payView').addEventListener('click', e => {
+  const el = e.target.closest('[data-py]'); if (!el) return;
+  const a = el.dataset.py;
+  if (a === 'hide') { pyHide = !pyHide; try { localStorage.setItem(PAY_HIDE_KEY, pyHide ? '1' : '0'); } catch (er) { /* 무시 */ } renderPay(); }
+  else if (a === 'add') openPay(null); else if (a === 'edit') openPay(el.dataset.id); else if (a === 'backup') doBackup();
+});
+$('py-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-py]'); if (!el) return;
+  const a = el.dataset.py;
+  if (a === 'd-cancel') $('py-dlg').close(); else if (a === 'd-save') savePay(); else if (a === 'd-delete') delPay();
+});
+$('py-sync-chk').addEventListener('change', e => {
+  try { localStorage.setItem(PAY_NOSYNC_KEY, e.target.checked ? '0' : '1'); } catch (er) { /* 무시 */ }
+  changed(); toast(e.target.checked ? '연봉도 시트 백업에 포함해요.' : '연봉은 이 기기에만 저장하고 시트 백업에서는 빼요.');
+});
+renderNav();
 
 $('appVer').textContent = APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION;
 try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
