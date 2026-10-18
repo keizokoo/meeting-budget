@@ -422,7 +422,7 @@
   #ph-dlg{ padding:12px; border:1px solid var(--ink); border-radius:12px; max-width:94vw; background:var(--surface); } #ph-dlg::backdrop{ background:rgba(0,0,0,.6); } #ph-big{ display:block; max-width:min(88vw,640px); max-height:78vh; margin:0 auto; border-radius:8px; }
   .sk-filters{ display:flex; gap:10px; margin:0 0 6px; } .sk-filters label{ flex:1; display:flex; flex-direction:column; gap:3px; font-size:11.5px; font-weight:700; color:var(--ink2); }
   .sk-filters select{ font:inherit; font-size:14px; font-weight:700; border:1px solid var(--line2); border-radius:8px; padding:8px; background:var(--surface); color:var(--ink); }
-  .sk-checks{ display:flex; flex-wrap:wrap; gap:5px; margin:8px 0 2px; } .sk-ck{ width:22px; height:22px; border:1.5px solid var(--ink3); border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:#fff; cursor:pointer; background:transparent; } .sk-ck.on{ background:var(--accent); border-color:var(--accent); } .sk-ck.pre{ background:var(--ink3); border-color:var(--ink3); cursor:default; } .sk-chk-note{ margin-top:4px; } .sk-card{ border:1px solid var(--line2); border-radius:12px; background:var(--surface); padding:13px 14px; margin:0 0 10px; cursor:pointer; }
+  .sk-checks{ display:flex; flex-wrap:wrap; gap:5px; margin:8px 0 2px; } .sk-ck{ width:22px; height:22px; border:1.5px solid var(--ink3); border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:#fff; cursor:pointer; background:transparent; } .sk-ck.on{ background:var(--accent); border-color:var(--accent); } .sk-ck.pre{ background:var(--ink3); border-color:var(--ink3); cursor:default; } .sk-chk-note{ margin-top:4px; } .sk-sc{ width:88px; margin-left:auto; margin-right:6px; padding:4px 6px; font-size:12px; } .sk-card{ border:1px solid var(--line2); border-radius:12px; background:var(--surface); padding:13px 14px; margin:0 0 10px; cursor:pointer; }
   .sk-card.done{ opacity:.7; } .sk-top{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-weight:800; font-size:15px; }
   .sk-tag{ font-size:10.5px; font-weight:800; border:1px solid var(--accent); color:var(--accent); border-radius:999px; padding:1px 8px; } .sk-badge{ font-size:10.5px; font-weight:800; border:1px solid var(--line2); color:var(--ink2); border-radius:999px; padding:1px 8px; } .sk-badge.on{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); } .sk-badge.over{ border-color:var(--warn); color:var(--warn); }
   .sk-meta{ font-size:12px; color:var(--ink2); margin-top:3px; } .sk-meta b{ color:var(--ink); }
@@ -1024,16 +1024,17 @@
   </div>
   <datalist id="sk-clinic-list"></datalist><datalist id="sk-func-list"></datalist>
   <div class="pc-row2">
-    <label class="pc-f">결제금(원)<input id="sk-f-cost" type="number" inputmode="numeric" min="0" step="any"></label>
+    <label class="pc-f"><span id="sk-f-costlbl">결제금(원)</span><input id="sk-f-cost" type="number" inputmode="numeric" min="0" step="any"></label>
     <label class="pc-f">총 횟수<input id="sk-f-total" type="number" inputmode="numeric" min="1" step="1"></label>
   </div>
+  <label class="sh-donechk"><input type="checkbox" id="sk-f-open"> 횟수 제한 없이, 받을 때마다 체크해서 추가 (예: 보톡스) — 위 금액은 1회 기본 가격이고 시술마다 다른 가격도 입력할 수 있어요</label>
   <label class="pc-f">이전에 받은 횟수 (날짜를 모르는 것)<input id="sk-f-pre" type="number" inputmode="numeric" min="0" step="1" placeholder="0"></label>
   <label class="pc-f">결제일<input id="sk-f-date" type="date"></label>
   <label class="pc-f">메모(선택)<input id="sk-f-memo" type="text"></label>
   <div class="sk-calc" id="sk-f-calc" aria-live="polite"></div>
   <div class="grp" style="margin-top:12px">시술 기록 <span id="sk-f-count" class="sk-cnt"></span></div>
   <div id="sk-f-sess"></div>
-  <div class="sk-addsess"><input type="date" id="sk-f-newdate" aria-label="시술일"><button type="button" class="pc-btn small" data-sk="d-addsess">+ 시술 추가</button></div>
+  <div class="sk-addsess"><input type="date" id="sk-f-newdate" aria-label="시술일"><input type="number" id="sk-f-newcost" inputmode="numeric" min="0" step="any" placeholder="가격(원)" aria-label="이번 가격" hidden><button type="button" class="pc-btn small" data-sk="d-addsess">+ 시술 추가</button></div>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-sk="d-cancel">취소</button><button class="pc-btn primary" data-sk="d-save">저장</button></div>
   <button id="sk-d-delete" class="pc-btn danger wide" data-sk="d-delete">이 관리 삭제 (시술 기록 포함)</button>
 </dialog>
@@ -2709,7 +2710,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-18-s (피부관리 회차 체크 · 제모 사용 횟수)';
+const APP_BUILD_VERSION = '2026-10-18-t (보톡스 체크박스 · 시술별 가격 · 제모 시술일)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -3758,14 +3759,19 @@ const Skin = (() => {
   const FUNCS = ['미백', '탄력·리프팅', '여드름·흉터', '모공', '색소·잡티', '보습·재생', '제모', '보톡스', '기타'];
   const n = v => { const x = Number(v); return isFinite(x) ? x : 0; };
   function stats(it, sess){
+    if (it.open) {   // 횟수 제한 없는 관리(보톡스 등): 받을 때마다 체크, 가격은 시술별(비우면 기본 가격)
+      const m2 = sess.filter(x => x.itemId === it.id), pre2 = Math.max(0, Math.round(n(it.pre))), def = n(it.cost), used2 = m2.length + pre2, d2 = m2.map(x => x.date).sort();
+      let c2 = pre2 * def; m2.forEach(x => { c2 += (x.cost === '' || x.cost == null) ? def : n(x.cost); });
+      return { open: true, used: used2, pre: pre2, total: used2, remain: 0, over: 0, unit: used2 ? Math.round(c2 / used2) : def, usedCost: c2, cost: c2, remainValue: 0, done: false, last: d2.length ? d2[d2.length - 1] : '', first: d2.length ? d2[0] : '' };
+    }
     const mine = sess.filter(x => x.itemId === it.id), pre = Math.max(0, Math.round(n(it.pre))), used = mine.length + pre, total = Math.max(0, Math.round(n(it.total))), cost = n(it.cost);
     const usedCost = total > 0 ? Math.round(cost * Math.min(used, total) / total) : 0, dates = mine.map(x => x.date).sort();
-    return { used, pre, total, remain: Math.max(0, total - used), over: Math.max(0, used - total), unit: total > 0 ? Math.round(cost / total) : 0,
+    return { cost, used, pre, total, remain: Math.max(0, total - used), over: Math.max(0, used - total), unit: total > 0 ? Math.round(cost / total) : 0,
       usedCost, remainValue: cost - usedCost, done: total > 0 && used >= total, last: dates.length ? dates[dates.length - 1] : '' };
   }
   function summarize(items, sess){
     const r = { count: items.length, cost: 0, active: 0, done: 0, remain: 0, usedCost: 0, remainValue: 0 };
-    items.forEach(it => { const t = stats(it, sess); r.cost += n(it.cost); r.usedCost += t.usedCost; if (t.done) r.done++; else { r.active++; r.remain += t.remain; r.remainValue += t.remainValue; } });
+    items.forEach(it => { const t = stats(it, sess); r.cost += t.cost; r.usedCost += t.usedCost; if (t.done) r.done++; else { r.active++; r.remain += t.remain; r.remainValue += t.remainValue; } });
     return r;
   }
   return { FUNCS, stats, summarize };
@@ -3775,9 +3781,9 @@ const SKIN_KEY = 'skin_care_v1', SKIN_SEED = { items: [], sessions: [], del: {} 
 function skNorm(o){
   o = o && typeof o === 'object' ? o : {};
   const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && i.name).map(i => ({ id: String(i.id), name: String(i.name), clinic: String(i.clinic || ''), func: String(i.func || ''),
-    date: Calc.validDate(i.date) || '', cost: Number(i.cost) >= 0 && i.cost !== '' && i.cost != null ? Number(i.cost) : 0, total: Math.max(1, Math.round(Number(i.total)) || 1), pre: Math.max(0, Math.round(Number(i.pre)) || 0), memo: String(i.memo || ''), u: String(i.u || '') }));
+    date: Calc.validDate(i.date) || '', cost: Number(i.cost) >= 0 && i.cost !== '' && i.cost != null ? Number(i.cost) : 0, total: Math.max(1, Math.round(Number(i.total)) || 1), pre: Math.max(0, Math.round(Number(i.pre)) || 0), open: i.open === true || i.open === 'true', memo: String(i.memo || ''), u: String(i.u || '') }));
   const ids = Object.create(null); items.forEach(i => { ids[i.id] = true; });
-  const sessions = (Array.isArray(o.sessions) ? o.sessions : []).filter(x => x && x.id && ids[x.itemId] && Calc.validDate(x.date)).map(x => ({ id: String(x.id), itemId: String(x.itemId), date: x.date, memo: String(x.memo || ''), u: String(x.u || '') }));
+  const sessions = (Array.isArray(o.sessions) ? o.sessions : []).filter(x => x && x.id && ids[x.itemId] && Calc.validDate(x.date)).map(x => ({ id: String(x.id), itemId: String(x.itemId), date: x.date, cost: x.cost === '' || x.cost == null || !(Number(x.cost) >= 0) ? '' : Number(x.cost), memo: String(x.memo || ''), u: String(x.u || '') }));
   return { items, sessions, del: cleanDel(o.del) };
 }
 let SK = loadK(SKIN_KEY, SKIN_SEED, skNorm), skEditing = null, skDraft = [], skFilter = (function () { try { const o = JSON.parse(localStorage.getItem('sk_filter_v1') || '{}'); return { func: o.func || 'all', stat: o.stat || 'all' }; } catch (e) { return { func: 'all', stat: 'all' }; } })();
@@ -3811,10 +3817,12 @@ function renderSkin(){
     const pct = t.total ? Math.min(100, Math.round(Math.min(t.used, t.total) / t.total * 100)) : 0;
     return '<div class="sk-card' + (t.done ? ' done' : '') + '" data-sk="edit" data-id="' + esc(i.id) + '" tabindex="0"><div class="sk-top"><span>' + esc(i.name) + '</span>' + (i.func ? '<span class="sk-tag">' + esc(i.func) + '</span>' : '') +
       (t.over ? '<span class="sk-badge over">횟수 초과 +' + t.over + '</span>' : '<span class="sk-badge' + (t.done ? '' : ' on') + '">' + (t.done ? '소진 완료' : '진행중') + '</span>') + '</div>' +
-      '<div class="sk-meta">' + (i.clinic ? '<b>' + esc(i.clinic) + '</b> · ' : '') + '결제 ' + esc(i.date || '-') + (t.last ? ' · 마지막 ' + esc(t.last) : '') + '</div>' +
-      '<div class="pp-prog"><i style="width:' + pct + '%"></i></div>' + skChecks(i, t) +
+      '<div class="sk-meta">' + (i.clinic ? '<b>' + esc(i.clinic) + '</b> · ' : '') + (t.open ? (t.first ? '첫 시술 ' + esc(t.first) : '아직 시술 전') : '결제 ' + esc(i.date || '-')) + (t.last ? ' · 마지막 ' + esc(t.last) : '') + '</div>' +
+      (t.open ? '' : '<div class="pp-prog"><i style="width:' + pct + '%"></i></div>') + skChecks(i, t) +
+      (t.open ? '<div class="sk-row2"><div><div class="sk-remain">받은 ' + t.used + '회<small>횟수 제한 없음</small></div>' +
+      '<div class="sk-meta">누적 <b>' + won(t.cost) + '</b>' + (t.used ? ' · 1회 평균 <b>' + won(t.unit) + '</b>' : '') + '</div></div>' :
       '<div class="sk-row2"><div><div class="sk-remain">남은 ' + t.remain + '회<small>' + t.used + ' / ' + t.total + '회 사용</small></div>' +
-      '<div class="sk-meta">결제 <b>' + won(i.cost) + '</b> · 1회당 <b>' + won(t.unit) + '</b> · 사용 <b>' + won(t.usedCost) + '</b></div></div>' +
+      '<div class="sk-meta">결제 <b>' + won(i.cost) + '</b> · 1회당 <b>' + won(t.unit) + '</b> · 사용 <b>' + won(t.usedCost) + '</b></div></div>') +
       '<button type="button" class="pc-btn small primary sk-today" data-sk="today" data-id="' + esc(i.id) + '"' + (t.done ? ' title="횟수를 모두 사용했어요"' : '') + '>＋ 오늘 받았어요</button></div></div>';
   }).join('') : '<div class="empty">' + (items.length ? '조건에 맞는 관리가 없어요.' : '아직 등록된 관리가 없어요. “+ 관리 추가”로 시작해 보세요.') + '</div>';
   const dl = $('sk-clinic-list'), cl = []; items.forEach(i => { if (i.clinic && cl.indexOf(i.clinic) < 0) cl.push(i.clinic); }); dl.innerHTML = cl.map(c => '<option value="' + esc(c) + '">').join('');
@@ -3822,43 +3830,49 @@ function renderSkin(){
 }
 // 회차 체크 칸: 이미 받은 칸(날짜 있는 것은 눌러서 취소, 날짜 모르는 이전 분은 회색)과 남은 칸(눌러서 오늘 날짜로 체크)
 function skChecks(i, t){
-  if (!(t.total > 1)) return '';
+  if (!t.open && !(t.total > 1)) return '';
   const mine = SK.sessions.filter(x => x.itemId === i.id).sort((a, b) => a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
   let h = '';
   for (let k = 0; k < t.pre; k++) h += '<span class="sk-ck pre" data-sk="ckpre" title="이전에 받은 분(날짜 모름)">✓</span>';
-  mine.forEach(x => { h += '<span class="sk-ck on" data-sk="unchk" data-id="' + esc(i.id) + '" data-sid="' + esc(x.id) + '" title="' + esc(x.date) + ' · 눌러서 취소">✓</span>'; });
-  for (let k = t.used; k < t.total; k++) h += '<span class="sk-ck" data-sk="chk" data-id="' + esc(i.id) + '" title="눌러서 오늘 받은 것으로 체크">&nbsp;</span>';
-  const recent = mine.slice(-3).reverse().map(x => x.date.slice(2).replace(/-/g, '.')).join(' · ');
-  return '<div class="sk-checks">' + h + '</div>' + '<div class="sk-meta sk-chk-note">' + (t.remain ? '빈 칸을 누르면 오늘 날짜로 체크돼요' : '모두 체크했어요') + (recent ? ' · 최근 체크 ' + esc(recent) : '') + '</div>';
+  mine.forEach(x => { h += '<span class="sk-ck on" data-sk="unchk" data-id="' + esc(i.id) + '" data-sid="' + esc(x.id) + '" title="' + esc(x.date) + (t.open ? ' · ' + won(x.cost === '' || x.cost == null ? i.cost : x.cost) : '') + ' · 눌러서 취소">✓</span>'; });
+  if (t.open) h += '<span class="sk-ck" data-sk="chk" data-id="' + esc(i.id) + '" title="눌러서 오늘 받은 것으로 체크(가격 입력)">&nbsp;</span>';
+  else for (let k = t.used; k < t.total; k++) h += '<span class="sk-ck" data-sk="chk" data-id="' + esc(i.id) + '" title="눌러서 오늘 받은 것으로 체크">&nbsp;</span>';
+  const recent = mine.slice(-3).reverse().map(x => x.date.slice(2).replace(/-/g, '.') + (t.open ? '(' + Math.round((x.cost === '' || x.cost == null ? Number(i.cost) : Number(x.cost)) / 1000) / 10 + '만)' : '')).join(' · ');
+  return '<div class="sk-checks">' + h + '</div>' + '<div class="sk-meta sk-chk-note">' + (t.open ? '빈 칸을 누르면 오늘 날짜로 체크되고 가격을 입력해요' : t.remain ? '빈 칸을 누르면 오늘 날짜로 체크돼요' : '모두 체크했어요') + (recent ? ' · 최근 체크 ' + esc(recent) : '') + '</div>';
 }
 function skCalcUI(){
-  const it = { cost: $('sk-f-cost').value, total: $('sk-f-total').value, pre: $('sk-f-pre').value, id: '__draft' }, t = Skin.stats(it, skDraft.map(d => ({ itemId: '__draft', date: d.date })));
+  const op = $('sk-f-open').checked, it = { cost: $('sk-f-cost').value, total: $('sk-f-total').value, pre: $('sk-f-pre').value, open: op, id: '__draft' }, t = Skin.stats(it, skDraft.map(d => ({ itemId: '__draft', date: d.date, cost: d.cost })));
+  $('sk-f-total').closest('label').hidden = op; $('sk-f-costlbl').textContent = op ? '1회 기본 가격(원)' : '결제금(원)'; $('sk-f-newcost').hidden = !op;
   $('sk-f-count').textContent = skDraft.length ? '(' + skDraft.length + '회)' : '';
-  $('sk-f-calc').textContent = t.total ? '총 ' + t.total + '회 중 ' + t.used + '회 사용 → 남은 ' + t.remain + '회' + (t.over ? ' (초과 ' + t.over + '회)' : '') + (Number(it.cost) > 0 ? ' · 1회당 ' + won(t.unit) + ' · 사용 ' + won(t.usedCost) + ' · 남은 가치 ' + won(t.remainValue) : '') : '';
+  $('sk-f-calc').textContent = op ? '받은 ' + t.used + '회 · 누적 ' + won(t.cost) + (t.used ? ' · 1회 평균 ' + won(t.unit) : '') : t.total ? '총 ' + t.total + '회 중 ' + t.used + '회 사용 → 남은 ' + t.remain + '회' + (t.over ? ' (초과 ' + t.over + '회)' : '') + (Number(it.cost) > 0 ? ' · 1회당 ' + won(t.unit) + ' · 사용 ' + won(t.usedCost) + ' · 남은 가치 ' + won(t.remainValue) : '') : '';
   const sorted = skDraft.map((d, idx) => ({ d, idx })).sort((a, b) => a.d.date < b.d.date ? -1 : (a.d.date > b.d.date ? 1 : 0));
-  $('sk-f-sess').innerHTML = sorted.map((x, k) => '<div class="sk-sess"><span class="n">' + (k + 1) + '회</span><span class="d">' + esc(x.d.date) + '</span><button type="button" data-sk="d-delsess" data-i="' + x.idx + '" aria-label="이 시술 기록 삭제">✕</button></div>').join('') || '<p class="pc-hint" style="margin:0">아직 받은 기록이 없어요.</p>';
+  $('sk-f-sess').innerHTML = sorted.map((x, k) => '<div class="sk-sess"><span class="n">' + (k + 1) + '회</span><span class="d">' + esc(x.d.date) + '</span>' + (op ? '<input type="number" class="sk-sc" data-i="' + x.idx + '" inputmode="numeric" min="0" step="any" value="' + (x.d.cost === '' || x.d.cost == null ? '' : esc(String(x.d.cost))) + '" placeholder="기본가" aria-label="이 시술 가격">' : '') + '<button type="button" data-sk="d-delsess" data-i="' + x.idx + '" aria-label="이 시술 기록 삭제">✕</button></div>').join('') || '<p class="pc-hint" style="margin:0">아직 받은 기록이 없어요.</p>';
 }
 function openSkin(id){
   const it = id ? SK.items.find(x => x.id === id) : null; if (id && !it) return;
   skEditing = id || null; renderSkin();
   $('sk-d-title').textContent = it ? '관리 수정' : '관리 추가';
   $('sk-f-name').value = it ? it.name : ''; $('sk-f-clinic').value = it ? it.clinic : (SK.items.length ? SK.items.slice().sort((a, b) => String(b.u).localeCompare(String(a.u)))[0].clinic : '');
-  $('sk-f-func2').value = it ? it.func : ''; $('sk-f-cost').value = it && it.cost ? it.cost : ''; $('sk-f-total').value = it ? it.total : ''; $('sk-f-pre').value = it && it.pre ? it.pre : '';
+  $('sk-f-func2').value = it ? it.func : ''; $('sk-f-cost').value = it && it.cost ? it.cost : ''; $('sk-f-total').value = it ? it.total : ''; $('sk-f-pre').value = it && it.pre ? it.pre : ''; $('sk-f-open').checked = !!(it && it.open); $('sk-f-newcost').value = it && it.open ? it.cost || '' : '';
   $('sk-f-date').value = it ? it.date : todayStr(); $('sk-f-memo').value = it ? it.memo : ''; $('sk-f-newdate').value = todayStr();
-  skDraft = it ? SK.sessions.filter(x => x.itemId === it.id).map(x => ({ id: x.id, date: x.date, memo: x.memo })) : [];
+  skDraft = it ? SK.sessions.filter(x => x.itemId === it.id).map(x => ({ id: x.id, date: x.date, cost: x.cost === undefined ? '' : x.cost, memo: x.memo })) : [];
   skCalcUI(); $('sk-d-delete').hidden = !it; $('sk-dlg').showModal();
 }
 function saveSkin(){
   const name = $('sk-f-name').value.trim(); if (!name) { toast('관리명을 입력해 주세요.'); return; }
-  const total = Math.round(Number($('sk-f-total').value)); if (!(total >= 1)) { toast('총 횟수를 1 이상으로 입력해 주세요.'); return; }
+  const open = $('sk-f-open').checked, total = open ? 1 : Math.round(Number($('sk-f-total').value)); if (!(total >= 1)) { toast('총 횟수를 1 이상으로 입력해 주세요.'); return; }
   const cost = $('sk-f-cost').value === '' ? 0 : Number($('sk-f-cost').value); if (!(cost >= 0)) { toast('결제금을 확인해 주세요.'); return; }
-  const t = nowIso(), d = { name, clinic: $('sk-f-clinic').value.trim(), func: $('sk-f-func2').value.trim(), cost, total, pre: Math.max(0, Math.round(Number($('sk-f-pre').value)) || 0), date: Calc.validDate($('sk-f-date').value) || '', memo: $('sk-f-memo').value.trim(), u: t };
+  const t = nowIso(), d = { name, clinic: $('sk-f-clinic').value.trim(), func: $('sk-f-func2').value.trim(), cost, total, open, pre: Math.max(0, Math.round(Number($('sk-f-pre').value)) || 0), date: Calc.validDate($('sk-f-date').value) || '', memo: $('sk-f-memo').value.trim(), u: t };
   let it = skEditing ? SK.items.find(x => x.id === skEditing) : null;
   if (it) Object.assign(it, d); else { it = Object.assign({ id: uid('sk') }, d); SK.items.push(it); }
   const keep = Object.create(null); skDraft.forEach(x => { if (x.id) keep[x.id] = true; });
   SK.sessions.filter(x => x.itemId === it.id && !keep[x.id]).forEach(x => { SK.del[x.id] = t; });
   SK.sessions = SK.sessions.filter(x => x.itemId !== it.id || keep[x.id]);
-  skDraft.forEach(x => { if (!x.id) SK.sessions.push({ id: uid('ss'), itemId: it.id, date: x.date, memo: x.memo || '', u: t }); });
+  skDraft.forEach(x => {
+    const cs = x.cost === '' || x.cost == null || !(Number(x.cost) >= 0) ? '' : Number(x.cost);
+    if (!x.id) SK.sessions.push({ id: uid('ss'), itemId: it.id, date: x.date, cost: cs, memo: x.memo || '', u: t });
+    else { const ex = SK.sessions.find(y => y.id === x.id); if (ex && ex.cost !== cs) { ex.cost = cs; ex.u = t; } }
+  });
   skSave(); changed(); $('sk-dlg').close(); toast('저장했어요.'); renderAll();
 }
 function delSkin(){
@@ -3872,7 +3886,13 @@ function skToday(id, quiet){
   const td = todayStr(), st = Skin.stats(it, SK.sessions);
   if (!quiet && SK.sessions.some(x => x.itemId === id && x.date === td) && !confirm('오늘 이미 기록했어요. 한 번 더 추가할까요?')) return;
   if (st.done && !confirm('총 ' + st.total + '회를 모두 사용했어요. 그래도 추가할까요? (횟수 초과로 표시돼요)')) return;
-  SK.sessions.push({ id: uid('ss'), itemId: id, date: td, memo: '', u: nowIso() }); skSave(); changed();
+  let cost = '';
+  if (it.open) {   // 이번 시술 가격: 마지막 시술 가격(없으면 기본 가격)이 기본값
+    const lastS = SK.sessions.filter(x => x.itemId === id).sort((a, b) => a.date < b.date ? -1 : 1).pop(), def = lastS && lastS.cost !== '' && lastS.cost != null ? lastS.cost : it.cost;
+    const v = prompt('이번 시술 가격(원)을 확인해 주세요', String(def || 0)); if (v === null) return;
+    const num = Number(String(v).replace(/[^\d.]/g, '')); if (!(num >= 0) || String(v).trim() === '') { toast('가격을 확인해 주세요.'); return; } cost = num;
+  }
+  SK.sessions.push({ id: uid('ss'), itemId: id, date: td, cost, memo: '', u: nowIso() }); skSave(); changed();
   const n = Skin.stats(it, SK.sessions); toast(it.name + ' ' + n.used + '회차 체크(' + td + ') · ' + (n.remain ? '남은 ' + n.remain + '회' : '모두 소진')); renderAll();
 }
 // <MANUALCALC>
@@ -4611,9 +4631,6 @@ function migrateO(){
     if (!SK.items.some(x => x.id === id)) { SK.items.push(Object.assign({ id, u: nowIso() }, d)); ch = true; }
     if (sessDate && !SK.del['sks_' + id] && !SK.sessions.some(x => x.id === 'sks_' + id)) { SK.sessions.push({ id: 'sks_' + id, itemId: id, date: sessDate, memo: '', u: nowIso() }); ch = true; }
   };
-  [['2023-04-29'], ['2023-11-18'], ['2024-05-24'], ['2024-11-12'], ['2025-04-30'], ['2025-08-30']].forEach((a, i) => {
-    add('sk_mig_botox_' + (i + 1), { name: '이마·미간·턱 보톡스', clinic: '아비쥬', func: '보톡스', date: a[0], cost: 180400, total: 1, memo: '' }, a[0]);
-  });
   add('sk_mig_epil_1', { name: '하관 20회 + 눈썹 11회 제모', clinic: '디에스타의원', func: '제모', date: '', cost: 1584000, total: 31, pre: 29, memo: '장비: 젠틀맥스프로플러스 · 결제일 모름 · 하관 20회 + 눈썹 11회 합산 결제' });
   add('sk_mig_epil_2', { name: '다리 전체 제모 12회', clinic: '디에스타의원', func: '제모', date: '2025-08-26', cost: 1584000, total: 12, pre: 6, memo: '장비: 젠틀맥스프로플러스' });
   if (ch) { SK = skNorm(SK); skSave(); changed(); }
@@ -4631,6 +4648,36 @@ function migrateP(){
     if (String(it.memo).indexOf(OLD) >= 0) { it.memo = String(it.memo).split(OLD).join(''); ch = true; }
     if (ch) it.u = nowIso();
   });
+  if (ch) { SK = skNorm(SK); skSave(); changed(); }
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
+
+/* ---------- 이번 버전(2026-10-18-t) 1회성 반영: 보톡스 6건 → 체크박스 1개 관리(횟수 제한 없음, 시술별 가격)로 합침 + 25.8.30 삭제 / 다리 제모 시술일 3건 ---------- */
+function migrateQ(){
+  const MK = 'mig_q_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  let ch = false; const t = nowIso();
+  // 1) 예전에 나눠 넣은 보톡스 6건(이름 그대로인 것만) 정리
+  for (let k = 1; k <= 6; k++) {
+    const id = 'sk_mig_botox_' + k, ex = SK.items.find(x => x.id === id);
+    if (ex && ex.name === '이마·미간·턱 보톡스' && ex.func === '보톡스' && ex.cost === 180400) {
+      SK.sessions.filter(x => x.itemId === id).forEach(x => { SK.del[x.id] = t; });
+      SK.sessions = SK.sessions.filter(x => x.itemId !== id); SK.items = SK.items.filter(x => x.id !== id); SK.del[id] = t; ch = true;
+    }
+  }
+  // 2) 합친 보톡스 관리 (25.8.30 기록은 요청에 따라 제외)
+  const bid = 'sk_mig_botox';
+  if (!SK.del[bid] && !SK.items.some(x => x.id === bid)) {
+    SK.items.push({ id: bid, name: '이마·미간·턱 보톡스', clinic: '아비쥬', func: '보톡스', date: '', cost: 180400, total: 1, pre: 0, open: true, memo: '체크할 때마다 시술이 추가돼요 · 가격은 시술별로 바꿀 수 있어요', u: t });
+    ['2023-04-29', '2023-11-18', '2024-05-24', '2024-11-12', '2025-04-30'].forEach((d, i) => { SK.sessions.push({ id: 'sks_' + bid + '_' + (i + 1), itemId: bid, date: d, cost: 180400, memo: '', u: t }); });
+    ch = true;
+  }
+  // 3) 다리 전체 제모: 날짜를 알게 된 시술 3회(이전에 받은 횟수 6회 중에서 옮김)
+  const lid = 'sk_mig_epil_2', leg = SK.items.find(x => x.id === lid);
+  if (leg && !SK.del[lid]) {
+    let moved = 0;
+    ['2025-09-12', '2026-02-19', '2026-07-02'].forEach((d, i) => { const sid = 'sks_' + lid + '_' + (i + 1); if (!SK.del[sid] && !SK.sessions.some(x => x.id === sid)) { SK.sessions.push({ id: sid, itemId: lid, date: d, cost: '', memo: '', u: t }); moved++; } });
+    if (moved) { leg.pre = Math.max(0, (leg.pre || 0) - moved); leg.u = t; ch = true; }
+  }
   if (ch) { SK = skNorm(SK); skSave(); changed(); }
   try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
 }
@@ -4775,7 +4822,7 @@ $('skinView').addEventListener('click', e => {
   const a = el.dataset.sk;
   if (a === 'chk') { skToday(el.dataset.id, true); return; }
   else if (a === 'ckpre') { toast('이전에 받은 분(날짜 모름)이에요. 관리 수정에서 횟수를 바꿀 수 있어요.'); return; }
-  else if (a === 'unchk') { const x = SK.sessions.find(s2 => s2.id === el.dataset.sid); if (x && confirm(x.date + ' 체크를 취소할까요?')) { SK.sessions = SK.sessions.filter(s2 => s2.id !== x.id); SK.del[x.id] = nowIso(); skSave(); changed(); renderAll(); } return; }
+  else if (a === 'unchk') { const x = SK.sessions.find(s2 => s2.id === el.dataset.sid); if (x && confirm(x.date + (x.cost !== '' && x.cost != null ? ' · ' + won(x.cost) : '') + ' 체크를 취소할까요?')) { SK.sessions = SK.sessions.filter(s2 => s2.id !== x.id); SK.del[x.id] = nowIso(); skSave(); changed(); renderAll(); } return; }
   if (a === 'add') openSkin(null); else if (a === 'today') skToday(el.dataset.id); else if (a === 'edit') openSkin(el.dataset.id); else if (a === 'backup') doBackup();
 });
 $('sk-f-func').addEventListener('change', e => { skFilter.func = e.target.value; skFilterSave(); renderSkin(); });
@@ -4797,10 +4844,11 @@ $('sk-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-sk]'); if (!el) return;
   const a = el.dataset.sk;
   if (a === 'd-cancel') $('sk-dlg').close(); else if (a === 'd-save') saveSkin(); else if (a === 'd-delete') delSkin();
-  else if (a === 'd-addsess') { const d = Calc.validDate($('sk-f-newdate').value); if (!d) { toast('시술일을 선택해 주세요.'); return; } skDraft.push({ id: '', date: d, memo: '' }); skCalcUI(); }
+  else if (a === 'd-addsess') { const d = Calc.validDate($('sk-f-newdate').value); if (!d) { toast('시술일을 선택해 주세요.'); return; } skDraft.push({ id: '', date: d, cost: $('sk-f-open').checked && $('sk-f-newcost').value !== '' ? Number($('sk-f-newcost').value) : '', memo: '' }); skCalcUI(); }
   else if (a === 'd-delsess') { skDraft.splice(Number(el.dataset.i), 1); skCalcUI(); }
 });
-['sk-f-cost', 'sk-f-total', 'sk-f-pre'].forEach(id => $(id).addEventListener('input', skCalcUI));
+['sk-f-cost', 'sk-f-total', 'sk-f-pre', 'sk-f-open'].forEach(id => { $(id).addEventListener('input', skCalcUI); $(id).addEventListener('change', skCalcUI); });
+$('sk-f-sess').addEventListener('input', e => { const el = e.target.closest('.sk-sc'); if (!el) return; const x = skDraft[Number(el.dataset.i)]; if (x) { x.cost = el.value === '' ? '' : Number(el.value); const it = { cost: $('sk-f-cost').value, pre: $('sk-f-pre').value, open: true, id: '__draft' }, t = Skin.stats(it, skDraft.map(d => ({ itemId: '__draft', date: d.date, cost: d.cost }))); $('sk-f-calc').textContent = '받은 ' + t.used + '회 · 누적 ' + won(t.cost) + (t.used ? ' · 1회 평균 ' + won(t.unit) : ''); } });
 $('sh-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-sh]'); if (!el) return;
   if (el.dataset.sh === 'd-cancel') $('sh-dlg').close(); else if (el.dataset.sh === 'd-save') saveShop(); else if (el.dataset.sh === 'd-delete') delShop();
@@ -4963,7 +5011,7 @@ $('appVer').textContent = APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION;
 try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
-migrateJ(); migrateK(); migrateL(); migrateM(); migrateN(); migrateO(); migrateP();
+migrateJ(); migrateK(); migrateL(); migrateM(); migrateN(); migrateO(); migrateP(); migrateQ();
 let startMode = 'meeting';
 try { const st = localStorage.getItem(START_KEY), v = st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY); startMode = MODE_VIEWS[v] ? v : 'meeting'; } catch (e) { /* 기본값 */ }
 setMode(startMode);
