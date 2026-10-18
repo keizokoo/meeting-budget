@@ -605,12 +605,24 @@
   .py-row{ padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; } .py-row:hover{ background:var(--pc-soft); }
   .py-top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; } .py-top b{ font-size:15px; } .py-top span{ font-size:12.5px; color:var(--ink2); } .py-top .py-sal{ margin-left:auto; font-size:15px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; }
   .py-sub{ font-size:12px; color:var(--ink2); margin-top:3px; line-height:1.5; } .py-sub .tag{ display:inline-block; font-weight:800; border:1px solid var(--line2); border-radius:999px; padding:0 7px; margin-right:5px; color:var(--ink); }
-  #py-chart svg{ width:100%; height:auto; display:block; } #py-chart{ margin:0 0 8px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:8px; }
   #mp-dlg, #gd-dlg, #py-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
   #mp-dlg::backdrop, #gd-dlg::backdrop, #py-dlg::backdrop{ background:rgba(0,0,0,.45); }
   #mp-dlg h3, #gd-dlg h3, #py-dlg h3{ margin:0 0 4px; font-size:16px; }
   #mp-dlg .pc-f input, #mp-dlg .pc-f select, #cl-dlg .pc-f select, #mp-frow .pc-f select, #gd-dlg .pc-f input, #gd-dlg .pc-f select, #gd-dlg .pc-f textarea, #py-dlg .pc-f input{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
   #gd-dlg textarea{ min-height:150px; line-height:1.5; resize:vertical; }
+  #sh-dlg .pc-f textarea, #rm-dlg .pc-f input, #rm-dlg .pc-f select, #rm-dlg .pc-f textarea{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
+  #sh-dlg .pc-f textarea, #rm-dlg .pc-f textarea{ min-height:76px; line-height:1.5; resize:vertical; }
+  #rm-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
+  #rm-dlg::backdrop{ background:rgba(0,0,0,.45); } #rm-dlg h3{ margin:0 0 6px; font-size:16px; }
+  .rm-row{ display:flex; gap:8px; align-items:flex-start; padding:11px 2px; border-bottom:1px solid var(--line); }
+  .rm-row .rm-main{ flex:1; min-width:0; cursor:pointer; } .rm-row .rm-t{ font-size:14px; font-weight:700; line-height:1.4; } .rm-row .rm-d{ font-size:12px; color:var(--ink2); margin-top:2px; line-height:1.45; white-space:pre-wrap; }
+  .rm-row.done .rm-t{ text-decoration:line-through; color:var(--ink2); } .rm-row .rm-dd{ font-weight:800; color:var(--accent); }
+  .rm-sec{ font-size:11.5px; font-weight:800; color:var(--ink2); margin:12px 0 2px; letter-spacing:.04em; }
+  #gRemind .rmn{ display:inline-block; min-width:16px; margin-left:4px; padding:0 5px; border-radius:9px; background:var(--accent); color:#fff; font-size:10.5px; line-height:16px; text-align:center; }
+  .sh-memo{ font-size:12px; color:var(--ink2); margin-top:5px; white-space:pre-wrap; line-height:1.45; }
+  .sh-trade{ display:inline-block; margin-top:6px; padding:4px 9px; border:1px solid var(--accent); border-radius:8px; font-size:12px; font-weight:700; color:var(--accent); line-height:1.4; }
+  .sh-row.hl, .sb-row.hl{ animation:hlflash 2.4s ease-out 1; } @keyframes hlflash{ 0%,60%{ background:var(--pc-soft); box-shadow:0 0 0 2px var(--accent) inset; } 100%{ background:transparent; box-shadow:none; } }
+  .scard.link{ cursor:pointer; } .scard.link:hover{ background:var(--pc-soft); } .sb-needlink{ cursor:pointer; text-decoration:underline; }
   #mp-dlg .mp-chk, #gd-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #mp-dlg .mp-chk input, #gd-dlg .mp-chk input{ width:auto; min-height:0; }
 </style>
 </head>
@@ -618,7 +630,7 @@
 <!-- ===== 상단 3묶음(돈 · 소비 · 나) + 하위 탭 (보이는 기능은 ⚙ 설정 → 화면 구성에서 고름) ===== -->
 <nav class="modebar" id="modeBar" aria-label="화면 이동"><div class="modebar-in" id="modeBarIn"></div><div id="modeSubs"></div></nav>
 <div class="gbar" id="gBar">
-  <div class="gbar-in"><span class="gdot" id="gDot"></span><span class="gsync" id="gSync"></span><button class="gbtn" id="themeToggle" type="button">🌓 다크모드</button><button class="gbtn" id="gSettings" type="button">⚙ 설정</button></div>
+  <div class="gbar-in"><span class="gdot" id="gDot"></span><span class="gsync" id="gSync"></span><button class="gbtn" id="themeToggle" type="button">🌓 다크모드</button><button class="gbtn" id="gRemind" type="button">🔔 알림<span class="rmn" id="gRemindN" hidden></span></button><button class="gbtn" id="gSettings" type="button">⚙ 설정</button></div>
   <div class="galerts" id="gAlerts"></div>
 </div>
 <div id="mtgView">
@@ -879,7 +891,7 @@
 <!-- ===== [신규] 피부관리 영역 ===== -->
 <div id="skinView" hidden>
  <div class="pc-wrap">
-  <div class="pc-tabs" id="sk-tabs"><button type="button" class="on" data-sk="tab" data-t="skin">✨ 피부관리</button><button type="button" data-sk="tab" data-t="manual">🦵 도수치료</button></div>
+  <div class="pc-tabs" id="sk-tabs" style="display:none"><button type="button" class="on" data-sk="tab" data-t="skin">✨ 피부관리</button><button type="button" data-sk="tab" data-t="manual">🦵 도수치료</button></div>
   <div id="sk-skin">
   <div class="strip" id="sk-summary"></div>
   <div class="sectionhead"><h3>피부관리 패키지</h3><button class="pc-btn small primary" data-sk="add">+ 관리 추가</button></div>
@@ -915,7 +927,6 @@
  <div class="pc-wrap">
   <div class="strip" id="py-summary"></div>
   <div class="sectionhead"><h3>💼 연봉 이력</h3><span class="sh-hbtns"><button class="pc-btn small" data-py="hide" id="py-hide">👁 금액 보기</button><button class="pc-btn small primary" data-py="add">+ 연도 추가</button></span></div>
-  <div id="py-chart"></div>
   <div class="py-scroll" id="py-table"></div>
   <details class="py-more"><summary>인상률 구성·메모까지 자세히 보기</summary><div id="py-list"></div></details>
   <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-py="backup">☁ 지금 백업</button></div>
@@ -1186,6 +1197,8 @@
   <h3 id="sh-d-title">항목 추가</h3>
   <label class="pc-f">분류<select id="sh-f-cat"></select></label>
   <label class="pc-f">품목명<input id="sh-f-item" type="text"></label>
+  <label class="pc-f" id="sh-brand-wrap" hidden>브랜드<input id="sh-f-brand" type="text" list="sh-brand-list" autocomplete="off" placeholder="예: 8second"></label>
+  <datalist id="sh-brand-list"></datalist>
   <div id="sh-photo-wrap" hidden>
     <div class="grp">옷 사진</div>
     <div class="sh-photo-row">
@@ -1239,11 +1252,41 @@
     <label class="pc-f">판매금액(원)<input id="sh-f-salePrice" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
   <label class="pc-f">위약금(원)<input id="sh-f-penalty" type="number" inputmode="numeric" min="0" step="any"></label>
+  <div class="grp">중고 보상 (민팃 등)</div>
+  <div class="pc-row2">
+    <label class="pc-f">업체명<input id="sh-f-tName" type="text" placeholder="예: 민팃"></label>
+    <label class="pc-f">예상 보상금(원)<input id="sh-f-tAmount" type="number" inputmode="numeric" min="0" step="any"></label>
+  </div>
+  <label class="pc-f">보상 가능일<input id="sh-f-tDate" type="date"></label>
+  <label class="sh-donechk"><input type="checkbox" id="sh-f-tRemind"> 보상 가능일에 알림 받기 (3일 전부터 상단에 표시)</label>
+  <div class="grp">메모</div>
+  <label class="pc-f"><textarea id="sh-f-memo" rows="3" placeholder="이 품목에 대해 적어 두고 싶은 내용"></textarea></label>
   <div class="pc-row2" style="margin-top:14px">
     <button class="pc-btn" data-sh="d-cancel">취소</button>
     <button class="pc-btn primary" data-sh="d-save">저장</button>
   </div>
   <button id="sh-d-delete" class="pc-btn danger wide" data-sh="d-delete">이 항목 삭제</button>
+</dialog>
+
+<dialog id="rm-dlg">
+  <div id="rm-listbox">
+    <h3>🔔 알림</h3>
+    <p class="pc-hint" style="margin:0 0 6px">날짜를 정해 두면 그 날짜 N일 전부터 앱 맨 위에 표시돼요. 무엇이든(예약·정산·구독 해지 등) 적어 둘 수 있어요.</p>
+    <div class="pc-row2" style="margin:8px 0"><button class="pc-btn primary" data-rm="add">+ 알림 추가</button><button class="pc-btn" data-rm="notify" id="rm-notify-btn">기기 알림 켜기</button></div>
+    <div id="rm-list"></div>
+    <p class="pc-hint" id="rm-note" style="margin-top:10px">기기 알림은 앱을 열었을 때 울려요. (앱이 닫혀 있을 때는 서버가 없어 보낼 수 없어요)</p>
+  </div>
+  <div id="rm-formbox" hidden>
+    <h3 id="rm-f-head">알림 추가</h3>
+    <label class="pc-f">제목<input id="rm-f-title" type="text" placeholder="예: 민팃 중고폰 보상 시작"></label>
+    <div class="pc-row2">
+      <label class="pc-f">날짜<input id="rm-f-date" type="date"></label>
+      <label class="pc-f">미리 알림<select id="rm-f-lead"><option value="0">당일부터</option><option value="1">1일 전부터</option><option value="3">3일 전부터</option><option value="7">7일 전부터</option><option value="14">14일 전부터</option></select></label>
+    </div>
+    <label class="pc-f">메모<textarea id="rm-f-memo" rows="3"></textarea></label>
+    <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-rm="f-cancel">취소</button><button class="pc-btn primary" data-rm="f-save">저장</button></div>
+    <button id="rm-f-delete" class="pc-btn danger wide" data-rm="f-delete">이 알림 삭제</button>
+  </div>
 </dialog>
 
 <div class="appver" id="appVer"></div>
@@ -2593,7 +2636,7 @@ const Life = (() => {
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-18-i (모임명 캘린더 · 양방향 · 방식 정리 · 연봉 OPI)';
+const APP_BUILD_VERSION = '2026-10-18-j (알림 · 민팃 · 브랜드/메모 · 메뉴 정리 · 연봉 누적)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -2950,6 +2993,8 @@ function sNormalize(o){
   const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && i.item && Shop.CATS[i.cat]).map(i => {
     const b = Object.assign({ store: '', qty: 1, purchaseDate: '', purchasePrice: '', actualPrice: '', points: '', b1name: '', b1amount: '', b1date: '', b2name: '', b2amount: '', b2date: '', b1done: false, b2done: false, listPrice: '', photo: '', status: 'hold', saleDate: '', salePrice: '', penalty: '', u: '' }, i);
     b.status = b.status === 'sold' ? 'sold' : 'hold'; b.id = String(b.id); b.u = String(b.u || ''); b.qty = Number(b.qty) || 1; b.b1done = Shop.isDone(b.b1done); b.b2done = Shop.isDone(b.b2done); { const a = Number(b.p1) || 0, c = Number(b.p2) || 0, tot = Number(b.points) || 0; if (b.p1 === undefined || a + c !== tot) { b.p1 = tot; b.p2 = 0; } else { b.p1 = a; b.p2 = c; } }
+    b.memo = String(b.memo == null ? '' : b.memo); b.brand = b.cat === 'fashion' && i.brand === undefined ? '8second' : String(b.brand == null ? '' : b.brand).trim();
+    b.tName = String(b.tName || '').trim(); b.tAmount = (b.tAmount === '' || b.tAmount == null || !isFinite(Number(b.tAmount))) ? '' : Number(b.tAmount); b.tDate = String(b.tDate || '');
     b.photo = typeof b.photo === 'string' && b.photo.indexOf('data:image/') === 0 ? b.photo : ''; return b;
   });
   return { items, del: cleanDel(o.del) };
@@ -2967,7 +3012,6 @@ function renderShop(){
   $('sh-title').textContent = Shop.CATS[shCat] + ' 품목';
   const s = Shop.summarize(shItems(shCat));
   $('sh-summary').innerHTML =
-    '<div class="scard"><div class="l">보유+판매 품목 수</div><div class="v tabular">' + s.count + '개</div></div>' +
     '<div class="scard"><div class="l">총 실구매금액</div><div class="v tabular" style="color:var(--accent)">' + won(s.totalNet) + '</div>' + (s.saved > 0 ? '<div class="sub">결제금액 합계 ' + won(s.totalListed) + ' · 혜택·적립 ' + won(s.saved) + ' 절감</div>' : '') + '</div>' +
     (s.listN ? '<div class="scard"><div class="l">정가 대비 총 절감 (' + s.listN + '건)</div><div class="v tabular" style="color:var(--good)">' + (s.listSaved >= 0 ? '' : '+') + won(Math.abs(s.listSaved)) + (s.listSaved >= 0 ? ' 절감' : ' 더 씀') + '</div><div class="sub">정가 합계 ' + won(s.listSum) + ' · ' + (Math.round(s.listSaved / s.listSum * 1000) / 10) + '%</div></div>' : '') +
     '<div class="scard"><div class="l">판매완료 · 총 판매금액</div><div class="v tabular">' + s.soldCount + '건 · ' + won(s.totalSale) + '</div></div>' +
@@ -2980,11 +3024,14 @@ function renderShop(){
     const benHtml = ben.map(b => { const due = !b.done && b.d && b.d <= today;
       return '<div class="sh-benefit' + (due ? ' due' : '') + (b.done ? ' done' : '') + '"><span class="bt">' + (b.done ? '✅' : (due ? '🔔' : '🎁')) + ' ' + (esc(b.n) || '혜택') + ' ' + won(b.a) + ' · ' + (b.done ? '받음 완료' : '지급일 ' + esc(b.d || '-') + (due ? ' (도래)' : '')) + '</span>' +
         '<button type="button" class="sh-donebtn' + (b.done ? ' undo' : '') + '" data-sh="done" data-id="' + esc(i.id) + '" data-k="' + b.k + '">' + (b.done ? '되돌리기' : '받음 완료') + '</button></div>'; }).join('');
+    const trD = i.tDate ? Life.dd(today, i.tDate) : null;
+    const tradeHtml = (i.tName || i.tAmount !== '') ? '<div class="sh-trade">🔄 ' + esc(i.tName || '중고 보상') + (i.tAmount !== '' ? ' ' + won(i.tAmount) : '') + (i.tDate ? ' · ' + (trD > 0 ? i.tDate.slice(5).replace('-', '/') + '부터 가능 (D-' + trD + ')' : (trD === 0 ? '오늘부터 가능' : '보상 가능')) : '') + '</div>' : '';
+    const memoHtml = i.memo ? '<div class="sh-memo">' + esc(i.memo) + '</div>' : '';
     const hasActual = i.actualPrice !== '' && !isNaN(i.actualPrice) && Number(i.actualPrice) !== Number(i.purchasePrice);
     return '<div class="sh-row" data-sh="edit" data-id="' + esc(i.id) + '" tabindex="0"><div class="sh-lc">' + (i.photo ? '<img class="sh-thumb" src="' + i.photo + '" alt="옷 사진" data-sh="photo" data-id="' + esc(i.id) + '">' : '') + '<div class="sh-info"><div class="sh-top"><span class="sh-name">' + (esc(i.item) || '(이름 없음)') + '</span>' +
       '<span class="sh-badge ' + (i.status === 'sold' ? 'sold' : '') + '">' + (i.status === 'sold' ? '판매완료' : '보유중') + '</span>' + (i.qty > 1 ? '<span class="sh-badge">수량 ' + i.qty + '</span>' : '') + '</div>' +
-      '<div class="sh-meta"><span>구매처 <b>' + (esc(i.store) || '-') + '</b></span><span>구매일 <b>' + esc(i.purchaseDate || '-') + '</b></span>' + (Number(i.points) > 0 ? '<span>적립금 <b>' + won(i.points) + '</b></span>' : '') + (ls ? '<span class="sh-ls ' + (ls.byActual.amt >= 0 ? 'good' : 'bad') + '">정가 ' + won(ls.list) + ' 대비 <b>' + (ls.byActual.amt >= 0 ? ls.byActual.pct + '% 저렴' : Math.abs(ls.byActual.pct) + '% 비쌈') + '</b></span>' : '') + (i.status === 'sold' ? '<span>판매일 <b>' + esc(i.saleDate || '-') + '</b></span>' : '') + '</div>' +
-      benHtml + (i.status === 'sold' && Number(i.penalty) > 0 ? '<div class="sh-penalty">⚠ 위약금 ' + won(i.penalty) + '</div>' : '') + '</div></div>' +
+      '<div class="sh-meta">' + (i.brand ? '<span>브랜드 <b>' + esc(i.brand) + '</b></span>' : '') + '<span>구매처 <b>' + (esc(i.store) || '-') + '</b></span><span>구매일 <b>' + esc(i.purchaseDate || '-') + '</b></span>' + (Number(i.points) > 0 ? '<span>적립금 <b>' + won(i.points) + '</b></span>' : '') + (ls ? '<span class="sh-ls ' + (ls.byActual.amt >= 0 ? 'good' : 'bad') + '">정가 ' + won(ls.list) + ' 대비 <b>' + (ls.byActual.amt >= 0 ? ls.byActual.pct + '% 저렴' : Math.abs(ls.byActual.pct) + '% 비쌈') + '</b></span>' : '') + (i.status === 'sold' ? '<span>판매일 <b>' + esc(i.saleDate || '-') + '</b></span>' : '') + '</div>' +
+      tradeHtml + memoHtml + benHtml + (i.status === 'sold' && Number(i.penalty) > 0 ? '<div class="sh-penalty">⚠ 위약금 ' + won(i.penalty) + '</div>' : '') + '</div></div>' +
       '<div class="sh-right">' + (hasActual ? '<div class="sh-price strike">' + won(i.purchasePrice) + '</div><div class="sh-real">실구매 ' + won(i.actualPrice) + '</div>' : '<div class="sh-price">' + won(i.purchasePrice) + '</div>') +
       (profit !== null ? '<div class="sh-profit ' + (profit >= 0 ? 'pos' : 'neg') + '">' + (profit >= 0 ? '+' : '') + won(profit) + '</div>' : '') + '</div></div>';
   }).join('') : '<div class="empty">아직 등록된 품목이 없어요. 위의 “+ 항목 추가”로 등록해 보세요.</div>';
@@ -3019,8 +3066,13 @@ function toggleNotify(){
   try { localStorage.setItem(NOTIFY_KEY, notifyOn ? '1' : '0'); } catch (e) { /* 무시 */ }
   renderShop();
 }
-const SF = ['item', 'store', 'qty', 'listPrice', 'purchaseDate', 'purchasePrice', 'actualPrice', 'points', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'status', 'saleDate', 'salePrice', 'penalty'];
+const SF = ['item', 'brand', 'memo', 'tName', 'tAmount', 'tDate', 'store', 'qty', 'listPrice', 'purchaseDate', 'purchasePrice', 'actualPrice', 'points', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'status', 'saleDate', 'salePrice', 'penalty'];
 let shPhoto = '';
+function shBrandUI(){
+  const f = $('sh-f-cat').value === 'fashion'; $('sh-brand-wrap').hidden = !f;
+  const bs = []; SH.items.forEach(x => { if (x.brand && bs.indexOf(x.brand) < 0) bs.push(x.brand); }); if (bs.indexOf('8second') < 0) bs.push('8second');
+  $('sh-brand-list').innerHTML = bs.map(b => '<option value="' + esc(b) + '">').join('');
+}
 function shPhotoUI(){
   const fashion = $('sh-f-cat').value === 'fashion';
   $('sh-photo-wrap').hidden = !fashion && !shPhoto;
@@ -3055,7 +3107,8 @@ function openShop(id){
   if (i) $('sh-f-cat').value = i.cat;
   SF.forEach(f => { $('sh-f-' + f).value = i ? (i[f] == null ? '' : i[f]) : (f === 'qty' ? 1 : (f === 'status' ? 'hold' : '')); });
   { const p1 = i ? (i.p1 != null ? i.p1 : i.points) : '', p2 = i ? i.p2 : ''; $('sh-f-points').value = p1 == null ? '' : p1; $('sh-f-points2').value = p2 ? p2 : ''; }
-  shPhoto = i ? (i.photo || '') : ''; shPhotoUI();
+  shPhoto = i ? (i.photo || '') : ''; shPhotoUI(); shBrandUI();
+  $('sh-f-tRemind').checked = !!(i && RM.items.some(r => r.id === 'rm_tr_' + i.id));
   $('sh-f-b1done').checked = !!(i && Shop.isDone(i.b1done)); $('sh-f-b2done').checked = !!(i && Shop.isDone(i.b2done));
   // 실구매금액: 새 항목이거나 기존 값이 비었거나 자동 계산값과 같으면 '자동', 직접 입력해 둔 다른 값이면 '직접 입력'으로 시작(기존 값 보존)
   const ca = Shop.autoActual(i || {});
@@ -3083,20 +3136,23 @@ function shRecalc(){
 }
 function saveShop(){
   const d = {}; SF.forEach(f => { d[f] = $('sh-f-' + f).value; });
-  d.item = d.item.trim(); d.store = d.store.trim(); d.b1name = d.b1name.trim(); d.b2name = d.b2name.trim(); d.qty = Number(d.qty) || 1;
-  ['listPrice', 'purchasePrice', 'actualPrice', 'points', 'b1amount', 'b2amount', 'salePrice', 'penalty'].forEach(f => { d[f] = d[f] === '' ? '' : (isFinite(Number(d[f])) ? Number(d[f]) : ''); });
+  d.item = d.item.trim(); d.brand = $('sh-f-cat').value === 'fashion' ? d.brand.trim() : ''; d.memo = d.memo.trim(); d.tName = d.tName.trim(); d.store = d.store.trim(); d.b1name = d.b1name.trim(); d.b2name = d.b2name.trim(); d.qty = Number(d.qty) || 1;
+  ['listPrice', 'purchasePrice', 'actualPrice', 'points', 'b1amount', 'b2amount', 'salePrice', 'penalty', 'tAmount'].forEach(f => { d[f] = d[f] === '' ? '' : (isFinite(Number(d[f])) ? Number(d[f]) : ''); });
   { const q1 = d.points === '' ? 0 : d.points, q2 = $('sh-f-points2').value === '' ? 0 : Number($('sh-f-points2').value) || 0; d.p1 = q1; d.p2 = q2; d.points = q1 + q2 > 0 ? q1 + q2 : ''; }
   if (!d.item) { toast('품목명을 입력해 주세요.'); return; }
   if ($('sh-f-auto').checked) { const ca = Shop.autoActual(d); if (ca.over) { toast('혜택·적립금 합계가 구매금액보다 커요.'); return; } d.actualPrice = ca.actual; }
   d.photo = shPhoto;
   d.b1done = $('sh-f-b1done').checked; d.b2done = $('sh-f-b2done').checked;
   d.cat = $('sh-f-cat').value; d.u = nowIso();
-  if (shEditing) { const i = SH.items.find(x => x.id === shEditing); if (i) Object.assign(i, d); }
-  else SH.items.push(Object.assign({ id: uid('sh') }, d));
+  let sv = null;
+  if (shEditing) { sv = SH.items.find(x => x.id === shEditing); if (sv) Object.assign(sv, d); }
+  else { sv = Object.assign({ id: uid('sh') }, d); SH.items.push(sv); }
+  if (sv) rmSyncTrade(sv, $('sh-f-tRemind').checked);
   shCat = d.cat; sSave(); changed(); $('sh-dlg').close(); toast('저장했어요.'); renderAll();
 }
 function delShop(){
   if (!shEditing || !confirm('이 항목을 삭제할까요?')) return;
+  rmSyncTrade({ id: shEditing }, false);
   SH.items = SH.items.filter(x => x.id !== shEditing); SH.del[shEditing] = nowIso();
   sSave(); changed(); $('sh-dlg').close(); renderAll();
 }
@@ -3243,7 +3299,7 @@ function renderSub(){
   const done = SB.items.filter(i => i.active !== false && pm[pk(i.id, M)] && pm[pk(i.id, M)].done).length;
   $('sb-summary').innerHTML = '<div class="scard"><div class="l">' + (net ? '결제 합계' : '청구 합계') + '</div><div class="v tabular">' + won(t.gross) + '</div></div>' +
     (net ? '' : '<div class="scard"><div class="l">실부담(할인·적립 반영)</div><div class="v tabular" style="color:var(--accent)">' + won(t.net) + '</div><div class="sub">할인·적립 ' + won(t.saved) + '</div></div>') +
-    '<div class="scard"><div class="l">결제 확인</div><div class="v tabular">' + done + ' / ' + t.count + '건</div></div>' + (t.variable ? '<div class="scard"><div class="l">금액 입력 필요</div><div class="v tabular">' + t.variable + '건</div></div>' : '');
+    '<div class="scard"><div class="l">결제 확인</div><div class="v tabular">' + done + ' / ' + t.count + '건</div></div>' + (t.variable ? '<div class="scard link" data-sb="need" data-scope="all" role="button" tabindex="0"><div class="l">금액 입력 필요 · ' + (t.variable === 1 ? '눌러서 입력' : '눌러서 보기') + '</div><div class="v tabular">' + t.variable + '건</div></div>' : '');
   $('sb-cards').innerHTML = Object.keys(t.byCard).sort().map(c => '<span class="pc-chip">' + esc(c) + ' ' + won(t.byCard[c].gross) + (net ? '' : ' → ' + won(t.byCard[c].net)) + '</span>').join('');
   const row = it => {
     const a = Life.effAmount(it, M, pm), n = Life.netOf(it, a, net), p = pm[pk(it.id, M)];
@@ -3260,9 +3316,32 @@ function renderSub(){
   $('sb-cats').innerHTML = CATS.filter(c => catT[c].count).map(c => '<button type="button" class="pc-chip' + (sbFilter === c ? ' on' : '') + '" data-sb="filter" data-cat="' + c + '">' + c + ' ' + won(catT[c].gross) + (net || catT[c].net === catT[c].gross ? '' : ' → ' + won(catT[c].net)) + '</button>').join('');
   const shown = act.filter(i => sbFilter === 'all' || i.cat === sbFilter).sort((a, b) => a.day - b.day || a.name.localeCompare(b.name, 'ko'));
   const st = sbFilter === 'all' ? t : catT[sbFilter];
-  $('sb-subtotal').innerHTML = shown.length ? '<b>' + (sbFilter === 'all' ? '전체' : esc(sbFilter)) + ' 합계</b> ' + shown.length + '건 · ' + won(st.gross) + (net || st.net === st.gross ? '' : ' (실부담 ' + won(st.net) + ')') + (st.variable ? ' · 금액 입력 필요 ' + st.variable + '건' : '') : '';
+  $('sb-subtotal').innerHTML = shown.length ? '<b>' + (sbFilter === 'all' ? '전체' : esc(sbFilter)) + ' 합계</b> ' + shown.length + '건 · ' + won(st.gross) + (net || st.net === st.gross ? '' : ' (실부담 ' + won(st.net) + ')') + (st.variable ? ' · <span class="sb-needlink" data-sb="need">금액 입력 필요 ' + st.variable + '건</span>' : '') : '';
   $('sb-list').innerHTML = shown.map(row).join('') || '<div class="empty">' + (sbFilter === 'all' ? '등록된 항목이 없어요.' : esc(sbFilter) + ' 항목이 없어요.') + '</div>';
   $('sb-costmode').value = net ? 'net' : 'gross';
+}
+function sbSaveFilter(){ try { localStorage.setItem('sb_filter_v1', sbFilter); } catch (er) { /* 무시 */ } }
+function sbNeed(all){
+  if (all && sbFilter !== 'all') { sbFilter = 'all'; sbSaveFilter(); renderSub(); }
+  const pm = Life.payMap(SB.pays), ids = SB.items.filter(i => i.active !== false && (sbFilter === 'all' || i.cat === sbFilter) && Life.effAmount(i, sbMonth, pm) == null).map(i => i.id);
+  if (ids.length) sbGoto(ids, { open: true });
+}
+// 구독·보험의 특정 건(들)으로 이동: 해당 줄로 스크롤 + 깜빡임. open이고 1건이면 입력창도 바로 열어요.
+function sbGoto(ids, o){
+  o = o || {};
+  if (o.month && o.month !== sbMonth) sbMonth = o.month;
+  if (mode !== 'sub') setMode('sub'); else renderSub();
+  if (sbFilter !== 'all' && ids.some(id => { const it = SB.items.find(x => x.id === id); return it && it.cat !== sbFilter; })) { sbFilter = 'all'; sbSaveFilter(); renderSub(); }
+  setTimeout(() => {
+    const rows = ids.map(id => document.querySelector('#sb-list .sb-row[data-id="' + id + '"]')).filter(Boolean);
+    if (rows.length) { rows[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); rows.forEach(r => r.classList.add('hl')); setTimeout(() => rows.forEach(r => r.classList.remove('hl')), 2600); }
+    if (o.open && ids.length === 1) setTimeout(() => openSub(ids[0]), 350); else if (ids.length > 1) toast(ids.length + '건을 표시했어요.');
+  }, 80);
+}
+function gotoShop(id){
+  const i = SH.items.find(x => x.id === id); if (!i) return;
+  shCat = i.cat; szOpen = false; setMode('shop');
+  setTimeout(() => { const r = document.querySelector('#sh-list .sh-row[data-id="' + id + '"]'); if (r) { r.scrollIntoView({ behavior: 'smooth', block: 'center' }); r.classList.add('hl'); setTimeout(() => r.classList.remove('hl'), 2600); } }, 80);
 }
 function openSub(id){
   const it = id ? SB.items.find(x => x.id === id) : null;
@@ -3717,14 +3796,14 @@ const Pay = (() => {
     if (!s.length) return null;
     const f = s[0], l = s[s.length - 1], yrs = l.year - f.year;
     return { first: f, last: l, years: yrs, mult: Math.round(l.salary / f.salary * 100) / 100, cagr: yrs > 0 ? Math.round((Math.pow(l.salary / f.salary, 1 / yrs) - 1) * 1000) / 10 : null,
-      bonusSum: items.reduce((t, x) => t + (Number(x.bonus) > 0 ? Number(x.bonus) : 0), 0), opiSum: items.reduce((t, x) => t + (Number(x.opi) > 0 ? Number(x.opi) : 0), 0), gain: l.salary - f.salary };
+      bonusSum: items.reduce((t, x) => t + (Number(x.bonus) > 0 ? Number(x.bonus) : 0), 0), totalSum: s.reduce((t, x) => t + x.salary * 10000 + (Number(x.bonus) > 0 ? Number(x.bonus) : 0) + (Number(x.opi) > 0 ? Number(x.opi) : 0), 0), totalYears: s.length, opiSum: items.reduce((t, x) => t + (Number(x.opi) > 0 ? Number(x.opi) : 0), 0), gain: l.salary - f.salary };
   }
   return { rows, summary };
 })();
 // </PAYCALC>
 // <SIZECALC>
 const Size = (() => {
-  const KINDS = { '티셔츠': ['어깨', '가슴', '기장', '소매'], '셔츠': ['어깨', '가슴', '기장', '소매'], '니트·맨투맨': ['어깨', '가슴', '기장', '소매'], '아우터': ['어깨', '가슴', '기장', '소매'],
+  const KINDS = { '티셔츠': ['어깨', '가슴', '기장', '소매', '밑단', '소매통', '소맷부리'], '셔츠': ['어깨', '가슴', '기장', '소매'], '니트·맨투맨': ['어깨', '가슴', '기장', '소매'], '아우터': ['어깨', '가슴', '기장', '소매'],
     '바지': ['허리', '엉덩이', '허벅지', '밑위', '밑단', '총장'], '반바지': ['허리', '엉덩이', '허벅지', '밑위', '밑단', '총장'], '원피스·스커트': ['어깨', '가슴', '허리', '엉덩이', '총장'], '기타': ['어깨', '가슴', '허리', '엉덩이', '기장', '소매', '총장'] };
   const KIND_KEYS = Object.keys(KINDS);
   function num(v){ if (v === '' || v == null) return null; const x = Number(v); return isFinite(x) && x > 0 ? x : null; }
@@ -3792,11 +3871,11 @@ function delSize(){
    화면 구성(보이기 · 하단 고정) / 가이드 / 도수치료 / 연봉
    ===================================================================== */
 const FEATURES = [
-  { k: 'meeting', label: '회의비', ic: '💰', id: 'modeMeeting' }, { k: 'shop', label: '소비', ic: '🛍', id: 'modeShop' }, { k: 'price', label: '가격', ic: '📈', id: 'modePrice' },
-  { k: 'sub', label: '구독·보험', ic: '🔁', id: 'modeSub' }, { k: 'people', label: '인맥', ic: '👥', id: 'modePeople' }, { k: 'skin', label: '피부·도수', ic: '🧴', id: 'modeSkin' },
+  { k: 'meeting', label: '회의비', ic: '💰', id: 'modeMeeting' }, { k: 'shop', label: '보유품목', ic: '🛍', id: 'modeShop' }, { k: 'price', label: '구매가격분석', ic: '📈', id: 'modePrice' },
+  { k: 'sub', label: '구독·보험', ic: '🔁', id: 'modeSub' }, { k: 'people', label: '인맥', ic: '👥', id: 'modePeople' }, { k: 'manual', label: '도수치료', ic: '🦵', id: 'modeManual' }, { k: 'skin', label: '피부관리', ic: '🧴', id: 'modeSkin' },
   { k: 'pay', label: '연봉', ic: '💼', id: 'modePay' }, { k: 'guide', label: '가이드', ic: '📌', id: 'modeGuide' }];
 const NAV_KEY = 'nav_cfg_v1';
-const GROUPS = [{ g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'pay'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'skin', 'guide'] }];
+const GROUPS = [{ g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'pay'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'manual', 'skin', 'guide'] }];
 const groupOf = k => GROUPS.find(x => x.ks.indexOf(k) >= 0), lastIn = {};
 function navNorm(o){
   o = o && typeof o === 'object' ? o : {};
@@ -4025,28 +4104,20 @@ let pyHide = (function () { try { return localStorage.getItem(PAY_HIDE_KEY) !== 
 const pyNoSync = () => { try { return localStorage.getItem(PAY_NOSYNC_KEY) === '1'; } catch (e) { return false; } };
 function pySave(){ saveK(PAY_KEY, PY); }
 function renderPay(){
-  const mask = '••••', mn = v => (pyHide ? mask : fmt(v) + '만'), wn = v => (pyHide ? mask : won(v));
+  const mask = '••••', man = v => (Math.round(v / 1000) / 10).toLocaleString('ko-KR', { maximumFractionDigits: 1 }) + '만', mn = v => (pyHide ? mask : man(v * 10000)), wn = v => (pyHide ? mask : man(v));
   $('py-hide').textContent = pyHide ? '👁 금액 보기' : '🙈 금액 가리기';
   const sm = Pay.summary(PY.items), rows = Pay.rows(PY.items);
   const card = (l, v, s) => '<div class="scard"><div class="l">' + l + '</div><div class="v tabular">' + v + '</div>' + (s ? '<div class="sub">' + s + '</div>' : '') + '</div>';
   const lastRow = rows.length ? rows[rows.length - 1] : null;
   $('py-summary').innerHTML = sm ? card('최근 연봉 (' + sm.last.year + ')', mn(sm.last.salary), (lastRow && lastRow.shownRate != null ? '인상률 ' + lastRow.shownRate + '%' : '')) +
     card(sm.first.year + '년 대비', sm.mult + '배', sm.cagr != null ? '연평균 ' + sm.cagr + '% · ' + sm.years + '년' : '') +
-    card('누적 업무성과급', wn(sm.bonusSum), '입력된 연도 합계') + card('누적 OPI', wn(sm.opiSum), '입력된 연도 합계') + card('기록 연도', rows.length + '개', sm.first.year + ' ~ ' + sm.last.year) : '';
-  const sal = rows.filter(r => r.salary > 0);
-  if (sal.length >= 2) {
-    const W = 320, H = 110, pad = 14, mn0 = Math.min.apply(null, sal.map(r => r.salary)), mx = Math.max.apply(null, sal.map(r => r.salary)), span = (mx - mn0) || 1;
-    const pt = (r, i) => [pad + i * (W - pad * 2) / (sal.length - 1), H - 24 - (r.salary - mn0) / span * (H - 44)];
-    const pts = sal.map(pt);
-    $('py-chart').innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="연봉 추이 그래프"><polyline fill="none" stroke="var(--accent)" stroke-width="2.5" points="' + pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + '"/>' +
-      pts.map((p, i) => '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3" fill="var(--accent)"/>' + ((i === 0 || i === pts.length - 1 || sal.length <= 6) ? '<text x="' + p[0].toFixed(1) + '" y="' + (H - 6) + '" font-size="9" text-anchor="middle" fill="var(--ink2)">' + String(sal[i].year).slice(2) + '</text>' : '')).join('') + '</svg>';
-  } else $('py-chart').innerHTML = '<div class="gd-empty">연봉이 2개 연도 이상 있으면 추이 그래프가 보여요.</div>';
-  { const m1 = n => (pyHide ? mask : (Math.round(n / 1000) / 10).toLocaleString('ko-KR', { maximumFractionDigits: 1 }) + '만'), pc = v => (pyHide ? mask : v + '%');
+    card('누적 연봉 (총연봉 기준)', wn(sm.totalSum), '연봉+업무성과급+OPI · ' + sm.first.year + '~' + sm.last.year + ' ' + sm.totalYears + '개 연도') + card('누적 업무성과급', wn(sm.bonusSum), '입력된 연도 합계') + card('누적 OPI', wn(sm.opiSum), '입력된 연도 합계') : '';
+  { const m1 = n => (pyHide ? mask : man(n)), pc = v => (pyHide ? mask : v + '%');
     $('py-table').innerHTML = rows.length ? '<table class="py-tbl"><thead><tr><th>연도</th><th>연봉</th><th>연봉<br>상승률</th><th>업무<br>성과급</th><th>성과급<br>률</th><th>OPI</th><th>OPI률</th><th>총연봉<br><small>(연봉+성과급+OPI)</small></th></tr></thead><tbody>' +
       rows.slice().reverse().map(r => '<tr data-py="edit" data-id="' + esc(r.id) + '" tabindex="0"><td><b>' + r.year + '</b></td><td>' + (r.salary > 0 ? mn(r.salary) : '-') + '</td><td>' + (r.shownRate != null ? pc(r.shownRate) + (r.given ? '' : '*') : '-') + '</td><td>' + (r.bonus > 0 ? m1(r.bonus) : '-') + '</td><td>' + (r.bonusRate != null ? pc(r.bonusRate) : '-') + '</td><td>' + (r.opi > 0 ? m1(r.opi) : '-') + '</td><td>' + (r.opiShown != null ? pc(r.opiShown) + (r.opiGiven ? '' : '*') : '-') + '</td><td class="tot">' + (r.total ? m1(r.total) : '-') + '</td></tr>').join('') + '</tbody></table><p class="pc-hint" style="margin:6px 0 0">* 직접 입력하지 않아 앞뒤 값으로 계산한 비율이에요. 표는 좌우로 밀어서 볼 수 있어요.</p>' : ''; }
   $('py-list').innerHTML = rows.length ? rows.slice().reverse().map(r => {
     const rate = r.shownRate != null ? '<span class="tag">' + r.shownRate + '%' + (r.given ? '' : ' (계산)') + '</span>' : '';
-    const bits = [r.parts, r.bonus > 0 ? '업무성과급 ' + wn(r.bonus) : (r.given && r.bonus === 0 && r.year >= 2018 ? '업무성과급 0원' : ''), r.opi > 0 ? 'OPI ' + wn(r.opi) : '', r.total && (r.bonus > 0 || r.opi > 0) ? '총연봉 ' + (pyHide ? mask : fmt(Math.round(r.total / 10000)) + '만') : ''].filter(Boolean).map(esc).join(' · ');
+    const bits = [r.parts, r.bonus > 0 ? '업무성과급 ' + wn(r.bonus) : (r.given && r.bonus === 0 && r.year >= 2018 ? '업무성과급 0만' : ''), r.opi > 0 ? 'OPI ' + wn(r.opi) : '', r.total && (r.bonus > 0 || r.opi > 0) ? '총연봉 ' + (pyHide ? mask : man(r.total)) : ''].filter(Boolean).map(esc).join(' · ');
     return '<div class="py-row" data-py="edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="py-top"><b>' + r.year + '</b><span>' + esc([r.cl, r.tenure].filter(Boolean).join(' · ')) + '</span><span class="py-sal">' + (r.salary > 0 ? mn(r.salary) : '-') + '</span></div>' +
       '<div class="py-sub">' + rate + bits + '</div>' + (r.memo ? '<div class="py-sub">' + esc(r.memo) + '</div>' : '') + '</div>';
   }).join('') : '<div class="empty">아직 기록이 없어요. “+ 연도 추가”로 등록해 보세요.</div>';
@@ -4081,10 +4152,10 @@ window.AppSettings = { refresh: function () {
   renderNavCfg(); const pc = $('py-sync-chk'); if (pc) pc.checked = !pyNoSync();
 } };
 window.AppExtras = {
-  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'guide', 'pay'],
+  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'guide', 'pay', 'reminders'],
   exportSync(){
     return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
-      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, guide: { items: GD.items, del: GD.del }, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
+      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
   },
   strip(obj){ this.keys.forEach(k => { delete obj[k]; }); },
   importSync(json){
@@ -4129,6 +4200,10 @@ window.AppExtras = {
       const r = json.guide, m = Shop.mergeById(GD.items, r.items, GD.del, cleanDel(r.del));
       GD = gdNorm({ items: m.items, del: m.del }); gdSave(); ch = true; renderQuick();
     }
+    if (ok('reminders')) {
+      const r = json.reminders, m = Shop.mergeById(RM.items, r.items, RM.del, cleanDel(r.del));
+      RM = rmNorm({ items: m.items, del: m.del }); rmSave(); ch = true;
+    }
     if (ok('pay') && !pyNoSync()) {
       const r = json.pay, m = Shop.mergeById(PY.items, r.items, PY.del, cleanDel(r.del));
       PY = pyNorm({ items: m.items, del: m.del }); pySave(); ch = true;
@@ -4150,6 +4225,103 @@ window.AppMerge = {
   if (readSnap()) return;
   try { const d = JSON.parse(localStorage.getItem(MTG_KEY) || 'null'); if (d && Array.isArray(d.expenses)) writeSnap(MergeM.snapOf(d)); } catch (e) { /* 무시 */ }
 })();
+
+/* =====================================================================
+   알림(리마인더) — 날짜를 정해 두면 N일 전부터 앱 맨 위에 표시. 어떤 용도로든 사용 (민팃 보상은 그중 하나)
+   ===================================================================== */
+const RM_KEY = 'reminders_v1', RM_NOTI_KEY = 'rm_notify_v1', RM_SEEN_KEY = 'rm_seen_v1';
+function rmNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && String(i.title || '').trim() && /^\d{4}-\d{2}-\d{2}$/.test(String(i.date || ''))).map(i => ({
+    id: String(i.id), title: String(i.title).trim(), date: String(i.date), lead: [0, 1, 3, 7, 14].indexOf(Number(i.lead)) >= 0 ? Number(i.lead) : 0,
+    memo: String(i.memo || ''), link: String(i.link || ''), done: i.done === true || i.done === 'true', u: String(i.u || '') }));
+  return { items, del: cleanDel(o.del) };
+}
+let RM = loadK(RM_KEY, { items: [], del: {} }, rmNorm), rmEditing = null, rmNotifyOn = (function () { try { return localStorage.getItem(RM_NOTI_KEY) === '1'; } catch (e) { return false; } })();
+function rmSave(){ saveK(RM_KEY, RM); }
+const rmDiff = r => Life.dd(todayStr(), r.date);
+function rmWhen(r){ const d = rmDiff(r); return d === 0 ? '오늘' : (d > 0 ? 'D-' + d : Math.abs(d) + '일 지남') + ' · ' + r.date; }
+function rmDue(){ return RM.items.filter(r => !r.done && rmDiff(r) !== null && rmDiff(r) <= r.lead).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0); }
+// 소비 품목의 '중고 보상 가능일' 알림을 만들거나 지움 (id = rm_tr_<품목id>)
+function rmSyncTrade(it, want){
+  const id = 'rm_tr_' + it.id, ex = RM.items.find(r => r.id === id);
+  if (want && it.tDate) {
+    const d = { title: (it.tName || '중고 보상') + ' 보상 가능 — ' + it.item, date: it.tDate, lead: 3, memo: it.tAmount !== '' ? '예상 보상금 ' + won(it.tAmount) : '', link: 'shop:' + it.id, u: nowIso() };
+    if (ex) { if (ex.date !== d.date) ex.done = false; Object.assign(ex, d); } else RM.items.push(Object.assign({ id, done: false }, d));
+    delete RM.del[id];
+  } else if (ex) { RM.items = RM.items.filter(r => r.id !== id); RM.del[id] = nowIso(); }
+  rmSave();
+}
+function rmPush(title, body){
+  try {
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) {
+      navigator.serviceWorker.getRegistration().then(r => { if (r && r.showNotification) r.showNotification(title, { body }); else new Notification(title, { body }); }).catch(() => { try { new Notification(title, { body }); } catch (e) { /* 무시 */ } });
+    } else new Notification(title, { body });
+  } catch (e) { /* 무시 */ }
+}
+function rmNotifyCheck(due){
+  if (!rmNotifyOn || !('Notification' in window) || Notification.permission !== 'granted') return;
+  let seen = {}; try { seen = JSON.parse(localStorage.getItem(RM_SEEN_KEY) || '{}') || {}; } catch (e) { seen = {}; }
+  const t = todayStr(); let ch = false;
+  due.forEach(r => { const k = r.id + ':' + r.date; if (seen[k] !== t) { seen[k] = t; ch = true; rmPush('🔔 ' + r.title, rmWhen(r) + (r.memo ? '\n' + r.memo : '')); } });
+  if (ch) { if (Object.keys(seen).length > 200) seen = {}; try { localStorage.setItem(RM_SEEN_KEY, JSON.stringify(seen)); } catch (e) { /* 무시 */ } }
+}
+function rmRender(){
+  const due = rmDue(), dueIds = {}; due.forEach(r => { dueIds[r.id] = 1; });
+  const rest = RM.items.filter(r => !r.done && !dueIds[r.id]).sort((a, b) => a.date < b.date ? -1 : 1), dn = RM.items.filter(r => r.done).sort((a, b) => a.date < b.date ? 1 : -1);
+  const row = r => '<div class="rm-row' + (r.done ? ' done' : '') + '"><div class="rm-main" data-rm="edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="rm-t">' + esc(r.title) + '</div><div class="rm-d"><span class="rm-dd">' + esc(rmWhen(r)) + '</span>' + (r.lead ? ' · ' + r.lead + '일 전부터 알림' : '') + (r.memo ? '\n' + esc(r.memo) : '') + '</div></div>' +
+    (r.link && r.link.indexOf('shop:') === 0 ? '<button type="button" class="pc-btn small" data-rm="go" data-id="' + esc(r.id) + '">품목</button>' : '') +
+    '<button type="button" class="pc-btn small' + (r.done ? '' : ' primary') + '" data-rm="done" data-id="' + esc(r.id) + '">' + (r.done ? '되돌리기' : '완료') + '</button></div>';
+  $('rm-list').innerHTML = (due.length ? '<div class="rm-sec">지금 확인할 알림</div>' + due.map(row).join('') : '') + (rest.length ? '<div class="rm-sec">예정</div>' + rest.map(row).join('') : '') + (dn.length ? '<div class="rm-sec">완료</div>' + dn.map(row).join('') : '') ||
+    '<div class="gd-empty">등록된 알림이 없어요. “+ 알림 추가”로 만들어 보세요.</div>';
+  $('rm-notify-btn').textContent = rmNotifyOn && 'Notification' in window && Notification.permission === 'granted' ? '🔕 기기 알림 끄기' : '🔔 기기 알림 켜기';
+}
+function rmOpen(){ $('rm-listbox').hidden = false; $('rm-formbox').hidden = true; rmRender(); if (!$('rm-dlg').open) $('rm-dlg').showModal(); }
+function rmForm(id){
+  rmEditing = id || null; const r = id ? RM.items.find(x => x.id === id) : null; if (id && !r) return;
+  $('rm-f-head').textContent = r ? '알림 수정' : '알림 추가';
+  $('rm-f-title').value = r ? r.title : ''; $('rm-f-date').value = r ? r.date : todayStr(); $('rm-f-lead').value = String(r ? r.lead : 1); $('rm-f-memo').value = r ? r.memo : '';
+  $('rm-f-delete').hidden = !r; $('rm-listbox').hidden = true; $('rm-formbox').hidden = false;
+}
+function rmFormSave(){
+  const title = $('rm-f-title').value.trim(), date = $('rm-f-date').value;
+  if (!title) { toast('제목을 입력해 주세요.'); return; }
+  if (!date) { toast('날짜를 입력해 주세요.'); return; }
+  const d = { title, date, lead: Number($('rm-f-lead').value) || 0, memo: $('rm-f-memo').value.trim(), u: nowIso() };
+  if (rmEditing) { const r = RM.items.find(x => x.id === rmEditing); if (r) { if (r.date !== date) r.done = false; Object.assign(r, d); } } else RM.items.push(Object.assign({ id: uid('rm'), link: '', done: false }, d));
+  RM = rmNorm(RM); rmSave(); changed(); toast('저장했어요.'); rmOpen(); renderGlobal();
+}
+function rmToggleNotify(){
+  if (!('Notification' in window)) { toast('이 브라우저는 기기 알림을 지원하지 않아요. 상단 배너로 알려 드릴게요.'); return; }
+  if (rmNotifyOn && Notification.permission === 'granted') { rmNotifyOn = false; try { localStorage.setItem(RM_NOTI_KEY, '0'); } catch (e) { /* 무시 */ } rmRender(); return; }
+  Notification.requestPermission().then(p => { rmNotifyOn = p === 'granted'; try { localStorage.setItem(RM_NOTI_KEY, rmNotifyOn ? '1' : '0'); } catch (e) { /* 무시 */ } if (!rmNotifyOn) toast('알림 권한이 허용되지 않았어요. 브라우저 설정에서 허용해 주세요.'); rmRender(); renderGlobal(); });
+}
+$('gRemind').addEventListener('click', rmOpen);
+$('rm-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-rm]'); if (!el) return;
+  const a = el.dataset.rm, id = el.dataset.id;
+  if (a === 'add') rmForm(null); else if (a === 'edit') rmForm(id); else if (a === 'f-cancel') rmOpen(); else if (a === 'f-save') rmFormSave(); else if (a === 'notify') rmToggleNotify();
+  else if (a === 'f-delete') { if (rmEditing && confirm('이 알림을 삭제할까요?')) { RM.items = RM.items.filter(x => x.id !== rmEditing); RM.del[rmEditing] = nowIso(); rmSave(); changed(); rmOpen(); renderGlobal(); } }
+  else if (a === 'done') { const r = RM.items.find(x => x.id === id); if (r) { r.done = !r.done; r.u = nowIso(); rmSave(); changed(); rmRender(); renderGlobal(); } }
+  else if (a === 'go') { const r = RM.items.find(x => x.id === id); if (r && r.link.indexOf('shop:') === 0) { $('rm-dlg').close(); gotoShop(r.link.slice(5)); } }
+});
+
+/* ---------- 이번 버전(2026-10-18-j) 1회성 반영: 폴드7 민팃 · 너입티셔츠 치수 ---------- */
+function migrateJ(){
+  const MK = 'mig_j_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  let ch = false;
+  const f7 = SH.items.find(x => x.id === 'sh_el_2') || SH.items.find(x => x.cat === 'electronics' && /폴드\s*7/.test(x.item || ''));
+  if (f7 && !f7.tName && f7.tAmount === '' && !f7.tDate) {
+    f7.tName = '민팃'; f7.tAmount = 1268850; f7.tDate = '2026-11-01'; if (!f7.memo) f7.memo = '갤럭시 AI 구독 혜택으로 11/1부터 민팃 중고폰 보상 가능'; f7.u = nowIso(); sSave(); ch = true;
+    const rid = 'rm_tr_' + f7.id;
+    if (!RM.items.some(r => r.id === rid) && !RM.del[rid]) { RM.items.push({ id: rid, title: '민팃 보상 가능 — ' + f7.item, date: '2026-11-01', lead: 3, memo: '예상 보상금 ' + won(1268850) + ' · 갤럭시 AI 구독 혜택', link: 'shop:' + f7.id, done: false, u: nowIso() }); rmSave(); }
+  }
+  const mk = (id, note, m) => { if (!SZ.items.some(x => x.id === id) && !SZ.del[id]) { SZ.items.push({ id, kind: '티셔츠', brand: '8second', size: 'S', note, m, u: nowIso() }); ch = true; } };
+  mk('sz_seed_neoip_1', '너입티셔츠 · 캐피테인 프린트(차콜) · 가슴·밑단은 둘레', { 기장: 67.5, 어깨: 49.1, 가슴: 110, 밑단: 110, 소매: 22.5, 소매통: 24.1, 소맷부리: 19.1 });
+  mk('sz_seed_neoip_2', '너입티셔츠 · 암모나이트 프린트(워싱 차콜) · 가슴·밑단은 둘레', { 기장: 70, 어깨: 51.6, 가슴: 114, 밑단: 112, 소매: 24.5, 소매통: 22.6, 소맷부리: 19.6 });
+  if (ch) { SZ = szNorm(SZ); szSave(); changed(); }
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
 
 /* ---------- 공용 상태줄 + 공통 알림 (모든 모드 위에 표시) ---------- */
 /* 상단 알림 닫기: 어느 탭에서 닫아도 모든 탭에 똑같이 반영(앱을 다시 열어도 유지). 같은 내용이 새로 생기면(키가 바뀌면) 다시 알려줘요. */
@@ -4173,22 +4345,25 @@ function renderGlobal(){
   const list = [];
   if (mode !== 'shop' && navVisible('shop')) {
     const due = Shop.dueBenefits(SH.items, todayStr());
-    if (due.length) list.push({ key: shopDueKey(due), act: 'shop', html: '🔔 소비 혜택 지급일 도래 <b>' + due.length + '건</b> — ' + esc(due[0].name) + ' ' + won(due[0].amount) + '(' + esc(due[0].item) + ')' + (due.length > 1 ? ' 외' : '') });
+    if (due.length) list.push({ key: shopDueKey(due), act: 'shop', id: due.length === 1 ? due[0].id : '', html: '🔔 소비 혜택 지급일 도래 <b>' + due.length + '건</b> — ' + esc(due[0].name) + ' ' + won(due[0].amount) + '(' + esc(due[0].item) + ')' + (due.length > 1 ? ' 외' : '') });
   }
+  { const rd = rmDue(), bn = $('gRemindN'); bn.hidden = !rd.length; bn.textContent = rd.length;
+    if (rd.length) list.push({ key: 'rm:' + rd.map(d => d.id + d.date).join(','), act: 'remind', html: '🔔 알림 <b>' + rd.length + '건</b> — ' + esc(rd[0].title) + ' (' + esc(rmWhen(rd[0])) + ')' + (rd.length > 1 ? ' 외' : '') });
+    rmNotifyCheck(rd); }
   if (A.hasUrl()) { if (age === null || age >= 7) list.push({ key: 'bk:' + (age === null ? 'never' : 'old'), act: 'backup', html: '☁ ' + (age === null ? '아직 백업한 적이 없어요' : '마지막 백업이 <b>' + age + '일 전</b>이에요') + ' — 눌러서 지금 백업' }); }
   else list.push({ key: 'nourl', act: 'settings', html: '☁ 시트 연결이 안 되어 있어요 — 눌러서 ⚙ 설정에서 Apps Script URL 입력' });
   if (A.hasUrl() && stt.dirty && stt.since && Date.now() - Date.parse(stt.since) > 120000) list.push({ key: 'dirty', act: 'backup', html: '⚠ <b>시트에 저장되지 않은 변경</b>이 2분 넘게 남아 있어요 — 앱을 지우거나 재설치하기 전에 꼭 눌러서 저장하세요' });
   { const nm = A.newMonth(); if (nm) list.push({ key: 'nm:' + nm, act: 'meeting', html: '📅 회의비: ' + esc(nm) }); }
   {
     const up = Life.upcoming(SB.items, Life.payMap(SB.pays), todayStr(), 2);
-    if (up.length && navVisible('sub')) list.push({ key: 'sb:' + up.map(x => x.id + x.date).join(','), act: 'sub', html: '💳 결제 임박 <b>' + up.length + '건</b> — ' + esc(up[0].name) + ' ' + (up[0].amount == null ? '(금액 입력 필요)' : won(up[0].amount)) + ' (' + (up[0].diff === 0 ? '오늘' : up[0].diff + '일 뒤') + ')' + (up.length > 1 ? ' 외' : '') });
+    if (up.length && navVisible('sub')) list.push({ key: 'sb:' + up.map(x => x.id + x.date).join(','), act: 'sub', id: up.length === 1 ? up[0].id : '', mo: up.length === 1 ? up[0].date.slice(0, 7) : '', need: up.length === 1 && up[0].amount == null, html: '💳 결제 임박 <b>' + up.length + '건</b> — ' + esc(up[0].name) + ' ' + (up[0].amount == null ? '(금액 입력 필요)' : won(up[0].amount)) + ' (' + (up[0].diff === 0 ? '오늘' : up[0].diff + '일 뒤') + ')' + (up.length > 1 ? ' 외' : '') });
   }
   {
     const t0 = todayStr(), upc = Life.upcomingPlans(Q.meets, t0).filter(m => Life.dd(t0, m.date) <= 1), odp = Life.overduePlans(Q.meets, t0);
     if ((upc.length || odp.length) && navVisible('people')) list.push({ key: 'pp:' + upc.concat(odp).map(m => m.id + m.date).join(','), act: 'people',
       html: odp.length ? '👥 지난 예약 <b>' + odp.length + '건</b> — 만났는지 확인해 주세요' + (upc.length ? ' · 임박한 예약 ' + upc.length + '건' : '') : '👥 ' + (Life.dd(t0, upc[0].date) === 0 ? '오늘' : '내일') + ' 예약 <b>' + upc.length + '건</b> — ' + esc(meetNames(upc[0])) + (upc.length > 1 ? ' 외' : '') });
   }
-  const html = list.filter(a => !dismissed(a.key)).map(a => '<div class="galert" data-g="' + a.act + '" data-key="' + esc(a.key) + '" role="button" tabindex="0"><span class="t">' + a.html + '</span><button class="x" data-g="x" data-key="' + esc(a.key) + '" aria-label="닫기">✕</button></div>').join('');
+  const html = list.filter(a => !dismissed(a.key)).map(a => '<div class="galert" data-g="' + a.act + '" data-key="' + esc(a.key) + '"' + (a.id ? ' data-id="' + esc(a.id) + '"' : '') + (a.mo ? ' data-mo="' + esc(a.mo) + '"' : '') + (a.need ? ' data-need="1"' : '') + ' role="button" tabindex="0"><span class="t">' + a.html + '</span><button class="x" data-g="x" data-key="' + esc(a.key) + '" aria-label="닫기">✕</button></div>').join('');
   if (gbox.dataset.sig !== html) { gbox.dataset.sig = html; gbox.innerHTML = html; }
 }
 if (window.AppSync) window.AppSync.onState = renderGlobal;
@@ -4197,7 +4372,11 @@ $('gBar').addEventListener('click', e => {
   if (x) { dismissAlert(x.dataset.key); renderGlobal(); if (mode === 'shop') checkBenefits(); e.stopPropagation(); return; }
   const el = e.target.closest('[data-g]'); if (!el) return;
   const a = el.dataset.g;
-  if (a === 'people') ppTab = 'today'; if (a === 'shop' || a === 'meeting' || a === 'sub' || a === 'people') setMode(a); else if (a === 'backup') doBackup(); else if (a === 'settings') window.AppSync.openSettings();
+  if (a === 'people') ppTab = 'today';
+  if (a === 'sub' && el.dataset.id) sbGoto([el.dataset.id], { month: el.dataset.mo, open: el.dataset.need === '1' });
+  else if (a === 'shop' && el.dataset.id) gotoShop(el.dataset.id);
+  else if (a === 'remind') rmOpen();
+  else if (a === 'shop' || a === 'meeting' || a === 'sub' || a === 'people') setMode(a); else if (a === 'backup') doBackup(); else if (a === 'settings') window.AppSync.openSettings();
 });
 $('gSettings').addEventListener('click', () => { if (window.AppSync) window.AppSync.openDrawer(); });
 ['drawerClose', 'overlay'].forEach(id => { const el = $(id); if (el) el.addEventListener('click', () => setTimeout(renderGlobal, 80)); });
@@ -4207,11 +4386,12 @@ $('gBar').addEventListener('keydown', e => { if (e.key === 'Enter') { const el =
 
 /* ---------- 모드 / 화면 ---------- */
 let mode = 'meeting';
-const MODE_VIEWS = { meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', people: 'peopleView', skin: 'skinView', pay: 'payView', guide: 'guideView' };
+const MODE_VIEWS = { meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', people: 'peopleView', skin: 'skinView', manual: 'skinView', pay: 'payView', guide: 'guideView' };
 function setMode(m){
   if (!MODE_VIEWS[m] || !navVisible(m)) m = firstVisibleMode();
   mode = m; { const g = groupOf(m); if (g) lastIn[g.g] = m; }
-  Object.keys(MODE_VIEWS).forEach(k => { $(MODE_VIEWS[k]).hidden = k !== m; });
+  { const vid = MODE_VIEWS[m]; Object.keys(MODE_VIEWS).forEach(k => { $(MODE_VIEWS[k]).hidden = MODE_VIEWS[k] !== vid; }); }
+  if (m === 'skin' || m === 'manual') { skTab = m; try { localStorage.setItem('sk_tab_v1', skTab); } catch (er) { /* 무시 */ } }
   markNav(); $('quickFab').hidden = !NAV.fab || m === 'guide';
   try { localStorage.setItem(MODE_KEY, m); } catch (e) { /* 저장 불가 환경 */ }
   renderAll(); window.scrollTo(0, 0);
@@ -4227,7 +4407,7 @@ function renderAll(){
   else if (mode === 'shop') renderShop();
   else if (mode === 'sub') renderSub();
   else if (mode === 'people') renderPeople();
-  else if (mode === 'skin') renderSkin();
+  else if (mode === 'skin' || mode === 'manual') renderSkin();
   else if (mode === 'pay') renderPay();
   else if (mode === 'guide') renderGuide();
   syncNote(); renderGlobal();
@@ -4277,7 +4457,7 @@ $('sh-photo-file').addEventListener('change', e => {
   shrinkImage(f).then(d => { shPhoto = d; shPhotoUI(); }).catch(() => toast('사진을 불러오지 못했어요. 다른 사진으로 시도해 주세요.'));
 });
 $('sh-photo-del').addEventListener('click', () => { shPhoto = ''; shPhotoUI(); });
-$('sh-f-cat').addEventListener('change', shPhotoUI);
+$('sh-f-cat').addEventListener('change', shPhotoUI); $('sh-f-cat').addEventListener('change', shBrandUI);
 $('skinView').addEventListener('click', e => {
   const el = e.target.closest('[data-sk]'); if (!el) return;
   const a = el.dataset.sk;
@@ -4353,7 +4533,7 @@ $('subView').addEventListener('click', e => {
   const a = el.dataset.sb;
   if (a === 'filter') { sbFilter = sbFilter === el.dataset.cat ? 'all' : el.dataset.cat; try { localStorage.setItem('sb_filter_v1', sbFilter); } catch (er) { /* 무시 */ } renderSub(); }
   else if (a === 'prev') shiftMonth(-1); else if (a === 'next') shiftMonth(1); else if (a === 'today') { sbMonth = todayStr().slice(0, 7); renderSub(); }
-  else if (a === 'add') openSub(null); else if (a === 'edit') openSub(el.dataset.id); else if (a === 'check') togglePay(el.dataset.id); else if (a === 'backup') doBackup();
+  else if (a === 'need') sbNeed(el.dataset.scope === 'all'); else if (a === 'add') openSub(null); else if (a === 'edit') openSub(el.dataset.id); else if (a === 'check') togglePay(el.dataset.id); else if (a === 'backup') doBackup();
 });
 $('sb-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-sb]'); if (!el) return;
@@ -4473,6 +4653,7 @@ $('appVer').textContent = APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION;
 try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
+migrateJ();
 let startMode = 'meeting';
 try { const v = localStorage.getItem(MODE_KEY); startMode = MODE_VIEWS[v] ? v : 'meeting'; } catch (e) { /* 기본값 */ }
 setMode(startMode);
