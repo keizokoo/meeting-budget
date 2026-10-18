@@ -921,9 +921,9 @@
     <div class="pc-row2 pc-filterrow"><label class="pc-f">부위<select id="mp-flt-part"></select></label><label class="pc-f">청구<select id="mp-flt-claim"><option value="all">전체</option><option value="yes">청구함</option><option value="no">미청구</option></select></label></div>
     <div class="sb-subtotal" id="mp-fsum"></div>
    </div>
+   </div>
    <div id="mp-list"></div>
    <div id="mp-cycles"></div>
-   </div>
    <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-mp="backup">☁ 지금 백업</button></div>
    <p class="pc-sync" id="mp-sync"></p>
    <p class="pc-hint">실비 조건: 같은 질병은 365일·30회 한도(질병·사고별로 따로 계산). 기간이나 횟수를 채우면 마지막 보상일부터 180일은 보상되지 않아요. 첫 청구일부터 카운팅하며, 정확한 판단은 보험사 약관을 기준으로 하세요.</p>
@@ -2700,7 +2700,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-18-o (시트 등록대기 자동 반영)';
+const APP_BUILD_VERSION = '2026-10-18-p (도수치료 카드 항상 표시 · 최근 5건 유지)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -3747,7 +3747,7 @@ function foldApply(){
     box.hidden = f; btn.textContent = f ? '▸ 펼치기 (' + a[2]() + '건)' : '▾ 접기';
   });
 }
-document.addEventListener('click', e => { const b = e.target.closest('[data-fold]'); if (!b) return; const k = b.dataset.fold; FOLD[k] = !FOLD[k]; try { localStorage.setItem(FOLD_KEY, JSON.stringify(FOLD)); } catch (er) { /* 무시 */ } foldApply(); });
+document.addEventListener('click', e => { const b = e.target.closest('[data-fold]'); if (!b) return; const k = b.dataset.fold; FOLD[k] = !FOLD[k]; try { localStorage.setItem(FOLD_KEY, JSON.stringify(FOLD)); } catch (er) { /* 무시 */ } if (k === 'mp' && FOLD.mp) mpFilter = { dz: 'all', scope: 'all', part: 'all', claim: 'all' }; foldApply(); if (k === 'mp') renderManual(); });
 function renderSkin(){
   foldApply(); skTabApply(); if (skTab === 'manual') { renderManual(); return; }
   const items = SK.items, ses = SK.sessions, sm = Skin.summarize(items, ses);
@@ -4125,17 +4125,20 @@ function mpGroupHtml(g, t, ign){
   const sums = c => { let cost = 0, paid = 0; (c ? c.ids : []).forEach(id => { const r = byId[id]; if (r) { cost += r.cost; paid += r.paid; } }); return { cost, paid }; };
   const card = (l, v, s2) => '<div class="scard"><div class="l">' + l + '</div><div class="v tabular">' + v + '</div>' + (s2 ? '<div class="sub">' + s2 + '</div>' : '') + '</div>';
   const sm = sums(lastC); let cards = '', msg = '';
+  const cycCard = (v, s2) => '<div class="scard mp-go" data-mp="cycle" data-dz="' + esc(g.name) + '" role="button" tabindex="0"><div class="l">이번 주기 사용</div><div class="v tabular">' + v + '</div><div class="sub">' + s2 + '</div></div>';
   if (st.state === 'active') {
     mpCur[g.name] = (lastC && lastC.ids ? lastC.ids.slice() : []);
-    cards = '<div class="scard mp-go" data-mp="cycle" data-dz="' + esc(g.name) + '" role="button" tabindex="0"><div class="l">이번 주기 사용</div><div class="v tabular">' + st.used + ' / ' + LIM + '회</div><div class="sub">남은 ' + st.remain + '회 · 눌러서 이 ' + st.used + '회 기록만 보기</div></div>' + card('주기 기간', st.start + ' ~ ' + st.end, '종료까지 D-' + st.daysLeft) + card('지급 보험금', won(sm.paid), '청구 ' + won(sm.cost));
+    cards = cycCard(st.used + ' / ' + LIM + '회', '남은 ' + st.remain + '회 · 눌러서 이 ' + st.used + '회 기록만 보기') + card('주기 기간', st.start + ' ~ ' + st.end, '종료까지 D-' + st.daysLeft) + card('지급 보험금', won(sm.paid), '청구 ' + won(sm.cost));
     msg = '<div class="mp-st ok">✅ 보상 가능 · <b>' + st.used + '회</b> 사용, <b>' + st.remain + '회</b> 남았어요.<div class="mp-bar"><i style="width:' + Math.min(100, Math.round(st.used / LIM * 100)) + '%"></i></div>' +
       '<small>' + LIM + '회를 채우거나 ' + st.end + '이 지나면 마지막 보상일부터 ' + cy.limit.lockDays + '일은 보상되지 않아요.' + (st.remain <= 5 && st.remain > 0 ? ' <b>한도가 얼마 안 남았어요.</b>' : '') + '</small></div>';
   } else if (st.state === 'locked') {
     mpCur[g.name] = (lastC && lastC.ids ? lastC.ids.slice() : []);
-    cards = card('보상 불가기간', st.lockStart + ' ~ ' + st.lockEnd, '마지막 보상일부터 ' + cy.limit.lockDays + '일') + card('보상 재개일', st.nextEligible, 'D-' + st.daysLeft) + '<div class="scard mp-go" data-mp="cycle" data-dz="' + esc(g.name) + '" role="button" tabindex="0"><div class="l">이번 주기 사용</div><div class="v tabular">' + lastC.used + ' / ' + LIM + '회</div><div class="sub">' + (lastC.closedBy === 'count' ? '횟수 한도 도달' : '기간 종료') + ' · 눌러서 이 ' + lastC.used + '회 기록만 보기</div></div>';
+    cards = cycCard(lastC.used + ' / ' + LIM + '회', (lastC.closedBy === 'count' ? '횟수 한도 도달' : '기간 종료') + ' · 눌러서 이 ' + lastC.used + '회 기록만 보기') +
+      card('주기 기간', esc(lastC.start) + ' ~ ' + esc(lastC.closedBy === 'count' ? lastC.lastComp : lastC.end), '종료된 주기') + card('지급 보험금', won(sm.paid), '청구 ' + won(sm.cost)) +
+      card('보상 불가기간', st.lockStart + ' ~ ' + st.lockEnd, '마지막 보상일부터 ' + cy.limit.lockDays + '일') + card('보상 재개일', st.nextEligible, 'D-' + st.daysLeft);
     msg = '<div class="mp-st lock">🚫 이 질병은 보상 불가기간이에요 · <b>' + st.lockEnd + '</b>까지<br><small>' + st.nextEligible + '부터 청구하면 새 주기(' + cy.limit.limitDays + '일·' + LIM + '회)가 시작돼요. (D-' + st.daysLeft + ') 직전 주기: ' + esc(lastC.start) + ' ~ ' + esc(lastC.lastComp) + ', 지급 ' + won(sm.paid) + '</small></div>';
   } else {
-    cards = card('이번 주기 사용', '0 / ' + LIM + '회', '새 주기 시작 가능');
+    cards = card('이번 주기 사용', '0 / ' + LIM + '회', '새 주기 시작 가능') + card('주기 기간', '새 주기 시작 전', '다음 청구일부터 ' + cy.limit.limitDays + '일') + card('지급 보험금', won(sm.paid), '직전 주기 · 청구 ' + won(sm.cost));
     msg = '<div class="mp-st ok">✅ 불가기간이 끝났어요. 다음 청구일부터 ' + cy.limit.limitDays + '일 · ' + LIM + '회가 새로 카운팅돼요.</div>';
   }
   const hist = cycles.length > 1 || (cycles.length === 1 && cycles[0].closed) ? cycles.slice().reverse().map((c, i) => { const s2 = sums(c), n = cycles.length - i;
@@ -4159,11 +4162,12 @@ function renderManual(){
     .sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
   { let v2 = 0, c2 = 0, p2 = 0; recs.forEach(r => { v2 += r.cnt; c2 += r.cost; p2 += r.paid; });
     $('mp-fsum').innerHTML = recs.length ? '<b>' + (mpFilter.scope === 'cur' ? '이번 주기' : '조건에 맞는 기록') + (mpFilter.dz !== 'all' ? ' · ' + esc(mpFilter.dz) : '') + '</b> ' + recs.length + '건 · ' + v2 + '회 · 청구 ' + won(c2) + ' · 지급 ' + won(p2) : ''; }
-  $('mp-list').innerHTML = recs.length ? recs.map(r => {
+  const mpFolded = !!FOLD.mp, mpShown = mpFolded ? recs.slice(0, 5) : recs;
+  $('mp-list').innerHTML = recs.length ? mpShown.map(r => {
     const chip = ign[r.id] ? '<span class="mp-chip warn">불가기간 청구(미반영)</span>' : (r.claimed ? '<span class="mp-chip">청구</span>' : '<span class="mp-chip warn">미청구</span>');
     return '<div class="mp-row" data-mp="edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="l"><b>' + esc(r.date) + ' · ' + esc(r.part) + (r.cnt > 1 ? ' ' + r.cnt + '회' : '') + '</b>' + chip + '<small>' + esc([r.dz, r.clinic].filter(Boolean).join(' · ') || '질병·병원 미입력') + (r.claimed && r.cdate ? ' · 지급 ' + esc(r.cdate) : '') + '</small></div>' +
       '<div class="r"><b>' + won(r.paid) + '</b>청구 ' + won(r.cost) + '</div></div>';
-  }).join('') : '<div class="empty">' + (MP.items.length ? (mpFilter.scope === 'cur' ? '진행중인 주기가 없어요(보상 불가기간이거나 새 주기 시작 전). 범위를 “전체 기록”으로 바꿔 보세요.' : '조건에 맞는 기록이 없어요.') : '아직 기록이 없어요. “+ 기록 추가”로 등록해 보세요.') + '</div>';
+  }).join('') + (mpFolded && recs.length > mpShown.length ? '<button type="button" class="pc-btn small" data-fold="mp" style="width:100%;margin-top:8px">▸ 나머지 ' + (recs.length - mpShown.length) + '건 펼쳐서 보기 (최근 ' + mpShown.length + '건만 표시 중)</button>' : '') : '<div class="empty">' + (MP.items.length ? (mpFilter.scope === 'cur' ? '진행중인 주기가 없어요(보상 불가기간이거나 새 주기 시작 전). 범위를 “전체 기록”으로 바꿔 보세요.' : '조건에 맞는 기록이 없어요.') : '아직 기록이 없어요. “+ 기록 추가”로 등록해 보세요.') + '</div>';
   $('mp-cycles').innerHTML = '';
 }
 const mpDzVal = () => { const v = $('mp-f-dz').value; return v === '__new' ? $('mp-f-dznew').value.trim() : v; };
@@ -4817,7 +4821,7 @@ $('mp-panel').addEventListener('click', e => {
   const el = e.target.closest('[data-mp]'); if (!el) return;
   const a = el.dataset.mp;
   if (a === 'add') openMp(null); else if (a === 'edit') openMp(el.dataset.id); else if (a === 'backup') doBackup();
-  else if (a === 'cycle') { mpFilter = { dz: el.dataset.dz, scope: 'cur', part: 'all', claim: 'all' }; renderManual(); $('mp-frow').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  else if (a === 'cycle') { mpFilter = { dz: el.dataset.dz, scope: 'cur', part: 'all', claim: 'all' }; FOLD.mp = false; foldApply(); renderManual(); $('mp-frow').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 });
 $('mp-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-mp]'); if (!el) return;
