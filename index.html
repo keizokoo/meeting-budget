@@ -2710,7 +2710,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-18-t (보톡스 체크박스 · 시술별 가격 · 제모 시술일)';
+const APP_BUILD_VERSION = '2026-10-18-v (보톡스 8회 · 제모 정정)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4671,14 +4671,52 @@ function migrateQ(){
     ['2023-04-29', '2023-11-18', '2024-05-24', '2024-11-12', '2025-04-30'].forEach((d, i) => { SK.sessions.push({ id: 'sks_' + bid + '_' + (i + 1), itemId: bid, date: d, cost: 180400, memo: '', u: t }); });
     ch = true;
   }
-  // 3) 다리 전체 제모: 날짜를 알게 된 시술 3회(이전에 받은 횟수 6회 중에서 옮김)
-  const lid = 'sk_mig_epil_2', leg = SK.items.find(x => x.id === lid);
-  if (leg && !SK.del[lid]) {
-    let moved = 0;
-    ['2025-09-12', '2026-02-19', '2026-07-02'].forEach((d, i) => { const sid = 'sks_' + lid + '_' + (i + 1); if (!SK.del[sid] && !SK.sessions.some(x => x.id === sid)) { SK.sessions.push({ id: sid, itemId: lid, date: d, cost: '', memo: '', u: t }); moved++; } });
-    if (moved) { leg.pre = Math.max(0, (leg.pre || 0) - moved); leg.u = t; ch = true; }
-  }
   if (ch) { SK = skNorm(SK); skSave(); changed(); }
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
+
+function migrateR(){
+  // 보톡스 보정: 합친 보톡스 관리(sk_mig_botox)와 기존 5회 기록이 없거나 지워졌으면 다시 만들고, 나눠 넣은 옛 6건이 남아 있으면 정리(1회만)
+  const MK = 'mig_r_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const t = nowIso(), bid = 'sk_mig_botox', dates = ['2023-04-29', '2023-11-18', '2024-05-24', '2024-11-12', '2025-04-30'], oldRe = /^sk_mig_botox_\d$/;
+  SK.items.filter(x => oldRe.test(x.id)).forEach(x => { SK.sessions.filter(y => y.itemId === x.id).forEach(y => { SK.del[y.id] = t; }); SK.sessions = SK.sessions.filter(y => y.itemId !== x.id); SK.del[x.id] = t; });
+  SK.items = SK.items.filter(x => !oldRe.test(x.id));
+  const it = SK.items.find(x => x.id === bid);
+  if (!it) {
+    delete SK.del[bid];
+    SK.items.push({ id: bid, name: '이마·미간·턱 보톡스', clinic: '아비쥬', func: '보톡스', date: '', cost: 180400, total: 1, pre: 0, open: true, memo: '체크할 때마다 시술이 추가돼요 · 가격은 시술별로 바꿀 수 있어요', u: t });
+  } else if (!it.open) { it.open = true; it.u = t; }
+  dates.forEach((d, i) => {
+    if (SK.sessions.some(x => x.itemId === bid && x.date === d)) return;
+    const sid = 'sks_' + bid + '_' + (i + 1); delete SK.del[sid];
+    SK.sessions = SK.sessions.filter(x => x.id !== sid);
+    SK.sessions.push({ id: sid, itemId: bid, date: d, cost: 180400, memo: '', u: t });
+  });
+  SK = skNorm(SK); skSave(); changed();
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
+
+function migrateS(){
+  // 정정: 25.9.12 · 26.2.19 · 26.7.2 는 제모가 아니라 보톡스 시술 → 제모에 넣었던 3건을 빼서 남은 횟수를 되돌리고, 보톡스에 추가(1회만)
+  const MK = 'mig_s_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const t = nowIso(), lid = 'sk_mig_epil_2', bid = 'sk_mig_botox';
+  const wrong = SK.sessions.filter(x => x.itemId === lid && /^sks_sk_mig_epil_2_\d$/.test(x.id));
+  const leg = SK.items.find(x => x.id === lid);
+  if (wrong.length) {
+    wrong.forEach(x => { SK.del[x.id] = t; });
+    SK.sessions = SK.sessions.filter(x => !wrong.includes(x));
+    if (leg) { leg.pre = (leg.pre || 0) + wrong.length; leg.u = t; }
+  }
+  if (!SK.items.some(x => x.id === bid) && !SK.del[bid]) { /* 보톡스 카드가 없으면 migrateR 이 만든 뒤 아래에서 채움 */ }
+  if (SK.items.some(x => x.id === bid)) {
+    ['2025-09-12', '2026-02-19', '2026-07-02'].forEach((d, i) => {
+      if (SK.sessions.some(x => x.itemId === bid && x.date === d)) return;
+      const sid = 'sks_' + bid + '_' + (6 + i); delete SK.del[sid];
+      SK.sessions = SK.sessions.filter(x => x.id !== sid);
+      SK.sessions.push({ id: sid, itemId: bid, date: d, cost: 180400, memo: '', u: t });
+    });
+  }
+  SK = skNorm(SK); skSave(); changed();
   try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
 }
 
@@ -5011,7 +5049,7 @@ $('appVer').textContent = APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION;
 try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
-migrateJ(); migrateK(); migrateL(); migrateM(); migrateN(); migrateO(); migrateP(); migrateQ();
+migrateJ(); migrateK(); migrateL(); migrateM(); migrateN(); migrateO(); migrateP(); migrateQ(); migrateR(); migrateS();
 let startMode = 'meeting';
 try { const st = localStorage.getItem(START_KEY), v = st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY); startMode = MODE_VIEWS[v] ? v : 'meeting'; } catch (e) { /* 기본값 */ }
 setMode(startMode);
