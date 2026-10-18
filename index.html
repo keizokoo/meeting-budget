@@ -2743,7 +2743,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-19-a (오늘 화면 · 데이터 점검 · 가이드 정리 · 패션 사이즈/색상 · 회의비-인맥 연결)';
+const APP_BUILD_VERSION = '2026-10-19-b (실구매금액 직접 입력 · 도수치료 병원 기본값)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -3232,8 +3232,9 @@ function openShop(id){
 function shFormItem(){ const n = id => { const v = $(id).value; return v === '' ? '' : Number(v); }; return { listPrice: n('sh-f-listPrice'), purchasePrice: n('sh-f-purchasePrice'), b1amount: n('sh-f-b1amount'), b2amount: n('sh-f-b2amount'), points: (n('sh-f-points') || 0) + (n('sh-f-points2') || 0) || '' }; }
 function shRecalc(){
   const f = shFormItem(), ca = Shop.autoActual(f), auto = $('sh-f-auto').checked, box = $('sh-f-calc'), act = $('sh-f-actualPrice');
-  act.readOnly = auto;
-  if (auto) act.value = ca.actual === '' ? '' : ca.actual;
+  act.readOnly = auto && ca.actual !== '';   // 혜택·적립금이 없으면 자동 계산 값이 없으므로 직접 입력할 수 있게 열어 둠
+  if (auto && ca.actual !== '') { act.value = ca.actual; act.dataset.auto = String(ca.actual); }
+  else if (auto && act.dataset.auto && act.value === act.dataset.auto) { act.value = ''; act.dataset.auto = ''; }   // 혜택을 지우면 예전 자동값도 지움
   const parts = [['혜택1', f.b1amount], ['혜택2', f.b2amount], ['적립금', f.points]].filter(p => Number(p[1]) > 0);
   box.className = 'calc';
   { const lc = $('sh-f-listcmp'), net = ca.actual !== '' && auto ? ca.actual : (act.value === '' ? null : Number(act.value)), ls = Shop.listSaving({ listPrice: f.listPrice, purchasePrice: f.purchasePrice, actualPrice: net == null ? '' : net });
@@ -3242,7 +3243,7 @@ function shRecalc(){
       lc.textContent = '정가 ' + fmt(ls.list) + '원 대비 · ' + (ls.byPurchase ? '구매금액 ' + t(ls.byPurchase) + ' · ' : '') + '실구매 ' + t(ls.byActual); lc.classList.add(ls.byActual.amt >= 0 ? 'good' : 'bad'); } }
   if (auto && ca.over) { box.classList.add('err'); box.textContent = '혜택·적립금 합계(' + won(ca.disc) + ')가 구매금액보다 커요. 금액을 확인해 주세요.'; }
   else if (auto && ca.actual !== '') box.textContent = '실구매금액 = ' + fmt(f.purchasePrice) + parts.map(p => ' − ' + fmt(p[1])).join('') + ' = ' + fmt(ca.actual) + '원 (' + parts.map(p => p[0]).join('·') + ' 반영)';
-  else if (auto) box.textContent = '혜택·적립금을 입력하면 실구매금액이 자동 계산돼요. (없으면 구매금액 그대로 계산)';
+  else if (auto) box.textContent = '혜택·적립금이 없어요. 실구매금액을 직접 입력하거나, 비워 두면 구매금액 그대로 계산돼요.';
   else if (ca.actual !== '' && act.value !== '' && Number(act.value) !== ca.actual) { box.classList.add('diff'); box.textContent = '직접 입력한 값이에요. 자동 계산하면 ' + fmt(ca.actual) + '원 (입력값과 ' + fmt(Math.abs(ca.actual - Number(act.value))) + '원 차이) — 위 체크를 켜면 바뀝니다.'; }
   else box.textContent = '직접 입력 중이에요.';
 }
@@ -3252,7 +3253,7 @@ function saveShop(){
   ['listPrice', 'purchasePrice', 'actualPrice', 'points', 'b1amount', 'b2amount', 'salePrice', 'penalty', 'tAmount'].forEach(f => { d[f] = d[f] === '' ? '' : (isFinite(Number(d[f])) ? Number(d[f]) : ''); });
   { const q1 = d.points === '' ? 0 : d.points, q2 = $('sh-f-points2').value === '' ? 0 : Number($('sh-f-points2').value) || 0; d.p1 = q1; d.p2 = q2; d.points = q1 + q2 > 0 ? q1 + q2 : ''; }
   if (!d.item) { toast('품목명을 입력해 주세요.'); return; }
-  if ($('sh-f-auto').checked) { const ca = Shop.autoActual(d); if (ca.over) { toast('혜택·적립금 합계가 구매금액보다 커요.'); return; } d.actualPrice = ca.actual; }
+  if ($('sh-f-auto').checked) { const ca = Shop.autoActual(d); if (ca.over) { toast('혜택·적립금 합계가 구매금액보다 커요.'); return; } if (ca.actual !== '') d.actualPrice = ca.actual; }   // 자동 계산값이 없으면 직접 입력한 값(또는 빈 값)을 그대로 저장
   d.photo = shPhoto;
   d.b1done = $('sh-f-b1done').checked; d.b2done = $('sh-f-b2done').checked;
   d.cat = $('sh-f-cat').value; d.u = nowIso();
@@ -4316,7 +4317,7 @@ function openMp(id){
   $('mp-d-title').textContent = r ? '도수치료 기록 수정' : '도수치료 기록 추가';
   $('mp-f-part').innerHTML = MP_PARTS.map(p => '<option>' + p + '</option>').join('');
   $('mp-f-date').value = r ? r.date : todayStr(); $('mp-f-cnt').value = r ? r.cnt : 1; $('mp-f-part').value = r ? (MP_PARTS.indexOf(r.part) >= 0 ? r.part : '기타') : '어깨';
-  $('mp-f-clinic').value = r ? r.clinic : ''; $('mp-f-cost').value = r && r.cost ? r.cost : ''; $('mp-f-paid').value = r && r.paid ? r.paid : ''; $('mp-f-claimed').checked = r ? r.claimed : true;
+  $('mp-f-clinic').value = r ? r.clinic : mpClinicDef(); $('mp-f-cost').value = r && r.cost ? r.cost : ''; $('mp-f-paid').value = r && r.paid ? r.paid : ''; $('mp-f-claimed').checked = r ? r.claimed : true;
   { const gn = mpGroups().map(g => g.name).filter(n => n !== '미분류'); fillSelect($('mp-f-dz'), gn.map(n => ({ v: n, t: n })).concat([{ v: '', t: '미분류(질병 없음)' }, { v: '__new', t: '＋ 새 질병·사고 입력' }]), r ? (r.dz || '') : (gn[0] || '__new')); $('mp-f-dznew').value = ''; mpDzUI(); }
   $('mp-f-cdate').value = r ? r.cdate : ''; $('mp-f-symptom').value = r ? r.symptom : ''; $('mp-f-memo').value = r ? r.memo : '';
   $('mp-d-delete').hidden = !r; mpWarnUpdate(); $('mp-dlg').showModal();
@@ -4324,9 +4325,10 @@ function openMp(id){
 function saveMp(){
   const date = $('mp-f-date').value;
   if (!date) { toast('진료일을 입력해 주세요.'); return; }
-  const d = { date, cnt: Math.max(1, Math.round(Number($('mp-f-cnt').value)) || 1), part: $('mp-f-part').value, clinic: $('mp-f-clinic').value.trim(), dz: mpDzVal(), cost: Number($('mp-f-cost').value) || 0, paid: Number($('mp-f-paid').value) || 0,
+  const d = { date, cnt: Math.max(1, Math.round(Number($('mp-f-cnt').value)) || 1), part: $('mp-f-part').value, clinic: $('mp-f-clinic').value.trim() || mpClinicDef(), dz: mpDzVal(), cost: Number($('mp-f-cost').value) || 0, paid: Number($('mp-f-paid').value) || 0,
     claimed: $('mp-f-claimed').checked, cdate: $('mp-f-cdate').value, symptom: $('mp-f-symptom').value.trim(), memo: $('mp-f-memo').value.trim(), u: nowIso() };
   if (mpEditing) { const r = MP.items.find(x => x.id === mpEditing); if (r) Object.assign(r, d); } else MP.items.push(Object.assign({ id: uid('mp') }, d));
+  if (!mpEditing && d.clinic) { try { localStorage.setItem(MP_CLINIC_KEY, d.clinic); } catch (e) { /* 무시 */ } }   // 새 기록에서 병원을 바꾸면 그 병원이 새 기본값
   MP = mpNorm(MP); mpSave(); changed(); $('mp-dlg').close(); toast('저장했어요.'); renderAll();
 }
 function delMp(){
@@ -4760,6 +4762,15 @@ function migrateR(){
   try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
 }
 
+const MP_CLINIC_KEY = 'mp_clinic_def_v1', MP_CLINIC_BASE = '삼성H정형외과';
+function mpClinicDef(){ try { return localStorage.getItem(MP_CLINIC_KEY) || MP_CLINIC_BASE; } catch (e) { return MP_CLINIC_BASE; } }
+function migrateT(){   // 도수치료 병원: 기존 기록을 모두 삼성H정형외과로 (1회만)
+  const MK = 'mig_t_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const t = nowIso(); let ch = false;
+  MP.items.forEach(i => { if (i.clinic !== MP_CLINIC_BASE) { i.clinic = MP_CLINIC_BASE; i.u = t; ch = true; } });
+  if (ch) { MP = mpNorm(MP); mpSave(); changed(); }
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
 function migrateS(){
   // 정정: 25.9.12 · 26.2.19 · 26.7.2 는 제모가 아니라 보톡스 시술 → 제모에 넣었던 3건을 빼서 남은 횟수를 되돌리고, 보톡스에 추가(1회만)
   const MK = 'mig_s_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
@@ -4865,7 +4876,7 @@ function dataChecks(){
     if (i.status === 'sold' && (!(Number(i.salePrice) > 0) || !i.saleDate)) add(1, '소비', nm + ' — 판매완료인데 판매금액 · 판매일이 비어 있어요', g);
     if (i.cat !== 'golf' && !i.store) add(2, '소비', nm + ' — 구매처가 비어 있어요', g);
     if (i.cat === 'fashion' && !i.size) add(2, '소비', nm + ' — 사이즈가 비어 있어요', g);
-    if (i.cat === 'electronics' && i.status !== 'sold' && (i.actualPrice === '' || i.actualPrice == null)) add(3, '소비', nm + ' — 실구매금액 없음 (구매금액으로 계산 중)', g);
+    if (i.cat === 'electronics' && i.status !== 'sold' && (i.actualPrice === '' || i.actualPrice == null) && ((Number(i.b1amount) || 0) + (Number(i.b2amount) || 0) + (Number(i.points) || 0)) > 0) add(2, '소비', nm + ' — 혜택·적립금이 있는데 실구매금액이 비어 있어요', g);
   });
   const seen = {};
   SH.items.forEach(i => { if (!i.purchaseDate) return; const k = [i.cat, normNm(i.item), i.purchaseDate, Number(i.purchasePrice)].join('|'); (seen[k] = seen[k] || []).push(i); });
@@ -5266,7 +5277,7 @@ $('appVer').textContent = APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION;
 try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
-migrateJ(); migrateK(); migrateL(); migrateM(); migrateN(); migrateO(); migrateP(); migrateQ(); migrateR(); migrateS();
+migrateJ(); migrateK(); migrateL(); migrateM(); migrateN(); migrateO(); migrateP(); migrateQ(); migrateR(); migrateS(); migrateT();
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
