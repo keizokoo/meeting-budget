@@ -176,6 +176,13 @@
   .urlsaved{ font-size:11px; color:var(--good); margin-top:5px; height:14px; opacity:0; transition:opacity .2s ease; }
   .urlsaved.show{ opacity:1; }
   #periodicIntervalSelect{ border:1px solid var(--line2); border-radius:8px; padding:7px 10px; font-size:12.5px; background:var(--bg); color:var(--ink); }
+  .pc-qtyb{ display:inline-block; background:var(--pc-soft); color:var(--pc); border-radius:6px; padding:0 5px; font-weight:800; }
+  .drawer .dsec{ font-size:13px; font-weight:800; color:var(--ink); margin:6px 0 12px; padding-top:14px; border-top:2px solid var(--ink); }
+  .drawer select{ border:1px solid var(--line2); border-radius:8px; padding:8px 10px; font-size:12.5px; background:var(--bg); color:var(--ink); }
+  .drawer .toolbtn{ display:flex; }
+  dialog{ position:fixed; }
+  dialog .dlg-x{ float:right; position:sticky; top:0; z-index:3; width:34px; height:34px; margin:-8px -8px 0 8px; border:1px solid var(--line2); border-radius:50%; background:var(--surface); color:var(--ink); font-size:16px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  dialog .dlg-x:hover{ border-color:var(--ink); }
   .drawer .note{ font-size:11.5px; color:var(--ink3); line-height:1.6; }
 
   .toast{
@@ -418,6 +425,15 @@
   .sh-meta b{ color:var(--ink); font-weight:600; }
   .sh-benefit{ font-size:12px; margin-top:4px; color:var(--ink2); }
   .sh-benefit.due{ color:var(--accent); font-weight:700; }
+  .sh-benefit{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .sh-benefit .bt{ flex:1 1 auto; min-width:0; }
+  .sh-benefit.done .bt{ text-decoration:line-through; opacity:.6; }
+  .sh-donebtn{ flex:none; border:1px solid var(--accent); background:transparent; color:var(--accent); border-radius:999px; padding:3px 10px; font-size:11.5px; font-weight:800; cursor:pointer; }
+  .sh-donebtn.undo{ border-color:var(--line2); color:var(--ink2); }
+  .sh-banner .it{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .sh-banner .sh-donebtn{ margin-left:auto; border-color:var(--accent); color:var(--accent); }
+  .sh-donechk{ display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink); margin:2px 0 6px; }
+  .sh-donechk input{ width:auto !important; min-height:0 !important; }
   .sh-penalty{ font-size:12px; color:var(--warn); margin-top:4px; }
   .sh-right{ text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
   .sh-price{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-weight:700; font-size:13.5px; }
@@ -532,7 +548,7 @@
   <button class="modebtn" data-mode="people" id="modePeople">인맥</button>
 </div></div>
 <div class="gbar" id="gBar">
-  <div class="gbar-in"><span class="gdot" id="gDot"></span><span class="gsync" id="gSync"></span><button class="gbtn" id="gSettings" type="button">⚙ 설정</button></div>
+  <div class="gbar-in"><span class="gdot" id="gDot"></span><span class="gsync" id="gSync"></span><button class="gbtn" id="themeToggle" type="button">🌓 다크모드</button><button class="gbtn" id="gSettings" type="button">⚙ 설정</button></div>
   <div class="galerts" id="gAlerts"></div>
 </div>
 <div id="mtgView">
@@ -560,8 +576,6 @@
       <div class="v tabular" id="heroRemain">0원</div>
       <div class="iconrow">
         <button class="iconbtn" id="installBtn">⬇ 앱 설치</button>
-        <button class="iconbtn" id="themeToggle">🌓 다크모드</button>
-        <button class="iconbtn" id="settingsToggle">⚙ 설정</button>
       </div>
     </div>
   </div>
@@ -663,9 +677,12 @@
       </div>
       <div class="pc-row2">
         <label class="pc-f"><span id="pc-bonus-label">증정</span><input id="pc-bonus" type="number" inputmode="decimal" min="0" step="any"></label>
-        <label class="pc-f">결제금(원)<input id="pc-paid" type="number" inputmode="numeric" min="0" step="any"></label>
+        <label class="pc-f">결제금(원, 전체)<input id="pc-paid" type="number" inputmode="numeric" min="0" step="any"></label>
       </div>
-      <label class="pc-f">적립금(원)<input id="pc-points" type="number" inputmode="numeric" min="0" step="any"></label>
+      <div class="pc-row2">
+        <label class="pc-f">적립금(원, 전체)<input id="pc-points" type="number" inputmode="numeric" min="0" step="any"></label>
+        <label class="pc-f">구매 개수<select id="pc-qty"></select></label>
+      </div>
       <div class="pc-row2">
         <label class="pc-f">구매처<input id="pc-store" type="text" list="pc-store-list" placeholder="예: 네이버쇼핑" autocomplete="off"></label>
         <label class="pc-f">사이즈<input id="pc-size" type="text" placeholder="예: L, 270, 500ml" autocomplete="off"></label>
@@ -712,7 +729,6 @@
   <div class="sectionhead"><h3 id="sh-title">전자제품 품목</h3><button class="pc-btn small primary" data-sh="add">+ 항목 추가</button></div>
   <div id="sh-list"></div>
   <div class="toolbar">
-    <button class="toolbtn" data-sh="notify" id="sh-notify">🔔 혜택 알림 꺼짐</button>
     <button class="toolbtn" data-sh="csv-out">⬇ CSV 내보내기</button>
     <button class="toolbtn" data-sh="csv-in">⬆ CSV 가져오기</button>
     <button class="toolbtn" data-sh="backup">☁ 지금 백업</button>
@@ -734,10 +750,6 @@
   <div id="sb-list"></div>
   <div class="sectionhead" style="margin-top:22px"><h3>보험료</h3></div>
   <div id="sb-ins"></div>
-  <div class="pc-card" style="margin-top:18px">
-    <h3>비용 표시 기준</h3>
-    <label class="pc-f" style="margin-top:0"><select id="sb-costmode"><option value="gross">비용 = 청구금액(할인 전) · 할인은 따로 표시하고 실부담을 계산</option><option value="net">비용 = 이미 할인이 반영된 실결제액</option></select></label>
-  </div>
   <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-sb="backup">☁ 지금 백업</button></div>
   <p class="pc-sync" id="sb-sync"></p>
  </div>
@@ -757,16 +769,6 @@
       <div class="pc-headrow"><h3>사람</h3><button class="pc-btn small primary" data-pp="add-person">+ 사람 추가</button></div>
       <div id="pp-filter" class="pc-chips"></div>
       <div id="pp-people"></div>
-    </div>
-    <div class="pc-card">
-      <h3>기본 설정</h3>
-      <label class="pc-f" style="margin-top:0">이번 달 만남 목표(회)<input id="pp-cfg-target" type="number" min="0" max="60" step="1" inputmode="numeric"></label>
-      <div class="pc-row2">
-        <label class="pc-f">친구 기본 주기(일)<input id="pp-cfg-0" type="number" min="1" max="365" inputmode="numeric"></label>
-        <label class="pc-f">지인 기본 주기(일)<input id="pp-cfg-1" type="number" min="1" max="365" inputmode="numeric"></label>
-        <label class="pc-f">동료 기본 주기(일)<input id="pp-cfg-2" type="number" min="1" max="365" inputmode="numeric"></label>
-        <label class="pc-f">유관부서 기본 주기(일)<input id="pp-cfg-3" type="number" min="1" max="365" inputmode="numeric"></label>
-      </div>
     </div>
   </section>
   <section class="pc-sec" id="pp-log">
@@ -877,9 +879,12 @@
   </div>
   <div class="pc-row2">
     <label class="pc-f"><span id="pc-e-bonus-label">증정</span><input id="pc-e-bonus" type="number" inputmode="decimal" min="0" step="any"></label>
-    <label class="pc-f">결제금(원)<input id="pc-e-paid" type="number" inputmode="numeric" min="0" step="any"></label>
+    <label class="pc-f">결제금(원, 전체)<input id="pc-e-paid" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
-  <label class="pc-f">적립금(원)<input id="pc-e-points" type="number" inputmode="numeric" min="0" step="any"></label>
+  <div class="pc-row2">
+    <label class="pc-f">적립금(원, 전체)<input id="pc-e-points" type="number" inputmode="numeric" min="0" step="any"></label>
+    <label class="pc-f">구매 개수<select id="pc-e-qty"></select></label>
+  </div>
   <div class="pc-row2">
     <label class="pc-f">구매처<input id="pc-e-store" type="text" list="pc-store-list" autocomplete="off"></label>
     <label class="pc-f">사이즈<input id="pc-e-size" type="text" autocomplete="off"></label>
@@ -916,12 +921,14 @@
     <label class="pc-f">금액(원)<input id="sh-f-b1amount" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
   <label class="pc-f">지급일<input id="sh-f-b1date" type="date"></label>
+  <label class="sh-donechk"><input type="checkbox" id="sh-f-b1done"> 이 혜택 받음 완료 (알림에서 빠져요)</label>
   <div class="grp">혜택 2</div>
   <div class="pc-row2">
     <label class="pc-f">혜택명<input id="sh-f-b2name" type="text"></label>
     <label class="pc-f">금액(원)<input id="sh-f-b2amount" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
   <label class="pc-f">지급일<input id="sh-f-b2date" type="date"></label>
+  <label class="sh-donechk"><input type="checkbox" id="sh-f-b2done"> 이 혜택 받음 완료 (알림에서 빠져요)</label>
   <div class="grp">재판매</div>
   <label class="pc-f">상태<select id="sh-f-status"><option value="hold">보유중</option><option value="sold">판매완료</option></select></label>
   <div class="pc-row2">
@@ -944,24 +951,7 @@
     <button class="closebtn" id="drawerClose">✕</button>
     <h2>설정</h2>
 
-    <div class="block">
-      <h4>카드 구분 관리</h4>
-      <div class="chiprow" id="cardTypeChips"></div>
-      <div class="addchip">
-        <input type="text" id="newCardTypeInput" placeholder="새 카드 구분 이름 (예: 신한)">
-        <button id="addCardTypeBtn">추가</button>
-      </div>
-    </div>
-
-    <div class="block">
-      <h4>월 예산</h4>
-      <div class="fieldrow">
-        <label id="budgetMonthLabel">현재 보고 있는 달의 예산</label>
-        <input type="number" id="drawerBudgetInput" min="0" step="1000">
-      </div>
-      <button class="toolbtn" id="saveBudgetBtn" style="width:100%; justify-content:center;">예산 저장</button>
-    </div>
-
+    <div class="dsec">공통 · 데이터</div>
     <div class="block">
       <h4>데이터 백업 / 복원 (파일)</h4>
       <p class="note">브라우저 저장공간이 초기화되어도 데이터를 잃지 않도록, 주기적으로 내보내기 파일을 보관해두는 것을 권장합니다.</p>
@@ -999,6 +989,46 @@
       </select>
       <div class="synctime" id="lastSyncTime"></div>
       <p class="note" style="margin-top:10px;">URL은 Apps Script를 웹 앱으로 배포하면 발급됩니다. 별도 안내 가이드를 참고해 주세요. 주기적 백업은 이 앱 화면이 브라우저에 열려있는 동안에만 동작합니다 — 탭을 닫아도 안전하려면 "변경할 때마다 자동으로 백업"을 함께 켜두는 것을 권장합니다.</p>
+    </div>
+
+    <div class="dsec">회의비</div>
+    <div class="block">
+      <h4>카드 구분 관리</h4>
+      <div class="chiprow" id="cardTypeChips"></div>
+      <div class="addchip">
+        <input type="text" id="newCardTypeInput" placeholder="새 카드 구분 이름 (예: 신한)">
+        <button id="addCardTypeBtn">추가</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <h4>월 예산</h4>
+      <div class="fieldrow">
+        <label id="budgetMonthLabel">현재 보고 있는 달의 예산</label>
+        <input type="number" id="drawerBudgetInput" min="0" step="1000">
+      </div>
+      <button class="toolbtn" id="saveBudgetBtn" style="width:100%; justify-content:center;">예산 저장</button>
+    </div>
+
+    <div class="dsec">쇼핑</div>
+    <div class="block">
+      <h4>혜택 알림</h4>
+      <button class="toolbtn" id="sh-notify" type="button" style="width:100%; justify-content:center;">🔔 혜택 알림 꺼짐</button>
+      <p class="note" style="margin-top:8px;">켜면 혜택 지급일이 되었을 때 브라우저 알림도 보내요. 상단 알림은 항상 보여요. “받음 완료”로 체크한 혜택은 알림에서 빠져요.</p>
+    </div>
+    <div class="dsec">구독 · 보험</div>
+    <div class="block">
+      <h4>비용 표시 기준</h4>
+      <select id="sb-costmode" style="width:100%"><option value="gross">비용 = 청구금액(할인 전) · 할인은 따로 표시하고 실부담을 계산</option><option value="net">비용 = 이미 할인이 반영된 실결제액</option></select>
+    </div>
+    <div class="dsec">인맥</div>
+    <div class="block">
+      <h4>만남 목표 · 기본 주기</h4>
+      <div class="fieldrow"><label for="pp-cfg-target">이번 달 만남 목표(회)</label><input id="pp-cfg-target" type="number" min="0" max="60" step="1" inputmode="numeric"></div>
+      <div class="fieldrow"><label for="pp-cfg-0">친구 기본 주기(일)</label><input id="pp-cfg-0" type="number" min="1" max="365" inputmode="numeric"></div>
+      <div class="fieldrow"><label for="pp-cfg-1">지인 기본 주기(일)</label><input id="pp-cfg-1" type="number" min="1" max="365" inputmode="numeric"></div>
+      <div class="fieldrow"><label for="pp-cfg-2">동료 기본 주기(일)</label><input id="pp-cfg-2" type="number" min="1" max="365" inputmode="numeric"></div>
+      <div class="fieldrow"><label for="pp-cfg-3">유관부서 기본 주기(일)</label><input id="pp-cfg-3" type="number" min="1" max="365" inputmode="numeric"></div>
     </div>
   </div>
 </div>
@@ -1560,9 +1590,8 @@
   });
 
   // ---------- settings drawer ----------
-  function openDrawer(){ el('drawer').classList.add('show'); el('overlay').classList.add('show'); }
+  function openDrawer(){ if(window.AppSettings && window.AppSettings.refresh){ try{ window.AppSettings.refresh(); }catch(e){} } el('drawer').classList.add('show'); el('overlay').classList.add('show'); const di = el('drawer'); if(di) di.scrollTop = 0; }
   function closeDrawer(){ el('drawer').classList.remove('show'); el('overlay').classList.remove('show'); }
-  el('settingsToggle').addEventListener('click', openDrawer);
   el('drawerClose').addEventListener('click', closeDrawer);
   el('overlay').addEventListener('click', closeDrawer);
 
@@ -1877,6 +1906,7 @@
     auto: () => !!(data.settings.autoBackup && data.settings.sheetUrl),
     hasUrl: () => !!data.settings.sheetUrl,
     last: () => data.settings.lastSync,
+    openDrawer: () => openDrawer(),
     openSettings: () => { openDrawer(); setTimeout(() => { const u = el('sheetUrlInput'); if(u && u.scrollIntoView) u.scrollIntoView({block:'center'}); }, 300); },
     newMonth: () => { const b = el('newMonthBanner'); return (b && b.style.display !== 'none') ? (el('newMonthText').textContent || '').trim() : ''; },
     // 동기화 v2: 저장 확인 상태 / 미저장 여부 / 가격·쇼핑 등 다른 화면의 변경 알림
@@ -1922,14 +1952,15 @@ const Calc = (() => {
     const paid = Number(r.paid), a = Number(r.amount), bs = Number(basis);
     const pts = r.points == null || r.points === '' ? 0 : Number(r.points);
     const b = r.bonus == null || r.bonus === '' ? 0 : Number(r.bonus);
-    if (![paid, a, bs, pts, b].every(isFinite)) return null;
-    if (paid <= 0 || a <= 0 || bs <= 0 || pts < 0 || b < 0 || pts >= paid) return null;
-    return { paid, a, bs, pts, b };
+    const q = r.qty == null || r.qty === '' ? 1 : Number(r.qty);
+    if (![paid, a, bs, pts, b, q].every(isFinite)) return null;
+    if (paid <= 0 || a <= 0 || bs <= 0 || pts < 0 || b < 0 || pts >= paid || q < 1 || Math.floor(q) !== q) return null;
+    return { paid, a, bs, pts, b, q };
   }
   function netOf(r){ const v = validRec(r, 1); return v ? v.paid - v.pts : null; }
-  function volOf(r){ const v = validRec(r, 1); return v ? v.a + v.b : null; }
-  function unitOf(r, basis){ const v = validRec(r, basis); return v ? (v.paid - v.pts) / (v.a + v.b) * v.bs : null; }
-  function grossUnitOf(r, basis){ const v = validRec(r, basis); return v ? v.paid / (v.a + v.b) * v.bs : null; }
+  function volOf(r){ const v = validRec(r, 1); return v ? (v.a + v.b) * v.q : null; }
+  function unitOf(r, basis){ const v = validRec(r, basis); return v ? (v.paid - v.pts) / ((v.a + v.b) * v.q) * v.bs : null; }
+  function grossUnitOf(r, basis){ const v = validRec(r, basis); return v ? v.paid / ((v.a + v.b) * v.q) * v.bs : null; }
   function analyze(cur, hist, thr){
     thr = thr == null ? 5 : thr;
     if (!cur || !(cur.u > 0) || !hist || !hist.length) return null;
@@ -2002,7 +2033,7 @@ const Calc = (() => {
 const Shop = (() => {
   const CATS = { electronics: '전자제품', fashion: '패션', golf: '골프' };
   const CAT_KEYS = ['electronics', 'fashion', 'golf'];
-  const HEADER = ['카테고리', '품목', '구매처', '수량', '구매일', '구매금액', '실구매금액', '혜택1명', '혜택1금액', '혜택1일', '혜택2명', '혜택2금액', '혜택2일', '상태', '판매일', '판매금액', '위약금', '재판매손익', '적립금'];
+  const HEADER = ['카테고리', '품목', '구매처', '수량', '구매일', '구매금액', '실구매금액', '혜택1명', '혜택1금액', '혜택1일', '혜택2명', '혜택2금액', '혜택2일', '상태', '판매일', '판매금액', '위약금', '재판매손익', '적립금', '혜택1완료', '혜택2완료'];
   function num(v){ if (v === '' || v == null) return null; const x = Number(v); return isFinite(x) ? x : null; }
   function netPurchase(i){ const a = num(i.actualPrice); return a !== null ? a : (num(i.purchasePrice) || 0); }
   // 실구매금액 자동 계산(가격 체크의 "결제금 − 적립금"과 같은 방식): 구매금액 − 혜택1 − 혜택2 − 적립금
@@ -2021,10 +2052,11 @@ const Shop = (() => {
     return { count: items.length, totalListed, totalNet, saved: totalListed - totalNet, soldCount: sold.length,
       totalSale: sold.reduce((s, i) => s + (num(i.salePrice) || 0), 0), profit: sold.reduce((s, i) => s + itemProfit(i), 0) };
   }
+  function isDone(v){ return v === true || v === 1 || v === '1' || v === 'true' || v === '완료'; }
   function dueBenefits(items, today){
     const due = [];
-    items.forEach(i => { [['b1name', 'b1amount', 'b1date'], ['b2name', 'b2amount', 'b2date']].forEach(p => {
-      if (i[p[0]] && i[p[2]] && i[p[2]] <= today) due.push({ id: i.id, cat: i.cat, item: i.item, name: i[p[0]], amount: i[p[1]], date: i[p[2]] });
+    items.forEach(i => { [['b1name', 'b1amount', 'b1date', 'b1done', 'b1'], ['b2name', 'b2amount', 'b2date', 'b2done', 'b2']].forEach(p => {
+      if (i[p[0]] && i[p[2]] && i[p[2]] <= today && !isDone(i[p[3]])) due.push({ id: i.id, cat: i.cat, item: i.item, name: i[p[0]], amount: i[p[1]], date: i[p[2]], k: p[4] });
     }); });
     return due;
   }
@@ -2034,7 +2066,7 @@ const Shop = (() => {
     CAT_KEYS.forEach(cat => items.filter(i => i.cat === cat).forEach(i => {
       const p = itemProfit(i);
       rows.push([CATS[cat], i.item, i.store, i.qty, i.purchaseDate, i.purchasePrice, i.actualPrice, i.b1name, i.b1amount, i.b1date, i.b2name, i.b2amount, i.b2date,
-        i.status === 'sold' ? '판매완료' : '보유중', i.saleDate, i.salePrice, i.penalty, p !== null ? p : '', i.points == null ? '' : i.points]);
+        i.status === 'sold' ? '판매완료' : '보유중', i.saleDate, i.salePrice, i.penalty, p !== null ? p : '', i.points == null ? '' : i.points, isDone(i.b1done) ? '완료' : '', isDone(i.b2done) ? '완료' : '']);
     }));
     return rows.map(r => r.map(csvEscape).join(',')).join('\n');
   }
@@ -2066,11 +2098,12 @@ const Shop = (() => {
       if (!cat || !g('품목')) { errors.push((idx + 2) + '번째 줄: 카테고리/품목 확인 필요'); return; }
       items.push({ cat, item: g('품목'), store: g('구매처'), qty: numOrBlank(g('수량')) || 1, purchaseDate: g('구매일'), purchasePrice: numOrBlank(g('구매금액')), actualPrice: numOrBlank(g('실구매금액')),
         b1name: g('혜택1명'), b1amount: numOrBlank(g('혜택1금액')), b1date: g('혜택1일'), b2name: g('혜택2명'), b2amount: numOrBlank(g('혜택2금액')), b2date: g('혜택2일'),
-        status: g('상태') === '판매완료' ? 'sold' : 'hold', saleDate: g('판매일'), salePrice: numOrBlank(g('판매금액')), penalty: numOrBlank(g('위약금')), points: numOrBlank(g('적립금')) });
+        status: g('상태') === '판매완료' ? 'sold' : 'hold', saleDate: g('판매일'), salePrice: numOrBlank(g('판매금액')), penalty: numOrBlank(g('위약금')), points: numOrBlank(g('적립금')),
+        b1done: col('혜택1완료') >= 0 ? g('혜택1완료') === '완료' : undefined, b2done: col('혜택2완료') >= 0 ? g('혜택2완료') === '완료' : undefined });
     });
     return { items, errors };
   }
-  const FIELDS = ['qty', 'purchaseDate', 'purchasePrice', 'actualPrice', 'points', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'status', 'saleDate', 'salePrice', 'penalty'];
+  const FIELDS = ['qty', 'purchaseDate', 'purchasePrice', 'actualPrice', 'points', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'b1done', 'b2done', 'status', 'saleDate', 'salePrice', 'penalty'];
   function importRows(local, rows, uidFn, nowIso){
     const keyOf = i => [i.cat, i.item, i.store, i.purchaseDate].join('|'), seen = Object.create(null), idx = Object.create(null);
     local.forEach(i => { const k = keyOf(i); (idx[k] = idx[k] || []).push(i); });
@@ -2078,8 +2111,8 @@ const Shop = (() => {
     rows.forEach(r => {
       const k = keyOf(r), n = seen[k] = (seen[k] || 0) + 1, hit = idx[k] && idx[k][n - 1];
       if (hit) {
-        const diff = FIELDS.some(f => String(hit[f]) !== String(r[f]));
-        if (diff) { FIELDS.forEach(f => { hit[f] = r[f]; }); hit.u = nowIso; updated++; } else same++;
+        const fs = FIELDS.filter(f => r[f] !== undefined), cmp = f => (f === 'b1done' || f === 'b2done') ? String(isDone(hit[f])) !== String(isDone(r[f])) : String(hit[f]) !== String(r[f]);
+        if (fs.some(cmp)) { fs.forEach(f => { hit[f] = r[f]; }); hit.u = nowIso; updated++; } else same++;
       } else {
         const ni = Object.assign({ id: uidFn() , u: nowIso }, r); local.push(ni); (idx[k] = idx[k] || []).push(ni); added++;
       }
@@ -2095,7 +2128,7 @@ const Shop = (() => {
     map.forEach((x, id) => { if (del[id] && String(del[id]) >= String(x.u || '')) return; out.push(x); });
     return { items: out, del };
   }
-  return { CATS, CAT_KEYS, HEADER, netPurchase, discountSum, autoActual, itemProfit, summarize, dueBenefits, toCsv, parseCsv, importRows, mergeById };
+  return { CATS, CAT_KEYS, HEADER, netPurchase, discountSum, autoActual, itemProfit, summarize, dueBenefits, isDone, toCsv, parseCsv, importRows, mergeById };
 })();
 // </SHOPCALC>
 
@@ -2233,7 +2266,7 @@ const Life = (() => {
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-18-a (회의비 · 가격 · 쇼핑 · 구독 · 인맥)';
+const APP_BUILD_VERSION = '2026-10-18-b (회의비 · 가격 · 쇼핑 · 구독 · 인맥)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -2252,7 +2285,7 @@ function cleanDel(d){ const o = {}; if (d && typeof d === 'object') Object.keys(
 /* ---------- 동기화 연결(회의비 쪽 window.AppSync 사용) ---------- */
 let syncTimer = null;
 function syncNote(){
-  const t = !window.AppSync ? '' : (!window.AppSync.hasUrl() ? '☁ 시트 연결 전 — 회의비 화면의 ⚙ 설정에서 Apps Script URL을 입력하세요' :
+  const t = !window.AppSync ? '' : (!window.AppSync.hasUrl() ? '☁ 시트 연결 전 — 상단의 ⚙ 설정에서 Apps Script URL을 입력하세요' :
     (window.AppSync.last() ? '☁ 마지막 백업: ' + new Date(window.AppSync.last()).toLocaleString('ko-KR') + (window.AppSync.auto() ? ' · 변경 시 자동 백업' : ' · 자동 백업 꺼짐') : '☁ 아직 백업 전 · ' + (window.AppSync.auto() ? '변경 시 자동 백업' : '자동 백업 꺼짐')));
   ['pc-sync', 'sh-sync', 'sb-sync', 'pp-sync'].forEach(id => { const el = $(id); if (el) el.textContent = t; });
 }
@@ -2285,7 +2318,7 @@ function pNormalize(o){
     .map(i => ({ id: String(i.id), name: String(i.name), unit: i.unit, basis: BASES.indexOf(Number(i.basis)) >= 0 ? Number(i.basis) : 1, u: String(i.u || '') }));
   const ids = Object.create(null); items.forEach(i => { ids[i.id] = true; });
   const records = (Array.isArray(o.records) ? o.records : []).filter(r => r && r.id && ids[r.itemId] && Calc.validDate(r.date))
-    .map(r => ({ id: String(r.id), itemId: r.itemId, date: r.date, amount: Number(r.amount), bonus: Number(r.bonus) || 0, paid: Number(r.paid), points: Number(r.points) || 0,
+    .map(r => ({ id: String(r.id), itemId: r.itemId, date: r.date, amount: Number(r.amount), bonus: Number(r.bonus) || 0, paid: Number(r.paid), points: Number(r.points) || 0, qty: Math.max(1, Math.round(Number(r.qty)) || 1),
       store: r.store === undefined ? LEGACY_STORE : String(r.store == null ? '' : r.store), size: r.size == null ? '' : String(r.size), u: String(r.u || '') }))
     .filter(r => Calc.unitOf(r, 1) != null);
   return { items, records, del: cleanDel(o.del) };
@@ -2367,19 +2400,23 @@ function rangeBar(a, curU, cls){
     '<div class="pc-rb-ends"><span>내 최저 ' + fmtU(a.min) + '</span><span>내 최고 ' + fmtU(a.max) + '</span></div>' +
     '<p class="pc-legend">큰 점: 이번 단가 · 세로선: 내 평균</p></div>';
 }
+const QTY_OPTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 18, 20, 24, 30, 36, 40, 48, 50, 60, 100];
+function fillQty(id, q){ const sel = $(id); q = Math.max(1, Math.round(Number(q)) || 1); const opts = QTY_OPTS.indexOf(q) >= 0 ? QTY_OPTS : QTY_OPTS.concat([q]).sort((a, b) => a - b); sel.innerHTML = opts.map(n => '<option value="' + n + '">' + n + '개</option>').join(''); sel.value = String(q); }
+function readQty(id){ const n = Math.round(Number($(id).value)); return n >= 1 ? n : 1; }
+function qtyNote(q){ return q > 1 ? ' · ' + q + '개 구매' : ''; }
 function computeAnalyze(){
   const item = currentNewItem(), isNew = $('pc-item').value === '__new__', res = $('pc-result');
   $('pc-new').hidden = !isNew;
   if (!item) { res.innerHTML = ''; $('pc-save').disabled = true; return; }
   const ul = unitLabel(item);
-  $('pc-amount-label').textContent = '용량(' + item.unit + ')';
-  $('pc-bonus-label').textContent = '증정(' + item.unit + ')';
-  const rec = { amount: readN('pc-amount'), bonus: readN('pc-bonus') || 0, paid: readN('pc-paid'), points: readN('pc-points') || 0 };
+  $('pc-amount-label').textContent = '용량(' + item.unit + ', 1개당)';
+  $('pc-bonus-label').textContent = '증정(' + item.unit + ', 1개당)';
+  const rec = { amount: readN('pc-amount'), bonus: readN('pc-bonus') || 0, paid: readN('pc-paid'), points: readN('pc-points') || 0, qty: readQty('pc-qty') };
   const u = Calc.unitOf(rec, item.basis);
   $('pc-save').disabled = u == null || (isNew && !item.name);
   if (u == null) { $('pc-preview').textContent = '용량·결제금을 입력하면 바로 분석해요. (적립금은 결제금보다 작아야 해요)'; res.innerHTML = ''; return; }
   const g = Calc.grossUnitOf(rec, item.basis), vol = Calc.volOf(rec);
-  $('pc-preview').textContent = '적립금감안 ' + fmt(Calc.netOf(rec)) + '원 · 단가 ' + fmtU(u) + ul;
+  $('pc-preview').textContent = '적립금감안 ' + fmt(Calc.netOf(rec)) + '원' + qtyNote(rec.qty) + ' · 단가 ' + fmtU(u) + ul;
   const histRecs = isNew ? [] : recsOf(item.id).filter(r => Calc.unitOf(r, item.basis) != null);
   const hist = histRecs.map(r => ({ u: Calc.unitOf(r, item.basis), g: Calc.grossUnitOf(r, item.basis), date: r.date }));
   const a = Calc.analyze({ u, g, vol }, hist, THR);
@@ -2410,17 +2447,17 @@ function saveNew(){
   const isNew = $('pc-item').value === '__new__';
   let item = currentNewItem();
   if (!item) return;
-  const rec = { amount: readN('pc-amount'), bonus: readN('pc-bonus') || 0, paid: readN('pc-paid'), points: readN('pc-points') || 0 };
+  const rec = { amount: readN('pc-amount'), bonus: readN('pc-bonus') || 0, paid: readN('pc-paid'), points: readN('pc-points') || 0, qty: readQty('pc-qty') };
   if (Calc.unitOf(rec, item.basis) == null) { toast('용량·결제금·적립금을 확인해 주세요.'); return; }
   const t = nowIso();
   if (isNew) {
     if (!item.name) { toast('새 상품 이름을 입력해 주세요.'); return; }
     item = { id: uid('pi'), name: item.name, unit: item.unit, basis: item.basis, u: t }; S.items.push(item);
   }
-  S.records.push({ id: uid('pr'), itemId: item.id, date: Calc.validDate($('pc-date').value) || todayStr(), amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points,
+  S.records.push({ id: uid('pr'), itemId: item.id, date: Calc.validDate($('pc-date').value) || todayStr(), amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points, qty: rec.qty,
     store: $('pc-store').value.trim(), size: $('pc-size').value.trim(), u: t });
   pSave(); changed();
-  ['pc-bonus', 'pc-paid', 'pc-points', 'pc-amount', 'pc-name'].forEach(id => { $(id).value = ''; });
+  ['pc-bonus', 'pc-paid', 'pc-points', 'pc-amount', 'pc-name'].forEach(id => { $(id).value = ''; }); fillQty('pc-qty', 1);
   $('pc-item').value = item.id; $('pc-date').value = todayStr();
   fillStoreList(); prefillFromLast();
   toast('구매를 등록했어요.'); renderAll();
@@ -2428,6 +2465,7 @@ function saveNew(){
 // 상품을 고르면 직전 구매의 용량·구매처·사이즈를 기본값으로 채움(바꿔서 입력 가능)
 function prefillFromLast(){
   const it = itemById($('pc-item').value);
+  fillQty('pc-qty', 1);
   if (it) { const l = recsDesc(it.id)[0]; $('pc-amount').value = l ? l.amount : ''; $('pc-store').value = l ? (l.store || '') : lastStoreAny(); $('pc-size').value = l ? (l.size || '') : ''; }
   else { $('pc-store').value = lastStoreAny(); $('pc-size').value = ''; }
 }
@@ -2454,7 +2492,7 @@ function renderHistory(){
       let grp = '';
       if (it.id !== prevId) { prevId = it.id; const s = st[it.id]; grp = '<tr class="pc-grp"><td colspan="8">' + esc(it.name) + ' <small>' + esc(unitLabel(it)) + ' · ' + s.count + '건 · 최근 ' + esc(s.last.slice(5).replace('-', '/')) + '</small></td></tr>'; }
       const sub = [r.store, r.size].filter(Boolean).join(' · ');
-      return grp + '<tr tabindex="0" data-pc="edit-rec" data-id="' + esc(r.id) + '"><td>' + dateLabel(r.date) + (sub ? '<br><small class="pc-dim pc-sub2">' + esc(sub) + '</small>' : '') + '</td><td class="pc-pcell">' + esc(it.name) + '</td><td>' + r.amount + it.unit + '</td>' +
+      return grp + '<tr tabindex="0" data-pc="edit-rec" data-id="' + esc(r.id) + '"><td>' + dateLabel(r.date) + (sub ? '<br><small class="pc-dim pc-sub2">' + esc(sub) + '</small>' : '') + '</td><td class="pc-pcell">' + esc(it.name) + '</td><td>' + r.amount + it.unit + (r.qty > 1 ? ' <small class="pc-qtyb">×' + r.qty + '</small>' : '') + '</td>' +
         '<td>' + (r.bonus ? r.bonus + it.unit : '') + '</td><td>' + fmt(r.paid) + '</td><td class="pc-dim">' + (r.points ? fmt(r.points) : '') + '</td>' +
         '<td>' + fmt(r.paid - r.points) + '</td><td class="pc-u ' + uc + '">' + fmtU(x.u) + (mixed ? ' <small class="pc-dim">' + esc(unitLabel(it)) + '</small>' : '') + '</td></tr>';
     }).join('') + '</tbody></table>';
@@ -2538,10 +2576,10 @@ function renderTrend(){
 function updateEditPreview(){
   const item = itemById($('pc-e-item').value);
   if (!item) return;
-  $('pc-e-amount-label').textContent = '용량(' + item.unit + ')'; $('pc-e-bonus-label').textContent = '증정(' + item.unit + ')';
-  const rec = { amount: readN('pc-e-amount'), bonus: readN('pc-e-bonus') || 0, paid: readN('pc-e-paid'), points: readN('pc-e-points') || 0 };
+  $('pc-e-amount-label').textContent = '용량(' + item.unit + ', 1개당)'; $('pc-e-bonus-label').textContent = '증정(' + item.unit + ', 1개당)';
+  const rec = { amount: readN('pc-e-amount'), bonus: readN('pc-e-bonus') || 0, paid: readN('pc-e-paid'), points: readN('pc-e-points') || 0, qty: readQty('pc-e-qty') };
   const u = Calc.unitOf(rec, item.basis);
-  $('pc-e-preview').textContent = u == null ? '용량·결제금을 확인해 주세요. (적립금은 결제금보다 작아야 해요)' : '적립금감안 ' + fmt(Calc.netOf(rec)) + '원 · 단가 ' + fmtU(u) + unitLabel(item);
+  $('pc-e-preview').textContent = u == null ? '용량·결제금을 확인해 주세요. (적립금은 결제금보다 작아야 해요)' : '적립금감안 ' + fmt(Calc.netOf(rec)) + '원' + qtyNote(rec.qty) + ' · 단가 ' + fmtU(u) + unitLabel(item);
 }
 function openRec(id){
   if (!S.items.length) { toast('먼저 구매 분석 탭에서 상품을 등록해 주세요.'); return; }
@@ -2554,19 +2592,20 @@ function openRec(id){
   fillStoreList(); $('pc-e-store').value = r ? (r.store || '') : lastStoreAny(); $('pc-e-size').value = r ? (r.size || '') : '';
   $('pc-e-date').value = r ? r.date : todayStr();
   $('pc-e-amount').value = r ? r.amount : ''; $('pc-e-bonus').value = r && r.bonus ? r.bonus : '';
+  fillQty('pc-e-qty', r ? r.qty : 1);
   $('pc-e-paid').value = r ? r.paid : ''; $('pc-e-points').value = r && r.points ? r.points : '';
   $('pc-e-delete').hidden = !r; updateEditPreview(); $('pc-dlg').showModal();
 }
 function saveRec(){
   const item = itemById($('pc-e-item').value);
   if (!item) return;
-  const rec = { amount: readN('pc-e-amount'), bonus: readN('pc-e-bonus') || 0, paid: readN('pc-e-paid'), points: readN('pc-e-points') || 0 };
+  const rec = { amount: readN('pc-e-amount'), bonus: readN('pc-e-bonus') || 0, paid: readN('pc-e-paid'), points: readN('pc-e-points') || 0, qty: readQty('pc-e-qty') };
   const date = Calc.validDate($('pc-e-date').value);
   if (!date || Calc.unitOf(rec, item.basis) == null) { toast('날짜·용량·결제금·적립금을 확인해 주세요.'); return; }
   const t = nowIso();
   const store = $('pc-e-store').value.trim(), size = $('pc-e-size').value.trim();
-  if (editingId) { const r = S.records.find(x => x.id === editingId); if (r) { r.itemId = item.id; r.date = date; r.amount = rec.amount; r.bonus = rec.bonus; r.paid = rec.paid; r.points = rec.points; r.store = store; r.size = size; r.u = t; } }
-  else S.records.push({ id: uid('pr'), itemId: item.id, date, amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points, store, size, u: t });
+  if (editingId) { const r = S.records.find(x => x.id === editingId); if (r) { r.itemId = item.id; r.date = date; r.amount = rec.amount; r.bonus = rec.bonus; r.paid = rec.paid; r.points = rec.points; r.qty = rec.qty; r.store = store; r.size = size; r.u = t; } }
+  else S.records.push({ id: uid('pr'), itemId: item.id, date, amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points, qty: rec.qty, store, size, u: t });
   pSave(); changed(); $('pc-dlg').close(); toast('저장했어요.'); renderAll();
 }
 function delRec(){
@@ -2582,8 +2621,8 @@ const SHOP_SEED = [{"id": "sh_el_1", "cat": "electronics", "status": "hold", "sa
 function sNormalize(o){
   o = o && typeof o === 'object' ? o : {};
   const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && i.item && Shop.CATS[i.cat]).map(i => {
-    const b = Object.assign({ store: '', qty: 1, purchaseDate: '', purchasePrice: '', actualPrice: '', points: '', b1name: '', b1amount: '', b1date: '', b2name: '', b2amount: '', b2date: '', status: 'hold', saleDate: '', salePrice: '', penalty: '', u: '' }, i);
-    b.status = b.status === 'sold' ? 'sold' : 'hold'; b.id = String(b.id); b.u = String(b.u || ''); b.qty = Number(b.qty) || 1; return b;
+    const b = Object.assign({ store: '', qty: 1, purchaseDate: '', purchasePrice: '', actualPrice: '', points: '', b1name: '', b1amount: '', b1date: '', b2name: '', b2amount: '', b2date: '', b1done: false, b2done: false, status: 'hold', saleDate: '', salePrice: '', penalty: '', u: '' }, i);
+    b.status = b.status === 'sold' ? 'sold' : 'hold'; b.id = String(b.id); b.u = String(b.u || ''); b.qty = Number(b.qty) || 1; b.b1done = Shop.isDone(b.b1done); b.b2done = Shop.isDone(b.b2done); return b;
   });
   return { items, del: cleanDel(o.del) };
 }
@@ -2607,9 +2646,11 @@ function renderShop(){
   const items = shItems(shCat).slice().sort((a, b) => (b.purchaseDate || '').localeCompare(a.purchaseDate || '')), today = todayStr();
   $('sh-list').innerHTML = items.length ? items.map(i => {
     const profit = Shop.itemProfit(i), ben = [];
-    if (i.b1name || i.b1amount !== '') ben.push({ n: i.b1name, a: i.b1amount, d: i.b1date });
-    if (i.b2name || i.b2amount !== '') ben.push({ n: i.b2name, a: i.b2amount, d: i.b2date });
-    const benHtml = ben.map(b => { const due = b.d && b.d <= today; return '<div class="sh-benefit' + (due ? ' due' : '') + '">' + (due ? '🔔' : '🎁') + ' ' + (esc(b.n) || '혜택') + ' ' + won(b.a) + ' · 지급일 ' + esc(b.d || '-') + (due ? ' (도래)' : '') + '</div>'; }).join('');
+    if (i.b1name || i.b1amount !== '') ben.push({ n: i.b1name, a: i.b1amount, d: i.b1date, k: 'b1', done: Shop.isDone(i.b1done) });
+    if (i.b2name || i.b2amount !== '') ben.push({ n: i.b2name, a: i.b2amount, d: i.b2date, k: 'b2', done: Shop.isDone(i.b2done) });
+    const benHtml = ben.map(b => { const due = !b.done && b.d && b.d <= today;
+      return '<div class="sh-benefit' + (due ? ' due' : '') + (b.done ? ' done' : '') + '"><span class="bt">' + (b.done ? '✅' : (due ? '🔔' : '🎁')) + ' ' + (esc(b.n) || '혜택') + ' ' + won(b.a) + ' · ' + (b.done ? '받음 완료' : '지급일 ' + esc(b.d || '-') + (due ? ' (도래)' : '')) + '</span>' +
+        '<button type="button" class="sh-donebtn' + (b.done ? ' undo' : '') + '" data-sh="done" data-id="' + esc(i.id) + '" data-k="' + b.k + '">' + (b.done ? '되돌리기' : '받음 완료') + '</button></div>'; }).join('');
     const hasActual = i.actualPrice !== '' && !isNaN(i.actualPrice) && Number(i.actualPrice) !== Number(i.purchasePrice);
     return '<div class="sh-row" data-sh="edit" data-id="' + esc(i.id) + '" tabindex="0"><div><div class="sh-top"><span class="sh-name">' + (esc(i.item) || '(이름 없음)') + '</span>' +
       '<span class="sh-badge ' + (i.status === 'sold' ? 'sold' : '') + '">' + (i.status === 'sold' ? '판매완료' : '보유중') + '</span>' + (i.qty > 1 ? '<span class="sh-badge">수량 ' + i.qty + '</span>' : '') + '</div>' +
@@ -2618,7 +2659,7 @@ function renderShop(){
       '<div class="sh-right">' + (hasActual ? '<div class="sh-price strike">' + won(i.purchasePrice) + '</div><div class="sh-real">실구매 ' + won(i.actualPrice) + '</div>' : '<div class="sh-price">' + won(i.purchasePrice) + '</div>') +
       (profit !== null ? '<div class="sh-profit ' + (profit >= 0 ? 'pos' : 'neg') + '">' + (profit >= 0 ? '+' : '') + won(profit) + '</div>' : '') + '</div></div>';
   }).join('') : '<div class="empty">아직 등록된 품목이 없어요. 위의 “+ 항목 추가”로 등록해 보세요.</div>';
-  $('sh-notify').textContent = notifyOn ? '🔔 혜택 알림 켜짐' : '🔔 혜택 알림 꺼짐';
+  window.AppSettings.refresh();
   $('sh-note').textContent = 'CSV는 기존 대시보드와 같은 형식이에요. 기존 대시보드에서 내보낸 CSV를 “CSV 가져오기”로 넣으면 같은 품목은 갱신되고 새 품목은 추가돼요.';
   checkBenefits();
 }
@@ -2626,11 +2667,17 @@ function checkBenefits(){
   const due = Shop.dueBenefits(SH.items, todayStr()), b = $('sh-banner');
   if (!due.length) { b.hidden = true; b.innerHTML = ''; return; }
   b.hidden = false;
-  b.innerHTML = due.map(d => '<div class="it"><span class="tg">' + esc(Shop.CATS[d.cat]) + '</span><b>' + esc(d.item) + '</b> 혜택 지급일 도래 — ' + esc(d.name) + ' ' + won(d.amount) + ' (' + esc(d.date) + ')</div>').join('');
+  b.innerHTML = due.map(d => '<div class="it"><span class="tg">' + esc(Shop.CATS[d.cat]) + '</span><b>' + esc(d.item) + '</b> 혜택 지급일 도래 — ' + esc(d.name) + ' ' + won(d.amount) + ' (' + esc(d.date) + ')<button type="button" class="sh-donebtn" data-sh="done" data-id="' + esc(d.id) + '" data-k="' + d.k + '">받음 완료</button></div>').join('');
   if (notifyOn && 'Notification' in window && Notification.permission === 'granted') {
     due.forEach(d => { const k = 'notified:' + d.id + ':' + d.name + ':' + d.date; let seen = false; try { seen = sessionStorage.getItem(k); } catch (e) { /* 무시 */ }
       if (!seen) { try { new Notification('혜택 지급일 도착', { body: d.item + ' — ' + d.name + ' ' + won(d.amount) }); sessionStorage.setItem(k, '1'); } catch (e) { /* 무시 */ } } });
   }
+}
+function toggleBenefitDone(id, k){
+  if (k !== 'b1' && k !== 'b2') return;
+  const i = SH.items.find(x => x.id === id); if (!i) return;
+  const f = k + 'done', nv = !Shop.isDone(i[f]); i[f] = nv; i.u = nowIso();
+  sSave(); changed(); toast(nv ? '받음 완료로 표시했어요. 알림에서도 빠져요.' : '완료를 되돌렸어요.'); renderAll();
 }
 function toggleNotify(){
   if (!notifyOn) {
@@ -2649,6 +2696,7 @@ function openShop(id){
   $('sh-d-title').textContent = i ? '항목 수정' : Shop.CATS[shCat] + ' 항목 추가';
   if (i) $('sh-f-cat').value = i.cat;
   SF.forEach(f => { $('sh-f-' + f).value = i ? (i[f] == null ? '' : i[f]) : (f === 'qty' ? 1 : (f === 'status' ? 'hold' : '')); });
+  $('sh-f-b1done').checked = !!(i && Shop.isDone(i.b1done)); $('sh-f-b2done').checked = !!(i && Shop.isDone(i.b2done));
   // 실구매금액: 새 항목이거나 기존 값이 비었거나 자동 계산값과 같으면 '자동', 직접 입력해 둔 다른 값이면 '직접 입력'으로 시작(기존 값 보존)
   const ca = Shop.autoActual(i || {});
   $('sh-f-auto').checked = !i || i.actualPrice === '' || i.actualPrice == null || (ca.actual !== '' && Number(i.actualPrice) === ca.actual);
@@ -2675,6 +2723,7 @@ function saveShop(){
   ['purchasePrice', 'actualPrice', 'points', 'b1amount', 'b2amount', 'salePrice', 'penalty'].forEach(f => { d[f] = d[f] === '' ? '' : (isFinite(Number(d[f])) ? Number(d[f]) : ''); });
   if (!d.item) { toast('품목명을 입력해 주세요.'); return; }
   if ($('sh-f-auto').checked) { const ca = Shop.autoActual(d); if (ca.over) { toast('혜택·적립금 합계가 구매금액보다 커요.'); return; } d.actualPrice = ca.actual; }
+  d.b1done = $('sh-f-b1done').checked; d.b2done = $('sh-f-b2done').checked;
   d.cat = $('sh-f-cat').value; d.u = nowIso();
   if (shEditing) { const i = SH.items.find(x => x.id === shEditing); if (i) Object.assign(i, d); }
   else SH.items.push(Object.assign({ id: uid('sh') }, d));
@@ -2982,6 +3031,12 @@ function saveCfg(){
 
 
 /* ---------- 동기화 API(회의비 쪽 syncUp/syncDown이 호출) ---------- */
+/* 설정 서랍(공통 ⚙ 설정)에 들어 있는 탭별 설정값을 열 때마다 최신값으로 채움 */
+window.AppSettings = { refresh: function () {
+  $('sh-notify').textContent = notifyOn ? '🔔 혜택 알림 켜짐 (눌러서 끄기)' : '🔔 혜택 알림 꺼짐 (눌러서 켜기)';
+  $('sb-costmode').value = SB.cfg.costIsNet ? 'net' : 'gross';
+  $('pp-cfg-target').value = Q.cfg.target; Life.GROUPS.forEach((g, i) => { $('pp-cfg-' + i).value = Q.cfg.cycles[g]; });
+} };
 window.AppExtras = {
   keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people'],
   exportSync(){
@@ -3074,7 +3129,7 @@ $('gBar').addEventListener('click', e => {
   const a = el.dataset.g;
   if (a === 'shop' || a === 'meeting' || a === 'sub' || a === 'people') setMode(a); else if (a === 'backup') doBackup(); else if (a === 'settings') window.AppSync.openSettings();
 });
-$('gSettings').addEventListener('click', () => { if (window.AppSync) window.AppSync.openSettings(); });
+$('gSettings').addEventListener('click', () => { if (window.AppSync) window.AppSync.openDrawer(); });
 ['drawerClose', 'overlay'].forEach(id => { const el = $(id); if (el) el.addEventListener('click', () => setTimeout(renderGlobal, 80)); });
 const urlIn = $('sheetUrlInput'); if (urlIn) { urlIn.addEventListener('input', () => setTimeout(renderGlobal, 800)); urlIn.addEventListener('blur', () => setTimeout(renderGlobal, 80)); }
 const autoIn = $('autoBackupToggle'); if (autoIn) autoIn.addEventListener('change', () => setTimeout(renderGlobal, 80));
@@ -3105,6 +3160,14 @@ function renderAll(){
   syncNote(); renderGlobal();
 }
 
+/* ---------- 모든 입력 팝업: 우측 상단 ✕ 닫기 ---------- */
+document.querySelectorAll('dialog').forEach(d => {
+  if (d.querySelector('.dlg-x')) return;
+  const x = document.createElement('button');
+  x.type = 'button'; x.className = 'dlg-x'; x.setAttribute('aria-label', '닫기'); x.title = '닫기'; x.textContent = '✕';
+  x.addEventListener('click', () => d.close());
+  d.insertBefore(x, d.firstChild);
+});
 /* ---------- 이벤트 ---------- */
 document.querySelectorAll('.modebtn').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
 $('priceView').addEventListener('click', e => {
@@ -3126,12 +3189,13 @@ $('shopView').addEventListener('click', e => {
   const a = el.dataset.sh;
   if (a === 'cat') { shCat = el.dataset.cat; renderShop(); }
   else if (a === 'add') openShop(null);
+  else if (a === 'done') toggleBenefitDone(el.dataset.id, el.dataset.k);
   else if (a === 'edit') openShop(el.dataset.id);
-  else if (a === 'notify') toggleNotify();
   else if (a === 'csv-out') csvOut();
   else if (a === 'csv-in') $('sh-csv').click();
   else if (a === 'backup') doBackup();
 });
+$('sh-notify').addEventListener('click', toggleNotify);
 $('sh-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-sh]'); if (!el) return;
   if (el.dataset.sh === 'd-cancel') $('sh-dlg').close(); else if (el.dataset.sh === 'd-save') saveShop(); else if (el.dataset.sh === 'd-delete') delShop();
@@ -3150,6 +3214,9 @@ $('priceView').addEventListener('change', e => {
 });
 ['pc-name', 'pc-unit', 'pc-basis', 'pc-amount', 'pc-bonus', 'pc-paid', 'pc-points'].forEach(id => $(id).addEventListener('input', computeAnalyze));
 ['pc-e-amount', 'pc-e-bonus', 'pc-e-paid', 'pc-e-points'].forEach(id => $(id).addEventListener('input', updateEditPreview));
+$('pc-e-qty').addEventListener('change', updateEditPreview);
+$('pc-qty').addEventListener('change', computeAnalyze);
+fillQty('pc-qty', 1);
 $('pc-e-item').addEventListener('change', updateEditPreview);
 $('sh-csv').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) csvIn(f); });
 ['sh-f-purchasePrice', 'sh-f-b1amount', 'sh-f-b2amount', 'sh-f-points', 'sh-f-actualPrice'].forEach(id => $(id).addEventListener('input', shRecalc));
