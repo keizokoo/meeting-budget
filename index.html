@@ -437,6 +437,10 @@
   .sz-tbl{ border-collapse:collapse; width:100%; font-size:13px; white-space:nowrap; } .sz-tbl th, .sz-tbl td{ padding:8px 10px; border-bottom:1px solid var(--line); text-align:right; } .sz-tbl th{ font-size:11px; color:var(--ink2); font-weight:800; } .sz-tbl tr:last-child td{ border-bottom:none; }
   .sz-tbl td:first-child, .sz-tbl th:first-child{ text-align:left; position:sticky; left:0; background:var(--surface); } .sz-tbl tbody tr{ cursor:pointer; } .sz-tbl tbody tr:hover td{ background:var(--pc-soft); }
   .sz-common{ font-size:10px; font-weight:800; border:1px solid var(--accent); color:var(--accent); border-radius:999px; padding:0 6px; margin-left:4px; } .sz-sz{ color:var(--ink2); margin-left:4px; } .sz-note{ display:block; font-size:11px; color:var(--ink3); white-space:normal; max-width:180px; }
+  .pp-club{ font-size:10.5px; font-weight:800; border:1px solid var(--ink3); color:var(--ink2); border-radius:999px; padding:0 7px; margin-left:4px; }
+  .gp-row{ display:flex; align-items:center; gap:6px; margin:0 0 8px; } .gp-row input[type=text]{ flex:1; min-width:0; } .gp-row input[type=number]{ width:64px; flex:none; } .gp-d{ font-size:12px; color:var(--ink2); } .gp-n{ font-size:11px; color:var(--ink3); width:44px; text-align:right; flex:none; } .gp-x{ background:none; border:none; font-size:16px; color:var(--ink3); cursor:pointer; }
+  #gp-dlg input, #cl-dlg input[type=text]{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:9px 10px; min-height:40px; }
+  #cl-f-people label{ display:flex; align-items:center; gap:8px; padding:6px 0; font-size:14px; color:var(--ink); } #cl-f-people input{ width:auto; min-height:0; } #cl-f-people .gname{ font-size:11px; font-weight:700; color:var(--ink2); margin-top:8px; } #pp-f-clubs input, #mt-f-clubs input{ width:auto; min-height:0; }
   .sh-row:hover{ background:var(--pc-soft); }
   .sh-top{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
   .sh-name{ font-weight:700; font-size:14px; }
@@ -799,14 +803,23 @@
   <div class="pc-tabs">
     <button class="on" data-pp="tab" data-t="today">오늘</button>
     <button data-pp="tab" data-t="list">사람</button>
+    <button data-pp="tab" data-t="clubs">모임</button>
     <button data-pp="tab" data-t="log">이력</button>
   </div>
   <section class="pc-sec on" id="pp-today"><div id="pp-today-body"></div></section>
   <section class="pc-sec" id="pp-list">
     <div class="pc-card">
-      <div class="pc-headrow"><h3>사람</h3><button class="pc-btn small primary" data-pp="add-person">+ 사람 추가</button></div>
+      <div class="pc-headrow"><h3>사람</h3><span class="sh-hbtns"><button class="pc-btn small" data-pp="groups">⚙ 그룹 관리</button><button class="pc-btn small primary" data-pp="add-person">+ 사람 추가</button></span></div>
       <div id="pp-filter" class="pc-chips"></div>
+      <div id="pp-cfilter" class="pc-chips"></div>
       <div id="pp-people"></div>
+    </div>
+  </section>
+  <section class="pc-sec" id="pp-clubs">
+    <div class="pc-card">
+      <div class="pc-headrow"><h3>모임</h3><button class="pc-btn small primary" data-pp="add-club">+ 모임 만들기</button></div>
+      <p class="pc-hint" style="margin-top:0">모임 이름으로 사람들을 묶어 두면 사람 목록에서 모임별로 볼 수 있고, 만남 기록 때 한 번에 선택할 수 있어요.</p>
+      <div id="pp-clubs-body"></div>
     </div>
   </section>
   <section class="pc-sec" id="pp-log">
@@ -942,15 +955,35 @@
     <label class="pc-f">목표 주기(일, 비우면 그룹 기본)<input id="pp-f-cycle" type="number" min="1" max="365" inputmode="numeric"></label>
   </div>
   <div class="pc-f">자주 하는 방식<div id="pp-f-prefs" class="pc-chips" style="margin:2px 0 0"></div></div>
+  <div class="pc-f" id="pp-f-clubs-wrap">소속 모임<div id="pp-f-clubs" class="pc-chips" style="margin:2px 0 0"></div></div>
   <label class="pc-f">메모(선택)<input id="pp-f-memo" type="text"></label>
   <label class="pc-f">등록일(만난 적 없을 때 기준)<input id="pp-f-since" type="date"></label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-pp="p-cancel">취소</button><button class="pc-btn primary" data-pp="p-save">저장</button></div>
   <button id="pp-d-delete" class="pc-btn danger wide" data-pp="p-delete">이 사람 삭제</button>
 </dialog>
 
+<dialog id="gp-dlg">
+  <h3>그룹 관리</h3>
+  <p class="pc-hint" style="margin-top:0">그룹 이름을 바꾸거나 추가·삭제하고, 그룹별 기본 연락 주기(일)를 정해요. 삭제한 그룹의 사람은 맨 위 그룹으로 옮겨져요.</p>
+  <div id="gp-rows"></div>
+  <button type="button" class="pc-btn wide" data-pp="g-add" style="margin-top:8px">+ 그룹 추가</button>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-pp="g-cancel">취소</button><button class="pc-btn primary" data-pp="g-save">저장</button></div>
+</dialog>
+
+<dialog id="cl-dlg">
+  <h3 id="cl-d-title">모임 만들기</h3>
+  <label class="pc-f">모임 이름<input id="cl-f-name" type="text" placeholder="예: 79모임"></label>
+  <div class="pc-f">인원 선택<div id="cl-f-people"></div></div>
+  <label class="pc-f">새 사람 바로 추가(이름을 쉼표로 구분, 이미 있는 이름은 그대로 연결)<input id="cl-f-new" type="text" placeholder="예: 이종학, 이정훈"></label>
+  <label class="pc-f">새 사람의 그룹<select id="cl-f-newgroup"></select></label>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-pp="c-cancel">취소</button><button class="pc-btn primary" data-pp="c-save">저장</button></div>
+  <button id="cl-d-delete" class="pc-btn danger wide" data-pp="c-delete">이 모임 삭제 (사람은 그대로 남아요)</button>
+</dialog>
+
 <dialog id="mt-dlg">
   <h3 id="mt-d-title">만남 기록</h3>
   <label class="pc-f">날짜<input id="mt-f-date" type="date"></label>
+  <div class="pc-f" id="mt-f-clubs-wrap">모임으로 한 번에 선택<div id="mt-f-clubs" class="pc-chips" style="margin:2px 0 6px"></div></div>
   <div class="pc-f">함께한 사람<div id="mt-f-people"></div></div>
   <div class="pc-row2">
     <label class="pc-f">방식<select id="mt-f-type"></select></label>
@@ -1016,7 +1049,11 @@
     <label class="pc-f">정가(원, 할인 전 가격)<input id="sh-f-listPrice" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
   <label class="pc-f">구매금액(원, 실제 결제한 금액)<input id="sh-f-purchasePrice" type="number" inputmode="numeric" min="0" step="any"></label>
-  <label class="pc-f">적립금(원, 쓰거나 받은 적립·포인트 — 실구매금액에서 빠져요)<input id="sh-f-points" type="number" inputmode="numeric" min="0" step="any"></label>
+  <div class="pc-row2">
+    <label class="pc-f">적립금1(원)<input id="sh-f-points" type="number" inputmode="numeric" min="0" step="any"></label>
+    <label class="pc-f">적립금2(원)<input id="sh-f-points2" type="number" inputmode="numeric" min="0" step="any"></label>
+  </div>
+  <p class="pc-hint" style="margin:-4px 0 6px">쓰거나 받은 적립·포인트예요. 두 칸의 합계가 실구매금액에서 빠져요.</p>
   <label class="pc-f">실구매금액(원)<input id="sh-f-actualPrice" type="number" inputmode="numeric" min="0" step="any"></label>
   <div class="sh-autobox">
     <label><input type="checkbox" id="sh-f-auto"> 구매금액 − 혜택 − 적립금으로 자동 계산</label>
@@ -1131,12 +1168,9 @@
     </div>
     <div class="dsec">인맥</div>
     <div class="block">
-      <h4>만남 목표 · 기본 주기</h4>
+      <h4>이번 달 만남 목표</h4>
       <div class="fieldrow"><label for="pp-cfg-target">이번 달 만남 목표(회)</label><input id="pp-cfg-target" type="number" min="0" max="60" step="1" inputmode="numeric"></div>
-      <div class="fieldrow"><label for="pp-cfg-0">친구 기본 주기(일)</label><input id="pp-cfg-0" type="number" min="1" max="365" inputmode="numeric"></div>
-      <div class="fieldrow"><label for="pp-cfg-1">지인 기본 주기(일)</label><input id="pp-cfg-1" type="number" min="1" max="365" inputmode="numeric"></div>
-      <div class="fieldrow"><label for="pp-cfg-2">동료 기본 주기(일)</label><input id="pp-cfg-2" type="number" min="1" max="365" inputmode="numeric"></div>
-      <div class="fieldrow"><label for="pp-cfg-3">유관부서 기본 주기(일)</label><input id="pp-cfg-3" type="number" min="1" max="365" inputmode="numeric"></div>
+      <p class="note">그룹 이름과 그룹별 기본 연락 주기는 인맥 → 사람 탭의 “⚙ 그룹 관리”에서 바꿔요.</p>
     </div>
   </div>
 </div>
@@ -2382,7 +2416,7 @@ const Life = (() => {
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-18-e (회의비 · 가격 · 쇼핑 · 구독 · 인맥 · 피부)';
+const APP_BUILD_VERSION = '2026-10-18-f (회의비 · 가격 · 쇼핑 · 구독 · 인맥 · 피부)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -2738,7 +2772,8 @@ function sNormalize(o){
   o = o && typeof o === 'object' ? o : {};
   const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && i.item && Shop.CATS[i.cat]).map(i => {
     const b = Object.assign({ store: '', qty: 1, purchaseDate: '', purchasePrice: '', actualPrice: '', points: '', b1name: '', b1amount: '', b1date: '', b2name: '', b2amount: '', b2date: '', b1done: false, b2done: false, listPrice: '', photo: '', status: 'hold', saleDate: '', salePrice: '', penalty: '', u: '' }, i);
-    b.status = b.status === 'sold' ? 'sold' : 'hold'; b.id = String(b.id); b.u = String(b.u || ''); b.qty = Number(b.qty) || 1; b.b1done = Shop.isDone(b.b1done); b.b2done = Shop.isDone(b.b2done); b.photo = typeof b.photo === 'string' && b.photo.indexOf('data:image/') === 0 ? b.photo : ''; return b;
+    b.status = b.status === 'sold' ? 'sold' : 'hold'; b.id = String(b.id); b.u = String(b.u || ''); b.qty = Number(b.qty) || 1; b.b1done = Shop.isDone(b.b1done); b.b2done = Shop.isDone(b.b2done); { const a = Number(b.p1) || 0, c = Number(b.p2) || 0, tot = Number(b.points) || 0; if (b.p1 === undefined || a + c !== tot) { b.p1 = tot; b.p2 = 0; } else { b.p1 = a; b.p2 = c; } }
+    b.photo = typeof b.photo === 'string' && b.photo.indexOf('data:image/') === 0 ? b.photo : ''; return b;
   });
   return { items, del: cleanDel(o.del) };
 }
@@ -2841,6 +2876,7 @@ function openShop(id){
   $('sh-d-title').textContent = i ? '항목 수정' : Shop.CATS[shCat] + ' 항목 추가';
   if (i) $('sh-f-cat').value = i.cat;
   SF.forEach(f => { $('sh-f-' + f).value = i ? (i[f] == null ? '' : i[f]) : (f === 'qty' ? 1 : (f === 'status' ? 'hold' : '')); });
+  { const p1 = i ? (i.p1 != null ? i.p1 : i.points) : '', p2 = i ? i.p2 : ''; $('sh-f-points').value = p1 == null ? '' : p1; $('sh-f-points2').value = p2 ? p2 : ''; }
   shPhoto = i ? (i.photo || '') : ''; shPhotoUI();
   $('sh-f-b1done').checked = !!(i && Shop.isDone(i.b1done)); $('sh-f-b2done').checked = !!(i && Shop.isDone(i.b2done));
   // 실구매금액: 새 항목이거나 기존 값이 비었거나 자동 계산값과 같으면 '자동', 직접 입력해 둔 다른 값이면 '직접 입력'으로 시작(기존 값 보존)
@@ -2850,7 +2886,7 @@ function openShop(id){
   $('sh-d-delete').hidden = !i; $('sh-dlg').showModal();
 }
 // 구매금액·혜택·적립금을 바꿀 때마다 실구매금액을 바로 계산(가격 체크의 적립금감안 계산과 같은 방식)
-function shFormItem(){ const n = id => { const v = $(id).value; return v === '' ? '' : Number(v); }; return { listPrice: n('sh-f-listPrice'), purchasePrice: n('sh-f-purchasePrice'), b1amount: n('sh-f-b1amount'), b2amount: n('sh-f-b2amount'), points: n('sh-f-points') }; }
+function shFormItem(){ const n = id => { const v = $(id).value; return v === '' ? '' : Number(v); }; return { listPrice: n('sh-f-listPrice'), purchasePrice: n('sh-f-purchasePrice'), b1amount: n('sh-f-b1amount'), b2amount: n('sh-f-b2amount'), points: (n('sh-f-points') || 0) + (n('sh-f-points2') || 0) || '' }; }
 function shRecalc(){
   const f = shFormItem(), ca = Shop.autoActual(f), auto = $('sh-f-auto').checked, box = $('sh-f-calc'), act = $('sh-f-actualPrice');
   act.readOnly = auto;
@@ -2871,6 +2907,7 @@ function saveShop(){
   const d = {}; SF.forEach(f => { d[f] = $('sh-f-' + f).value; });
   d.item = d.item.trim(); d.store = d.store.trim(); d.b1name = d.b1name.trim(); d.b2name = d.b2name.trim(); d.qty = Number(d.qty) || 1;
   ['listPrice', 'purchasePrice', 'actualPrice', 'points', 'b1amount', 'b2amount', 'salePrice', 'penalty'].forEach(f => { d[f] = d[f] === '' ? '' : (isFinite(Number(d[f])) ? Number(d[f]) : ''); });
+  { const q1 = d.points === '' ? 0 : d.points, q2 = $('sh-f-points2').value === '' ? 0 : Number($('sh-f-points2').value) || 0; d.p1 = q1; d.p2 = q2; d.points = q1 + q2 > 0 ? q1 + q2 : ''; }
   if (!d.item) { toast('품목명을 입력해 주세요.'); return; }
   if ($('sh-f-auto').checked) { const ca = Shop.autoActual(d); if (ca.over) { toast('혜택·적립금 합계가 구매금액보다 커요.'); return; } d.actualPrice = ca.actual; }
   d.photo = shPhoto;
@@ -3102,17 +3139,23 @@ function togglePay(id){
 function shiftMonth(n){ const a = sbMonth.split('-').map(Number), d = new Date(Date.UTC(a[0], a[1] - 1 + n, 1)); sbMonth = d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0'); renderSub(); }
 
 /* ---------- 인맥 ---------- */
-const PEOPLE_SEED = { people: [], meets: [], cfg: { target: 4, cycles: Object.assign({}, Life.DEFAULT_CFG.cycles), u: SEED_U }, del: {} };
+const PEOPLE_SEED = { people: [], meets: [], clubs: [], cfg: { target: 4, groups: Life.GROUPS.slice(), cycles: Object.assign({}, Life.DEFAULT_CFG.cycles), u: SEED_U }, del: {} };
 const ENERGY = { charge: '충전', normal: '보통', drain: '방전' };
 function qNorm(o){
   o = o && typeof o === 'object' ? o : {};
-  const people = (Array.isArray(o.people) ? o.people : []).filter(p => p && p.id && p.name && Life.GROUPS.indexOf(p.group) >= 0).map(p => ({ id: String(p.id), name: String(p.name), group: p.group, cycle: Number(p.cycle) > 0 ? Number(p.cycle) : '', prefs: (Array.isArray(p.prefs) ? p.prefs : []).filter(x => Life.TYPES.indexOf(x) >= 0), memo: String(p.memo || ''), since: Calc.validDate(p.since) || '', u: String(p.u || '') }));
+  const c = o.cfg || {};
+  let groups = (Array.isArray(c.groups) ? c.groups : []).map(g => String(g == null ? '' : g).trim()).filter(Boolean); groups = groups.filter((g, i) => groups.indexOf(g) === i);
+  if (!groups.length) groups = Life.GROUPS.slice();
+  const people = (Array.isArray(o.people) ? o.people : []).filter(p => p && p.id && p.name).map(p => { const g = String(p.group == null ? '' : p.group).trim() || groups[0]; if (groups.indexOf(g) < 0) groups.push(g);
+    return { id: String(p.id), name: String(p.name), group: g, cycle: Number(p.cycle) > 0 ? Number(p.cycle) : '', prefs: (Array.isArray(p.prefs) ? p.prefs : []).filter(x => Life.TYPES.indexOf(x) >= 0), memo: String(p.memo || ''), since: Calc.validDate(p.since) || '', u: String(p.u || '') }; });
   const meets = (Array.isArray(o.meets) ? o.meets : []).filter(m => m && m.id && Calc.validDate(m.date)).map(m => ({ id: String(m.id), date: m.date, pids: (Array.isArray(m.pids) ? m.pids : []).map(String), type: Life.TYPES.indexOf(m.type) >= 0 ? m.type : '기타', memo: String(m.memo || ''), energy: ENERGY[m.energy] ? m.energy : '', u: String(m.u || '') }));
-  const c = o.cfg || {}, cy = {}; Life.GROUPS.forEach(g => { cy[g] = Number(c.cycles && c.cycles[g]) > 0 ? Number(c.cycles[g]) : Life.DEFAULT_CFG.cycles[g]; });
-  return { people, meets, cfg: { target: Number(c.target) >= 0 && c.target !== '' && c.target != null ? Math.round(Number(c.target)) : 4, cycles: cy, u: String(c.u || '') }, del: cleanDel(o.del) };
+  const clubs = (Array.isArray(o.clubs) ? o.clubs : []).filter(x => x && x.id && String(x.name || '').trim()).map(x => { const ps = (Array.isArray(x.pids) ? x.pids : []).map(String); return { id: String(x.id), name: String(x.name).trim(), pids: ps.filter((v, i) => ps.indexOf(v) === i), u: String(x.u || '') }; });
+  const cy = {}; groups.forEach(g => { cy[g] = Number(c.cycles && c.cycles[g]) > 0 ? Number(c.cycles[g]) : (Life.DEFAULT_CFG.cycles[g] || 30); });
+  return { people, meets, clubs, cfg: { target: Number(c.target) >= 0 && c.target !== '' && c.target != null ? Math.round(Number(c.target)) : 4, groups, cycles: cy, u: String(c.u || '') }, del: cleanDel(o.del) };
 }
-let Q = loadK(PEOPLE_KEY, PEOPLE_SEED, qNorm), ppTab = 'today', ppFilter = 'all', ppEditing = null, mtEditing = null;
+let Q = loadK(PEOPLE_KEY, PEOPLE_SEED, qNorm), ppTab = 'today', ppFilter = 'all', ppClub = 'all', gpDraft = [], clEditing = null, ppEditing = null, mtEditing = null;
 function qSave(){ saveK(PEOPLE_KEY, Q); }
+const clubTags = id => Q.clubs.filter(c => c.pids.indexOf(id) >= 0).map(c => '<span class="pp-club">' + esc(c.name) + '</span>').join('');
 const personById = id => Q.people.find(p => p.id === id) || null;
 const stLabel = { ok: '여유', soon: '임박', over: '지남' };
 function ago(s){ return s.last ? '마지막 만남 ' + (s.since === 0 ? '오늘' : s.since + '일 전') : '아직 만난 적 없음(등록 ' + s.since + '일째)'; }
@@ -3129,10 +3172,21 @@ function renderPeople(){
     if (ts.total) h += '<div class="pc-card"><h3>최근 90일 방식별</h3>' + Life.TYPES.filter(k => ts.counts[k]).map(k => '<div class="pp-bar"><span>' + k + '</span><i style="width:' + Math.round(ts.counts[k] / ts.total * 100) * 1.6 + 'px"></i><em>' + ts.counts[k] + '회</em></div>').join('') + (en.charge + en.normal + en.drain ? '<p class="pc-hint">만난 뒤 에너지: 충전 ' + en.charge + ' · 보통 ' + en.normal + ' · 방전 ' + en.drain + '</p>' : '') + '</div>';
     $('pp-today-body').innerHTML = h;
   } else if (ppTab === 'list') {
-    $('pp-filter').innerHTML = ['all'].concat(Life.GROUPS).map(g => '<button class="pc-chip' + (g === ppFilter ? ' on' : '') + '" data-pp="filter" data-g="' + g + '">' + (g === 'all' ? '전체' : g) + '</button>').join('');
-    const list = Q.people.filter(p => ppFilter === 'all' || p.group === ppFilter).map(p => Object.assign({ p }, Life.status(p, Q.meets, cfg, t))).sort((a, b) => b.ratio - a.ratio);
-    $('pp-people').innerHTML = list.length ? list.map(x => { const avg = Life.avgInterval(x.p, Q.meets); return '<div class="pp-row" data-pp="edit-person" data-id="' + esc(x.p.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(x.p.name) + '<span class="pp-tag">' + esc(x.p.group) + '</span></div><div class="pp-meta">' + esc(ago(x)) + ' · 주기 ' + x.cycle + '일' + (avg ? ' · 실제 평균 ' + Math.round(avg) + '일' : '') + (x.p.prefs.length ? ' · ' + esc(x.p.prefs.join('/')) : '') + '</div>' + (avg && avg > x.cycle * 1.3 ? '<div class="pp-warn">실제 평균 간격이 목표보다 길어요. 주기를 ' + Math.round(avg / 5) * 5 + '일쯤으로 늘려 볼까요?</div>' : '') + '</div><span class="pp-st ' + x.state + '">' + stLabel[x.state] + '</span><button class="pc-btn small" data-pp="quick" data-id="' + esc(x.p.id) + '">만났어요</button></div>'; }).join('') : '<p class="pc-hint">아직 등록된 사람이 없어요. “+ 사람 추가”로 시작해 보세요.</p>';
-    $('pp-cfg-target').value = cfg.target; Life.GROUPS.forEach((g, i) => { $('pp-cfg-' + i).value = cfg.cycles[g]; });
+    if (ppFilter !== 'all' && cfg.groups.indexOf(ppFilter) < 0) ppFilter = 'all';
+    if (ppClub !== 'all' && !Q.clubs.some(c => c.id === ppClub)) ppClub = 'all';
+    $('pp-cfilter').innerHTML = Q.clubs.length ? ['all'].concat(Q.clubs.map(c => c.id)).map(id => '<button class="pc-chip' + (id === ppClub ? ' on' : '') + '" data-pp="cfilter" data-id="' + esc(id) + '">' + (id === 'all' ? '모임 전체' : '👥 ' + esc(Q.clubs.find(c => c.id === id).name)) + '</button>').join('') : '';
+    $('pp-filter').innerHTML = ['all'].concat(cfg.groups).map(g => '<button class="pc-chip' + (g === ppFilter ? ' on' : '') + '" data-pp="filter" data-g="' + g + '">' + (g === 'all' ? '전체' : g) + '</button>').join('');
+    const cm = ppClub === 'all' ? null : (Q.clubs.find(c => c.id === ppClub) || { pids: [] }).pids;
+    const list = Q.people.filter(p => (ppFilter === 'all' || p.group === ppFilter) && (!cm || cm.indexOf(p.id) >= 0)).map(p => Object.assign({ p }, Life.status(p, Q.meets, cfg, t))).sort((a, b) => b.ratio - a.ratio);
+    $('pp-people').innerHTML = list.length ? list.map(x => { const avg = Life.avgInterval(x.p, Q.meets); return '<div class="pp-row" data-pp="edit-person" data-id="' + esc(x.p.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(x.p.name) + '<span class="pp-tag">' + esc(x.p.group) + '</span>' + clubTags(x.p.id) + '</div><div class="pp-meta">' + esc(ago(x)) + ' · 주기 ' + x.cycle + '일' + (avg ? ' · 실제 평균 ' + Math.round(avg) + '일' : '') + (x.p.prefs.length ? ' · ' + esc(x.p.prefs.join('/')) : '') + '</div>' + (avg && avg > x.cycle * 1.3 ? '<div class="pp-warn">실제 평균 간격이 목표보다 길어요. 주기를 ' + Math.round(avg / 5) * 5 + '일쯤으로 늘려 볼까요?</div>' : '') + '</div><span class="pp-st ' + x.state + '">' + stLabel[x.state] + '</span><button class="pc-btn small" data-pp="quick" data-id="' + esc(x.p.id) + '">만났어요</button></div>'; }).join('') : '<p class="pc-hint">아직 등록된 사람이 없어요. “+ 사람 추가”로 시작해 보세요.</p>';
+  } else if (ppTab === 'clubs') {
+    $('pp-clubs-body').innerHTML = Q.clubs.length ? Q.clubs.map(c => {
+      const mem = c.pids.map(personById).filter(Boolean), need = Math.min(2, mem.length), ms = Q.meets.filter(m => m.pids.filter(id => c.pids.indexOf(id) >= 0).length >= need && need > 0), last = ms.reduce((a, m) => m.date > a ? m.date : a, ''), yr = t.slice(0, 4);
+      return '<div class="pp-row" data-pp="edit-club" data-id="' + esc(c.id) + '" tabindex="0" style="align-items:flex-start"><div class="pp-info"><div class="pp-name">👥 ' + esc(c.name) + '<span class="pp-tag">' + mem.length + '명</span></div>' +
+        '<div class="pp-meta">' + (mem.length ? mem.map(p => esc(p.name)).join(' · ') : '아직 인원이 없어요') + '</div>' +
+        '<div class="pp-meta">' + (last ? '마지막 모임 ' + (Life.dd(last, t) === 0 ? '오늘' : Life.dd(last, t) + '일 전') + ' · 올해 ' + ms.filter(m => m.date.slice(0, 4) === yr).length + '회' : '아직 함께 만난 기록이 없어요') + '</div></div>' +
+        '<button class="pc-btn small" data-pp="club-meet" data-id="' + esc(c.id) + '"' + (mem.length ? '' : ' disabled') + '>모임 기록</button></div>';
+    }).join('') : '<p class="pc-hint">아직 모임이 없어요. “+ 모임 만들기”에서 모임 이름과 인원을 정해 보세요.</p>';
   } else {
     const ms = Q.meets.slice().sort((a, b) => a.date < b.date ? 1 : (a.date > b.date ? -1 : 0));
     $('pp-meets').innerHTML = ms.length ? ms.map(m => '<div class="pp-row" data-pp="edit-meet" data-id="' + esc(m.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(m.date.slice(5).replace('-', '/')) + ' · ' + esc(m.type) + '<span class="pp-tag">' + esc(m.pids.map(id => (personById(id) || { name: '(삭제된 사람)' }).name).join(', ')) + '</span></div>' + (m.memo || m.energy ? '<div class="pp-meta">' + esc(m.memo) + (m.energy ? (m.memo ? ' · ' : '') + '에너지 ' + ENERGY[m.energy] : '') + '</div>' : '') + '</div></div>').join('') : '<p class="pc-hint">아직 만남 기록이 없어요. “+ 만남 기록”이나 사람 카드의 “만났어요”를 눌러 보세요.</p>';
@@ -3142,7 +3196,8 @@ function openPerson(id){
   const p = id ? personById(id) : null; if (id && !p) return;
   ppEditing = id || null;
   $('pp-d-title').textContent = p ? '사람 수정' : '사람 추가';
-  fillSelect($('pp-f-group'), Life.GROUPS.map(g => ({ v: g, t: g })), p ? p.group : (ppFilter !== 'all' ? ppFilter : '친구'));
+  fillSelect($('pp-f-group'), Q.cfg.groups.map(g => ({ v: g, t: g })), p ? p.group : (ppFilter !== 'all' ? ppFilter : Q.cfg.groups[0]));
+  $('pp-f-clubs').innerHTML = Q.clubs.map(c => '<label class="pc-chip"><input type="checkbox" value="' + esc(c.id) + '"' + (p && c.pids.indexOf(p.id) >= 0 ? ' checked' : (!p && ppClub === c.id ? ' checked' : '')) + '>' + esc(c.name) + '</label>').join(''); $('pp-f-clubs-wrap').hidden = !Q.clubs.length;
   $('pp-f-name').value = p ? p.name : ''; $('pp-f-cycle').value = p && p.cycle ? p.cycle : ''; $('pp-f-memo').value = p ? p.memo : ''; $('pp-f-since').value = p && p.since ? p.since : todayStr();
   $('pp-f-prefs').innerHTML = Life.TYPES.map(k => '<label class="pc-chip"><input type="checkbox" value="' + k + '"' + (p && p.prefs.indexOf(k) >= 0 ? ' checked' : '') + '>' + k + '</label>').join('');
   $('pp-d-delete').hidden = !p; $('pp-dlg').showModal();
@@ -3151,7 +3206,9 @@ function savePerson(){
   const name = $('pp-f-name').value.trim(); if (!name) { toast('이름을 입력해 주세요.'); return; }
   const prefs = [...$('pp-f-prefs').querySelectorAll('input:checked')].map(x => x.value), cyc = Number($('pp-f-cycle').value);
   const d = { name, group: $('pp-f-group').value, cycle: cyc > 0 ? cyc : '', prefs, memo: $('pp-f-memo').value.trim(), since: Calc.validDate($('pp-f-since').value) || todayStr(), u: nowIso() };
-  if (ppEditing) Object.assign(personById(ppEditing), d); else Q.people.push(Object.assign({ id: uid('pp') }, d));
+  let pid = ppEditing; if (ppEditing) Object.assign(personById(ppEditing), d); else { pid = uid('pp'); Q.people.push(Object.assign({ id: pid }, d)); }
+  { const pick = [...$('pp-f-clubs').querySelectorAll('input:checked')].map(x => x.value), tt = nowIso();
+    Q.clubs.forEach(c => { const has = c.pids.indexOf(pid) >= 0, want = pick.indexOf(c.id) >= 0; if (has && !want) { c.pids = c.pids.filter(x => x !== pid); c.u = tt; } else if (!has && want) { c.pids.push(pid); c.u = tt; } }); }
   qSave(); changed(); $('pp-dlg').close(); toast('저장했어요.'); renderAll();
 }
 function delPerson(){
@@ -3159,16 +3216,18 @@ function delPerson(){
   const t = nowIso();
   Q.meets.forEach(m => { if (m.pids.indexOf(p.id) >= 0) { m.pids = m.pids.filter(x => x !== p.id); m.u = t; } });
   Q.meets.filter(m => !m.pids.length).forEach(m => { Q.del[m.id] = t; }); Q.meets = Q.meets.filter(m => m.pids.length);
+  Q.clubs.forEach(c => { if (c.pids.indexOf(p.id) >= 0) { c.pids = c.pids.filter(x => x !== p.id); c.u = t; } });
   Q.people = Q.people.filter(x => x.id !== p.id); Q.del[p.id] = t; qSave(); changed(); $('pp-dlg').close(); renderAll();
 }
-function openMeet(id, presetPid){
+function openMeet(id, presetPid, presetPids){
   if (!Q.people.length) { toast('먼저 “사람” 탭에서 사람을 등록해 주세요.'); return; }
   const m = id ? Q.meets.find(x => x.id === id) : null; if (id && !m) return;
   mtEditing = id || null;
   $('mt-d-title').textContent = m ? '만남 기록 수정' : '만남 기록';
   $('mt-f-date').value = m ? m.date : todayStr();
-  const sel = m ? m.pids : (presetPid ? [presetPid] : []);
-  $('mt-f-people').innerHTML = Life.GROUPS.map(g => { const ps = Q.people.filter(p => p.group === g); return ps.length ? '<div class="gname">' + g + '</div>' + ps.map(p => '<label><input type="checkbox" value="' + esc(p.id) + '"' + (sel.indexOf(p.id) >= 0 ? ' checked' : '') + '>' + esc(p.name) + '</label>').join('') : ''; }).join('');
+  const sel = m ? m.pids : (presetPids ? presetPids : (presetPid ? [presetPid] : []));
+  $('mt-f-clubs').innerHTML = Q.clubs.filter(c => c.pids.some(id => personById(id))).map(c => '<button type="button" class="pc-chip" data-pp="m-club" data-id="' + esc(c.id) + '">👥 ' + esc(c.name) + '</button>').join(''); $('mt-f-clubs-wrap').hidden = !$('mt-f-clubs').children.length;
+  $('mt-f-people').innerHTML = Q.cfg.groups.map(g => { const ps = Q.people.filter(p => p.group === g); return ps.length ? '<div class="gname">' + g + '</div>' + ps.map(p => '<label><input type="checkbox" value="' + esc(p.id) + '"' + (sel.indexOf(p.id) >= 0 ? ' checked' : '') + '>' + esc(p.name) + '</label>').join('') : ''; }).join('');
   fillSelect($('mt-f-type'), Life.TYPES.map(k => ({ v: k, t: k })), m ? m.type : ((presetPid && personById(presetPid) && personById(presetPid).prefs[0]) || '커피'));
   $('mt-f-energy').value = m ? m.energy : ''; $('mt-f-memo').value = m ? m.memo : ''; $('mt-d-delete').hidden = !m; $('mt-dlg').showModal();
 }
@@ -3181,9 +3240,66 @@ function saveMeet(){
   qSave(); changed(); $('mt-dlg').close(); toast('저장했어요.'); renderAll();
 }
 function delMeet(){ if (!mtEditing || !confirm('이 만남 기록을 삭제할까요?')) return; Q.meets = Q.meets.filter(m => m.id !== mtEditing); Q.del[mtEditing] = nowIso(); qSave(); changed(); $('mt-dlg').close(); renderAll(); }
+/* ---- 그룹 관리 ---- */
+function gpRender(){
+  $('gp-rows').innerHTML = gpDraft.map((r, i) => '<div class="gp-row"><input type="text" data-gi="' + i + '" data-k="name" value="' + esc(r.name) + '" placeholder="그룹 이름" aria-label="그룹 이름"><input type="number" data-gi="' + i + '" data-k="cycle" min="1" max="365" inputmode="numeric" value="' + esc(r.cycle) + '" aria-label="기본 주기(일)"><span class="gp-d">일</span>' +
+    '<span class="gp-n">' + (r.orig ? Q.people.filter(p => p.group === r.orig).length + '명' : '새 그룹') + '</span><button type="button" class="gp-x" data-pp="g-del" data-i="' + i + '" aria-label="그룹 삭제">✕</button></div>').join('');
+}
+function openGroups(){ gpDraft = Q.cfg.groups.map(g => ({ orig: g, name: g, cycle: Q.cfg.cycles[g] || 30 })); gpRender(); $('gp-dlg').showModal(); }
+function saveGroups(){
+  const names = gpDraft.map(r => r.name.trim());
+  if (!names.length || names.some(n => !n)) { toast('그룹 이름을 모두 입력해 주세요. (그룹은 1개 이상 필요해요)'); return; }
+  if (names.some((n, i) => names.indexOf(n) !== i)) { toast('같은 이름의 그룹이 있어요.'); return; }
+  const keep = {}; gpDraft.forEach(r => { if (r.orig) keep[r.orig] = true; });
+  const gone = Q.cfg.groups.filter(g => !keep[g]), moving = Q.people.filter(p => gone.indexOf(p.group) >= 0);
+  if (moving.length && !confirm('삭제하는 그룹의 ' + moving.length + '명은 “' + names[0] + '” 그룹으로 옮겨져요. 계속할까요?')) return;
+  const t = nowIso(), ren = {}; gpDraft.forEach((r, i) => { if (r.orig && r.orig !== names[i]) ren[r.orig] = names[i]; });
+  Q.people.forEach(p => { if (ren[p.group]) { p.group = ren[p.group]; p.u = t; } else if (gone.indexOf(p.group) >= 0) { p.group = names[0]; p.u = t; } });
+  const cy = {}; gpDraft.forEach((r, i) => { const v = Math.round(Number(r.cycle)); cy[names[i]] = v > 0 ? Math.min(365, v) : 30; });
+  Q.cfg.groups = names; Q.cfg.cycles = cy; Q.cfg.u = t; if (ppFilter !== 'all' && names.indexOf(ppFilter) < 0) ppFilter = ren[ppFilter] || 'all';
+  qSave(); changed(); $('gp-dlg').close(); toast('그룹을 저장했어요.'); renderAll();
+}
+/* ---- 모임 ---- */
+function openClub(id){
+  const c = id ? Q.clubs.find(x => x.id === id) : null; if (id && !c) return;
+  clEditing = id || null; $('cl-d-title').textContent = c ? '모임 수정' : '모임 만들기';
+  $('cl-f-name').value = c ? c.name : ''; $('cl-f-new').value = '';
+  fillSelect($('cl-f-newgroup'), Q.cfg.groups.map(g => ({ v: g, t: g })), Q.cfg.groups[0]);
+  $('cl-f-people').innerHTML = Q.people.length ? Q.cfg.groups.map(g => { const ps = Q.people.filter(p => p.group === g); return ps.length ? '<div class="gname">' + esc(g) + '</div>' + ps.map(p => '<label><input type="checkbox" value="' + esc(p.id) + '"' + (c && c.pids.indexOf(p.id) >= 0 ? ' checked' : '') + '>' + esc(p.name) + '</label>').join('') : ''; }).join('') : '<p class="pc-hint" style="margin:0">등록된 사람이 없어요. 아래에 이름을 적으면 새로 만들어져요.</p>';
+  $('cl-d-delete').hidden = !c; $('cl-dlg').showModal();
+}
+function saveClub(){
+  const name = $('cl-f-name').value.trim(); if (!name) { toast('모임 이름을 입력해 주세요.'); return; }
+  if (Q.clubs.some(c => c.name === name && c.id !== clEditing)) { toast('같은 이름의 모임이 있어요.'); return; }
+  const t = nowIso(), pids = [...$('cl-f-people').querySelectorAll('input:checked')].map(x => x.value), grp = $('cl-f-newgroup').value;
+  $('cl-f-new').value.split(/[,，、\n]/).map(x => x.trim()).filter(Boolean).forEach(nm => {
+    let p = Q.people.find(x => x.name === nm);
+    if (!p) { p = { id: uid('pp'), name: nm, group: grp, cycle: '', prefs: [], memo: '', since: todayStr(), u: t }; Q.people.push(p); }
+    if (pids.indexOf(p.id) < 0) pids.push(p.id);
+  });
+  if (clEditing) { const c = Q.clubs.find(x => x.id === clEditing); c.name = name; c.pids = pids; c.u = t; } else Q.clubs.push({ id: uid('cl'), name, pids, u: t });
+  qSave(); changed(); $('cl-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function delClub(){
+  const c = Q.clubs.find(x => x.id === clEditing); if (!c || !confirm('“' + c.name + '” 모임을 삭제할까요? 사람과 만남 기록은 그대로 남아요.')) return;
+  Q.clubs = Q.clubs.filter(x => x.id !== c.id); Q.del[c.id] = nowIso(); if (ppClub === c.id) ppClub = 'all'; qSave(); changed(); $('cl-dlg').close(); renderAll();
+}
+// 정희님이 알려주신 모임: 이미 등록된 사람 이름과 일치하면 한 번만 자동으로 만들어 줘요(고정 id라 기기 간 중복 없음)
+const CLUB_SEEDS = [{ id: 'cl_seed_79', name: '79모임', names: ['이종학', '이정훈'] }, { id: 'cl_seed_oldmember', name: '보증OLD멤버', names: ['김준세', '김선호', '송태환'] }];
+function seedClubs(quiet){
+  let ch = false;
+  CLUB_SEEDS.forEach(sd => {
+    let done = false; try { done = !!localStorage.getItem('club_seeded_' + sd.id); } catch (e) { /* 무시 */ }
+    if (done || Q.clubs.some(c => c.id === sd.id) || Q.del[sd.id]) return;
+    const pids = sd.names.map(n => (Q.people.find(p => p.name === n) || {}).id).filter(Boolean);
+    if (!pids.length) return;
+    Q.clubs.push({ id: sd.id, name: sd.name, pids, u: nowIso() }); try { localStorage.setItem('club_seeded_' + sd.id, '1'); } catch (e) { /* 무시 */ } ch = true;
+  });
+  if (ch) { qSave(); if (quiet) { try { if (window.AppSync) window.AppSync.touch(); } catch (e) { /* 무시 */ } } else changed(); }
+  return ch;
+}
 function saveCfg(){
   const t = Number($('pp-cfg-target').value); Q.cfg.target = isFinite(t) && t >= 0 ? Math.round(t) : 4;
-  Life.GROUPS.forEach((g, i) => { const v = Number($('pp-cfg-' + i).value); Q.cfg.cycles[g] = v > 0 ? Math.round(v) : Life.DEFAULT_CFG.cycles[g]; });
   Q.cfg.u = nowIso(); qSave(); changed(); renderAll();
 }
 
@@ -3357,16 +3473,17 @@ function delSize(){
   if (!szEditing || !confirm('이 치수를 삭제할까요?')) return;
   SZ.items = SZ.items.filter(x => x.id !== szEditing); SZ.del[szEditing] = nowIso(); szSave(); changed(); $('sz-dlg').close(); renderAll();
 }
+seedClubs(true);
 window.AppSettings = { refresh: function () {
   $('sh-notify').textContent = notifyOn ? '🔔 혜택 알림 켜짐 (눌러서 끄기)' : '🔔 혜택 알림 꺼짐 (눌러서 켜기)';
   $('sb-costmode').value = SB.cfg.costIsNet ? 'net' : 'gross';
-  $('pp-cfg-target').value = Q.cfg.target; Life.GROUPS.forEach((g, i) => { $('pp-cfg-' + i).value = Q.cfg.cycles[g]; });
+  $('pp-cfg-target').value = Q.cfg.target;
 } };
 window.AppExtras = {
   keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes'],
   exportSync(){
     return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
-      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del } };
+      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del } };
   },
   strip(obj){ this.keys.forEach(k => { delete obj[k]; }); },
   importSync(json){
@@ -3392,7 +3509,8 @@ window.AppExtras = {
     if (ok('people')) {
       const r = json.people, mp = Shop.mergeById(Q.people, r.people, Q.del, cleanDel(r.del)), mm = Shop.mergeById(Q.meets, r.meets, Q.del, cleanDel(r.del));
       const cfg = r.cfg && String(r.cfg.u || '') > String(Q.cfg.u || '') ? r.cfg : Q.cfg;
-      Q = qNorm({ people: mp.items, meets: mm.items, cfg, del: mp.del }); qSave(); ch = true;
+      const mc = Shop.mergeById(Q.clubs, r.clubs, Q.del, cleanDel(r.del));
+      Q = qNorm({ people: mp.items, meets: mm.items, clubs: mc.items, cfg, del: mp.del }); seedClubs(); qSave(); ch = true;
     }
     if (ok('skin')) {
       const r = json.skin, mi = Shop.mergeById(SK.items, r.items, SK.del, cleanDel(r.del)), ms = Shop.mergeById(SK.sessions, r.sessions, SK.del, cleanDel(r.del));
@@ -3440,7 +3558,7 @@ function renderGlobal(){
   else if (age === null) { gs.textContent = '☁ 아직 백업 전'; dot.className = 'gdot warn'; }
   else { gs.textContent = '☁ 시트 저장 확인 ' + (age === 0 ? '오늘 ' + new Date(last).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : age + '일 전') + (A.auto() ? ' · 자동 백업 켜짐' : ' · 자동 백업 꺼짐'); dot.className = 'gdot ' + (age <= 1 ? 'ok' : (age >= 7 ? 'warn' : '')); }
   const list = [];
-  {
+  if (mode !== 'shop') {
     const due = Shop.dueBenefits(SH.items, todayStr());
     if (due.length) list.push({ key: shopDueKey(due), act: 'shop', html: '🔔 쇼핑 혜택 지급일 도래 <b>' + due.length + '건</b> — ' + esc(due[0].name) + ' ' + won(due[0].amount) + '(' + esc(due[0].item) + ')' + (due.length > 1 ? ' 외' : '') });
   }
@@ -3578,7 +3696,7 @@ $('sh-dlg').addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter' || !e.target.matches) return;
-  if (e.target.matches('tr[data-pc="edit-rec"]')) openRec(e.target.dataset.id); else if (e.target.matches('.sh-row')) openShop(e.target.dataset.id); else if (e.target.matches('.gf-row')) openCourse(e.target.dataset.id); else if (e.target.matches('.sb-row')) openSub(e.target.dataset.id); else if (e.target.matches('.sk-card')) openSkin(e.target.dataset.id); else if (e.target.matches('tr[data-sz="edit"]')) openSize(e.target.dataset.id); else if (e.target.matches('.pp-row')) { const r = e.target; if (r.dataset.pp === 'edit-person') openPerson(r.dataset.id); else if (r.dataset.pp === 'edit-meet') openMeet(r.dataset.id); }
+  if (e.target.matches('tr[data-pc="edit-rec"]')) openRec(e.target.dataset.id); else if (e.target.matches('.sh-row')) openShop(e.target.dataset.id); else if (e.target.matches('.gf-row')) openCourse(e.target.dataset.id); else if (e.target.matches('.sb-row')) openSub(e.target.dataset.id); else if (e.target.matches('.sk-card')) openSkin(e.target.dataset.id); else if (e.target.matches('tr[data-sz="edit"]')) openSize(e.target.dataset.id); else if (e.target.matches('.pp-row')) { const r = e.target; if (r.dataset.pp === 'edit-person') openPerson(r.dataset.id); else if (r.dataset.pp === 'edit-meet') openMeet(r.dataset.id); else if (r.dataset.pp === 'edit-club') openClub(r.dataset.id); }
 });
 $('pc-item').addEventListener('change', () => { prefillFromLast(); computeAnalyze(); });
 // 구매 이력의 제품 풀다운·정렬 풀다운, 가격 추이의 제품 풀다운
@@ -3595,7 +3713,7 @@ $('pc-qty').addEventListener('change', computeAnalyze);
 fillQty('pc-qty', 1);
 $('pc-e-item').addEventListener('change', updateEditPreview);
 $('sh-csv').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) csvIn(f); });
-['sh-f-listPrice', 'sh-f-purchasePrice', 'sh-f-b1amount', 'sh-f-b2amount', 'sh-f-points', 'sh-f-actualPrice'].forEach(id => $(id).addEventListener('input', shRecalc));
+['sh-f-listPrice', 'sh-f-purchasePrice', 'sh-f-b1amount', 'sh-f-b2amount', 'sh-f-points', 'sh-f-points2', 'sh-f-actualPrice'].forEach(id => $(id).addEventListener('input', shRecalc));
 $('sh-f-auto').addEventListener('change', shRecalc);
 
 $('priceView').addEventListener('click', e => {
@@ -3635,11 +3753,20 @@ $('peopleView').addEventListener('click', e => {
   else if (a === 'add-person') openPerson(null); else if (a === 'edit-person') openPerson(el.dataset.id);
   else if (a === 'add-meet') openMeet(null, null); else if (a === 'edit-meet') openMeet(el.dataset.id, null);
   else if (a === 'quick') { e.stopPropagation(); openMeet(null, el.dataset.id); }
-  else if (a === 'filter') { ppFilter = el.dataset.g; renderPeople(); } else if (a === 'backup') doBackup();
+  else if (a === 'filter') { ppFilter = el.dataset.g; renderPeople(); } else if (a === 'cfilter') { ppClub = el.dataset.id; renderPeople(); } else if (a === 'backup') doBackup();
+  else if (a === 'groups') openGroups(); else if (a === 'add-club') openClub(null); else if (a === 'edit-club') openClub(el.dataset.id);
+  else if (a === 'club-meet') { e.stopPropagation(); const c = Q.clubs.find(x => x.id === el.dataset.id); if (c) openMeet(null, null, c.pids.filter(personById)); }
 });
 $('pp-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; if (el.dataset.pp === 'p-cancel') $('pp-dlg').close(); else if (el.dataset.pp === 'p-save') savePerson(); else if (el.dataset.pp === 'p-delete') delPerson(); });
-$('mt-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; if (el.dataset.pp === 'm-cancel') $('mt-dlg').close(); else if (el.dataset.pp === 'm-save') saveMeet(); else if (el.dataset.pp === 'm-delete') delMeet(); });
-['pp-cfg-target', 'pp-cfg-0', 'pp-cfg-1', 'pp-cfg-2', 'pp-cfg-3'].forEach(id => $(id).addEventListener('change', saveCfg));
+$('gp-rows').addEventListener('input', e => { const i = e.target.dataset.gi; if (i == null) return; gpDraft[Number(i)][e.target.dataset.k] = e.target.value; });
+$('gp-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-pp]'); if (!el) return; const a = el.dataset.pp;
+  if (a === 'g-cancel') $('gp-dlg').close(); else if (a === 'g-save') saveGroups(); else if (a === 'g-add') { gpDraft.push({ orig: '', name: '', cycle: 30 }); gpRender(); const ins = $('gp-rows').querySelectorAll('input[data-k="name"]'); if (ins.length) ins[ins.length - 1].focus(); }
+  else if (a === 'g-del') { if (gpDraft.length <= 1) { toast('그룹은 1개 이상 필요해요.'); return; } gpDraft.splice(Number(el.dataset.i), 1); gpRender(); }
+});
+$('cl-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; if (el.dataset.pp === 'c-cancel') $('cl-dlg').close(); else if (el.dataset.pp === 'c-save') saveClub(); else if (el.dataset.pp === 'c-delete') delClub(); });
+$('mt-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; if (el.dataset.pp === 'm-club') { const c = Q.clubs.find(x => x.id === el.dataset.id); if (c) $('mt-f-people').querySelectorAll('input').forEach(i => { if (c.pids.indexOf(i.value) >= 0) i.checked = true; }); return; } if (el.dataset.pp === 'm-cancel') $('mt-dlg').close(); else if (el.dataset.pp === 'm-save') saveMeet(); else if (el.dataset.pp === 'm-delete') delMeet(); });
+$('pp-cfg-target').addEventListener('change', saveCfg);
 
 $('appVer').textContent = APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION;
 try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
