@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>마이라이프</title>
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="mylife.webmanifest?v=20261018">
 <meta name="theme-color" content="#FF4D00">
+<meta name="application-name" content="마이라이프">
+<meta name="apple-mobile-web-app-title" content="마이라이프">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -489,6 +493,33 @@
   #gf-dlg h3, #gr-dlg h3, #sb-dlg h3, #pp-dlg h3, #mt-dlg h3{ margin:0 0 4px; font-size:16px; }
   #gf-dlg .pc-f input, #gr-dlg .pc-f input, #gr-dlg .pc-f select, #sb-dlg .pc-f input, #sb-dlg .pc-f select, #pp-dlg .pc-f input, #pp-dlg .pc-f select, #mt-dlg .pc-f input, #mt-dlg .pc-f select{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
   #pp-f-prefs .pc-chip{ display:inline-flex; align-items:center; gap:5px; } #gr-dlg, #sb-dlg{ z-index:5; }
+  /* ---- 2026-10-18: 구매처·사이즈, 제품 풀다운, 가격추이 요약, 쇼핑 적립금 ---- */
+  .pc-filterrow{ margin-bottom:6px; }
+  .pc-filterrow .pc-f{ margin-top:0; }
+  .pc-sub2{ display:inline-block; max-width:88px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:10.5px; font-weight:500; vertical-align:top; }
+  .pc-ov{ display:flex; flex-direction:column; }
+  .pc-ovrow{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; font:inherit; background:none; border:0; border-bottom:1px solid var(--line); padding:10px 2px; color:var(--ink); cursor:pointer; min-height:48px; }
+  .pc-ovrow:last-child{ border-bottom:0; }
+  .pc-ovrow:hover{ background:var(--pc-soft); }
+  .pc-ovrow:focus-visible{ outline:3px solid var(--pc); outline-offset:-2px; }
+  .pc-ovname{ flex:1; min-width:0; font-size:13.5px; font-weight:700; line-height:1.3; }
+  .pc-ovname small{ display:block; font-weight:500; font-size:11px; color:var(--ink3); margin-top:2px; }
+  .pc-spark{ width:64px; height:20px; flex:none; }
+  .pc-ovnum{ flex:none; text-align:right; min-width:70px; }
+  .pc-ovnum b{ display:block; font-size:14px; }
+  .pc-ovnum small{ font-size:11px; font-weight:700; }
+  .pc-lastbox{ margin-top:10px; border:1px solid var(--line); border-radius:8px; padding:6px 10px; background:var(--bg); }
+  .pc-lasthead{ font-size:11px; font-weight:800; color:var(--ink2); padding:4px 0; }
+  .pc-lastrow{ display:flex; justify-content:space-between; gap:8px; font-size:12.5px; padding:5px 0; border-top:1px solid var(--line); }
+  .pc-lastrow b{ font-variant-numeric:tabular-nums; }
+  .sh-autobox{ margin-top:10px; padding:9px 11px; border:1px dashed var(--line2); border-radius:8px; background:var(--bg); font-size:12.5px; color:var(--ink2); }
+  .sh-autobox label{ display:flex; align-items:center; gap:8px; font-weight:700; color:var(--ink); }
+  .sh-autobox input[type=checkbox]{ width:auto; min-height:0; }
+  .sh-autobox .calc{ margin-top:6px; line-height:1.5; font-variant-numeric:tabular-nums; }
+  .sh-autobox .calc.err{ color:var(--warn); font-weight:700; }
+  .sh-autobox .calc.diff{ color:var(--accent); }
+  #sh-dlg input[readonly]{ background:var(--bg); color:var(--ink2); }
+  .gsync.pending{ cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
 </style>
 </head>
 <body>
@@ -635,6 +666,11 @@
         <label class="pc-f">결제금(원)<input id="pc-paid" type="number" inputmode="numeric" min="0" step="any"></label>
       </div>
       <label class="pc-f">적립금(원)<input id="pc-points" type="number" inputmode="numeric" min="0" step="any"></label>
+      <div class="pc-row2">
+        <label class="pc-f">구매처<input id="pc-store" type="text" list="pc-store-list" placeholder="예: 네이버쇼핑" autocomplete="off"></label>
+        <label class="pc-f">사이즈<input id="pc-size" type="text" placeholder="예: L, 270, 500ml" autocomplete="off"></label>
+      </div>
+      <datalist id="pc-store-list"></datalist>
       <p id="pc-preview" class="pc-preview"></p>
       <div id="pc-result"></div>
       <button id="pc-save" class="pc-btn primary wide" data-pc="save-new" disabled>이 구매 등록</button>
@@ -644,7 +680,10 @@
   <section class="pc-sec" id="pc-history">
     <div class="pc-card">
       <div class="pc-headrow"><h3>구매 이력</h3><button class="pc-btn small primary" data-pc="add-rec">+ 기록 추가</button></div>
-      <div id="pc-filter" class="pc-chips"></div>
+      <div class="pc-row2 pc-filterrow">
+        <label class="pc-f">제품<select id="pc-filter-sel"></select></label>
+        <label class="pc-f">정렬<select id="pc-sort"><option value="recent">최근 구매순</option><option value="count">구매 많은 순</option><option value="name">이름순</option></select></label>
+      </div>
       <div id="pc-table" class="pc-tblwrap"></div>
       <p class="pc-hint">행을 누르면 수정·삭제할 수 있어요. 단가 = (결제금 − 적립금) ÷ (용량 + 증정). 상품별 최저는 파랑, 최고는 빨강이에요.</p>
     </div>
@@ -841,6 +880,10 @@
     <label class="pc-f">결제금(원)<input id="pc-e-paid" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
   <label class="pc-f">적립금(원)<input id="pc-e-points" type="number" inputmode="numeric" min="0" step="any"></label>
+  <div class="pc-row2">
+    <label class="pc-f">구매처<input id="pc-e-store" type="text" list="pc-store-list" autocomplete="off"></label>
+    <label class="pc-f">사이즈<input id="pc-e-size" type="text" autocomplete="off"></label>
+  </div>
   <p id="pc-e-preview" class="pc-preview"></p>
   <div class="pc-row2" style="margin-top:14px">
     <button class="pc-btn" data-pc="rec-cancel">취소</button>
@@ -861,7 +904,12 @@
     <label class="pc-f">구매일<input id="sh-f-purchaseDate" type="date"></label>
     <label class="pc-f">구매금액(원)<input id="sh-f-purchasePrice" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
-  <label class="pc-f">실구매금액(원, 혜택 반영 후 · 없으면 비움)<input id="sh-f-actualPrice" type="number" inputmode="numeric" min="0" step="any"></label>
+  <label class="pc-f">적립금(원, 쓰거나 받은 적립·포인트 — 실구매금액에서 빠져요)<input id="sh-f-points" type="number" inputmode="numeric" min="0" step="any"></label>
+  <label class="pc-f">실구매금액(원)<input id="sh-f-actualPrice" type="number" inputmode="numeric" min="0" step="any"></label>
+  <div class="sh-autobox">
+    <label><input type="checkbox" id="sh-f-auto"> 구매금액 − 혜택 − 적립금으로 자동 계산</label>
+    <div class="calc" id="sh-f-calc" aria-live="polite"></div>
+  </div>
   <div class="grp">혜택 1</div>
   <div class="pc-row2">
     <label class="pc-f">혜택명<input id="sh-f-b1name" type="text"></label>
@@ -1032,8 +1080,16 @@
     return seed;
   }
 
+  // '아직 시트에 저장 확인이 안 된 변경'이 있는지 기록(앱을 닫았다 열어도 유지) — 동기화 v2에서 사용
+  const DIRTY_KEY = 'sync_dirty_v1', SYNC_V2_KEY = 'sync_v2_init';
+  let changeSeq = 0;
+  function setDirty(on){ try{ if(on) localStorage.setItem(DIRTY_KEY, new Date().toISOString()); else localStorage.removeItem(DIRTY_KEY); }catch(e){} }
+  function isDirty(){ try{ return !!localStorage.getItem(DIRTY_KEY); }catch(e){ return false; } }
+  function dirtySince(){ try{ return localStorage.getItem(DIRTY_KEY) || ''; }catch(e){ return ''; } }
+  function markChanged(){ changeSeq++; if(!isDirty()) setDirty(true); }
   let autoBackupTimer = null;
   function saveData(d){
+    markChanged();
     if(window.AppMerge){ window.AppMerge.stamp(d); }
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }
     catch(e){ console.warn("save failed", e); showToast("저장 실패: 브라우저 저장공간을 확인해주세요"); }
@@ -1564,7 +1620,7 @@
     render();
     if(showNote){
       const note = el('urlSavedNote');
-      note.textContent = val ? (data.settings.autoBackup ? '✓ 저장됨 · 신규 지출 자동 백업 켜짐' : '✓ 저장됨') : '';
+      note.textContent = val ? (data.settings.autoBackup ? '✓ 저장됨 · 시트 내용을 먼저 불러와 합친 뒤 자동 백업' : '✓ 저장됨') : '';
       note.classList.toggle('show', !!val);
       clearTimeout(urlSavedNoteTimer);
       urlSavedNoteTimer = setTimeout(() => note.classList.remove('show'), 2600);
@@ -1582,30 +1638,108 @@
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); }catch(e){}
   }
 
+  // ---------- 동기화 v2 (2026-10-18) ----------
+  // 1) 올리기 전에 시트의 최신 내용을 먼저 받아 합친다 → 재설치 직후·다른 기기에서 열어도 시트를 덮어쓰지 않음
+  // 2) 올린 뒤 시트를 다시 읽어 "정말 저장됐는지" 확인한 경우에만 '저장 확인'으로 표시
+  // 3) 저장 확인 전 변경은 '미저장'으로 남기고(앱을 닫아도 유지) 실패 시 자동 재시도
+  let syncing = false, syncAgain = false, retryTimer = null, retryCount = 0, pulledThisSession = false;
+  const syncState = { status: 'idle', msg: '' };
+  async function fetchRemote(url){
+    const res = await fetch(url + (url.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now(), { method:'GET', cache:'no-store' });
+    const text = await res.text();
+    let json = null;
+    try{ json = JSON.parse(text); }catch(e){ throw new Error('시트 응답을 읽지 못했어요'); }
+    if(json && json.error){
+      if(/백업된 데이터가 없/.test(String(json.error))) return {};   // 아직 아무것도 올린 적 없는 시트 = 비어 있음
+      throw new Error(String(json.error));
+    }
+    return json || {};
+  }
+  function snapshotForCompare(){ return JSON.stringify([data.expenses, data.budgets, window.AppExtras ? window.AppExtras.exportSync() : null]); }
+  // 시트 내용을 현재 데이터에 합친다(같은 항목은 최근 수정이 우선, 삭제 기록은 유지). 내용이 바뀌면 true
+  function mergeRemote(json){
+    if(!json || !json.budgets || !json.expenses) return false;
+    const url = data.settings.sheetUrl, before = snapshotForCompare();
+    if(window.AppExtras){ window.AppExtras.importSync(json); window.AppExtras.strip(json); }
+    data = normalizeSettings(window.AppMerge ? window.AppMerge.merge(data, json) : data);
+    data.settings.sheetUrl = url;
+    persistOnly(data);
+    return before !== snapshotForCompare();
+  }
+  function setSyncStatus(status, msg){ syncState.status = status; syncState.msg = msg || ''; try{ if(window.AppSync && window.AppSync.onState) window.AppSync.onState(); }catch(e){} }
+  function scheduleRetry(){
+    clearTimeout(retryTimer);
+    if(!data.settings.sheetUrl || !data.settings.autoBackup) return;
+    const waits = [15000, 60000, 180000, 600000];
+    retryTimer = setTimeout(() => { syncUp(true); }, waits[Math.min(retryCount, waits.length - 1)]);
+    retryCount++;
+  }
   async function syncUp(silent){
     const url = data.settings.sheetUrl;
-    if(!url){ if(!silent) showToast('먼저 Apps Script URL을 입력해주세요'); return; }
+    if(!url){ if(!silent) showToast('먼저 Apps Script URL을 입력해주세요'); return false; }
+    if(syncing){ syncAgain = true; return false; }
+    syncing = true; syncAgain = false;
+    const seqAtStart = changeSeq;
+    setSyncStatus('saving');
+    let stage = 'pull';
     try{
       if(!silent) showToast('백업 중...');
-      await fetch(url, {
-        method:'POST',
-        mode:'no-cors',
-        headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify(window.AppExtras ? Object.assign({}, data, window.AppExtras.exportSync()) : data)
-      });
+      const remote = await fetchRemote(url);
+      pulledThisSession = true;
+      if(mergeRemote(remote)){ render(); }
+      stage = 'push';
+      const rev = 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: rev }));
+      await fetch(url, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body });
+      stage = 'verify';
+      let ok = false;
+      for(let k = 0; k < 2 && !ok; k++){
+        if(k) await new Promise(r => setTimeout(r, 1500));
+        const check = await fetchRemote(url);
+        ok = !!(check && check._rev === rev);
+      }
+      if(!ok) throw new Error('시트에 저장됐는지 확인하지 못했어요');
       data.settings.lastSync = new Date().toISOString();
       persistOnly(data); // lastSync 기록만 반영 (자동백업 재귀 방지)
-      el('lastSyncTime').textContent = `마지막 백업: ${new Date(data.settings.lastSync).toLocaleString('ko-KR')}`;
-      showToast(silent ? '자동 백업 완료' : 'Google Sheets로 백업했습니다');
-    }catch(e){ if(!silent) showToast('백업 실패: URL과 배포 설정을 확인해주세요'); }
+      if(seqAtStart === changeSeq) setDirty(false);   // 저장하는 동안 새 변경이 없었을 때만 '미저장' 해제
+      retryCount = 0; clearTimeout(retryTimer);
+      el('lastSyncTime').textContent = `마지막 저장 확인: ${new Date(data.settings.lastSync).toLocaleString('ko-KR')}`;
+      setSyncStatus('ok');
+      if(!silent) showToast('Google Sheets에 저장하고 확인했습니다');
+      return true;
+    }catch(e){
+      const why = stage === 'pull' ? '시트에 연결하지 못했어요(인터넷·URL·배포 설정 확인)' : (stage === 'push' ? '시트로 보내지 못했어요' : '시트에 저장됐는지 확인하지 못했어요');
+      setSyncStatus('fail', why);
+      showToast('⚠ 아직 시트에 저장되지 않았어요 — ' + why + (data.settings.autoBackup ? ' (자동 재시도 중)' : ''));
+      scheduleRetry();
+      return false;
+    }finally{
+      syncing = false;
+      if(syncAgain){ syncAgain = false; setTimeout(() => { syncUp(true); }, 300); }
+    }
   }
+  // 앱을 닫거나 다른 앱으로 넘어갈 때 아직 못 올린 변경이 있으면 즉시 한 번 더 보냄(확인은 다음 접속 때)
+  function flushOnHide(){
+    try{
+      const url = data.settings.sheetUrl;
+      if(!url || !data.settings.autoBackup || !isDirty() || !pulledThisSession) return;
+      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: 'h' + Date.now().toString(36) }));
+      if(body.length * 3 > 60000) return;   // 닫히는 중 전송은 약 64KB 제한 — 큰 데이터는 다음 접속 때 합쳐서 올림
+      fetch(url, { method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain;charset=utf-8'}, body });
+    }catch(e){ /* 무시 */ }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if(document.visibilityState === 'hidden') flushOnHide();
+    else if(isDirty() && data.settings.sheetUrl && data.settings.autoBackup) setTimeout(() => { syncUp(true); }, 600);
+  });
+  window.addEventListener('pagehide', flushOnHide);
+  window.addEventListener('online', () => { if(isDirty() && data.settings.sheetUrl && data.settings.autoBackup) setTimeout(() => { syncUp(true); }, 600); });
   async function syncDown(){
     const url = data.settings.sheetUrl;
     if(!url){ showToast('먼저 Apps Script URL을 입력해주세요'); return; }
     try{
       showToast('불러오는 중...');
-      const res = await fetch(url, { method:'GET' });
-      const json = await res.json();
+      const json = await fetchRemote(url);
       if(!json || !json.budgets || !json.expenses){ throw new Error('invalid'); }
       if(!confirm('시트의 백업과 현재 데이터를 합칩니다.\n(같은 항목은 최근에 수정한 쪽이 우선이고, 지운 항목은 계속 지워진 상태로 유지됩니다) 계속할까요?')) return;
       if(window.AppExtras){ window.AppExtras.importSync(json); window.AppExtras.strip(json); }
@@ -1733,7 +1867,7 @@
   window.addEventListener('appinstalled', () => { el('installBtn').style.display = 'none'; });
   if('serviceWorker' in navigator && location.protocol !== 'file:'){
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(reg => { try { reg.update(); } catch (e) { /* 무시 */ } }).catch(() => {});
     });
   }
 
@@ -1744,10 +1878,26 @@
     hasUrl: () => !!data.settings.sheetUrl,
     last: () => data.settings.lastSync,
     openSettings: () => { openDrawer(); setTimeout(() => { const u = el('sheetUrlInput'); if(u && u.scrollIntoView) u.scrollIntoView({block:'center'}); }, 300); },
-    newMonth: () => { const b = el('newMonthBanner'); return (b && b.style.display !== 'none') ? (el('newMonthText').textContent || '').trim() : ''; }
+    newMonth: () => { const b = el('newMonthBanner'); return (b && b.style.display !== 'none') ? (el('newMonthText').textContent || '').trim() : ''; },
+    // 동기화 v2: 저장 확인 상태 / 미저장 여부 / 가격·쇼핑 등 다른 화면의 변경 알림
+    state: () => ({ status: syncState.status, msg: syncState.msg, dirty: isDirty(), since: dirtySince() }),
+    touch: markChanged,
+    onState: null
   };
   render();
   schedulePeriodicBackup();
+  // 앱을 열 때: 시트가 연결돼 있으면 먼저 시트와 합치고(재설치·다른 기기 대비), 미저장 변경이 있으면 바로 올림
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){ /* 무시 */ }
+  (function startupSync(){
+    let first = false;
+    try{ first = !localStorage.getItem(SYNC_V2_KEY); localStorage.setItem(SYNC_V2_KEY, '1'); }catch(e){ /* 무시 */ }
+    if(first && data.settings.sheetUrl) setDirty(true);   // 업그레이드 직후 1회는 무조건 합쳐서 올림(예전 방식에서 못 올라간 변경 구제)
+    if(!data.settings.sheetUrl) return;
+    setTimeout(async () => {
+      if(data.settings.autoBackup && isDirty()){ syncUp(true); return; }
+      try{ const remote = await fetchRemote(data.settings.sheetUrl); pulledThisSession = true; if(mergeRemote(remote)) render(); }catch(e){ /* 오프라인이면 다음 기회에 */ }
+    }, 1200);
+  })();
 })();
 </script>
 <script>
@@ -1852,9 +2002,17 @@ const Calc = (() => {
 const Shop = (() => {
   const CATS = { electronics: '전자제품', fashion: '패션', golf: '골프' };
   const CAT_KEYS = ['electronics', 'fashion', 'golf'];
-  const HEADER = ['카테고리', '품목', '구매처', '수량', '구매일', '구매금액', '실구매금액', '혜택1명', '혜택1금액', '혜택1일', '혜택2명', '혜택2금액', '혜택2일', '상태', '판매일', '판매금액', '위약금', '재판매손익'];
+  const HEADER = ['카테고리', '품목', '구매처', '수량', '구매일', '구매금액', '실구매금액', '혜택1명', '혜택1금액', '혜택1일', '혜택2명', '혜택2금액', '혜택2일', '상태', '판매일', '판매금액', '위약금', '재판매손익', '적립금'];
   function num(v){ if (v === '' || v == null) return null; const x = Number(v); return isFinite(x) ? x : null; }
   function netPurchase(i){ const a = num(i.actualPrice); return a !== null ? a : (num(i.purchasePrice) || 0); }
+  // 실구매금액 자동 계산(가격 체크의 "결제금 − 적립금"과 같은 방식): 구매금액 − 혜택1 − 혜택2 − 적립금
+  function discountSum(i){ return (num(i.b1amount) || 0) + (num(i.b2amount) || 0) + (num(i.points) || 0); }
+  function autoActual(i){
+    const price = num(i.purchasePrice), disc = discountSum(i);
+    if (price === null || !(disc > 0)) return { actual: '', disc, over: false };
+    const a = price - disc;
+    return a < 0 ? { actual: '', disc, over: true } : { actual: a, disc, over: false };
+  }
   function itemProfit(i){ if (i.status !== 'sold') return null; return ((num(i.salePrice) || 0) - (num(i.penalty) || 0)) - netPurchase(i); }
   function summarize(items){
     const totalListed = items.reduce((s, i) => s + (num(i.purchasePrice) || 0), 0);
@@ -1876,7 +2034,7 @@ const Shop = (() => {
     CAT_KEYS.forEach(cat => items.filter(i => i.cat === cat).forEach(i => {
       const p = itemProfit(i);
       rows.push([CATS[cat], i.item, i.store, i.qty, i.purchaseDate, i.purchasePrice, i.actualPrice, i.b1name, i.b1amount, i.b1date, i.b2name, i.b2amount, i.b2date,
-        i.status === 'sold' ? '판매완료' : '보유중', i.saleDate, i.salePrice, i.penalty, p !== null ? p : '']);
+        i.status === 'sold' ? '판매완료' : '보유중', i.saleDate, i.salePrice, i.penalty, p !== null ? p : '', i.points == null ? '' : i.points]);
     }));
     return rows.map(r => r.map(csvEscape).join(',')).join('\n');
   }
@@ -1908,11 +2066,11 @@ const Shop = (() => {
       if (!cat || !g('품목')) { errors.push((idx + 2) + '번째 줄: 카테고리/품목 확인 필요'); return; }
       items.push({ cat, item: g('품목'), store: g('구매처'), qty: numOrBlank(g('수량')) || 1, purchaseDate: g('구매일'), purchasePrice: numOrBlank(g('구매금액')), actualPrice: numOrBlank(g('실구매금액')),
         b1name: g('혜택1명'), b1amount: numOrBlank(g('혜택1금액')), b1date: g('혜택1일'), b2name: g('혜택2명'), b2amount: numOrBlank(g('혜택2금액')), b2date: g('혜택2일'),
-        status: g('상태') === '판매완료' ? 'sold' : 'hold', saleDate: g('판매일'), salePrice: numOrBlank(g('판매금액')), penalty: numOrBlank(g('위약금')) });
+        status: g('상태') === '판매완료' ? 'sold' : 'hold', saleDate: g('판매일'), salePrice: numOrBlank(g('판매금액')), penalty: numOrBlank(g('위약금')), points: numOrBlank(g('적립금')) });
     });
     return { items, errors };
   }
-  const FIELDS = ['qty', 'purchaseDate', 'purchasePrice', 'actualPrice', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'status', 'saleDate', 'salePrice', 'penalty'];
+  const FIELDS = ['qty', 'purchaseDate', 'purchasePrice', 'actualPrice', 'points', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'status', 'saleDate', 'salePrice', 'penalty'];
   function importRows(local, rows, uidFn, nowIso){
     const keyOf = i => [i.cat, i.item, i.store, i.purchaseDate].join('|'), seen = Object.create(null), idx = Object.create(null);
     local.forEach(i => { const k = keyOf(i); (idx[k] = idx[k] || []).push(i); });
@@ -1937,7 +2095,7 @@ const Shop = (() => {
     map.forEach((x, id) => { if (del[id] && String(del[id]) >= String(x.u || '')) return; out.push(x); });
     return { items: out, del };
   }
-  return { CATS, CAT_KEYS, HEADER, netPurchase, itemProfit, summarize, dueBenefits, toCsv, parseCsv, importRows, mergeById };
+  return { CATS, CAT_KEYS, HEADER, netPurchase, discountSum, autoActual, itemProfit, summarize, dueBenefits, toCsv, parseCsv, importRows, mergeById };
 })();
 // </SHOPCALC>
 
@@ -2075,7 +2233,7 @@ const Life = (() => {
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-17-c (회의비 · 가격 · 쇼핑 · 구독 · 인맥)';
+const APP_BUILD_VERSION = '2026-10-18-a (회의비 · 가격 · 쇼핑 · 구독 · 인맥)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -2100,8 +2258,7 @@ function syncNote(){
 }
 function changed(){
   try {
-    const len = JSON.stringify(window.AppExtras.exportSync()).length;
-    if (len > 30000) toast('가격 체크·쇼핑 데이터가 커졌어요(시트 한 칸 5만 자 한도). 정리가 필요해요.');
+    if (window.AppSync) window.AppSync.touch();   // '시트에 저장 확인 전 변경' 표시를 먼저 남김(앱을 닫아도 유지)
     if (window.AppSync && window.AppSync.auto()) { clearTimeout(syncTimer); syncTimer = setTimeout(() => { window.AppSync.up(true); setTimeout(syncNote, 300); }, 1500); }
   } catch (e) { /* 동기화 연결이 없으면 로컬 저장만 */ }
   syncNote(); renderGlobal();
@@ -2121,13 +2278,15 @@ const PRICE_SEED = {
     { id: 's5', itemId: 'i2', date: '2026-10-08', amount: 100, bonus: 0, paid: 18500, points: 925, u: SEED_U }
   ], del: {}
 };
+const LEGACY_STORE = '네이버쇼핑';   // 구매처 칸이 생기기 전에 등록된 기록은 모두 네이버쇼핑 구매 (2026-10-18 정희님 확인)
 function pNormalize(o){
   o = o && typeof o === 'object' ? o : {};
   const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && i.name && UNITS.indexOf(i.unit) >= 0)
     .map(i => ({ id: String(i.id), name: String(i.name), unit: i.unit, basis: BASES.indexOf(Number(i.basis)) >= 0 ? Number(i.basis) : 1, u: String(i.u || '') }));
   const ids = Object.create(null); items.forEach(i => { ids[i.id] = true; });
   const records = (Array.isArray(o.records) ? o.records : []).filter(r => r && r.id && ids[r.itemId] && Calc.validDate(r.date))
-    .map(r => ({ id: String(r.id), itemId: r.itemId, date: r.date, amount: Number(r.amount), bonus: Number(r.bonus) || 0, paid: Number(r.paid), points: Number(r.points) || 0, u: String(r.u || '') }))
+    .map(r => ({ id: String(r.id), itemId: r.itemId, date: r.date, amount: Number(r.amount), bonus: Number(r.bonus) || 0, paid: Number(r.paid), points: Number(r.points) || 0,
+      store: r.store === undefined ? LEGACY_STORE : String(r.store == null ? '' : r.store), size: r.size == null ? '' : String(r.size), u: String(r.u || '') }))
     .filter(r => Calc.unitOf(r, 1) != null);
   return { items, records, del: cleanDel(o.del) };
 }
@@ -2137,7 +2296,34 @@ function pLoad(){
 }
 let S = pLoad();
 function pSave(){ try { localStorage.setItem(PRICE_KEY, JSON.stringify(S)); } catch (e) { toast('저장하지 못했어요.'); } }
+(function migrateStore(){   // 구매처 칸이 없던 기존 기록 → 네이버쇼핑으로 채워 저장하고 시트에도 올림
+  try { const raw = JSON.parse(localStorage.getItem(PRICE_KEY) || 'null'); if (raw && Array.isArray(raw.records) && raw.records.some(r => r && r.store === undefined)) { pSave(); if (window.AppSync) window.AppSync.touch(); } } catch (e) { /* 무시 */ }
+})();
 let ptab = 'analyze', filterId = 'all', editingId = null;
+const PREF_KEY = 'pc_prefs_v1';   // 화면 보기 설정(정렬·선택한 제품) — 이 기기에서만 기억
+let prefs = { sort: 'recent', trendId: '' };
+try { const p = JSON.parse(localStorage.getItem(PREF_KEY) || 'null'); if (p && typeof p === 'object') { if (['recent', 'count', 'name'].indexOf(p.sort) >= 0) prefs.sort = p.sort; if (typeof p.trendId === 'string') prefs.trendId = p.trendId; if (typeof p.filterId === 'string') filterId = p.filterId; } } catch (e) { /* 기본값 */ }
+function savePrefs(){ try { localStorage.setItem(PREF_KEY, JSON.stringify({ sort: prefs.sort, trendId: prefs.trendId, filterId })); } catch (e) { /* 무시 */ } }
+// 제품별 구매 통계(구매 횟수·가장 최근 구매일) — 제품 목록 정렬에 사용
+function itemStats(){
+  const m = Object.create(null);
+  S.items.forEach(i => { m[i.id] = { count: 0, last: '', lastU: '' }; });
+  S.records.forEach(r => { const s = m[r.itemId]; if (!s) return; s.count++; if (r.date > s.last || (r.date === s.last && String(r.u) > s.lastU)) { s.last = r.date; s.lastU = String(r.u); } });
+  return m;
+}
+// 정렬: recent = 최근 구매한 제품이 위 / count = 구매 횟수 많은 제품이 위(같으면 최근 구매 우선) / name = 가나다
+function sortedItems(mode){
+  const st = itemStats(), cmpRecent = (a, b) => { const x = st[a.id], y = st[b.id]; if (x.last !== y.last) return x.last < y.last ? 1 : -1; if (x.lastU !== y.lastU) return x.lastU < y.lastU ? 1 : -1; return 0; };
+  return S.items.slice().sort((a, b) => {
+    if (mode === 'name') return a.name.localeCompare(b.name, 'ko');
+    if (mode === 'count') return (st[b.id].count - st[a.id].count) || cmpRecent(a, b);
+    return cmpRecent(a, b) || (st[b.id].count - st[a.id].count);
+  });
+}
+// 구매 이력 한 줄의 정렬: 최근 구매가 위(같은 날이면 나중에 입력한 것이 위)
+function recsDesc(itemId){ return S.records.filter(r => r.itemId === itemId).sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : (String(a.u) < String(b.u) ? 1 : (String(a.u) > String(b.u) ? -1 : (a.id < b.id ? 1 : -1)))); }
+function knownStores(){ const c = Object.create(null); S.records.forEach(r => { if (r.store) c[r.store] = (c[r.store] || 0) + 1; }); const l = Object.keys(c).sort((a, b) => c[b] - c[a]); if (l.indexOf(LEGACY_STORE) < 0) l.push(LEGACY_STORE); return l; }
+function fillStoreList(){ const dl = $('pc-store-list'); if (dl) dl.innerHTML = knownStores().map(s => '<option value="' + esc(s) + '">').join(''); }
 function pcls(x){ return x > 0.05 ? 'pc-cup' : (x < -0.05 ? 'pc-cdown' : 'pc-cflat'); }
 function fmtU(v){ return v >= 100 ? fmt(v) : v.toLocaleString('ko-KR', { minimumFractionDigits: v >= 10 ? 1 : 2, maximumFractionDigits: v >= 10 ? 1 : 2 }); }
 function pctText(x){ return (x >= 0 ? '+' : '−') + Math.abs(x).toFixed(1) + '%'; }
@@ -2150,8 +2336,12 @@ function readN(id){ const el = $(id); return el.value === '' ? null : Calc.num(e
 
 function renderAnalyze(){
   const cur = $('pc-item').value;
-  const opts = S.items.map(i => ({ v: i.id, t: i.name })).concat([{ v: '__new__', t: '＋ 새 상품 등록' }]);
-  fillSelect($('pc-item'), opts, opts.some(o => o.v === cur) ? cur : (S.items[0] ? S.items[0].id : '__new__'));
+  const srt = sortedItems('recent');   // 최근 구매한 상품이 위에 오도록
+  const opts = srt.map(i => ({ v: i.id, t: i.name })).concat([{ v: '__new__', t: '＋ 새 상품 등록' }]);
+  const firstTime = !cur;
+  fillSelect($('pc-item'), opts, opts.some(o => o.v === cur) ? cur : (srt[0] ? srt[0].id : '__new__'));
+  fillStoreList();
+  if (firstTime) prefillFromLast();
   if (!$('pc-unit').options.length) {
     fillSelect($('pc-unit'), UNITS.map(u => ({ v: u, t: u })), 'ml');
     fillSelect($('pc-basis'), BASES.map(b => ({ v: String(b), t: b === 1 ? '1(원/단위)' : b + '단위당' })), '1');
@@ -2227,19 +2417,30 @@ function saveNew(){
     if (!item.name) { toast('새 상품 이름을 입력해 주세요.'); return; }
     item = { id: uid('pi'), name: item.name, unit: item.unit, basis: item.basis, u: t }; S.items.push(item);
   }
-  S.records.push({ id: uid('pr'), itemId: item.id, date: Calc.validDate($('pc-date').value) || todayStr(), amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points, u: t });
+  S.records.push({ id: uid('pr'), itemId: item.id, date: Calc.validDate($('pc-date').value) || todayStr(), amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points,
+    store: $('pc-store').value.trim(), size: $('pc-size').value.trim(), u: t });
   pSave(); changed();
   ['pc-bonus', 'pc-paid', 'pc-points', 'pc-amount', 'pc-name'].forEach(id => { $(id).value = ''; });
   $('pc-item').value = item.id; $('pc-date').value = todayStr();
+  fillStoreList(); prefillFromLast();
   toast('구매를 등록했어요.'); renderAll();
 }
+// 상품을 고르면 직전 구매의 용량·구매처·사이즈를 기본값으로 채움(바꿔서 입력 가능)
+function prefillFromLast(){
+  const it = itemById($('pc-item').value);
+  if (it) { const l = recsDesc(it.id)[0]; $('pc-amount').value = l ? l.amount : ''; $('pc-store').value = l ? (l.store || '') : lastStoreAny(); $('pc-size').value = l ? (l.size || '') : ''; }
+  else { $('pc-store').value = lastStoreAny(); $('pc-size').value = ''; }
+}
+function lastStoreAny(){ let best = null; S.records.forEach(r => { if (r.store && (!best || String(r.u) > String(best.u))) best = r; }); return best ? best.store : LEGACY_STORE; }
 function renderHistory(){
   if (filterId !== 'all' && !itemById(filterId)) filterId = 'all';
-  const chips = [{ id: 'all', name: '전체' }].concat(S.items.map(i => ({ id: i.id, name: i.name })));
-  $('pc-filter').innerHTML = chips.map(c => '<button class="pc-chip' + (c.id === filterId ? ' on' : '') + '" data-pc="filter" data-id="' + esc(c.id) + '">' + esc(c.name) + '</button>').join('');
-  const items = S.items.filter(i => filterId === 'all' || i.id === filterId), rows = [];
+  // 제품이 늘어나도 한 줄로 유지: 제품 풀다운 + 정렬 풀다운 (정렬 기준에 따라 제품 그룹 순서가 정해지고, 그룹 안에서는 최근 구매가 위)
+  const srt = sortedItems(prefs.sort), st = itemStats();
+  $('pc-filter-sel').innerHTML = '<option value="all">전체 제품 (' + S.items.length + '개)</option>' + srt.map(i => '<option value="' + esc(i.id) + '">' + esc(i.name) + ' · ' + st[i.id].count + '건</option>').join('');
+  $('pc-filter-sel').value = filterId; $('pc-sort').value = prefs.sort;
+  const items = srt.filter(i => filterId === 'all' || i.id === filterId), rows = [];
   items.forEach(it => {
-    const rs = recsOf(it.id), us = rs.map(r => Calc.unitOf(r, it.basis)), valid = us.filter(u => u != null);
+    const rs = recsDesc(it.id), us = rs.map(r => Calc.unitOf(r, it.basis)), valid = us.filter(u => u != null);
     const mn = Math.min.apply(null, valid), mx = Math.max.apply(null, valid);
     rs.forEach((r, i) => rows.push({ it, r, u: us[i], isMin: valid.length > 1 && us[i] === mn, isMax: valid.length > 1 && us[i] === mx }));
   });
@@ -2251,8 +2452,9 @@ function renderHistory(){
     rows.map(x => {
       const r = x.r, it = x.it, uc = x.isMin ? 'pc-cdown' : (x.isMax ? 'pc-cup' : '');
       let grp = '';
-      if (it.id !== prevId) { prevId = it.id; grp = '<tr class="pc-grp"><td colspan="8">' + esc(it.name) + ' <small>' + esc(unitLabel(it)) + '</small></td></tr>'; }
-      return grp + '<tr tabindex="0" data-pc="edit-rec" data-id="' + esc(r.id) + '"><td>' + dateLabel(r.date) + '</td><td class="pc-pcell">' + esc(it.name) + '</td><td>' + r.amount + it.unit + '</td>' +
+      if (it.id !== prevId) { prevId = it.id; const s = st[it.id]; grp = '<tr class="pc-grp"><td colspan="8">' + esc(it.name) + ' <small>' + esc(unitLabel(it)) + ' · ' + s.count + '건 · 최근 ' + esc(s.last.slice(5).replace('-', '/')) + '</small></td></tr>'; }
+      const sub = [r.store, r.size].filter(Boolean).join(' · ');
+      return grp + '<tr tabindex="0" data-pc="edit-rec" data-id="' + esc(r.id) + '"><td>' + dateLabel(r.date) + (sub ? '<br><small class="pc-dim pc-sub2">' + esc(sub) + '</small>' : '') + '</td><td class="pc-pcell">' + esc(it.name) + '</td><td>' + r.amount + it.unit + '</td>' +
         '<td>' + (r.bonus ? r.bonus + it.unit : '') + '</td><td>' + fmt(r.paid) + '</td><td class="pc-dim">' + (r.points ? fmt(r.points) : '') + '</td>' +
         '<td>' + fmt(r.paid - r.points) + '</td><td class="pc-u ' + uc + '">' + fmtU(x.u) + (mixed ? ' <small class="pc-dim">' + esc(unitLabel(it)) + '</small>' : '') + '</td></tr>';
     }).join('') + '</tbody></table>';
@@ -2291,21 +2493,47 @@ function chartSVG(it, pts){
   });
   return s + '</svg>';
 }
+// 가격 추이: 제품이 아무리 늘어도 화면이 길어지지 않도록 "풀다운 1개 + 선택한 제품 그래프 1개"로 보여줌.
+// 풀다운의 '전체 제품 한눈에 보기'는 제품별 최근 단가·변동을 한 줄씩 요약(눌러서 그 제품 그래프로 이동)
+function trendPoints(it){ return recsOf(it.id).map(r => ({ date: r.date, u: Calc.unitOf(r, it.basis), r })).filter(p => p.u != null); }
+function sparkSVG(us, cls){
+  if (us.length < 2) return '<svg class="pc-spark" viewBox="0 0 64 20" aria-hidden="true"><circle cx="32" cy="10" r="2.5" fill="var(--ink3)"/></svg>';
+  const lo = Math.min.apply(null, us), hi = Math.max.apply(null, us), sp = hi - lo || 1;
+  const pts = us.map((v, i) => (2 + i / (us.length - 1) * 60).toFixed(1) + ',' + (18 - (v - lo) / sp * 16).toFixed(1)).join(' ');
+  return '<svg class="pc-spark" viewBox="0 0 64 20" aria-hidden="true"><polyline points="' + pts + '" fill="none" stroke="var(--pc)" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+}
+function trendOverview(items){
+  const st = itemStats();
+  return '<div class="pc-card"><h3>전체 제품 한눈에 보기</h3><p class="pc-sub">제품을 누르면 그래프로 이동해요 · 최근 구매한 제품이 위</p><div class="pc-ov">' +
+    items.map(it => {
+      const pts = trendPoints(it), us = pts.map(p => p.u), last = us[us.length - 1], avg = Calc.mean(us), ch = us.length > 1 ? (last / us[us.length - 2] - 1) * 100 : null;
+      return '<button class="pc-ovrow" data-pc="trend-pick" data-id="' + esc(it.id) + '"><span class="pc-ovname">' + esc(it.name) + '<small>' + st[it.id].count + '건 · 최근 ' + esc(st[it.id].last.slice(5).replace('-', '/')) + '</small></span>' +
+        sparkSVG(us) + '<span class="pc-ovnum"><b>' + fmtU(last) + '</b><small class="' + (ch == null ? 'pc-dim' : pcls(ch)) + '">' + (ch == null ? '첫 구매' : '직전 ' + pctText(ch)) + '</small></span></button>';
+    }).join('') + '</div></div>';
+}
+function trendChart(it){
+  const pts = trendPoints(it), us = pts.map(p => p.u), st = { avg: Calc.mean(us), min: Math.min.apply(null, us), last: us[us.length - 1] };
+  const ch = pts.length > 1 ? (us[us.length - 1] / us[us.length - 2] - 1) * 100 : null, minIdx = us.indexOf(st.min);
+  const recent = pts.slice().reverse().slice(0, 5).map(p => '<div class="pc-lastrow"><span>' + esc(p.date.slice(5).replace('-', '/')) + (p.r.store || p.r.size ? ' <small class="pc-dim">' + esc([p.r.store, p.r.size].filter(Boolean).join(' · ')) + '</small>' : '') + '</span><b>' + fmtU(p.u) + '</b></div>').join('');
+  return '<div class="pc-card pc-chartcard"><h3>' + esc(it.name) +
+    (ch != null ? '<span class="pc-badge ' + (ch > 0.05 ? 'pc-v-up' : (ch < -0.05 ? 'pc-v-down' : 'pc-v-flat')) + '">직전 대비 ' + pctText(ch) + '</span>' : '') + '</h3>' +
+    '<p class="pc-sub">' + esc(pts[0].date) + ' ~ ' + esc(pts[pts.length - 1].date) + ' · ' + pts.length + '건 · ' + esc(unitLabel(it)) + '(적립금감안) · 점선은 평균</p>' +
+    chartSVG(it, pts) +
+    '<div class="pc-stats"><div class="pc-stat">최근<b>' + fmtU(st.last) + '</b></div><div class="pc-stat">평균<b>' + fmtU(st.avg) + '</b></div>' +
+    '<div class="pc-stat">최저<b class="pc-cdown">' + fmtU(st.min) + '</b>' + esc(pts[minIdx].date.slice(5).replace('-', '/')) + '</div></div>' +
+    '<div class="pc-lastbox"><div class="pc-lasthead">최근 구매 (구매처 · 사이즈)</div>' + recent + '</div></div>';
+}
 function renderTrend(){
-  let html = '';
-  S.items.forEach(it => {
-    const pts = recsOf(it.id).map(r => ({ date: r.date, u: Calc.unitOf(r, it.basis) })).filter(p => p.u != null);
-    if (!pts.length) return;
-    const us = pts.map(p => p.u), st = { avg: Calc.mean(us), min: Math.min.apply(null, us), last: us[us.length - 1] };
-    const ch = pts.length > 1 ? (us[us.length - 1] / us[us.length - 2] - 1) * 100 : null, minIdx = us.indexOf(st.min);
-    html += '<div class="pc-card pc-chartcard"><h3>' + esc(it.name) +
-      (ch != null ? '<span class="pc-badge ' + (ch > 0.05 ? 'pc-v-up' : (ch < -0.05 ? 'pc-v-down' : 'pc-v-flat')) + '">직전 대비 ' + pctText(ch) + '</span>' : '') + '</h3>' +
-      '<p class="pc-sub">' + esc(pts[0].date) + ' ~ ' + esc(pts[pts.length - 1].date) + ' · ' + pts.length + '건 · ' + esc(unitLabel(it)) + '(적립금감안) · 점선은 평균</p>' +
-      chartSVG(it, pts) +
-      '<div class="pc-stats"><div class="pc-stat">최근<b>' + fmtU(st.last) + '</b></div><div class="pc-stat">평균<b>' + fmtU(st.avg) + '</b></div>' +
-      '<div class="pc-stat">최저<b class="pc-cdown">' + fmtU(st.min) + '</b>' + esc(pts[minIdx].date.slice(5).replace('-', '/')) + '</div></div></div>';
-  });
-  $('pc-charts').innerHTML = html || '<div class="pc-card"><p class="pc-hint" style="margin:0">기록이 있으면 상품별 가격 추이 그래프가 여기에 나와요.</p></div>';
+  const box = $('pc-charts'), st = itemStats();
+  const items = sortedItems('recent').filter(it => trendPoints(it).length);
+  if (!items.length) { box.innerHTML = '<div class="pc-card"><p class="pc-hint" style="margin:0">기록이 있으면 상품별 가격 추이 그래프가 여기에 나와요.</p></div>'; return; }
+  let sel = prefs.trendId;
+  if (sel !== '__all__' && !items.some(i => i.id === sel)) sel = items[0].id;   // 기본값: 가장 최근에 구매한 제품
+  prefs.trendId = sel;
+  const opts = '<option value="__all__">전체 제품 한눈에 보기</option>' + items.map(i => '<option value="' + esc(i.id) + '">' + esc(i.name) + ' · ' + st[i.id].count + '건</option>').join('');
+  box.innerHTML = '<div class="pc-card"><label class="pc-f" style="margin-top:0">제품 선택<select id="pc-trend-sel">' + opts + '</select></label></div>' +
+    (sel === '__all__' ? trendOverview(items) : trendChart(itemById(sel)));
+  $('pc-trend-sel').value = sel;
 }
 function updateEditPreview(){
   const item = itemById($('pc-e-item').value);
@@ -2320,8 +2548,10 @@ function openRec(id){
   editingId = id;
   const r = id ? S.records.find(x => x.id === id) : null;
   if (id && !r) return;
-  fillSelect($('pc-e-item'), S.items.map(i => ({ v: i.id, t: i.name })), r ? r.itemId : (filterId !== 'all' ? filterId : S.items[0].id));
+  const srt = sortedItems('recent');
+  fillSelect($('pc-e-item'), srt.map(i => ({ v: i.id, t: i.name })), r ? r.itemId : (filterId !== 'all' ? filterId : srt[0].id));
   $('pc-e-title').textContent = r ? '구매 기록 수정' : '구매 기록 추가';
+  fillStoreList(); $('pc-e-store').value = r ? (r.store || '') : lastStoreAny(); $('pc-e-size').value = r ? (r.size || '') : '';
   $('pc-e-date').value = r ? r.date : todayStr();
   $('pc-e-amount').value = r ? r.amount : ''; $('pc-e-bonus').value = r && r.bonus ? r.bonus : '';
   $('pc-e-paid').value = r ? r.paid : ''; $('pc-e-points').value = r && r.points ? r.points : '';
@@ -2334,8 +2564,9 @@ function saveRec(){
   const date = Calc.validDate($('pc-e-date').value);
   if (!date || Calc.unitOf(rec, item.basis) == null) { toast('날짜·용량·결제금·적립금을 확인해 주세요.'); return; }
   const t = nowIso();
-  if (editingId) { const r = S.records.find(x => x.id === editingId); if (r) { r.itemId = item.id; r.date = date; r.amount = rec.amount; r.bonus = rec.bonus; r.paid = rec.paid; r.points = rec.points; r.u = t; } }
-  else S.records.push({ id: uid('pr'), itemId: item.id, date, amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points, u: t });
+  const store = $('pc-e-store').value.trim(), size = $('pc-e-size').value.trim();
+  if (editingId) { const r = S.records.find(x => x.id === editingId); if (r) { r.itemId = item.id; r.date = date; r.amount = rec.amount; r.bonus = rec.bonus; r.paid = rec.paid; r.points = rec.points; r.store = store; r.size = size; r.u = t; } }
+  else S.records.push({ id: uid('pr'), itemId: item.id, date, amount: rec.amount, bonus: rec.bonus, paid: rec.paid, points: rec.points, store, size, u: t });
   pSave(); changed(); $('pc-dlg').close(); toast('저장했어요.'); renderAll();
 }
 function delRec(){
@@ -2351,7 +2582,7 @@ const SHOP_SEED = [{"id": "sh_el_1", "cat": "electronics", "status": "hold", "sa
 function sNormalize(o){
   o = o && typeof o === 'object' ? o : {};
   const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && i.item && Shop.CATS[i.cat]).map(i => {
-    const b = Object.assign({ store: '', qty: 1, purchaseDate: '', purchasePrice: '', actualPrice: '', b1name: '', b1amount: '', b1date: '', b2name: '', b2amount: '', b2date: '', status: 'hold', saleDate: '', salePrice: '', penalty: '', u: '' }, i);
+    const b = Object.assign({ store: '', qty: 1, purchaseDate: '', purchasePrice: '', actualPrice: '', points: '', b1name: '', b1amount: '', b1date: '', b2name: '', b2amount: '', b2date: '', status: 'hold', saleDate: '', salePrice: '', penalty: '', u: '' }, i);
     b.status = b.status === 'sold' ? 'sold' : 'hold'; b.id = String(b.id); b.u = String(b.u || ''); b.qty = Number(b.qty) || 1; return b;
   });
   return { items, del: cleanDel(o.del) };
@@ -2382,7 +2613,7 @@ function renderShop(){
     const hasActual = i.actualPrice !== '' && !isNaN(i.actualPrice) && Number(i.actualPrice) !== Number(i.purchasePrice);
     return '<div class="sh-row" data-sh="edit" data-id="' + esc(i.id) + '" tabindex="0"><div><div class="sh-top"><span class="sh-name">' + (esc(i.item) || '(이름 없음)') + '</span>' +
       '<span class="sh-badge ' + (i.status === 'sold' ? 'sold' : '') + '">' + (i.status === 'sold' ? '판매완료' : '보유중') + '</span>' + (i.qty > 1 ? '<span class="sh-badge">수량 ' + i.qty + '</span>' : '') + '</div>' +
-      '<div class="sh-meta"><span>구매처 <b>' + (esc(i.store) || '-') + '</b></span><span>구매일 <b>' + esc(i.purchaseDate || '-') + '</b></span>' + (i.status === 'sold' ? '<span>판매일 <b>' + esc(i.saleDate || '-') + '</b></span>' : '') + '</div>' +
+      '<div class="sh-meta"><span>구매처 <b>' + (esc(i.store) || '-') + '</b></span><span>구매일 <b>' + esc(i.purchaseDate || '-') + '</b></span>' + (Number(i.points) > 0 ? '<span>적립금 <b>' + won(i.points) + '</b></span>' : '') + (i.status === 'sold' ? '<span>판매일 <b>' + esc(i.saleDate || '-') + '</b></span>' : '') + '</div>' +
       benHtml + (i.status === 'sold' && Number(i.penalty) > 0 ? '<div class="sh-penalty">⚠ 위약금 ' + won(i.penalty) + '</div>' : '') + '</div>' +
       '<div class="sh-right">' + (hasActual ? '<div class="sh-price strike">' + won(i.purchasePrice) + '</div><div class="sh-real">실구매 ' + won(i.actualPrice) + '</div>' : '<div class="sh-price">' + won(i.purchasePrice) + '</div>') +
       (profit !== null ? '<div class="sh-profit ' + (profit >= 0 ? 'pos' : 'neg') + '">' + (profit >= 0 ? '+' : '') + won(profit) + '</div>' : '') + '</div></div>';
@@ -2409,7 +2640,7 @@ function toggleNotify(){
   try { localStorage.setItem(NOTIFY_KEY, notifyOn ? '1' : '0'); } catch (e) { /* 무시 */ }
   renderShop();
 }
-const SF = ['item', 'store', 'qty', 'purchaseDate', 'purchasePrice', 'actualPrice', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'status', 'saleDate', 'salePrice', 'penalty'];
+const SF = ['item', 'store', 'qty', 'purchaseDate', 'purchasePrice', 'actualPrice', 'points', 'b1name', 'b1amount', 'b1date', 'b2name', 'b2amount', 'b2date', 'status', 'saleDate', 'salePrice', 'penalty'];
 function openShop(id){
   shEditing = id || null;
   fillSelect($('sh-f-cat'), Shop.CAT_KEYS.map(c => ({ v: c, t: Shop.CATS[c] })), shCat);
@@ -2418,13 +2649,32 @@ function openShop(id){
   $('sh-d-title').textContent = i ? '항목 수정' : Shop.CATS[shCat] + ' 항목 추가';
   if (i) $('sh-f-cat').value = i.cat;
   SF.forEach(f => { $('sh-f-' + f).value = i ? (i[f] == null ? '' : i[f]) : (f === 'qty' ? 1 : (f === 'status' ? 'hold' : '')); });
+  // 실구매금액: 새 항목이거나 기존 값이 비었거나 자동 계산값과 같으면 '자동', 직접 입력해 둔 다른 값이면 '직접 입력'으로 시작(기존 값 보존)
+  const ca = Shop.autoActual(i || {});
+  $('sh-f-auto').checked = !i || i.actualPrice === '' || i.actualPrice == null || (ca.actual !== '' && Number(i.actualPrice) === ca.actual);
+  shRecalc();
   $('sh-d-delete').hidden = !i; $('sh-dlg').showModal();
+}
+// 구매금액·혜택·적립금을 바꿀 때마다 실구매금액을 바로 계산(가격 체크의 적립금감안 계산과 같은 방식)
+function shFormItem(){ const n = id => { const v = $(id).value; return v === '' ? '' : Number(v); }; return { purchasePrice: n('sh-f-purchasePrice'), b1amount: n('sh-f-b1amount'), b2amount: n('sh-f-b2amount'), points: n('sh-f-points') }; }
+function shRecalc(){
+  const f = shFormItem(), ca = Shop.autoActual(f), auto = $('sh-f-auto').checked, box = $('sh-f-calc'), act = $('sh-f-actualPrice');
+  act.readOnly = auto;
+  if (auto) act.value = ca.actual === '' ? '' : ca.actual;
+  const parts = [['혜택1', f.b1amount], ['혜택2', f.b2amount], ['적립금', f.points]].filter(p => Number(p[1]) > 0);
+  box.className = 'calc';
+  if (auto && ca.over) { box.classList.add('err'); box.textContent = '혜택·적립금 합계(' + won(ca.disc) + ')가 구매금액보다 커요. 금액을 확인해 주세요.'; }
+  else if (auto && ca.actual !== '') box.textContent = '실구매금액 = ' + fmt(f.purchasePrice) + parts.map(p => ' − ' + fmt(p[1])).join('') + ' = ' + fmt(ca.actual) + '원 (' + parts.map(p => p[0]).join('·') + ' 반영)';
+  else if (auto) box.textContent = '혜택·적립금을 입력하면 실구매금액이 자동 계산돼요. (없으면 구매금액 그대로 계산)';
+  else if (ca.actual !== '' && act.value !== '' && Number(act.value) !== ca.actual) { box.classList.add('diff'); box.textContent = '직접 입력한 값이에요. 자동 계산하면 ' + fmt(ca.actual) + '원 (입력값과 ' + fmt(Math.abs(ca.actual - Number(act.value))) + '원 차이) — 위 체크를 켜면 바뀝니다.'; }
+  else box.textContent = '직접 입력 중이에요.';
 }
 function saveShop(){
   const d = {}; SF.forEach(f => { d[f] = $('sh-f-' + f).value; });
   d.item = d.item.trim(); d.store = d.store.trim(); d.b1name = d.b1name.trim(); d.b2name = d.b2name.trim(); d.qty = Number(d.qty) || 1;
-  ['purchasePrice', 'actualPrice', 'b1amount', 'b2amount', 'salePrice', 'penalty'].forEach(f => { d[f] = d[f] === '' ? '' : (isFinite(Number(d[f])) ? Number(d[f]) : ''); });
+  ['purchasePrice', 'actualPrice', 'points', 'b1amount', 'b2amount', 'salePrice', 'penalty'].forEach(f => { d[f] = d[f] === '' ? '' : (isFinite(Number(d[f])) ? Number(d[f]) : ''); });
   if (!d.item) { toast('품목명을 입력해 주세요.'); return; }
+  if ($('sh-f-auto').checked) { const ca = Shop.autoActual(d); if (ca.over) { toast('혜택·적립금 합계가 구매금액보다 커요.'); return; } d.actualPrice = ca.actual; }
   d.cat = $('sh-f-cat').value; d.u = nowIso();
   if (shEditing) { const i = SH.items.find(x => x.id === shEditing); if (i) Object.assign(i, d); }
   else SH.items.push(Object.assign({ id: uid('sh') }, d));
@@ -2789,9 +3039,13 @@ function renderGlobal(){
   if (!A) { gs.textContent = ''; return; }
   const gbox = $('gAlerts');
   const last = A.last(), age = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : null;
+  const stt = A.state ? A.state() : { status: 'idle', dirty: false, msg: '', since: '' };
+  gs.classList.remove('pending'); delete gs.dataset.g;
   if (!A.hasUrl()) { gs.textContent = '☁ 시트 연결 전'; dot.className = 'gdot'; }
+  else if (stt.status === 'saving') { gs.textContent = '☁ 시트에 저장하고 확인하는 중…'; dot.className = 'gdot'; }
+  else if (stt.dirty) { gs.textContent = '⚠ 시트에 저장 확인 전 변경이 있어요' + (stt.status === 'fail' && stt.msg ? ' (' + stt.msg + ')' : '') + ' · 눌러서 지금 저장'; dot.className = 'gdot warn'; gs.classList.add('pending'); gs.dataset.g = 'backup'; }
   else if (age === null) { gs.textContent = '☁ 아직 백업 전'; dot.className = 'gdot warn'; }
-  else { gs.textContent = '☁ 마지막 백업 ' + (age === 0 ? '오늘' : age + '일 전') + (A.auto() ? ' · 자동 백업 켜짐' : ' · 자동 백업 꺼짐'); dot.className = 'gdot ' + (age <= 1 ? 'ok' : (age >= 7 ? 'warn' : '')); }
+  else { gs.textContent = '☁ 시트 저장 확인 ' + (age === 0 ? '오늘 ' + new Date(last).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : age + '일 전') + (A.auto() ? ' · 자동 백업 켜짐' : ' · 자동 백업 꺼짐'); dot.className = 'gdot ' + (age <= 1 ? 'ok' : (age >= 7 ? 'warn' : '')); }
   const list = [];
   if (mode !== 'shop') {
     const due = Shop.dueBenefits(SH.items, todayStr());
@@ -2799,6 +3053,7 @@ function renderGlobal(){
   }
   if (A.hasUrl()) { if (age === null || age >= 7) list.push({ key: 'bk:' + (age === null ? 'never' : 'old'), act: 'backup', html: '☁ ' + (age === null ? '아직 백업한 적이 없어요' : '마지막 백업이 <b>' + age + '일 전</b>이에요') + ' — 눌러서 지금 백업' }); }
   else list.push({ key: 'nourl', act: 'settings', html: '☁ 시트 연결이 안 되어 있어요 — 눌러서 ⚙ 설정에서 Apps Script URL 입력' });
+  if (A.hasUrl() && stt.dirty && stt.since && Date.now() - Date.parse(stt.since) > 120000) list.push({ key: 'dirty', act: 'backup', html: '⚠ <b>시트에 저장되지 않은 변경</b>이 2분 넘게 남아 있어요 — 앱을 지우거나 재설치하기 전에 꼭 눌러서 저장하세요' });
   if (mode !== 'meeting') { const nm = A.newMonth(); if (nm) list.push({ key: 'nm:' + nm, act: 'meeting', html: '📅 회의비: ' + esc(nm) }); }
   if (mode !== 'sub') {
     const up = Life.upcoming(SB.items, Life.payMap(SB.pays), todayStr(), 2);
@@ -2811,6 +3066,7 @@ function renderGlobal(){
   const html = list.filter(a => !dismissed(a.key)).map(a => '<div class="galert" data-g="' + a.act + '" data-key="' + esc(a.key) + '" role="button" tabindex="0"><span class="t">' + a.html + '</span><button class="x" data-g="x" data-key="' + esc(a.key) + '" aria-label="닫기">✕</button></div>').join('');
   if (gbox.dataset.sig !== html) { gbox.dataset.sig = html; gbox.innerHTML = html; }
 }
+if (window.AppSync) window.AppSync.onState = renderGlobal;
 $('gBar').addEventListener('click', e => {
   const x = e.target.closest('[data-g="x"]');
   if (x) { try { sessionStorage.setItem('gdis:' + x.dataset.key, '1'); } catch (er) { /* 무시 */ } renderGlobal(); e.stopPropagation(); return; }
@@ -2856,7 +3112,7 @@ $('priceView').addEventListener('click', e => {
   const a = el.dataset.pc;
   if (a === 'tab') setTab(el.dataset.t);
   else if (a === 'save-new') saveNew();
-  else if (a === 'filter') { filterId = el.dataset.id; renderHistory(); }
+  else if (a === 'trend-pick') { prefs.trendId = el.dataset.id; savePrefs(); renderTrend(); window.scrollTo(0, 0); }
   else if (a === 'add-rec') openRec(null);
   else if (a === 'edit-rec') openRec(el.dataset.id);
   else if (a === 'backup') doBackup();
@@ -2884,11 +3140,20 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'Enter' || !e.target.matches) return;
   if (e.target.matches('tr[data-pc="edit-rec"]')) openRec(e.target.dataset.id); else if (e.target.matches('.sh-row')) openShop(e.target.dataset.id); else if (e.target.matches('.gf-row')) openCourse(e.target.dataset.id); else if (e.target.matches('.sb-row')) openSub(e.target.dataset.id); else if (e.target.matches('.pp-row')) { const r = e.target; if (r.dataset.pp === 'edit-person') openPerson(r.dataset.id); else if (r.dataset.pp === 'edit-meet') openMeet(r.dataset.id); }
 });
-$('pc-item').addEventListener('change', () => { const it = itemById($('pc-item').value); if (it) { const rs = recsOf(it.id); $('pc-amount').value = rs.length ? rs[rs.length - 1].amount : ''; } computeAnalyze(); });
+$('pc-item').addEventListener('change', () => { prefillFromLast(); computeAnalyze(); });
+// 구매 이력의 제품 풀다운·정렬 풀다운, 가격 추이의 제품 풀다운
+$('priceView').addEventListener('change', e => {
+  const id = e.target && e.target.id;
+  if (id === 'pc-filter-sel') { filterId = e.target.value; savePrefs(); renderHistory(); }
+  else if (id === 'pc-sort') { prefs.sort = e.target.value; savePrefs(); renderHistory(); }
+  else if (id === 'pc-trend-sel') { prefs.trendId = e.target.value; savePrefs(); renderTrend(); }
+});
 ['pc-name', 'pc-unit', 'pc-basis', 'pc-amount', 'pc-bonus', 'pc-paid', 'pc-points'].forEach(id => $(id).addEventListener('input', computeAnalyze));
 ['pc-e-amount', 'pc-e-bonus', 'pc-e-paid', 'pc-e-points'].forEach(id => $(id).addEventListener('input', updateEditPreview));
 $('pc-e-item').addEventListener('change', updateEditPreview);
 $('sh-csv').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) csvIn(f); });
+['sh-f-purchasePrice', 'sh-f-b1amount', 'sh-f-b2amount', 'sh-f-points', 'sh-f-actualPrice'].forEach(id => $(id).addEventListener('input', shRecalc));
+$('sh-f-auto').addEventListener('change', shRecalc);
 
 $('priceView').addEventListener('click', e => {
   const el = e.target.closest('[data-gf]'); if (!el) return;

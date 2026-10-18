@@ -1,44 +1,31 @@
-// 회의비 대시보드 - 오프라인 설치(PWA)용 최소 서비스워커
-// 앱 화면(같은 출처의 정적 파일)만 캐싱하고, Google Sheets/폰트 등 외부 요청은 그대로 통과시킵니다.
+/* 마이라이프 서비스 워커 (2026-10-18)
+   - 항상 네트워크 최신본을 먼저 받아오고, 인터넷이 안 될 때만 저장해 둔 사본을 보여 줍니다.
+   - 예전 버전이 남긴 캐시(옛 앱 이름·옛 화면)는 이 파일이 적용되는 순간 모두 지웁니다.
+   - Apps Script·구글 폰트 등 다른 사이트 요청은 건드리지 않습니다. */
+const VER = 'mylife-2026-10-18-a';
 
-const CACHE_NAME = 'meeting-budget-cache-v1';
-const APP_SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
+self.addEventListener('install', () => { self.skipWaiting(); });
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(APP_SHELL))
-      .catch(() => {}) // 오프라인 첫 설치 등 실패해도 무시
-  );
-  self.skipWaiting();
+self.addEventListener('activate', event => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter(k => k !== VER).map(k => caches.delete(k)));
+    await self.clients.claim();
+  })());
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', event => {
   const req = event.request;
-
-  // GET 요청, 같은 출처(우리 앱 파일)만 다룹니다.
-  // POST(예: Google Sheets 백업)나 외부 도메인(구글 폰트, Apps Script 등)은 그대로 통과.
-  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) {
-    return;
-  }
-
-  // 네트워크 우선, 실패 시 캐시 (앱 최신 버전을 우선 반영하되 오프라인에서도 열리게)
-  event.respondWith(
-    fetch(req)
-      .then((res) => {
-        const resClone = res.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
-        return res;
-      })
-      .catch(() => caches.match(req).then((cached) => cached || caches.match('./index.html')))
-  );
+  if (req.method !== 'GET') return;
+  if (new URL(req.url).origin !== self.location.origin) return;
+  event.respondWith((async () => {
+    try {
+      const res = await fetch(req, { cache: 'no-store' });
+      if (res && res.ok) { const c = await caches.open(VER); c.put(req, res.clone()); }
+      return res;
+    } catch (err) {
+      const c = await caches.open(VER);
+      return (await c.match(req)) || (await c.match('./index.html')) || (await c.match('./')) || Response.error();
+    }
+  })());
 });
