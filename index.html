@@ -544,10 +544,10 @@
   .pp-bar{ display:flex; align-items:center; gap:8px; font-size:12.5px; margin:6px 0; } .pp-bar span{ width:52px; color:var(--ink2); } .pp-bar i{ display:block; height:8px; border-radius:4px; background:var(--accent); } .pp-bar em{ font-style:normal; color:var(--ink2); font-size:11.5px; }
   #mt-f-people label{ display:flex; align-items:center; gap:8px; padding:6px 0; font-size:14px; color:var(--ink); } #mt-f-people input, #pp-f-prefs input{ width:auto; min-height:0; }
   #mt-f-people .gname{ font-size:11px; font-weight:700; color:var(--ink2); margin-top:8px; }
-  #gf-dlg, #gr-dlg, #sb-dlg, #pp-dlg, #mt-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
-  #gf-dlg::backdrop, #gr-dlg::backdrop, #sb-dlg::backdrop, #pp-dlg::backdrop, #mt-dlg::backdrop{ background:rgba(0,0,0,.45); }
-  #gf-dlg h3, #gr-dlg h3, #sb-dlg h3, #pp-dlg h3, #mt-dlg h3{ margin:0 0 4px; font-size:16px; }
-  #gf-dlg .pc-f input, #gr-dlg .pc-f input, #gr-dlg .pc-f select, #sb-dlg .pc-f input, #sb-dlg .pc-f select, #pp-dlg .pc-f input, #pp-dlg .pc-f select, #mt-dlg .pc-f input, #mt-dlg .pc-f select{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
+  #gf-dlg, #gr-dlg, #sb-dlg, #pp-dlg, #mt-dlg, #mt-bd-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
+  #gf-dlg::backdrop, #gr-dlg::backdrop, #sb-dlg::backdrop, #pp-dlg::backdrop, #mt-dlg::backdrop, #mt-bd-dlg::backdrop{ background:rgba(0,0,0,.45); }
+  #gf-dlg h3, #gr-dlg h3, #sb-dlg h3, #pp-dlg h3, #mt-dlg h3, #mt-bd-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #gf-dlg .pc-f input, #gr-dlg .pc-f input, #gr-dlg .pc-f select, #sb-dlg .pc-f input, #sb-dlg .pc-f select, #pp-dlg .pc-f input, #pp-dlg .pc-f select, #mt-dlg .pc-f input, #mt-dlg .pc-f select, #mt-bd-dlg .pc-f input{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
   #pp-f-prefs .pc-chip{ display:inline-flex; align-items:center; gap:5px; } #gr-dlg, #sb-dlg{ z-index:5; }
   /* ---- 2026-10-18: 구매처·사이즈, 제품 풀다운, 가격추이 요약, 쇼핑 적립금 ---- */
   .pc-filterrow{ margin-bottom:6px; }
@@ -575,6 +575,14 @@
   .sh-autobox .calc.err{ color:var(--warn); font-weight:700; }
   .sh-autobox .calc.diff{ color:var(--accent); }
   #sh-dlg input[readonly]{ background:var(--bg); color:var(--ink2); }
+  .mt-chip{ border:1px solid var(--line,#ccc); background:transparent; color:inherit; border-radius:999px; padding:6px 12px; font-size:13px; cursor:pointer; } .mt-chip.on{ background:var(--accent); color:#fff; border-color:var(--accent); } .mt-chip[disabled]{ opacity:.4; }
+  .pp-row.bd{ border-left:3px solid var(--accent); } .pp-bdsug{ background:var(--accent-soft,rgba(255,106,0,.08)); border-radius:12px; padding:10px 12px; margin:8px 0; } .pp-bdsug .r{ display:flex; gap:8px; align-items:center; justify-content:space-between; padding:6px 0; } .pp-bdsug .r + .r{ border-top:1px solid var(--line,rgba(0,0,0,.08)); }
+  .md-wz-card{ background:var(--accent-soft,rgba(255,106,0,.08)); border-radius:12px; padding:10px 12px; margin-bottom:10px; font-size:14px; line-height:1.5; }
+  #qk-dlg, #qk-sk-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,440px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); } #qk-dlg::backdrop, #qk-sk-dlg::backdrop{ background:rgba(0,0,0,.45); } #qk-dlg h3, #qk-sk-dlg h3{ margin:0 0 8px; font-size:16px; }
+  #qk-dlg .pc-f input, #qk-dlg .pc-f select{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:9px 10px; width:100%; box-sizing:border-box; }
+  .td-qk{ display:grid; grid-template-columns:1fr 1fr; gap:8px; } .td-qk .pc-btn{ padding:12px 8px; }
+  .td-rv-h, .td-rv-r{ display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:6px; align-items:baseline; padding:7px 0; font-size:13px; } .td-rv-r{ border-top:1px solid var(--line); } .td-rv-r span small{ display:block; font-size:11px; color:var(--ink2); } .td-rv-r b{ text-align:right; } .td-rv-h b{ text-align:right; font-size:11px; color:var(--ink2); } .td-rv-r b.mute{ color:var(--ink2); font-weight:500; }
+  .td-more{ margin-top:8px; } .td-more summary{ font-size:12px; color:var(--muted,#888); cursor:pointer; }
   .gsync.pending{ cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
   /* ---- 2026-10-18-g: 하단 탭 + 더보기, 빠른 가이드, 도수치료, 연봉 ---- */
   .modebar{ position:sticky; top:0; z-index:40; background:var(--bg); border-bottom:1px solid var(--line); padding:8px 14px 0; }
@@ -658,12 +666,12 @@
   .sh-trade{ display:inline-block; margin-top:6px; padding:4px 9px; border:1px solid var(--accent); border-radius:8px; font-size:12px; font-weight:700; color:var(--accent); line-height:1.4; }
   .sh-row.hl, .sb-row.hl{ animation:hlflash 2.4s ease-out 1; } @keyframes hlflash{ 0%,60%{ background:var(--pc-soft); box-shadow:0 0 0 2px var(--accent) inset; } 100%{ background:transparent; box-shadow:none; } }
   .scard.link{ cursor:pointer; } .scard.link:hover{ background:var(--pc-soft); } .sb-needlink{ cursor:pointer; text-decoration:underline; }
-  .md-acts{ display:flex; gap:6px; margin:4px 0 10px; } .md-acts .pc-btn{ flex:1; white-space:nowrap; padding:9px 6px; font-size:13px; } .md-acts .pc-btn.primary{ flex:1.4; }
+  .md-acts{ display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px; } .md-acts .pc-btn{ flex:1 1 30%; white-space:nowrap; padding:9px 6px; font-size:13px; } .md-acts .pc-btn.primary{ flex:1.4; }
   /* ===== 의료비 ===== */
-  #md-dlg, #md-cl-dlg, #md-sms-dlg, #md-bd-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,520px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
-  #md-dlg::backdrop, #md-cl-dlg::backdrop, #md-sms-dlg::backdrop, #md-bd-dlg::backdrop{ background:rgba(0,0,0,.45); }
-  #md-dlg h3, #md-cl-dlg h3, #md-sms-dlg h3, #md-bd-dlg h3{ margin:0 0 4px; font-size:16px; }
-  #md-dlg .pc-f input, #md-dlg .pc-f select, #md-cl-dlg .pc-f input, #md-sms-dlg .pc-f input, #md-sms-dlg .pc-f select, #md-sms-dlg textarea, #medView .pc-f select, #medView .pc-f input{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; box-sizing:border-box; }
+  #md-dlg, #md-cl-dlg, #md-sms-dlg, #md-bd-dlg, #md-wz-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,520px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
+  #md-dlg::backdrop, #md-cl-dlg::backdrop, #md-sms-dlg::backdrop, #md-bd-dlg::backdrop, #md-wz-dlg::backdrop{ background:rgba(0,0,0,.45); }
+  #md-dlg h3, #md-cl-dlg h3, #md-sms-dlg h3, #md-bd-dlg h3, #md-wz-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #md-dlg .pc-f input, #md-dlg .pc-f select, #md-cl-dlg .pc-f input, #md-wz-dlg .pc-f input, #md-sms-dlg .pc-f input, #md-sms-dlg .pc-f select, #md-sms-dlg textarea, #medView .pc-f select, #medView .pc-f input{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; box-sizing:border-box; }
   #md-sms-dlg textarea{ min-height:96px; resize:vertical; }
   #md-dlg .mp-chk, #md-cl-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #md-dlg .mp-chk input, #md-cl-dlg .mp-chk input{ width:auto; min-height:0; }
   .md-flt{ display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px; }
@@ -964,6 +972,7 @@
       <div class="pc-headrow"><h3>만남 이력</h3><span class="sh-hbtns"><button class="pc-btn small" data-pp="add-plan">+ 예약</button><button class="pc-btn small primary" data-pp="add-meet">+ 만남 기록</button></span></div>
       <div class="pc-row2 pc-filterrow"><label class="pc-f">상태<select id="lg-flt-st"><option value="all">전체</option><option value="plan">예약(앞으로)</option><option value="done">만남 완료</option></select></label><label class="pc-f">모임<select id="lg-flt-club"></select></label></div>
       <div class="pc-row2 pc-filterrow"><label class="pc-f">사람<select id="lg-flt-person"></select></label><label class="pc-f">방식<select id="lg-flt-type"></select></label></div>
+      <div id="pp-bd-sug"></div>
       <div id="pp-meets"></div>
     </div>
   </section>
@@ -971,6 +980,15 @@
   <p class="pc-sync" id="pp-sync"></p>
  </div>
 </div>
+
+<dialog id="mt-bd-dlg">
+  <h3>한 번의 만남으로 묶기</h3>
+  <p class="pc-hint" id="mt-bd-info" style="margin:0 0 8px"></p>
+  <div id="mt-bd-list"></div>
+  <p class="pc-hint" id="mt-bd-calc"></p>
+  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-pp="bd-cancel">취소</button><button class="pc-btn primary" data-pp="bd-save">묶기 저장</button></div>
+  <button class="pc-btn danger wide" data-pp="bd-solo" id="mt-bd-solo">묶음에서 빼기(단독 1번으로)</button>
+</dialog>
 
 <!-- ===== [신규] 피부관리 영역 ===== -->
 <div id="skinView" hidden>
@@ -1015,7 +1033,7 @@
  <div class="pc-wrap">
   <div class="strip" id="md-summary"></div>
   <div class="sectionhead"><h3>🏥 의료비 정산</h3></div>
-  <div class="md-acts"><button class="pc-btn primary" data-md="sms">📩 문자로 등록</button><button class="pc-btn" data-md="add">+ 직접 등록</button><button class="pc-btn" data-md="selmode" id="md-selmode">☑ 여러 건 선택</button></div>
+  <div class="md-acts"><button class="pc-btn primary" data-md="sms">📩 문자로 등록</button><button class="pc-btn" data-md="add">+ 직접 등록</button><button class="pc-btn" data-md="selmode" id="md-selmode">☑ 여러 건 선택</button><button class="pc-btn" data-md="wz" id="md-wz-btn" hidden>🧹 누락 정리</button></div>
   <div class="md-net" id="md-net"></div>
   <div class="md-flt" id="md-flt"></div>
   <div class="pc-row2 pc-filterrow"><label class="pc-f">기간<select id="md-flt-year"></select></label></div>
@@ -1146,6 +1164,28 @@
   <div id="md-f-settle"></div>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-md="d-cancel">닫기</button><button class="pc-btn primary" data-md="d-save">저장</button></div>
   <button id="md-d-delete" class="pc-btn danger wide" data-md="d-delete">이 진료 건 삭제</button>
+</dialog>
+
+<dialog id="qk-dlg">
+  <h3>💰 회의비 지출 빠른 추가</h3>
+  <div class="pc-row2"><label class="pc-f">날짜<input id="qk-date" type="date"></label><label class="pc-f">카드<select id="qk-card"></select></label></div>
+  <label class="pc-f">항목<input id="qk-item" type="text" list="itemSuggestions" placeholder="예: 점심 식대"></label>
+  <label class="pc-f">결제금액(원)<input id="qk-amt" type="number" inputmode="numeric" min="0" step="100"></label>
+  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-qk="cancel">취소</button><button class="pc-btn primary" data-qk="save">추가</button></div>
+</dialog>
+<dialog id="qk-sk-dlg">
+  <h3>✨ 오늘 받은 시술 체크</h3>
+  <div id="qk-sk-list"></div>
+  <button class="pc-btn wide" data-qk="cancel" style="margin-top:10px">닫기</button>
+</dialog>
+<dialog id="md-wz-dlg">
+  <h3>🧹 의료비 누락 정리</h3>
+  <p class="pc-hint" style="margin:0 0 6px" id="md-wz-prog"></p>
+  <div id="md-wz-card" class="md-wz-card"></div>
+  <div class="pc-row2" id="md-wz-fields"></div>
+  <p class="pc-hint" id="md-wz-hint" style="margin:4px 0 0"></p>
+  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-md="wz-skip">나중에(건너뛰기)</button><button class="pc-btn primary" data-md="wz-save">저장하고 다음</button></div>
+  <button class="pc-btn wide" data-md="wz-close" style="margin-top:8px">닫기</button>
 </dialog>
 
 <dialog id="md-cl-dlg">
@@ -1381,8 +1421,9 @@
     <label class="pc-f">상태<select id="mt-f-st"><option value="done">만남 완료</option><option value="plan">예약(예정)</option></select></label>
     <label class="pc-f">방식<select id="mt-f-type"></select></label>
   </div>
+  <div class="pc-f" id="mt-f-more-wrap">같은 날 함께한 방식 추가(선택) — 밥+커피처럼 한 번에 만났다면 여기서 고르세요<div id="mt-f-more" class="pk-tags" style="margin-top:6px"></div></div>
   <div class="pc-f">함께할 사람
-    <select id="mt-f-clubsel" aria-label="모임으로 한 번에 추가"></select>
+    <div id="mt-f-clubchips" class="pk-tags" style="margin-bottom:6px" aria-label="모임으로 한 번에 추가"></div>
     <div class="pc-row2" style="margin-top:6px"><select id="mt-f-gsel" aria-label="그룹 선택"></select><select id="mt-f-psel" aria-label="사람 선택"></select></div>
     <div id="mt-f-people" class="pk-tags"></div>
   </div>
@@ -1390,6 +1431,7 @@
   <label class="pc-f" id="mt-f-energy-wrap">만난 뒤 에너지(선택)<select id="mt-f-energy"><option value="">기록 안 함</option><option value="charge">충전됐어요</option><option value="normal">보통</option><option value="drain">방전됐어요</option></select></label>
   <label class="pc-f">한 줄 메모<input id="mt-f-memo" type="text"></label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-pp="m-cancel">취소</button><button class="pc-btn primary" data-pp="m-save">저장</button></div>
+  <div id="mt-f-bd" class="pc-f" hidden><span id="mt-f-bd-txt"></span><button type="button" class="pc-btn small" data-pp="bd-open" style="margin-top:6px">🔗 같은 날 다른 기록과 한 번으로 묶기</button></div>
   <button id="mt-d-delete" class="pc-btn danger wide" data-pp="m-delete">이 기록 삭제</button>
 </dialog>
 
@@ -2297,7 +2339,7 @@
   // 2) 올린 뒤 시트를 다시 읽어 "정말 저장됐는지" 확인한 경우에만 '저장 확인'으로 표시
   // 3) 저장 확인 전 변경은 '미저장'으로 남기고(앱을 닫아도 유지) 실패 시 자동 재시도
   let syncing = false, syncAgain = false, retryTimer = null, retryCount = 0, pulledThisSession = false;
-  const syncState = { status: 'idle', msg: '' };
+  const syncState = { status: 'idle', msg: '', stage: '', t0: 0, lastMs: 0 };
   // 응답이 없을 때 무한정 기다리지 않도록 제한 시간을 둔 fetch
   async function fetchT(url, opt, ms){
     const ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null, t = setTimeout(() => { if(ctl) ctl.abort(); }, ms || 25000);
@@ -2341,6 +2383,7 @@
     if(syncing){ syncAgain = true; return false; }
     syncing = true; syncAgain = false;
     const seqAtStart = changeSeq;
+    syncState.t0 = Date.now(); syncState.stage = 'pull';
     setSyncStatus('saving');
     let stage = 'pull';
     // 어떤 이유로든 2분 넘게 끝나지 않으면 '저장 중' 표시를 풀고 실패로 알려줘요(자동 재시도)
@@ -2350,12 +2393,12 @@
       const remote = await fetchRemote(url);
       pulledThisSession = true;
       if(mergeRemote(remote)){ render(); }
-      stage = 'push';
+      stage = 'push'; syncState.stage = 'push'; setSyncStatus('saving');
       const rev = 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
       const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: rev }));
       try{ await fetchT(url, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body }, 45000); }
       catch(pe){ /* 보내는 중 응답이 늦어도 시트엔 저장됐을 수 있어요 — 아래 확인 단계에서 다시 확인 */ }
-      stage = 'verify';
+      stage = 'verify'; syncState.stage = 'verify'; setSyncStatus('saving');
       let ok = false, lastErr = null;
       for(let k = 0; k < 4 && !ok; k++){
         if(k) await new Promise(r => setTimeout(r, k * 2500));
@@ -2368,6 +2411,7 @@
       if(seqAtStart === changeSeq) setDirty(false);   // 저장하는 동안 새 변경이 없었을 때만 '미저장' 해제
       retryCount = 0; clearTimeout(retryTimer);
       el('lastSyncTime').textContent = `마지막 저장 확인: ${new Date(data.settings.lastSync).toLocaleString('ko-KR')}`;
+      syncState.lastMs = Date.now() - syncState.t0;
       setSyncStatus('ok');
       if(!silent) showToast('Google Sheets에 저장하고 확인했습니다');
       return true;
@@ -2601,7 +2645,7 @@
     openSettings: () => { openDrawer(); setTimeout(() => { const u = el('sheetUrlInput'); if(u && u.scrollIntoView) u.scrollIntoView({block:'center'}); }, 300); },
     newMonth: () => { const b = el('newMonthBanner'); return (b && b.style.display !== 'none') ? (el('newMonthText').textContent || '').trim() : ''; },
     // 동기화 v2: 저장 확인 상태 / 미저장 여부 / 가격·쇼핑 등 다른 화면의 변경 알림
-    state: () => ({ status: syncState.status, msg: syncState.msg, dirty: isDirty(), since: dirtySince() }),
+    state: () => ({ status: syncState.status, msg: syncState.msg, dirty: isDirty(), since: dirtySince(), stage: syncState.stage, t0: syncState.t0, lastMs: syncState.lastMs }),
     touch: markChanged,
     onState: null
   };
@@ -2990,16 +3034,38 @@ const Life = (() => {
     return { last, since, cycle, ratio, never: !last, state: ratio >= 1 ? 'over' : (ratio >= 0.8 - 1e-9 ? 'soon' : 'ok') };
   }
   function dueList(people, meets, cfg, today){ return people.map(p => Object.assign({ p }, status(p, meets, cfg, today))).filter(x => x.state !== 'ok').sort((a, b) => b.ratio - a.ratio); }
-  function monthCount(meets, month){ return meets.filter(m => !isPlan(m) && String(m.date).slice(0, 7) === month).length; }
-  function typeShares(meets, from, to){ const c = {}; let n = 0; meets.filter(m => !isPlan(m) && m.date >= from && m.date <= to).forEach(m => { c[m.type] = (c[m.type] || 0) + 1; n++; }); return { counts: c, total: n }; }
-  function energyShares(meets, from, to){ const c = { charge: 0, normal: 0, drain: 0 }; meets.filter(m => !isPlan(m) && m.date >= from && m.date <= to && c[m.energy] !== undefined).forEach(m => { c[m.energy]++; }); return c; }
+  // 한 번의 만남(방문) = 같은 묶음(vg)의 기록들 · 묶지 않은 기록은 각각 1번. 횟수·방식·기분 통계는 모두 이 기준.
+  const typesOf = m => { const a = [m.type].concat(Array.isArray(m.more) ? m.more : []).filter(Boolean); return a.filter((x, i) => a.indexOf(x) === i); };
+  function visits(meets, from, to){
+    const g = {}, out = [];
+    meets.filter(m => !isPlan(m) && (!from || m.date >= from) && (!to || m.date <= to)).forEach(m => {
+      const k = m.vg || m.id; let v = g[k];
+      if (!v) { v = g[k] = { key: k, ids: [], date: m.date, pids: [], types: [], energy: '', mem: [] }; out.push(v); }
+      v.ids.push(m.id); v.mem.push(m); if (m.date < v.date) v.date = m.date;
+      (m.pids || []).forEach(id => { if (v.pids.indexOf(id) < 0) v.pids.push(id); });
+      typesOf(m).forEach(t => { if (v.types.indexOf(t) < 0) v.types.push(t); });
+    });
+    out.forEach(v => { // 대표 기분: 묶음 안에서 가장 나중(시간 → 수정시각 순)에 적은 기록의 기분
+      const withE = v.mem.filter(m => m.energy).sort((a, b) => String(a.time || '').localeCompare(String(b.time || '')) || String(a.u || '').localeCompare(String(b.u || '')));
+      v.energy = withE.length ? withE[withE.length - 1].energy : '';
+    });
+    return out;
+  }
+  function energyBy(meets, from, to){
+    const P = {}, T = {}, add = (o, k, e) => { const x = o[k] = o[k] || { n: 0, charge: 0, normal: 0, drain: 0 }; x.n++; x[e]++; };
+    visits(meets, from, to).forEach(v => { if (!v.energy) return; v.pids.forEach(id => add(P, id, v.energy)); v.types.forEach(t => add(T, t, v.energy)); });
+    return { people: P, types: T };
+  }
+  function monthCount(meets, month){ return visits(meets).filter(v => String(v.date).slice(0, 7) === month).length; }
+  function typeShares(meets, from, to){ const c = {}, vs = visits(meets, from, to); vs.forEach(v => v.types.forEach(t => { c[t] = (c[t] || 0) + 1; })); return { counts: c, total: vs.length }; }
+  function energyShares(meets, from, to){ const c = { charge: 0, normal: 0, drain: 0 }; visits(meets, from, to).forEach(v => { if (c[v.energy] !== undefined) c[v.energy]++; }); return c; }
   function avgInterval(p, meets){
-    const ds = meets.filter(m => !isPlan(m) && (m.pids || []).indexOf(p.id) >= 0).map(m => m.date).sort();
+    const ds = meets.filter(m => !isPlan(m) && (m.pids || []).indexOf(p.id) >= 0).map(m => m.date).sort().filter((d, i, a) => !i || d !== a[i - 1]);
     if (ds.length < 2) return null;
     let s = 0; for (let i = 1; i < ds.length; i++) s += dd(ds[i - 1], ds[i]);
     return s / (ds.length - 1);
   }
-  return { dd, partOf, fmtMan, teeLabel, partPrices, lastDay, amountAt, payMap, effAmount, discountOf, netOf, monthTotals, dueDate, upcoming, TYPES, GROUPS, DEFAULT_CFG, normType, cycleOf, lastMeet, isPlan, upcomingPlans, overduePlans, status, dueList, monthCount, typeShares, energyShares, avgInterval };
+  return { dd, partOf, fmtMan, teeLabel, partPrices, lastDay, amountAt, payMap, effAmount, discountOf, netOf, monthTotals, dueDate, upcoming, TYPES, GROUPS, DEFAULT_CFG, normType, cycleOf, lastMeet, isPlan, upcomingPlans, overduePlans, status, dueList, monthCount, typeShares, energyShares, energyBy, visits, typesOf, avgInterval };
 })();
 // </LIFECALC>
 const LIFE_BASE = ['커피', '점심식사', '저녁식사', '골프'];
@@ -3007,7 +3073,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-19-l (아비쥬 시술권 정리)';
+const APP_BUILD_VERSION = '2026-10-19-n (만남 묶기 · 백업 표시 · 의료비 정리)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -3025,15 +3091,37 @@ function cleanDel(d){ const o = {}; if (d && typeof d === 'object') Object.keys(
 
 /* ---------- 동기화 연결(회의비 쪽 window.AppSync 사용) ---------- */
 let syncTimer = null;
+const bkFmt = d => { const x = new Date(d), n = new Date(), same = x.toDateString() === n.toDateString(); return (same ? '오늘 ' : (x.getMonth() + 1) + '/' + x.getDate() + ' ') + x.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }); };
+// 백업 상태를 한 곳에서 계산: 맨 아래 · 상단 · 오늘 카드가 모두 같은 문구를 씀
+function bkView(){
+  const A = window.AppSync; if (!A) return null;
+  const stt = A.state ? A.state() : { status: 'idle', dirty: false, msg: '' }, last = A.last(), auto = A.auto();
+  const age = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : null;
+  const lastTxt = last ? '마지막 백업 ' + bkFmt(last) : '아직 백업한 적 없어요';
+  if (!A.hasUrl()) return { k: 'none', dot: '', go: 'settings', text: '☁ 시트 연결 전 — ⚙ 설정에서 Apps Script 주소를 입력하세요', sub: '' };
+  if (stt.status === 'saving') {
+    const sec = Math.max(0, Math.round((Date.now() - (stt.t0 || Date.now())) / 1000)), nm = { pull: '시트 확인', push: '보내는 중', verify: '저장 확인' }[stt.stage] || '';
+    return { k: 'saving', dot: '', text: '🔄 백업 중' + (nm ? ' · ' + nm : '') + ' ' + sec + '초' + (sec >= 20 ? ' (시간이 걸려도 오류가 아니에요)' : ''), sub: lastTxt };
+  }
+  if (stt.status === 'fail') return { k: 'fail', dot: 'warn', go: 'backup', text: '⚠ 백업 못 함' + (auto ? ' — 자동으로 다시 시도해요' : '') + ' · 눌러서 지금 다시', sub: (stt.msg ? stt.msg + ' · ' : '') + lastTxt };
+  if (stt.dirty) {
+    const mins = stt.since ? Math.round((Date.now() - new Date(stt.since).getTime()) / 60000) : 0;
+    if (auto && mins < 10) return { k: 'wait', dot: '', go: 'backup', text: '✎ 방금 바꾼 내용은 곧 자동 백업돼요', sub: lastTxt };
+    return { k: 'old', dot: 'warn', go: 'backup', text: '⚠ ' + (mins >= 60 ? Math.floor(mins / 60) + '시간' : mins + '분') + ' 넘게 백업 안 된 변경이 있어요 · 눌러서 지금 백업', sub: lastTxt };
+  }
+  if (age === null) return { k: 'new', dot: 'warn', go: 'backup', text: '☁ 아직 백업한 적 없어요 · 눌러서 지금 백업', sub: '' };
+  if (age >= 7) return { k: 'stale', dot: 'warn', go: 'backup', text: '⚠ ' + age + '일째 백업 확인이 없어요 · 눌러서 지금 백업', sub: lastTxt };
+  return { k: 'ok', dot: age <= 1 ? 'ok' : '', text: '✓ 백업 완료 ' + bkFmt(last) + (stt.lastMs ? ' (' + Math.max(1, Math.round(stt.lastMs / 1000)) + '초 걸림)' : ''), sub: '' };
+}
+let bkTick = null;
+function bkTicker(){
+  const A = window.AppSync, on = A && A.state && A.state().status === 'saving';
+  if (on && !bkTick) bkTick = setInterval(() => { renderGlobal(); syncNote(); if (mode === 'today') { const el = document.querySelector('[data-bk=txt]'); const v = bkView(); if (el && v) el.textContent = v.text; } }, 1000);
+  else if (!on && bkTick) { clearInterval(bkTick); bkTick = null; }
+}
 function syncNote(){
-  const A = window.AppSync, stt = A && A.state ? A.state() : { status: 'idle', dirty: false, msg: '' };
-  const fmt = d => { const x = new Date(d); return (x.getMonth() + 1) + '/' + x.getDate() + ' ' + x.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }); };
-  const auto = A && A.auto() ? ' · 자동 백업 켜짐' : ' · 자동 백업 꺼짐';
-  const t = !A ? '' : (!A.hasUrl() ? '☁ 시트 연결 전 — 상단의 ⚙ 설정에서 Apps Script URL을 입력하세요' :
-    stt.status === 'saving' ? '☁ 시트에 저장하고 확인하는 중…' :
-    stt.status === 'fail' ? '⚠ 마지막 백업 실패' + (stt.msg ? ' (' + stt.msg + ')' : '') + (A.last() ? ' · 마지막 저장 확인 ' + fmt(A.last()) : '') + auto :
-    stt.dirty ? '⚠ 저장 확인 전 변경이 있어요' + (A.last() ? ' · 마지막 저장 확인 ' + fmt(A.last()) : '') + auto :
-    A.last() ? '✓ 시트 저장 확인 ' + fmt(A.last()) + auto : '☁ 아직 백업 전' + auto);
+  const A = window.AppSync, v = bkView();
+  const t = !v ? '' : v.text + (v.k === 'none' ? '' : (A.auto() ? ' · 자동 백업 켜짐' : ' · 자동 백업 꺼짐'));
   ['pc-sync', 'sh-sync', 'sb-sync', 'pp-sync', 'sk-sync', 'mp-sync', 'py-sync', 'gd-sync', 'md-sync'].forEach(id => { const el = $(id); if (el) el.textContent = t; });
 }
 function changed(){
@@ -3827,7 +3915,7 @@ function qNorm(o){
   if (!groups.length) groups = Life.GROUPS.slice();
   const people = (Array.isArray(o.people) ? o.people : []).filter(p => p && p.id && p.name).map(p => { const g = String(p.group == null ? '' : p.group).trim() || groups[0]; if (groups.indexOf(g) < 0) groups.push(g);
     return { id: String(p.id), name: String(p.name), group: g, cycle: Number(p.cycle) > 0 ? Number(p.cycle) : '', prefs: (Array.isArray(p.prefs) ? p.prefs : []).filter(x => Life.TYPES.indexOf(x) >= 0), memo: String(p.memo || ''), since: Calc.validDate(p.since) || '', u: String(p.u || '') }; });
-  const meets = (Array.isArray(o.meets) ? o.meets : []).filter(m => m && m.id && Calc.validDate(m.date)).map(m => ({ id: String(m.id), date: m.date, pids: (Array.isArray(m.pids) ? m.pids : []).map(String), type: Life.normType(m.type), cid: String(m.cid || ''), xid: String(m.xid || ''), memo: String(m.memo || ''), energy: ENERGY[m.energy] ? m.energy : '', st: (m.st === 'plan' || m.st === 'done') ? m.st : (m.date > todayStr() ? 'plan' : 'done'), time: /^\d{2}:\d{2}$/.test(String(m.time || '')) ? String(m.time) : '', place: String(m.place || ''), u: String(m.u || '') }));
+  const meets = (Array.isArray(o.meets) ? o.meets : []).filter(m => m && m.id && Calc.validDate(m.date)).map(m => ({ id: String(m.id), date: m.date, pids: (Array.isArray(m.pids) ? m.pids : []).map(String), type: Life.normType(m.type), cid: String(m.cid || ''), xid: String(m.xid || ''), vg: String(m.vg || ''), more: (Array.isArray(m.more) ? m.more : []).map(x => Life.normType(x)).filter((x, i, a) => x && x !== Life.normType(m.type) && a.indexOf(x) === i), memo: String(m.memo || ''), energy: ENERGY[m.energy] ? m.energy : '', st: (m.st === 'plan' || m.st === 'done') ? m.st : (m.date > todayStr() ? 'plan' : 'done'), time: /^\d{2}:\d{2}$/.test(String(m.time || '')) ? String(m.time) : '', place: String(m.place || ''), u: String(m.u || '') }));
   const clubs = (Array.isArray(o.clubs) ? o.clubs : []).filter(x => x && x.id && String(x.name || '').trim()).map(x => { const ps = (Array.isArray(x.pids) ? x.pids : []).map(String); return { id: String(x.id), name: String(x.name).trim(), pids: ps.filter((v, i) => ps.indexOf(v) === i), u: String(x.u || '') }; });
   const cy = {}; groups.forEach(g => { cy[g] = Number(c.cycles && c.cycles[g]) > 0 ? Number(c.cycles[g]) : (Life.DEFAULT_CFG.cycles[g] || 30); });
   return { people, meets, clubs, cfg: { target: Number(c.target) >= 0 && c.target !== '' && c.target != null ? Math.round(Number(c.target)) : 4, groups, cycles: cy, cal: c.cal === true, u: String(c.u || '') }, del: cleanDel(o.del) };
@@ -3865,6 +3953,12 @@ function renderPeople(){
     if (od.length) h += '<div class="pc-card"><h3>지난 예약 — 만났는지 확인해 주세요</h3>' + od.map(m => planRow(m, t, true)).join('') + '<p class="pc-hint">“만났어요”를 누르면 만남 이력으로 옮겨져요. 못 만났다면 눌러서 날짜를 바꾸거나 삭제하세요.</p></div>';
     h += '<div class="pc-card"><h3>이번 달 만남</h3><div class="pp-big">' + cnt + (tg > 0 ? ' / ' + tg + '회' : '회') + '</div>' + (tg > 0 ? '<div class="pp-prog"><i style="width:' + pct + '%"></i></div><p class="pc-hint">' + (cnt >= tg ? '이번 달 목표를 채웠어요.' : (tg - cnt) + '번 더 만나면 목표예요.') + '</p>' : '') + '</div>';
     if (ts.total) h += '<div class="pc-card"><h3>최근 90일 방식별</h3>' + Life.TYPES.concat(Object.keys(ts.counts).filter(k => Life.TYPES.indexOf(k) < 0)).filter(k => ts.counts[k]).map(k => '<div class="pp-bar"><span>' + k + '</span><i style="width:' + Math.round(ts.counts[k] / ts.total * 100) * 1.6 + 'px"></i><em>' + ts.counts[k] + '회</em></div>').join('') + (en.charge + en.normal + en.drain ? '<p class="pc-hint">만난 뒤 에너지: 충전 ' + en.charge + ' · 보통 ' + en.normal + ' · 방전 ' + en.drain + '</p>' : '') + '</div>';
+    { const f6 = new Date(Date.parse(t + 'T00:00:00Z') - 180 * 86400000).toISOString().slice(0, 10), eb = Life.energyBy(Q.meets, f6, t), pl = Object.keys(eb.people).map(id => Object.assign({ id, p: personById(id) }, eb.people[id])).filter(x => x.p && x.n >= 2).map(x => Object.assign(x, { sc: (x.charge - x.drain) / x.n }));
+      const ch = pl.filter(x => x.sc > 0).sort((a, b) => b.sc - a.sc || b.n - a.n).slice(0, 3), dr = pl.filter(x => x.sc < 0).sort((a, b) => a.sc - b.sc || b.n - a.n).slice(0, 3), tk = Object.keys(eb.types).filter(k => eb.types[k].n >= 2);
+      if (ch.length || dr.length || tk.length) h += '<div class="pc-card"><h3>🔋 만나면 충전 · 방전 <small style="font-weight:400">최근 6개월</small></h3>' +
+        (ch.length ? '<p class="pc-hint" style="margin:2px 0"><b>충전돼요</b> ' + ch.map(x => esc(x.p.name) + ' (' + x.charge + '/' + x.n + ')').join(' · ') + '</p>' : '') + (dr.length ? '<p class="pc-hint" style="margin:2px 0"><b>방전돼요</b> ' + dr.map(x => esc(x.p.name) + ' (' + x.drain + '/' + x.n + ')').join(' · ') + '</p>' : '') +
+        (tk.length ? '<p class="pc-hint" style="margin:2px 0"><b>방식별</b> ' + tk.map(k => esc(k) + ' 충전 ' + eb.types[k].charge + '·방전 ' + eb.types[k].drain).join(' / ') + '</p>' : '') +
+        '<p class="pc-hint">한 번의 만남 기준(밥+커피 묶음은 1번)이고, 기분을 적은 만남이 2번 이상인 사람만 보여요. 괄호는 (충전 또는 방전 횟수 / 만난 횟수)예요.</p></div>'; }
     h += ppUnlinkedCard();
     $('pp-today-body').innerHTML = h;
   } else if (ppTab === 'list') {
@@ -3897,15 +3991,18 @@ function renderPeople(){
   } else {
     lgFilter.club = selOpts($('lg-flt-club'), [{ v: 'all', t: '모임 전체' }].concat(Q.clubs.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko')).map(c => ({ v: c.id, t: c.name }))), lgFilter.club);
     lgFilter.person = selOpts($('lg-flt-person'), [{ v: 'all', t: '사람 전체' }].concat(nameOpts.map(p => ({ v: p.id, t: p.name }))), lgFilter.person);
-    lgFilter.type = selOpts($('lg-flt-type'), [{ v: 'all', t: '방식 전체' }].concat(Life.TYPES.concat(Q.meets.map(m => m.type).filter((k, i, a) => Life.TYPES.indexOf(k) < 0 && a.indexOf(k) === i)).map(k => ({ v: k, t: k }))), lgFilter.type);
+    lgFilter.type = selOpts($('lg-flt-type'), [{ v: 'all', t: '방식 전체' }].concat(mtAllTypes().map(k => ({ v: k, t: k }))), lgFilter.type);
     $('lg-flt-st').value = lgFilter.st;
     const cmem = lgFilter.club === 'all' ? null : (Q.clubs.find(c => c.id === lgFilter.club) || { pids: [] }).pids;
-    const ms = Q.meets.filter(m => (lgFilter.st === 'all' || (lgFilter.st === 'plan') === Life.isPlan(m)) && (!cmem || m.pids.some(id => cmem.indexOf(id) >= 0)) && (lgFilter.person === 'all' || m.pids.indexOf(lgFilter.person) >= 0) && (lgFilter.type === 'all' || m.type === lgFilter.type))
-      .sort((a, b) => a.date < b.date ? 1 : (a.date > b.date ? -1 : 0));
-    $('pp-meets').innerHTML = ms.length ? ms.map(m => { const plan = Life.isPlan(m), over = plan && m.date < t;
-      return '<div class="pp-row" data-pp="edit-meet" data-id="' + esc(m.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(m.date.slice(5).replace('-', '/')) + (m.time ? ' ' + esc(m.time) : '') + ' · ' + esc(m.type) + (plan ? '<span class="pp-st ' + (over ? 'over' : 'soon') + '" style="margin-left:6px">' + (over ? '확인 필요' : '예약') + '</span>' : '') + '<span class="pp-tag">' + (clubLabel(m) ? esc(clubLabel(m)) + ' · ' : '') + esc(meetNames(m)) + '</span></div>' +
+    const ms = Q.meets.filter(m => (lgFilter.st === 'all' || (lgFilter.st === 'plan') === Life.isPlan(m)) && (!cmem || m.pids.some(id => cmem.indexOf(id) >= 0)) && (lgFilter.person === 'all' || m.pids.indexOf(lgFilter.person) >= 0) && (lgFilter.type === 'all' || Life.typesOf(m).indexOf(lgFilter.type) >= 0))
+      .sort((a, b) => a.date < b.date ? 1 : (a.date > b.date ? -1 : (String(a.vg || a.id) < String(b.vg || b.id) ? -1 : 1)));
+    const vgN = {}; Q.meets.forEach(m => { if (m.vg) vgN[m.vg] = (vgN[m.vg] || 0) + 1; });
+    $('pp-bd-sug').innerHTML = mtBdSugHtml();
+    const dn = Q.meets.filter(m => !Life.isPlan(m)).length, vn = Life.visits(Q.meets).length;
+    $('pp-meets').innerHTML = (dn !== vn ? '<p class="pc-hint" style="margin:4px 0">만남 완료 기록 ' + dn + '건 = <b>' + vn + '번</b>으로 세요 (묶은 기록 반영)</p>' : '') + (ms.length ? ms.map(m => { const plan = Life.isPlan(m), over = plan && m.date < t;
+      return '<div class="pp-row' + (m.vg ? ' bd' : '') + '" data-pp="edit-meet" data-id="' + esc(m.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(m.date.slice(5).replace('-', '/')) + (m.time ? ' ' + esc(m.time) : '') + ' · ' + (m.vg ? '🔗 ' : '') + esc(mtTypeLabel(m)) + (plan ? '<span class="pp-st ' + (over ? 'over' : 'soon') + '" style="margin-left:6px">' + (over ? '확인 필요' : '예약') + '</span>' : '') + (m.vg ? '<span class="pp-st soon" style="margin-left:6px">한 번의 만남 ' + vgN[m.vg] + '건</span>' : '') + '<span class="pp-tag">' + (clubLabel(m) ? esc(clubLabel(m)) + ' · ' : '') + esc(meetNames(m)) + '</span></div>' +
         (m.memo || m.energy || m.place ? '<div class="pp-meta">' + [m.place ? '📍' + esc(m.place) : '', esc(m.memo), m.energy ? '에너지 ' + ENERGY[m.energy] : ''].filter(Boolean).join(' · ') + '</div>' : '') + '</div>' +
-        (plan ? '<button class="pc-btn small" data-pp="plan-done" data-id="' + esc(m.id) + '">만났어요</button>' : '') + '</div>'; }).join('') : '<p class="pc-hint">' + (Q.meets.length ? '조건에 맞는 기록이 없어요.' : '아직 만남 기록이 없어요. “+ 만남 기록”이나 사람 카드의 “만났어요”를 눌러 보세요.') + '</p>';
+        (plan ? '<button class="pc-btn small" data-pp="plan-done" data-id="' + esc(m.id) + '">만났어요</button>' : '') + '</div>'; }).join('') : '<p class="pc-hint">' + (Q.meets.length ? '조건에 맞는 기록이 없어요.' : '아직 만남 기록이 없어요. “+ 만남 기록”이나 사람 카드의 “만났어요”를 눌러 보세요.') + '</p>');
   }
 }
 /* ---- 사람·모임 선택 풀다운(만남/예약 · 모임 팝업 공용) ---- */
@@ -3922,11 +4019,68 @@ function pkRender(k){
 }
 function pkBind(dlgId, k){
   const dlg = $(dlgId);
-  dlg.addEventListener('change', e => {
+  const onSel = e => {
     if (e.target.id === k + '-f-gsel') pkRender(k);
     else if (e.target.id === k + '-f-psel') { const v = e.target.value; if (v && personById(v) && pkDraft[k].indexOf(v) < 0) pkDraft[k].push(v); pkRender(k); }
-  });
+  };
+  dlg.addEventListener('change', onSel); dlg.addEventListener('input', onSel);
   dlg.addEventListener('click', e => { const x = e.target.closest('[data-pk="x"]'); if (!x) return; pkDraft[k] = pkDraft[k].filter(id => id !== x.dataset.id); pkRender(k); });
+}
+function mtClubChips(cl){
+  const box = $('mt-f-clubchips'); box.hidden = !cl.length;
+  box.innerHTML = cl.length ? '<span class="pc-hint" style="margin:0 4px 0 0">모임으로 한 번에 추가:</span>' + cl.map(c => '<button type="button" class="pc-btn small" data-pk="club" data-id="' + esc(c.id) + '">👥 ' + esc(c.name) + ' (' + c.pids.filter(personById).length + ')</button>').join('') : '';
+}
+let mtMore = [];
+function mtAllTypes(){ const a = Life.TYPES.slice(); Q.meets.forEach(m => Life.typesOf(m).forEach(t => { if (a.indexOf(t) < 0) a.push(t); })); return a; }
+function mtMoreRender(){
+  const pr = $('mt-f-type').value; mtMore = mtMore.filter(t => t !== pr);
+  $('mt-f-more').innerHTML = mtAllTypes().filter(t => t !== pr).map(t => '<button type="button" class="mt-chip' + (mtMore.indexOf(t) >= 0 ? ' on' : '') + '" data-pk="more" data-t="' + esc(t) + '">' + (mtMore.indexOf(t) >= 0 ? '✓ ' : '+ ') + esc(t) + '</button>').join('');
+}
+function mtBdNote(m){
+  const box = $('mt-f-bd'); if (!m || Life.isPlan(m)) { box.hidden = true; return; }
+  box.hidden = false;
+  const mem = m.vg ? Q.meets.filter(x => x.vg === m.vg) : [];
+  $('mt-f-bd-txt').innerHTML = mem.length > 1 ? '🔗 <b>한 번의 만남</b>으로 묶인 기록 ' + mem.length + '건 (' + esc(Life.visits(mem)[0].types.join(' + ')) + ') — 횟수와 기분은 1번으로 세요' : '같은 날 밥·커피를 따로 적었다면 하나로 묶어 1번으로 셀 수 있어요.';
+}
+function mtTypeLabel(m){ return Life.typesOf(m).join(' + '); }
+let mtBdBase = '';
+function mtBdOpen(id){
+  const m = Q.meets.find(x => x.id === id); if (!m || Life.isPlan(m)) return;
+  mtBdBase = id; $('mt-dlg').close();
+  const cand = Q.meets.filter(x => x.id !== id && !Life.isPlan(x) && x.date === m.date).sort((a, b) => String(a.time || '').localeCompare(String(b.time || '')));
+  $('mt-bd-info').textContent = mdLabel(m.date) + ' · ' + mtTypeLabel(m) + ' · ' + meetNames(m) + ' 와(과) 한 번으로 묶을 기록을 고르세요.';
+  $('mt-bd-list').innerHTML = cand.length ? cand.map(x => { const same = m.vg && x.vg === m.vg, ov = x.pids.some(p => m.pids.indexOf(p) >= 0);
+    return '<label class="pk-opt" style="display:flex;gap:8px;align-items:flex-start;padding:6px 0"><input type="checkbox" data-bd="' + esc(x.id) + '"' + (same || (!m.vg && ov && !x.vg) ? ' checked' : '') + '><span><b>' + esc(mtTypeLabel(x)) + '</b>' + (x.time ? ' ' + esc(x.time) : '') + ' · ' + esc(meetNames(x)) + (x.place ? ' · 📍' + esc(x.place) : '') + (x.energy ? ' · ' + ENERGY[x.energy] : '') + (x.vg && !same ? ' <i>(다른 묶음에 들어 있어요)</i>' : '') + '</span></label>'; }).join('') : '<p class="pc-hint">같은 날 다른 기록이 없어요. 먼저 같은 날 기록을 하나 더 추가해 주세요.</p>';
+  $('mt-bd-solo').hidden = !m.vg; mtBdCalc(); $('mt-bd-dlg').showModal();
+}
+function mtBdIds(){ return [...document.querySelectorAll('#mt-bd-list input[data-bd]:checked')].map(i => i.dataset.bd); }
+function mtBdCalc(){
+  const m = Q.meets.find(x => x.id === mtBdBase); if (!m) return; const ids = [m.id].concat(mtBdIds()), mem = Q.meets.filter(x => ids.indexOf(x.id) >= 0), v = Life.visits(mem.map(x => Object.assign({}, x, { vg: 'tmp' })))[0];
+  $('mt-bd-calc').innerHTML = ids.length > 1 ? '→ <b>1번의 만남</b> · ' + esc(v.types.join(' + ')) + (v.energy ? ' · 기분 ' + ENERGY[v.energy] + '(가장 나중에 적은 기록 기준)' : '') + ' · 묶기 전엔 ' + ids.length + '번으로 세졌어요' : '고른 기록이 없어요 — 묶지 않으면 각각 1번으로 세요.';
+}
+function mtBdApply(baseId, ids){
+  const t = nowIso(), all = [baseId].concat(ids), baseM = Q.meets.find(x => x.id === baseId), oldVg = baseM.vg;
+  const other = Q.meets.find(x => ids.indexOf(x.id) >= 0 && x.vg); const vg = all.length > 1 ? (oldVg || (other && other.vg) || uid('vg')) : '';
+  Q.meets.forEach(x => { if (all.indexOf(x.id) >= 0) { if (x.vg !== vg) { x.vg = vg; x.u = t; } } else if (oldVg && x.vg === oldVg) { x.vg = ''; x.u = t; } });
+  // 묶음이 하나만 남으면 풀어 줌
+  const cnt = {}; Q.meets.forEach(x => { if (x.vg) cnt[x.vg] = (cnt[x.vg] || 0) + 1; }); Q.meets.forEach(x => { if (x.vg && cnt[x.vg] < 2) { x.vg = ''; x.u = t; } });
+  qSave(); changed();
+}
+function mtBdSave(){ const ids = mtBdIds(); mtBdApply(mtBdBase, ids); $('mt-bd-dlg').close(); toast(ids.length ? '한 번의 만남으로 묶었어요.' : '묶음을 풀었어요.'); renderAll(); }
+function mtBdSolo(){ mtBdApply(mtBdBase, []); $('mt-bd-dlg').close(); toast('묶음에서 뺐어요.'); renderAll(); }
+// 묶음 후보: 같은 날 + 같은 사람 구성인데 아직 묶지 않은 기록
+const MT_NOBD = 'mt_nobd_v1';
+function mtNoBd(){ try { const a = JSON.parse(localStorage.getItem(MT_NOBD) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+function mtBdSuggest(){
+  const no = mtNoBd(), g = {};
+  Q.meets.filter(m => !Life.isPlan(m) && !m.vg).forEach(m => { const k = m.date + '|' + m.pids.slice().sort().join(','); (g[k] = g[k] || []).push(m); });
+  return Object.keys(g).filter(k => g[k].length > 1 && no.indexOf(g[k].map(x => x.id).sort().join(',')) < 0).map(k => g[k]).sort((a, b) => a[0].date < b[0].date ? 1 : -1);
+}
+function mtBdSugHtml(){
+  const sg = mtBdSuggest(); if (!sg.length) return '';
+  return '<div class="pp-bdsug"><b>🔗 한 번으로 묶을까요? (' + sg.length + '건)</b><p class="pc-hint" style="margin:2px 0 4px">같은 날 같은 사람과 만난 기록이에요. 묶으면 횟수와 기분이 1번으로 세져요.</p>' +
+    sg.slice(0, 6).map(l => '<div class="r"><span>' + esc(mdLabel(l[0].date)) + ' · <b>' + esc(Life.visits(l.map(x => Object.assign({}, x, { vg: 'tmp' })))[0].types.join(' + ')) + '</b> · ' + esc(meetNames(l[0])) + ' <i>(' + l.length + '건)</i></span><span><button type="button" class="pc-btn small primary" data-pp="bd-yes" data-ids="' + l.map(x => esc(x.id)).join(',') + '">묶기</button> <button type="button" class="pc-btn small" data-pp="bd-no" data-ids="' + l.map(x => esc(x.id)).join(',') + '">아니요</button></span></div>').join('') +
+    (sg.length > 1 ? '<button type="button" class="pc-btn small" data-pp="bd-all" style="margin-top:6px">보이는 ' + Math.min(6, sg.length) + '건 모두 묶기</button>' : '') + (sg.length > 6 ? '<p class="pc-hint">외 ' + (sg.length - 6) + '건 — 위를 처리하면 다음이 보여요.</p>' : '') + '</div>';
 }
 function mtStUI(){
   const plan = $('mt-f-st').value === 'plan';
@@ -3975,12 +4129,12 @@ function openMeet(id, presetPid, presetPids, opts){
   $('mt-f-st').value = plan ? 'plan' : 'done';
   const sel = m ? m.pids : (presetPids ? presetPids : (presetPid ? [presetPid] : []));
   const cl = Q.clubs.filter(c => c.pids.some(x => personById(x))).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
-  $('mt-f-clubsel').innerHTML = '<option value="">＋ 모임으로 한 번에 추가 (' + cl.length + '개)</option>' + cl.map(c => '<option value="' + esc(c.id) + '">👥 ' + esc(c.name) + '</option>').join(''); $('mt-f-clubsel').hidden = !cl.length;
-  pkInit('mt', sel);
+  mtClubChips(cl);
+  pkInit('mt', sel); mtMore = m && Array.isArray(m.more) ? m.more.slice() : [];
   fillSelect($('mt-f-type'), Life.TYPES.concat(m && Life.TYPES.indexOf(m.type) < 0 ? [m.type] : []).map(k => ({ v: k, t: k })), m ? m.type : ((presetPid && personById(presetPid) && personById(presetPid).prefs[0]) || '커피'));
   $('mt-f-energy').value = m ? m.energy : ''; $('mt-f-memo').value = m ? m.memo : ''; $('mt-f-place').value = m ? m.place : ''; $('mt-d-delete').hidden = !m;
   if (!m && opts && opts.xid) { $('mt-f-date').value = opts.date || t; $('mt-f-memo').value = opts.memo || ''; if (opts.type) $('mt-f-type').value = opts.type; }
-  mtStUI(); $('mt-dlg').showModal();
+  mtMoreRender(); mtBdNote(m); mtStUI(); $('mt-dlg').showModal();
 }
 function saveMeet(){
   const pids = pkDraft.mt.slice(), date = Calc.validDate($('mt-f-date').value);
@@ -3988,7 +4142,7 @@ function saveMeet(){
   if (!date) { toast('날짜를 확인해 주세요.'); return; }
   let st = $('mt-f-st').value === 'plan' ? 'plan' : 'done', note = '저장했어요.';
   if (st === 'done' && date > todayStr()) { st = 'plan'; note = '앞으로의 날짜라서 “예약”으로 저장했어요. 만난 뒤 “만났어요”를 눌러 주세요.'; }
-  const d = { date, pids, type: $('mt-f-type').value, memo: $('mt-f-memo').value.trim(), energy: st === 'plan' ? '' : $('mt-f-energy').value, st, time: $('mt-f-time').value || '', place: $('mt-f-place').value.trim(), cid: Q.clubs.some(c => c.id === mtCid) ? mtCid : '', xid: mtXid, u: nowIso() };
+  const d = { date, pids, type: $('mt-f-type').value, more: mtMore.filter(x => x !== $('mt-f-type').value), memo: $('mt-f-memo').value.trim(), energy: st === 'plan' ? '' : $('mt-f-energy').value, st, time: $('mt-f-time').value || '', place: $('mt-f-place').value.trim(), cid: Q.clubs.some(c => c.id === mtCid) ? mtCid : '', xid: mtXid, u: nowIso() };
   if (mtEditing) Object.assign(Q.meets.find(x => x.id === mtEditing), d); else Q.meets.push(Object.assign({ id: uid('mt') }, d));
   qSave(); changed(); $('mt-dlg').close(); toast(note); renderAll(); if (window.AppMeeting) window.AppMeeting.refresh();
 }
@@ -4375,7 +4529,7 @@ function renderNav(){
   markNav();
 }
 const OPT_CFG = [
-  { g: 'life', t: '인맥 · 만남 방식', base: () => LIFE_BASE, ph: '예: 운동', used: x => Q.meets.some(m => m.type === x.label) },
+  { g: 'life', t: '인맥 · 만남 방식', base: () => LIFE_BASE, ph: '예: 운동', used: x => Q.meets.some(m => Life.typesOf(m).indexOf(x.label) >= 0) },
   { g: 'shopCats', t: '보유품목 분류', base: () => Object.keys(SHOP_BASE).map(k => SHOP_BASE[k]), ph: '예: 가전', keyed: true, used: x => SH.items.some(i => i.cat === x.k) },
   { g: 'subCats', t: '구독 · 보험 분류', base: () => SB_BASE, ph: '예: 교육', used: x => SB.items.some(i => i.cat === x.label) },
   { g: 'mpParts', t: '도수치료 부위', base: () => MP_BASE.concat(['기타']), ph: '예: 손목', used: x => MP.items.some(i => i.part === x.label) },
@@ -4931,6 +5085,7 @@ function renderMed(){
   // 설정(카드 인식 규칙 · 계산 기준)
   $('md-cfg-rules').innerHTML = cfg.cards.map((r, i) => '<div class="md-rule"><span>문자에 <b>' + esc(r.pat) + '</b> → <b>' + esc(r.name) + '</b></span><button type="button" class="pc-btn small" data-md="rule-del" data-i="' + i + '">삭제</button></div>').join('');
   $('md-cfg-ded').value = cfg.ded; $('md-cfg-tax').value = cfg.taxPct; $('md-cfg-sp').value = cfg.spouse; $('md-cfg-days').value = cfg.insDays;
+  { const wn = mdWzQueue().length, wb = $('md-wz-btn'); wb.hidden = !wn; wb.textContent = '🧹 누락 정리 (' + wn + ')'; }
   void ix; syncNote();
 }
 /* ---------- 진료 건 입력 · 수정 ---------- */
@@ -5108,6 +5263,36 @@ function mdClDelete(){
   if (!mdCl || !mdCl.id || !confirm('이 신청·입금 기록을 지울까요? (진료 건은 그대로 남고 “미신청”으로 돌아가요)')) return;
   MD.claims = MD.claims.filter(c => c.id !== mdCl.id); MD.del[mdCl.id] = nowIso(); mdSave(); changed(); $('md-cl-dlg').close(); if ($('md-dlg').open) mdSettleHtml(); renderAll();
 }
+/* ---------- 누락 정리 마법사: 신청일 없음 · 입금액 미기록 청구를 한 건씩 채움 ---------- */
+let mdWz = { q: [], i: 0, done: 0, skipped: 0 };
+function mdWzQueue(){
+  const live = c => c.ids.some(id => mdItem(id));
+  return MD.claims.filter(c => live(c) && (!c.cdate || (c.st === 'paid' && c.paid == null))).map(c => c.id);
+}
+function mdWzOpen(){
+  mdWz = { q: mdWzQueue(), i: 0, done: 0, skipped: 0 };
+  if (!mdWz.q.length) { toast('정리할 누락이 없어요.'); return; }
+  mdWzShow(); if (!$('md-wz-dlg').open) $('md-wz-dlg').showModal();
+}
+function mdWzShow(){
+  while (mdWz.i < mdWz.q.length && !MD.claims.some(c => c.id === mdWz.q[mdWz.i])) mdWz.i++;
+  if (mdWz.i >= mdWz.q.length) { $('md-wz-dlg').close(); toast('정리 끝 — ' + mdWz.done + '건 저장' + (mdWz.skipped ? ', ' + mdWz.skipped + '건은 나중에' : '') + '.'); renderAll(); return; }
+  const c = MD.claims.find(x => x.id === mdWz.q[mdWz.i]), its = c.ids.map(mdItem).filter(Boolean).sort((a, b) => a.date.localeCompare(b.date)), tot = its.reduce((a, i) => a + i.total, 0);
+  const noCd = !c.cdate, noAmt = c.st === 'paid' && c.paid == null, first = its[0].date;
+  $('md-wz-prog').textContent = (mdWz.i + 1) + ' / ' + mdWz.q.length + ' 건';
+  $('md-wz-card').innerHTML = '<b>' + (c.t === 'co' ? '회사 청구' : '실비 청구') + '</b> · ' + (c.st === 'paid' ? '입금 확인됨' + (c.pdate ? ' (' + mdMD(c.pdate) + ')' : '') : '입금 대기') + '<br>' +
+    its.map(i => mdMD(i.date) + ' ' + esc(i.place || '(병원 미입력)') + ' ' + won(i.total)).join('<br>') + '<br><small>예상 지원금 ' + won(c.exp) + (c.cdate ? ' · 신청일 ' + mdMD(c.cdate) : '') + '</small>';
+  $('md-wz-fields').innerHTML = (noCd ? '<label class="pc-f">신청일 (빠짐)<input id="md-wz-cd" type="date" value="' + esc(first) + '" min="' + esc(first) + '"></label>' : '') +
+    (noAmt ? '<label class="pc-f">실제 입금액(원) (빠짐)<input id="md-wz-amt" type="number" inputmode="numeric" min="0" step="any" value="' + esc(String(c.exp || '')) + '"></label>' : '');
+  $('md-wz-hint').textContent = (noCd ? '신청일은 처음에 진료일로 채워 두었어요. 실제 신청한 날로 고쳐 주세요(진료일보다 앞설 수 없어요). ' : '') + (noAmt ? '입금액은 예상 지원금으로 채워 두었어요. 통장에 들어온 금액과 다르면 고쳐 주세요. 모르면 “나중에”.' : '');
+  mdWz.cur = { c, first, noCd, noAmt };
+}
+function mdWzSave(){
+  const w = mdWz.cur; if (!w) return; const c = w.c, t = nowIso();
+  if (w.noCd) { const d = Calc.validDate($('md-wz-cd').value); if (!d) { toast('신청일을 확인해 주세요.'); return; } if (d < w.first) { toast('신청일이 진료일(' + mdMD(w.first) + ')보다 앞서요.'); return; } c.cdate = d; if (c.t === 'co' && !c.due) c.due = Med.dueFor(d); }
+  if (w.noAmt) { const v = $('md-wz-amt').value; if (v === '' || !(Number(v) >= 0)) { toast('입금액을 확인해 주세요.'); return; } c.paid = Number(v); if (!c.pdate) c.pdate = c.cdate || todayStr(); }
+  c.u = t; MD = mdNorm(MD); mdSave(); changed(); mdWz.done++; mdWz.i++; mdWzShow();
+}
 /* ---------- 문자로 등록 ---------- */
 function mdSmsOpen(){ $('md-sms-in').value = ''; mdSmsRows = []; mdSmsRender(); $('md-sms-dlg').showModal(); setTimeout(() => $('md-sms-in').focus(), 60); }
 function mdSmsParse(){
@@ -5151,6 +5336,7 @@ $('medView').addEventListener('click', e => {
   const el = e.target.closest('[data-md]'); if (!el) return;
   const a = el.dataset.md, id = el.dataset.id;
   if (a === 'sms') mdSmsOpen(); else if (a === 'add') mdOpen(null);
+  else if (a === 'wz') mdWzOpen();
   else if (a === 'flt') { mdFlt.st = el.dataset.k; renderMed(); }
   else if (a === 'sel') { mdSel[id] = el.checked; renderMed(); return; }
   else if (a === 'selmode') { mdSelMode = !mdSelMode; mdSel = {}; renderMed(); }
@@ -5176,6 +5362,7 @@ $('md-dlg').addEventListener('click', e => {
 });
 ['md-f-date', 'md-f-who', 'md-f-place', 'md-f-total', 'md-f-extra', 'md-f-incl', 'md-f-tg', 'md-f-why', 'md-f-cov'].forEach(id => { $(id).addEventListener('input', mdPreview); $(id).addEventListener('change', mdPreview); });
 $('md-bd-dlg').addEventListener('click', e => { const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md; if (a === 'bd-cancel') $('md-bd-dlg').close(); else if (a === 'bd-save') mdBdSave(); else if (a === 'bd-solo') mdBdSolo(); });
+$('md-wz-dlg').addEventListener('click', e => { const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md; if (a === 'wz-skip') { mdWz.skipped++; mdWz.i++; mdWzShow(); } else if (a === 'wz-save') mdWzSave(); else if (a === 'wz-close') { $('md-wz-dlg').close(); renderAll(); } });
 $('md-bd-dlg').addEventListener('change', e => { if (e.target.matches('[data-mdbd="m"]')) mdBdCalc(); });
 $('md-cl-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md;
@@ -5634,13 +5821,16 @@ window.AppLife = {
 if (window.AppMeeting) window.AppMeeting.refresh();   // 회의비 목록에 인맥 연결 이름 반영
 /* ---- 저장공간 · 백업 ---- */
 const STORE_NAMES = { shopping_history_app_v1: '소비(사진 포함)', meeting_budget_app_v1: '회의비', price_check_app_v2: '가격체크', people_v1: '인맥', skin_care_v1: '피부관리', manual_care_v1: '도수치료', medical_exp_v1: '의료비', subscriptions_v1: '구독·보험', golf_history_v1: '골프', size_chart_v1: '치수표', guide_v1: '가이드', salary_hist_v1: '연봉', reminders_v1: '알림', meeting_snap_v1: '회의비 동기화용 사본' };
+const OTHER_APPS = { brc_backuphistory_v1: '바디리컴포지션 백업이력(다른 앱)', travel_budget_app_v1: '여행경비(다른 앱)' };
+const otherApp = k => !STORE_NAMES[k] && (OTHER_APPS[k] || /^(brc_|travel_|moneytrail|mt_|codebox)/.test(k));
 function storageInfo(){
   let tot = 0; const parts = [];
   try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i), n = k.length + (localStorage.getItem(k) || '').length; tot += n; parts.push([k, n]); } } catch (e) { /* 무시 */ }
   parts.sort((a, b) => b[1] - a[1]);
+  let other = 0; parts.forEach(p => { if (otherApp(p[0])) other += p[1]; });
   const LIM = 5 * 1024 * 1024;   // 브라우저 보관 한도(대략 500만 자 · 기기마다 달라요)
   let bk = 0; try { bk = JSON.stringify(window.AppExtras.exportSync()).length; } catch (e) { /* 무시 */ }
-  return { tot, pct: Math.min(100, Math.round(tot / LIM * 100)), top: parts.slice(0, 3).map(p => [STORE_NAMES[p[0]] || p[0], p[1]]), bk };
+  return { tot, other, mine: tot - other, pct: Math.min(100, Math.round(tot / LIM * 100)), top: parts.slice(0, 3).map(p => [STORE_NAMES[p[0]] || OTHER_APPS[p[0]] || p[0], p[1]]), bk };
 }
 const fmtKB = n => n >= 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB';
 
@@ -5670,6 +5860,15 @@ function dataChecks(){
     if (!i.card) add(2, '구독·보험', i.name + ' — 카드가 지정되지 않았어요', ['sub', i.id]);
     if (i.newCard && i.ccDate && i.ccDate < t) add(1, '구독·보험', i.name + ' — 카드 변경 기한(' + i.ccDate + ')이 지났어요', ['sub', i.id]);
   });
+  { const q = mdWzQueue().length; if (q) add(1, '의료비', '신청일·입금액이 빠진 청구 ' + q + '건 — 눌러서 한 건씩 채우기', ['wizard']); }
+  SK.items.forEach(i => {
+    const st = Skin.stats(i, SK.sessions);
+    if (!i.open && !(Number(i.cost) > 0)) add(2, '피부관리', i.name + ' — 결제금이 비어 있어요 (1회당 가격 계산이 안 돼요)', ['skin', i.id]);
+    if (!i.open && !i.date) add(3, '피부관리', i.name + ' — 결제일이 비어 있어요', ['skin', i.id]);
+    if (st.over) add(2, '피부관리', i.name + ' — 총 횟수보다 ' + st.over + '회 더 체크됐어요', ['skin', i.id]);
+  });
+  { const bd = mtBdSuggest().length; if (bd) add(3, '인맥', '같은 날 같은 사람과 만난 기록 ' + bd + '건 — 한 번으로 묶으면 횟수·기분이 정확해져요', ['people-log']); }
+  { const ec = Q.clubs.filter(c => !c.pids.some(id => Q.people.some(p => p.id === id))).length; if (ec) add(3, '인맥', '구성원이 없는 모임 ' + ec + '개', ['people']); }
   { const never = Q.people.filter(p => !Life.lastMeet(p, Q.meets)).length; if (never) add(3, '인맥', '만남 기록이 한 번도 없는 사람 ' + never + '명 — 회의비 지출의 👥 버튼으로 연결하면 자동으로 쌓여요', ['people']); }
   if (window.AppMeeting) window.AppMeeting.missingMonths().forEach(m => add(2, '회의비', m + ' — 예산 · 지출이 모두 비어 있어요 (입력이 빠졌나요?)', ['meeting']));
   { const big = SH.items.filter(i => i.photo && i.photo.length > 90000).length; if (big) add(3, '소비', '용량이 큰 사진 ' + big + '장 — 눌러서 한 번에 줄이기 (저장공간 절약)', ['photo']); }
@@ -5767,7 +5966,7 @@ function gsItems(){
   tr(() => S.items.forEach(i => add('가격', '🧴', i.name, '가격 체크', '', 'price', i.id)));
   tr(() => SB.items.filter(i => i.active !== false).forEach(i => add('구독·보험', '💳', i.name, [i.cat, i.card, i.day + '일'].filter(Boolean).join(' · '), i.memo, 'sub', i.id)));
   tr(() => Q.people.forEach(p => add('인맥', '🙂', p.name, p.group, p.memo, 'people-list', p.id)));
-  tr(() => Q.meets.forEach(m => add('만남', '👥', meetNames(m), m.date + (m.place ? ' · ' + m.place : ''), [m.memo, m.type, m.place].join(' '), 'people-log', m.id)));
+  tr(() => Q.meets.forEach(m => add('만남', '👥', meetNames(m), m.date + (m.place ? ' · ' + m.place : ''), [m.memo, mtTypeLabel(m), m.place].join(' '), 'people-log', m.id)));
   tr(() => GD.items.forEach(g => add('가이드', '📌', g.title, '', (g.lines || []).join(' '), 'guide', g.id)));
   tr(() => SK.items.forEach(i => add('피부', '✨', i.name, [i.clinic, i.func].filter(Boolean).join(' · '), i.memo, 'skin', i.id)));
   tr(() => MP.items.forEach(r => add('도수치료', '🩺', (r.date || '') + ' ' + (r.part || ''), r.clinic, [r.dz, r.symptom, r.memo].join(' '), 'manual', r.id)));
@@ -5798,7 +5997,7 @@ $('gSearch').addEventListener('click', () => { $('gs-dlg').showModal(); $('gs-q'
 $('gs-res').addEventListener('click', e => { const b = e.target.closest('[data-gs]'); if (!b) return; const h = $('gs-res')._hits && $('gs-res')._hits[Number(b.dataset.gs)]; if (h) gsGo(h); });
 
 /* A9 오늘 화면 카드 켜기/끄기 (이 기기에만 저장) */
-const TD_CARDS = [['tasks', '할 일 · 일정'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['backup', '백업 · 저장공간'], ['check', '데이터 점검']];
+const TD_CARDS = [['tasks', '할 일 · 일정'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['quick', '빠른 입력'], ['review', '이번 달 돌아보기'], ['backup', '백업'], ['check', '데이터 점검']];
 function tdPrefs(){ try { const o = JSON.parse(localStorage.getItem('td_cards_v1') || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
 function tdFilter(h){
   const pr = tdPrefs(), parts = h.split(/<!--c:(\w+)-->/); let out = parts[0];
@@ -5946,30 +6145,72 @@ function renderToday(){
       h += '<!--c:med--><div class="td-card"><h3>🏥 의료비 정산</h3><div class="td-big">' + openN + '건 <span class="td-note">진행중</span></div><p class="td-note">신청 전: 회사 <b>' + al.coNone.length + '</b> · 실비 <b>' + al.insNone.length + '</b> / 입금 대기: 회사 <b>' + coW + '</b> · 실비 <b>' + inW + '</b>' + (al.coLate.length + al.insLate.length ? ' <span class="td-warn">· 확인 필요 ' + (al.coLate.length + al.insLate.length) + '</span>' : '') + '</p><button type="button" class="pc-btn small" data-td="go" data-act="med">의료비 열기</button></div>';
     }
   } catch (er) { /* 의료비 오류가 오늘 화면을 막지 않게 */ }
+  // 이번 달 돌아보기 (이번 달 vs 지난 달)
+  try {
+    const mk = t.slice(0, 7), pm = (() => { const a = mk.split('-').map(Number), d = new Date(Date.UTC(a[0], a[1] - 2, 1)); return d.toISOString().slice(0, 7); })(), rows = [];
+    const mser = window.AppMeeting && window.AppMeeting.series ? window.AppMeeting.series(2) : [];
+    if (mser.length === 2 && (mser[0].spent || mser[1].spent)) rows.push(['💰 회의비 사용', won(mser[1].spent), won(mser[0].spent), mser[1].budget > 0 ? '예산의 ' + Math.round(mser[1].spent / mser[1].budget * 100) + '%' : '']);
+    const net = Med.oop(MD.items, MD.claims, MD.cfg), mo = m => { let v = 0, n = 0, est = false; MD.items.forEach(i => { if (i.date.slice(0, 7) === m && net[i.id]) { v += net[i.id].oop; n++; if (!net[i.id].sure) est = true; } }); return { v, n, est }; }, m1 = mo(mk), m0 = mo(pm);
+    if (m1.n || m0.n) rows.push(['🏥 의료비 실부담', won(m1.v) + (m1.est ? ' (예상 포함)' : ''), won(m0.v) + (m0.est ? ' (예상 포함)' : ''), '진료 ' + m1.n + '건']);
+    const c1 = Life.monthCount(Q.meets, mk), c0 = Life.monthCount(Q.meets, pm), e1 = Life.energyShares(Q.meets, mk + '-01', mk + '-31');
+    if (c1 || c0) rows.push(['👥 만남', c1 + '번' + (Q.cfg.target > 0 ? ' / 목표 ' + Q.cfg.target : ''), c0 + '번', e1.charge + e1.normal + e1.drain ? '충전 ' + e1.charge + ' · 방전 ' + e1.drain : '']);
+    const sk1 = SK.sessions.filter(x => x.date.slice(0, 7) === mk).length, sk0 = SK.sessions.filter(x => x.date.slice(0, 7) === pm).length;
+    if (sk1 || sk0) rows.push(['✨ 피부 시술', sk1 + '회', sk0 + '회', '']);
+    const pr = m => { let v = 0, n = 0; SH.items.forEach(i => { if (i.status === 'sold' && String(i.saleDate || '').slice(0, 7) === m) { const p = Shop.itemProfit(i); if (p !== null) { v += p; n++; } } }); return { v, n }; }, p1 = pr(mk), p0 = pr(pm);
+    if (p1.n || p0.n) rows.push(['🛍 재판매 손익', (p1.v >= 0 ? '+' : '') + won(p1.v), (p0.v >= 0 ? '+' : '') + won(p0.v), p1.n + '건 판매']);
+    const sb1 = Life.monthTotals(SB.items, Life.payMap(SB.pays), mk, SB.cfg.costIsNet), sb0 = Life.monthTotals(SB.items, Life.payMap(SB.pays), pm, SB.cfg.costIsNet);
+    if (sb1.gross || sb0.gross) rows.push(['🔁 구독·보험 청구', won(sb1.net), won(sb0.net), '']);
+    if (rows.length) h += '<!--c:review--><div class="td-card"><h3>📅 ' + Number(mk.slice(5)) + '월 돌아보기</h3><div class="td-rv"><div class="td-rv-h"><span></span><b>이번 달</b><b>지난 달</b></div>' +
+      rows.map(r => '<div class="td-rv-r"><span>' + r[0] + (r[3] ? '<small>' + esc(r[3]) + '</small>' : '') + '</span><b>' + esc(r[1]) + '</b><b class="mute">' + esc(r[2]) + '</b></div>').join('') + '</div><p class="td-note">각 탭에 입력된 값을 그대로 모았어요. 의료비는 입금 전 건이 예상 지원금으로 계산돼요.</p></div>';
+  } catch (er) { /* 돌아보기 오류가 오늘 화면을 막지 않게 */ }
+  // 빠른 입력
+  h += '<!--c:quick--><div class="td-card"><h3>⚡ 빠른 입력</h3><div class="td-qk"><button type="button" class="pc-btn" data-td="go" data-act="qk-exp">💰 회의비 지출</button><button type="button" class="pc-btn" data-td="go" data-act="qk-meet">👥 만남 기록</button><button type="button" class="pc-btn" data-td="go" data-act="qk-skin">✨ 시술 받았어요</button><button type="button" class="pc-btn" data-td="go" data-act="qk-med">🏥 진료 문자 등록</button></div></div>';
   // 백업 · 저장공간
   const A = window.AppSync, st = storageInfo();
   if (A) {
-    const last = A.last(), age = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : null, stt = A.state ? A.state() : { dirty: false };
-    const bkTxt = !A.hasUrl() ? '<span class="td-warn">시트 연결 전</span> — ⚙ 설정에서 Apps Script URL을 입력해 주세요' : stt.status === 'saving' ? '시트에 저장하고 확인하는 중…' : stt.dirty ? '<span class="td-warn">시트에 저장 확인 전 변경이 있어요</span>' + (last ? ' · 마지막 저장 확인 ' + new Date(last).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '') + (stt.status === 'fail' && stt.msg ? ' (' + esc(stt.msg) + ')' : '') : age === null ? '<span class="td-warn">아직 백업한 적이 없어요</span>' : '✓ 마지막 저장 확인 <b>' + new Date(last).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) + '</b> (' + (age === 0 ? '오늘' : age + '일 전') + ')' + (age >= 7 ? ' <span class="td-warn">(오래됐어요)</span>' : '');
-    h += '<!--c:backup--><div class="td-card"><h3>☁ 백업 · 저장공간</h3><p class="td-note">' + bkTxt + ' · 자동 백업 ' + (A.auto() ? '켜짐' : '꺼짐') + '</p>' +
-      '<div class="td-bar' + (st.pct >= 70 ? ' warn' : '') + '"><i style="width:' + st.pct + '%"></i></div><p class="td-note">이 기기 저장공간 <b>' + fmtKB(st.tot * 2) + '</b> 사용 (보관 한도의 약 ' + st.pct + '%) · 백업 데이터 약 ' + fmtKB(st.bk) + '</p>' +
-      '<p class="td-note">가장 큰 데이터: ' + st.top.map(x => esc(x[0]) + ' ' + fmtKB(x[1] * 2)).join(' · ') + '</p>' +
-      (st.pct >= 70 ? '<p class="td-note td-warn">저장공간이 차고 있어요. 사진이 큰 품목의 사진을 줄이거나 오래된 사진을 정리해 주세요.</p>' : '') +
-      '<button type="button" class="pc-btn small primary" data-td="go" data-act="backup">☁ 지금 백업</button> <span class="td-note" style="margin-left:6px">' + (stt.status === 'saving' ? '저장하는 중…' : stt.dirty ? '저장 확인 전' : (last ? '✓ ' + new Date(last).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '백업 전')) + '</span></div>';
+    const v = bkView(), btn = v.k === 'saving' ? '<button type="button" class="pc-btn small" disabled>백업 중…</button>' : (v.k === 'none' ? '<button type="button" class="pc-btn small primary" data-td="go" data-act="settings">⚙ 주소 입력</button>' : '<button type="button" class="pc-btn small primary" data-td="go" data-act="backup">☁ 지금 백업</button>');
+    h += '<!--c:backup--><div class="td-card"><h3>☁ 백업</h3><p class="td-note' + (v.dot === 'warn' ? ' td-warn' : '') + '" style="font-size:14px"><b data-bk="txt">' + esc(v.text) + '</b></p>' + (v.sub ? '<p class="td-note">' + esc(v.sub) + '</p>' : '') +
+      '<p class="td-note">자동 백업 ' + (A.auto() ? '켜짐 — 내용을 바꾸면 알아서 시트에 저장해요' : '꺼짐 — 직접 눌러야 저장돼요') + '</p>' + btn +
+      '<details class="td-more"><summary>이 기기 저장공간 ' + st.pct + '% 사용</summary><div class="td-bar' + (st.pct >= 70 ? ' warn' : '') + '"><i style="width:' + st.pct + '%"></i></div>' +
+      '<p class="td-note">전체 <b>' + fmtKB(st.tot * 2) + '</b> 중 마이라이프 <b>' + fmtKB(st.mine * 2) + '</b>' + (st.other ? ' · 같은 주소를 쓰는 다른 앱 <b>' + fmtKB(st.other * 2) + '</b>' : '') + ' · 백업 데이터 약 ' + fmtKB(st.bk) + '</p>' +
+      '<p class="td-note">큰 데이터: ' + st.top.map(x => esc(x[0]) + ' ' + fmtKB(x[1] * 2)).join(' · ') + '</p>' +
+      (st.pct >= 70 ? '<p class="td-note td-warn">저장공간이 차고 있어요. ' + (st.other > st.mine ? '다른 앱 데이터가 더 커요(해당 앱에서 정리). ' : '사진이 큰 품목의 사진을 줄여 주세요.') + '</p>' : '') + '</details></div>';
   }
   // 데이터 점검
   const ck = dataChecks(), warn = ck.filter(x => x.sev <= 2).length;
   h += '<!--c:check--><details class="td-card td-chk"' + (warn ? ' open' : '') + '><summary>🩺 데이터 점검 — ' + (ck.length ? '확인할 항목 ' + ck.length + '건' + (warn ? ' (중요 ' + warn + ')' : '') : '문제 없어요') + '</summary>' +
-    ck.slice(0, 15).map(x => '<button type="button" class="td-row' + (x.sev >= 3 ? ' soon' : '') + '" data-td="go" data-act="' + x.go[0] + '" data-id="' + esc(x.go[1] || '') + '"><span class="ic">' + (x.sev === 1 ? '❗' : x.sev === 2 ? '⚠' : 'ℹ') + '</span><span class="tx"><b>' + esc(x.text) + '</b><i>' + esc(x.area) + '</i></span></button>').join('') +
-    (ck.length > 15 ? '<p class="td-note">외 ' + (ck.length - 15) + '건 — 위 항목을 정리하면 나머지가 보여요.</p>' : '') + '</details>';
+    ck.slice(0, window.__tdChkAll ? 300 : 15).map(x => '<button type="button" class="td-row' + (x.sev >= 3 ? ' soon' : '') + '" data-td="go" data-act="' + x.go[0] + '" data-id="' + esc(x.go[1] || '') + '"><span class="ic">' + (x.sev === 1 ? '❗' : x.sev === 2 ? '⚠' : 'ℹ') + '</span><span class="tx"><b>' + esc(x.text) + '</b><i>' + esc(x.area) + '</i></span></button>').join('') +
+    (ck.length > 15 ? '<button type="button" class="pc-btn small" data-td="go" data-act="chkall" style="margin-top:6px">' + (window.__tdChkAll ? '접기' : '나머지 ' + (ck.length - 15) + '건 더 보기') + '</button>' : '') + '</details>';
   h = tdFilter(h);
   $('td-body').innerHTML = h;
 }
 function tdGo(act, id){
   if (act === 'rm') rmOpen(); else if (act === 'shop') gotoShop(id); else if (act === 'sub') { if (id) sbGoto([id], {}); else setMode('sub'); }
   else if (act === 'people') setMode('people'); else if (act === 'manual') setMode('manual'); else if (act === 'med') { if (id && /^(chk|noCd|noAmt|open|all)$/.test(id)) { mdFlt.st = id; mdFlt.year = 'all'; } setMode('med'); } else if (act === 'meeting') setMode('meeting');
-  else if (act === 'photo') { recompressPhotos(); } else if (act === 'golf') { shCat = 'golf'; szOpen = false; setMode('shop'); } else if (act === 'backup') { doBackup(); setTimeout(renderToday, 900); }
+  else if (act === 'photo') { recompressPhotos(); } else if (act === 'golf') { shCat = 'golf'; szOpen = false; setMode('shop'); } else if (act === 'backup') { doBackup(); setTimeout(renderToday, 900); } else if (act === 'settings') { window.AppSync.openSettings(); }
+  else if (act === 'qk-exp') qkExpOpen(); else if (act === 'qk-meet') { if (!Q.people.length) { toast('먼저 인맥 탭에서 사람을 등록해 주세요.'); return; } openMeet(null, null); } else if (act === 'qk-skin') qkSkinOpen(); else if (act === 'qk-med') { setMode('med'); mdSmsOpen(); }
+  else if (act === 'chkall') { window.__tdChkAll = !window.__tdChkAll; renderToday(); } else if (act === 'wizard') { setMode('med'); mdWzOpen(); } else if (act === 'skin') { setMode('skin'); if (id) { try { openSkin(id); } catch (e) { /* 무시 */ } } } else if (act === 'people-log') { ppTab = 'log'; setMode('people'); }
 }
+/* ---------- 오늘 화면 빠른 입력 ---------- */
+function qkExpOpen(){
+  const A = window.AppCards, cards = A && A.list ? A.list() : [];
+  $('qk-card').innerHTML = cards.map(c => '<option value="' + esc(c) + '">' + esc(c) + '</option>').join('');
+  try { const last = localStorage.getItem('qk_card_v1'); if (last && cards.indexOf(last) >= 0) $('qk-card').value = last; } catch (e) { /* 무시 */ }
+  $('qk-date').value = todayStr(); $('qk-item').value = ''; $('qk-amt').value = ''; $('qk-dlg').showModal();
+}
+function qkExpSave(){
+  if (!$('qk-date').value || !$('qk-item').value.trim() || !(Number($('qk-amt').value) > 0)) { toast('날짜 · 항목 · 금액을 입력해 주세요.'); return; }
+  $('newDate').value = $('qk-date').value; if ($('qk-card').value) $('newCard').value = $('qk-card').value; $('newItem').value = $('qk-item').value.trim(); $('newAmount').value = $('qk-amt').value;
+  try { localStorage.setItem('qk_card_v1', $('qk-card').value); } catch (e) { /* 무시 */ }
+  $('addExpenseBtn').click(); $('qk-dlg').close(); setTimeout(() => { if (mode === 'today') renderToday(); }, 200);
+}
+function qkSkinOpen(){
+  const rows = SK.items.map(i => ({ i, t: Skin.stats(i, SK.sessions) })).filter(x => !x.t.done).sort((a, b) => String(b.t.last || '').localeCompare(String(a.t.last || '')));
+  $('qk-sk-list').innerHTML = rows.length ? rows.map(x => '<div class="td-row" style="cursor:default"><span class="tx"><b>' + esc(x.i.name) + '</b><i>' + (x.i.clinic ? esc(x.i.clinic) + ' · ' : '') + (x.i.open ? '받은 ' + x.t.used + '회' : '남은 ' + x.t.remain + '회') + '</i></span><button type="button" class="pc-btn small primary" data-qk="sk" data-id="' + esc(x.i.id) + '">받았어요</button></div>').join('') : '<p class="pc-hint">진행 중인 시술권이 없어요.</p>';
+  $('qk-sk-dlg').showModal();
+}
+$('qk-dlg').addEventListener('click', e => { const b = e.target.closest('[data-qk]'); if (!b) return; if (b.dataset.qk === 'cancel') $('qk-dlg').close(); else if (b.dataset.qk === 'save') qkExpSave(); });
+$('qk-sk-dlg').addEventListener('click', e => { const b = e.target.closest('[data-qk]'); if (!b) return; if (b.dataset.qk === 'cancel') $('qk-sk-dlg').close(); else if (b.dataset.qk === 'sk') { $('qk-sk-dlg').close(); skToday(b.dataset.id); } });
 $('todayView').addEventListener('click', e => { const el = e.target.closest('[data-td="go"]'); if (el) tdGo(el.dataset.act, el.dataset.id); });
 $('gd-q').addEventListener('input', e => { gdQ = e.target.value; renderGuide(); });
 
@@ -5984,14 +6225,9 @@ function renderGlobal(){
   const A = window.AppSync, gs = $('gSync'), dot = $('gDot');
   if (!A) { gs.textContent = ''; return; }
   const gbox = $('gAlerts');
-  const last = A.last(), age = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : null;
-  const stt = A.state ? A.state() : { status: 'idle', dirty: false, msg: '', since: '' };
+  const last = A.last(), age = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : null, stt = A.state ? A.state() : { status: 'idle', dirty: false, msg: '', since: '' };
   gs.classList.remove('pending'); delete gs.dataset.g;
-  if (!A.hasUrl()) { gs.textContent = '☁ 시트 연결 전'; dot.className = 'gdot'; }
-  else if (stt.status === 'saving') { gs.textContent = '☁ 시트에 저장하고 확인하는 중…'; dot.className = 'gdot'; }
-  else if (stt.dirty) { gs.textContent = '⚠ 시트에 저장 확인 전 변경이 있어요' + (stt.status === 'fail' && stt.msg ? ' (' + stt.msg + ')' : '') + ' · 눌러서 지금 저장'; dot.className = 'gdot warn'; gs.classList.add('pending'); gs.dataset.g = 'backup'; }
-  else if (age === null) { gs.textContent = '☁ 아직 백업 전'; dot.className = 'gdot warn'; }
-  else { gs.textContent = '☁ 시트 저장 확인 ' + (age === 0 ? '오늘 ' + new Date(last).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : age + '일 전') + (A.auto() ? ' · 자동 백업 켜짐' : ' · 자동 백업 꺼짐'); dot.className = 'gdot ' + (age <= 1 ? 'ok' : (age >= 7 ? 'warn' : '')); }
+  { const v = bkView(); gs.textContent = v.text; dot.className = 'gdot ' + (v.dot || ''); if (v.go && v.k !== 'ok') { gs.classList.add('pending'); gs.dataset.g = v.go; } }
   const list = [];
   if (mode !== 'shop' && navVisible('shop')) {
     const due = Shop.dueBenefits(SH.items, todayStr());
@@ -6002,7 +6238,7 @@ function renderGlobal(){
     rmNotifyCheck(rd); }
   if (A.hasUrl()) { if (age === null || age >= 7) list.push({ key: 'bk:' + (age === null ? 'never' : 'old'), act: 'backup', html: '☁ ' + (age === null ? '아직 백업한 적이 없어요' : '마지막 백업이 <b>' + age + '일 전</b>이에요') + ' — 눌러서 지금 백업' }); }
   else list.push({ key: 'nourl', act: 'settings', html: '☁ 시트 연결이 안 되어 있어요 — 눌러서 ⚙ 설정에서 Apps Script URL 입력' });
-  if (A.hasUrl() && stt.dirty && stt.since && Date.now() - Date.parse(stt.since) > 120000) list.push({ key: 'dirty', act: 'backup', html: '⚠ <b>시트에 저장되지 않은 변경</b>이 2분 넘게 남아 있어요 — 앱을 지우거나 재설치하기 전에 꼭 눌러서 저장하세요' });
+  if (A.hasUrl() && stt.dirty && stt.since && Date.now() - Date.parse(stt.since) > 600000) list.push({ key: 'dirty', act: 'backup', html: '⚠ <b>시트에 저장되지 않은 변경</b>이 10분 넘게 남아 있어요 — 앱을 지우거나 재설치하기 전에 꼭 눌러서 저장하세요' });
   { const nm = A.newMonth(); if (nm) list.push({ key: 'nm:' + nm, act: 'meeting', html: '📅 회의비: ' + esc(nm) }); }
   {
     const up = Life.upcoming(SB.items, Life.payMap(SB.pays), todayStr(), 2);
@@ -6019,7 +6255,7 @@ function renderGlobal(){
   if (gbox.dataset.sig !== html) { gbox.dataset.sig = html; gbox.innerHTML = html; }
   gbox.hidden = mode === 'today';   // 오늘 화면에서는 같은 내용을 본문에 보여주므로 상단 알림은 숨김
 }
-if (window.AppSync) window.AppSync.onState = () => { renderGlobal(); syncNote(); if (mode === 'today' && window.AppSync.state().status !== 'saving') { clearTimeout(window.__tdT); window.__tdT = setTimeout(() => { try { renderToday(); } catch (e) { /* 무시 */ } }, 150); } };
+if (window.AppSync) window.AppSync.onState = () => { bkTicker(); renderGlobal(); syncNote(); if (mode === 'today' && window.AppSync.state().status !== 'saving') { clearTimeout(window.__tdT); window.__tdT = setTimeout(() => { try { renderToday(); } catch (e) { /* 무시 */ } }, 150); } };
 $('gBar').addEventListener('click', e => {
   const x = e.target.closest('[data-g="x"]');
   if (x) { dismissAlert(x.dataset.key); renderGlobal(); if (mode === 'shop') checkBenefits(); e.stopPropagation(); return; }
@@ -6236,11 +6472,21 @@ $('lg-flt-type').addEventListener('change', e => { lgFilter.type = e.target.valu
 $('cl-flt-club').addEventListener('change', e => { clFilter.club = e.target.value; renderPeople(); });
 $('cl-flt-sort').addEventListener('change', e => { clFilter.sort = e.target.value; renderPeople(); });
 pkBind('mt-dlg', 'mt'); pkBind('cl-dlg', 'cl');
+$('mt-f-type').addEventListener('change', mtMoreRender);
+$('mt-dlg').addEventListener('click', e => { const b = e.target.closest('[data-pk="more"]'); if (b) { const t = b.dataset.t, i = mtMore.indexOf(t); if (i >= 0) mtMore.splice(i, 1); else mtMore.push(t); mtMoreRender(); return; } if (e.target.closest('[data-pp="bd-open"]') && mtEditing) mtBdOpen(mtEditing); });
+$('mt-bd-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; const a = el.dataset.pp; if (a === 'bd-cancel') $('mt-bd-dlg').close(); else if (a === 'bd-save') mtBdSave(); else if (a === 'bd-solo') mtBdSolo(); });
+$('mt-bd-dlg').addEventListener('change', mtBdCalc);
+$('pp-bd-sug').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; const a = el.dataset.pp;
+  if (a === 'bd-yes') { const ids = el.dataset.ids.split(','); mtBdApply(ids[0], ids.slice(1)); toast('한 번의 만남으로 묶었어요.'); renderAll(); }
+  else if (a === 'bd-no') { const no = mtNoBd(); no.push(el.dataset.ids.split(',').sort().join(',')); try { localStorage.setItem(MT_NOBD, JSON.stringify(no)); } catch (er) { /* 무시 */ } renderAll(); }
+  else if (a === 'bd-all') { const sg = mtBdSuggest().slice(0, 6); sg.forEach(l => mtBdApply(l[0].id, l.slice(1).map(x => x.id))); toast(sg.length + '건을 묶었어요.'); renderAll(); } });
 $('pp-dlg').addEventListener('change', e => { if (e.target.id !== 'pp-f-clubsel') return; const v = e.target.value; if (v && ppClubDraft.indexOf(v) < 0) ppClubDraft.push(v); ppClubRender(); });
 $('pp-dlg').addEventListener('click', e => { const x = e.target.closest('[data-pk="cx"]'); if (!x) return; ppClubDraft = ppClubDraft.filter(id => id !== x.dataset.id); ppClubRender(); });
 $('mt-f-st').addEventListener('change', mtStUI);
 $('mt-f-date').addEventListener('change', () => { const d = Calc.validDate($('mt-f-date').value); if (d && d > todayStr() && $('mt-f-st').value === 'done') { $('mt-f-st').value = 'plan'; mtStUI(); } });
-$('mt-f-clubsel').addEventListener('change', e => { const c = Q.clubs.find(x => x.id === e.target.value); if (c) { mtCid = c.id; c.pids.filter(personById).forEach(id => { if (pkDraft.mt.indexOf(id) < 0) pkDraft.mt.push(id); }); pkRender('mt'); } e.target.value = ''; });
+$('mt-dlg').addEventListener('click', e => { const b = e.target.closest('[data-pk="club"]'); if (!b) return; const c = Q.clubs.find(x => x.id === b.dataset.id); if (!c) return;
+  const before = pkDraft.mt.length; mtCid = c.id; c.pids.filter(personById).forEach(id => { if (pkDraft.mt.indexOf(id) < 0) pkDraft.mt.push(id); }); pkRender('mt');
+  const n = pkDraft.mt.length - before; toast(n ? c.name + ' ' + n + '명을 추가했어요.' : c.name + ' 멤버는 이미 모두 선택돼 있어요.'); });
 
 /* ---------- 새 화면 이벤트 (하단 탭 · 가이드 · 도수치료 · 연봉) ---------- */
 document.addEventListener('click', e => {
