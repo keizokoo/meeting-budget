@@ -1124,6 +1124,8 @@
     <label class="pc-f">비대상 사유(선택)<input id="md-f-why" type="text" placeholder="예: 비대상(치과)"></label>
   </div>
   <label class="pc-f">회사 예상 지원금 직접 입력(비우면 자동 계산)<input id="md-f-cov" type="number" inputmode="numeric" min="0" step="any"></label>
+  <div id="md-f-qc" class="pc-row2"><label class="pc-f">회사 신청일(이미 신청했다면)<input id="md-f-qco" type="date"></label><label class="pc-f">실비 신청일(이미 신청했다면)<input id="md-f-qin" type="date"></label></div>
+  <p class="pc-hint" id="md-f-qchint" style="margin:0 0 6px"></p>
   <label class="pc-f">메모(선택)<input id="md-f-memo" type="text"></label>
   <div class="md-chk" id="md-f-chkwrap" hidden>⚠ <span id="md-f-chktext"></span><label class="mp-chk"><input type="checkbox" id="md-f-chkok"> 확인했어요 (표시 지우기)</label></div>
   <div class="md-mp" id="md-f-mp"></div>
@@ -1139,8 +1141,9 @@
   <div id="md-cl-list"></div>
   <div class="pc-row2">
     <label class="pc-f">신청일<input id="md-cl-cdate" type="date"></label>
-    <label class="pc-f" id="md-cl-due-wrap">지급예정일(선택)<input id="md-cl-due" type="date"></label>
+    <label class="pc-f" id="md-cl-due-wrap">지급예정일<input id="md-cl-due" type="date"></label>
   </div>
+  <div id="md-cl-duerow" style="margin:-2px 0 6px"><p class="pc-hint" id="md-cl-duehint" style="margin:0 0 4px"></p><button type="button" class="pc-btn small" data-md="cl-due">지급예정일 규칙대로 다시 계산</button></div>
   <label class="pc-f">예상 지원금(원)<input id="md-cl-exp" type="number" inputmode="numeric" min="0" step="any"></label>
   <div style="margin:-2px 0 4px"><button type="button" class="pc-btn small" data-md="cl-auto">자동 계산값으로 되돌리기</button></div>
   <label class="mp-chk"><input type="checkbox" id="md-cl-paidchk"> 입금 확인됨 (정산 완료)</label>
@@ -2969,7 +2972,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-19-e (의료비 실부담 계산 · 회의비 카드번호 인식)';
+const APP_BUILD_VERSION = '2026-10-19-f (의료비 신청일 · 회사 지급예정일 자동 계산)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4593,6 +4596,15 @@ const Med = (function () {
     items.forEach(i => { const k = i.who + '|' + i.date; m[k] = (m[k] || 0) + num(i.total); });
     return Object.keys(m).reduce((a, k) => a + Math.max(0, m[k] - ded), 0);
   }
+  /* 회사 지급예정일: 신청(접수)일 11~25일 → 다음 달 10일 / 26일~다음 달 10일 → 25일 (26~말일 접수는 다음 달 25일, 1~10일 접수는 같은 달 25일) */
+  function dueFor(cdate) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(cdate || ''); if (!m) return '';
+    let y = +m[1], mo = +m[2], d = +m[3], pd;
+    if (d >= 11 && d <= 25) { mo += 1; pd = 10; } else if (d >= 26) { mo += 1; pd = 25; } else { pd = 25; }
+    if (mo > 12) { mo = 1; y += 1; }
+    return y + '-' + String(mo).padStart(2, '0') + '-' + String(pd).padStart(2, '0');
+  }
+  const effDue = c => (c && (c.due || dueFor(c.cdate))) || '';
   function dayTotal(items, it) { let s = 0; items.forEach(i => { if (i.who === it.who && i.date === it.date && !isDental(i.place)) s += num(i.total); }); return s; }
   /* 실비 대상: 직접 정한 값이 우선, 아니면 본인 · 치과 아님 · 당일 총 결제금액이 공제액(5천원)을 넘으면 대상 */
   function elig(it, items, ded) {
@@ -4627,7 +4639,7 @@ const Med = (function () {
     (claims || []).forEach(c => {
       if (c.st === 'paid') return;
       const its = (c.ids || []).map(id => byId[id]).filter(Boolean); if (!its.length) return;
-      if (c.t === 'co') { if (c.due && c.due < today) out.coLate.push({ claim: c, days: dayDiff(c.due, today) }); }
+      if (c.t === 'co') { const dd = effDue(c); if (dd && dd < today) out.coLate.push({ claim: c, days: dayDiff(dd, today) }); }
       else { const base = c.cdate || its.map(i => i.date).sort()[0], d = dayDiff(base, today); if (d != null && d >= nd) out.insLate.push({ claim: c, days: d }); }
     });
     items.forEach(it => { const s = status(it, items, ix, cfg); if (s.cs === 'none') out.coNone.push(it); if (s.is === 'none') out.insNone.push(it); });
@@ -4729,7 +4741,7 @@ const Med = (function () {
     });
     return out;
   }
-  return { DED, isDental, isPharm, oop, coExp, insExp, dayTotal, elig, whyNo, index, status, alerts, placeCore, matchPlace, parseOne, parseSms, lastExtra, dayDiff };
+  return { DED, isDental, isPharm, oop, dueFor, effDue, coExp, insExp, dayTotal, elig, whyNo, index, status, alerts, placeCore, matchPlace, parseOne, parseSms, lastExtra, dayDiff };
 })();
 // </CALC>
 
@@ -4753,6 +4765,8 @@ function mdNorm(o){
 }
 let MD = loadK(MD_KEY, MD_SEED, mdNorm);
 window.AppSmsRules = () => (MD && MD.cfg && MD.cfg.cards) || [];
+let mdDueManual = false;
+function mdDueHint(){ const c = Calc.validDate($('md-cl-cdate').value); $('md-cl-duehint').textContent = '회사 지급일 규칙: 신청일 11~25일 → 다음 달 10일 · 26일~다음 달 10일 → 25일' + (c ? ' (이 신청일은 ' + mdMD(Med.dueFor(c)) + ' 예정)' : ''); }
 let mdFlt = { st: 'open', year: 'all' }, mdSelMode = false, mdSel = {}, mdEditing = null, mdCl = null, mdSmsRows = [];
 function mdSave(){ saveK(MD_KEY, MD); }
 const mdIx = () => Med.index(MD.items, MD.claims);
@@ -4779,12 +4793,12 @@ function mdMatch(r, k){
 const MD_FLT = [['open', '진행중'], ['coNone', '회사 미신청'], ['insNone', '실비 미신청'], ['wait', '입금 대기'], ['chk', '확인 필요'], ['closed', '종결'], ['all', '전체']];
 function mdChips(r, t){
   const s = r.s, cfg = MD.cfg; let co, ins;
-  if (s.cs === 'paid') co = '<button type="button" class="md-chip ok" data-md="co" data-id="' + esc(r.it.id) + '">회사 입금 ✓' + (s.c.ids.length > 1 ? ' · ' + s.c.ids.length + '건' : '') + '</button>';
-  else if (s.cs === 'claimed') { const late = s.c.due && s.c.due < t; co = '<button type="button" class="md-chip ' + (late ? 'warn' : 'wait') + '" data-md="co" data-id="' + esc(r.it.id) + '">회사 신청' + (s.c.due ? ' · 예정 ' + mdMD(s.c.due) : '') + (late ? ' (' + Med.dayDiff(s.c.due, t) + '일 지남)' : '') + '</button>'; }
+  if (s.cs === 'paid') co = '<button type="button" class="md-chip ok" data-md="co" data-id="' + esc(r.it.id) + '">회사 ' + (s.c.cdate ? '신청 ' + mdMD(s.c.cdate) + ' → ' : '') + '입금 ✓' + (s.c.ids.length > 1 ? ' · ' + s.c.ids.length + '건' : '') + '</button>';
+  else if (s.cs === 'claimed') { const dd = Med.effDue(s.c), late = dd && dd < t; co = '<button type="button" class="md-chip ' + (late ? 'warn' : 'wait') + '" data-md="co" data-id="' + esc(r.it.id) + '">회사 신청 ' + (s.c.cdate ? mdMD(s.c.cdate) : '(신청일 없음)') + (dd ? ' · 예정 ' + mdMD(dd) : '') + (late ? ' (' + Med.dayDiff(dd, t) + '일 지남)' : '') + '</button>'; }
   else co = '<button type="button" class="md-chip warn" data-md="co" data-id="' + esc(r.it.id) + '">회사 미신청</button>';
   if (s.is === 'na') ins = '<span class="md-chip mute">실비 ' + esc(Med.whyNo(r.it, MD.items, cfg.ded)) + '</span>';
-  else if (s.is === 'paid') ins = '<button type="button" class="md-chip ok" data-md="in" data-id="' + esc(r.it.id) + '">실비 입금 ✓' + (s.i.ids.length > 1 ? ' · ' + s.i.ids.length + '건' : '') + '</button>';
-  else if (s.is === 'claimed') { const base = s.i.cdate || r.it.date, d = Med.dayDiff(base, t), late = d != null && d >= cfg.insDays; ins = '<button type="button" class="md-chip ' + (late ? 'warn' : 'wait') + '" data-md="in" data-id="' + esc(r.it.id) + '">실비 신청' + (d != null ? ' · ' + d + '일째' : '') + '</button>'; }
+  else if (s.is === 'paid') ins = '<button type="button" class="md-chip ok" data-md="in" data-id="' + esc(r.it.id) + '">실비 ' + (s.i.cdate ? '신청 ' + mdMD(s.i.cdate) + ' → ' : '') + '입금 ✓' + (s.i.ids.length > 1 ? ' · ' + s.i.ids.length + '건' : '') + '</button>';
+  else if (s.is === 'claimed') { const base = s.i.cdate || r.it.date, d = Med.dayDiff(base, t), late = d != null && d >= cfg.insDays; ins = '<button type="button" class="md-chip ' + (late ? 'warn' : 'wait') + '" data-md="in" data-id="' + esc(r.it.id) + '">실비 신청 ' + (s.i.cdate ? mdMD(s.i.cdate) : '(신청일 없음)') + (d != null ? ' · ' + d + '일째' : '') + '</button>'; }
   else ins = '<button type="button" class="md-chip warn" data-md="in" data-id="' + esc(r.it.id) + '">실비 미신청</button>';
   return co + ins;
 }
@@ -4858,6 +4872,7 @@ function mdOpen(id){
   $('md-f-memo').value = r ? r.memo : ''; $('md-f-chkwrap').hidden = !(r && r.chk); $('md-f-chktext').textContent = r ? r.chk : ''; $('md-f-chkok').checked = false;
   $('md-d-delete').hidden = !r;
   { const dosu = r && MP.items.find(m => m.date === r.date); $('md-f-mp').innerHTML = r ? (dosu ? '🦵 같은 날짜의 도수치료 기록이 있어요 (' + esc(dosu.part) + ' · 지급 ' + won(dosu.paid) + ')' : (r.extra > 0 && /정형외과|한의|재활/.test(r.place) ? '🦵 도수치료라면 도수치료 탭에도 기록해 주세요 (한도 카운팅용)' : '')) : ''; }
+  $('md-f-qc').hidden = !!r; $('md-f-qchint').hidden = !!r; $('md-f-qco').value = ''; $('md-f-qin').value = ''; $('md-f-qchint').textContent = '비워 두면 “미신청”으로 등록돼요. 회사는 신청일을 넣으면 지급예정일이 자동 계산돼요.';
   mdSettleHtml(); mdPreview(); $('md-dlg').showModal();
 }
 function mdSettleHtml(){
@@ -4865,8 +4880,8 @@ function mdSettleHtml(){
   const r = mdRows().find(x => x.it.id === mdEditing); if (!r) { box.innerHTML = ''; return; }
   const s = r.s, t = todayStr();
   const line = (lab, st, c, tp) => '<div class="md-st"><span><b>' + lab + '</b> ' + st + '</span><button type="button" class="pc-btn small' + (c ? '' : ' primary') + '" data-md="cl" data-t="' + tp + '" data-id="' + esc(mdEditing) + '">' + (c ? (c.st === 'paid' ? '내용 보기·수정' : '입금 확인') : '신청 처리') + '</button></div>';
-  box.innerHTML = line('회사', s.cs === 'paid' ? '입금 완료 ' + (s.c.paid != null ? won(s.c.paid) : '(금액 미상)') : s.cs === 'claimed' ? '신청함 ' + (s.c.cdate ? mdMD(s.c.cdate) : '') + ' · 예상 ' + won(s.c.exp) : '아직 신청 전', s.c, 'co') +
-    (s.is === 'na' ? '<div class="md-st"><span><b>실비</b> ' + esc(Med.whyNo(r.it, MD.items, MD.cfg.ded)) + '</span></div>' : line('실비(메리츠)', s.is === 'paid' ? '입금 완료 ' + (s.i.paid != null ? won(s.i.paid) : '(금액 미상)') : s.is === 'claimed' ? '신청함 ' + (s.i.cdate ? mdMD(s.i.cdate) : '') + ' · 예상 ' + won(s.i.exp) : '아직 신청 전', s.i, 'in')) +
+  box.innerHTML = line('회사', s.cs === 'paid' ? '신청 ' + (s.c.cdate ? mdMD(s.c.cdate) : '(신청일 없음)') + ' → 입금 ' + (s.c.pdate ? mdMD(s.c.pdate) + ' ' : '') + (s.c.paid != null ? won(s.c.paid) : '(금액 미상)') : s.cs === 'claimed' ? '신청함 ' + (s.c.cdate ? mdMD(s.c.cdate) : '(신청일 없음)') + (Med.effDue(s.c) ? ' · 지급예정 ' + mdMD(Med.effDue(s.c)) : '') + ' · 예상 ' + won(s.c.exp) : '아직 신청 전', s.c, 'co') +
+    (s.is === 'na' ? '<div class="md-st"><span><b>실비</b> ' + esc(Med.whyNo(r.it, MD.items, MD.cfg.ded)) + '</span></div>' : line('실비(메리츠)', s.is === 'paid' ? '신청 ' + (s.i.cdate ? mdMD(s.i.cdate) : '(신청일 없음)') + ' → 입금 ' + (s.i.pdate ? mdMD(s.i.pdate) + ' ' : '') + (s.i.paid != null ? won(s.i.paid) : '(금액 미상)') : s.is === 'claimed' ? '신청함 ' + (s.i.cdate ? mdMD(s.i.cdate) : '') + ' · 예상 ' + won(s.i.exp) : '아직 신청 전', s.i, 'in')) +
     (s.closed ? '<div class="md-closed">✅ 종결된 건이에요.</div>' : '');
   { const x = Med.oop(MD.items, MD.claims, MD.cfg)[mdEditing]; if (x) box.innerHTML += '<div class="md-calc"><b>실제 부담 ' + won(x.oop) + (x.sure ? '' : ' (예상)') + '</b><br><small>총 결제 ' + won(x.total) + ' − 회사 ' + won(x.co) + ' − 실비 ' + won(x.ins) + (x.sure ? '' : ' · 입금 확인 전이거나 금액 미상인 부분은 예상 지원금으로 계산했어요') + (((s.c && s.c.ids.length > 1) || (s.i && s.i.ids.length > 1)) ? ' · 여러 건 묶음 신청은 건별 예상액 비율로 나눴어요' : '') + '</small></div>'; }
   void t;
@@ -4878,7 +4893,16 @@ function mdSaveItem(){
   if (total <= 0) { toast('총 결제금액을 입력해 주세요.'); return; }
   const d = { date, who: $('md-f-who').value, place, total, extra: Math.min(total, Number($('md-f-extra').value) || 0), incl: $('md-f-incl').checked, cOv: $('md-f-cov').value === '' ? '' : Number($('md-f-cov').value),
     tg: $('md-f-tg').value, why: $('md-f-why').value.trim(), card: $('md-f-card').value, inst: Math.max(0, Math.round(Number($('md-f-inst').value)) || 0), memo: $('md-f-memo').value.trim(), u: nowIso() };
-  if (mdEditing) { const r = mdItem(mdEditing); if (r) { Object.assign(r, d); if ($('md-f-chkok').checked) r.chk = ''; } } else MD.items.push(Object.assign({ id: uid('md'), chk: '' }, d));
+  if (mdEditing) { const r = mdItem(mdEditing); if (r) { Object.assign(r, d); if ($('md-f-chkok').checked) r.chk = ''; } } else {
+    const nid = uid('md'); MD.items.push(Object.assign({ id: nid, chk: '' }, d));
+    const qco = Calc.validDate($('md-f-qco').value), qin = Calc.validDate($('md-f-qin').value), me = MD.items.find(x => x.id === nid), tn = nowIso();
+    if (qco) MD.claims.push({ id: uid('mc'), t: 'co', ids: [nid], cdate: qco, due: Med.dueFor(qco), exp: Med.coExp(me, MD.cfg), pdate: '', paid: null, st: 'claimed', u: tn });
+    if (qin) {
+      const ix2 = Med.index(MD.items, MD.claims);
+      if (!Med.elig(me, MD.items, MD.cfg.ded)) toast('실비 대상이 아니라 실비 신청일은 기록하지 않았어요.');
+      else { const grp = MD.items.filter(o => o.who === me.who && o.date === me.date && Med.elig(o, MD.items, MD.cfg.ded) && (o.id === nid || !ix2.ins[o.id])); MD.claims.push({ id: uid('mc'), t: 'in', ids: grp.map(o => o.id), cdate: qin, due: '', exp: Med.insExp(grp, MD.cfg.ded), pdate: '', paid: null, st: 'claimed', u: tn }); }
+    }
+  }
   MD = mdNorm(MD); mdSave(); changed(); $('md-dlg').close(); toast('저장했어요.'); renderAll();
 }
 function mdDelItem(){
@@ -4903,7 +4927,7 @@ function mdClOpen(tp, ids, claimId){
   const expAuto = tp === 'co' ? its.reduce((a, i) => a + Med.coExp(i, MD.cfg), 0) : Med.insExp(its, MD.cfg.ded);
   $('md-cl-title').textContent = (tp === 'co' ? '회사 ' : '실비(메리츠화재) ') + (cl ? (cl.st === 'paid' ? '신청·입금 내용' : '신청 내용 · 입금 확인') : '신청 처리');
   $('md-cl-list').innerHTML = its.map(i => '<label class="md-ck2"><input type="checkbox" data-mdcl="m" data-id="' + esc(i.id) + '" checked> ' + mdMD(i.date) + ' ' + esc(i.place) + ' <small>' + won(i.total) + '</small></label>').join('');
-  $('md-cl-cdate').value = cl ? cl.cdate : todayStr(); $('md-cl-due-wrap').hidden = tp !== 'co'; $('md-cl-due').value = cl ? cl.due : '';
+  $('md-cl-cdate').value = cl ? cl.cdate : todayStr(); $('md-cl-due-wrap').hidden = tp !== 'co'; $('md-cl-due').value = cl ? (cl.due || (tp === 'co' ? Med.dueFor(cl.cdate) : '')) : (tp === 'co' ? Med.dueFor(todayStr()) : ''); $('md-cl-duerow').hidden = tp !== 'co'; mdDueManual = !!(cl && cl.due && cl.due !== Med.dueFor(cl.cdate)); mdDueHint();
   $('md-cl-exp').value = cl ? cl.exp : expAuto; $('md-cl-exp').dataset.auto = String(expAuto);
   $('md-cl-paidchk').checked = !!(cl && cl.st === 'paid'); $('md-cl-pdate').value = cl && cl.pdate ? cl.pdate : ''; $('md-cl-paid').value = cl && cl.paid != null ? cl.paid : '';
   $('md-cl-del').hidden = !cl; mdClUI(); $('md-cl-dlg').showModal();
@@ -4919,7 +4943,7 @@ function mdClSave(){
   if (!ids.length) { toast('한 건 이상 선택해 주세요.'); return; }
   const cdate = Calc.validDate($('md-cl-cdate').value) || ''; if (!cdate && !mdCl.id) { toast('신청일을 입력해 주세요.'); return; }   // 시트에서 날짜를 읽지 못한 기존 기록은 비워 둘 수 있어요
   const paidOn = $('md-cl-paidchk').checked, t = nowIso();
-  const d = { ids, cdate, due: mdCl.t === 'co' ? (Calc.validDate($('md-cl-due').value) || '') : '', exp: Number($('md-cl-exp').value) || 0, st: paidOn ? 'paid' : 'claimed',
+  const d = { ids, cdate, due: mdCl.t === 'co' ? (Calc.validDate($('md-cl-due').value) || Med.dueFor(cdate)) : '', exp: Number($('md-cl-exp').value) || 0, st: paidOn ? 'paid' : 'claimed',
     pdate: paidOn ? (Calc.validDate($('md-cl-pdate').value) || todayStr()) : '', paid: paidOn && $('md-cl-paid').value !== '' ? Number($('md-cl-paid').value) : null, u: t };
   if (mdCl.id) { const c = MD.claims.find(x => x.id === mdCl.id); if (c) Object.assign(c, d); }
   else MD.claims.push(Object.assign({ id: uid('mc'), t: mdCl.t }, d));
@@ -4996,9 +5020,12 @@ $('md-cl-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md;
   if (a === 'cl-cancel') $('md-cl-dlg').close(); else if (a === 'cl-save') mdClSave(); else if (a === 'cl-del') mdClDelete();
   else if (a === 'cl-auto') { $('md-cl-exp').value = $('md-cl-exp').dataset.auto; }
+  else if (a === 'cl-due') { $('md-cl-due').value = Med.dueFor(Calc.validDate($('md-cl-cdate').value)); mdDueManual = false; mdDueHint(); }
 });
 $('md-cl-dlg').addEventListener('change', e => {
   if (e.target.id === 'md-cl-paidchk') mdClUI(true);
+  else if (e.target.id === 'md-cl-cdate') { if (mdCl && mdCl.t === 'co' && !mdDueManual) $('md-cl-due').value = Med.dueFor(Calc.validDate(e.target.value)); mdDueHint(); }
+  else if (e.target.id === 'md-cl-due') { mdDueManual = !!e.target.value && e.target.value !== Med.dueFor(Calc.validDate($('md-cl-cdate').value)); }
   else if (e.target.matches('[data-mdcl="m"]')) {
     const ids = Array.prototype.filter.call(document.querySelectorAll('#md-cl-list input[data-mdcl="m"]'), x => x.checked).map(x => x.dataset.id), its = ids.map(mdItem).filter(Boolean);
     if (!(mdCl.id && $('md-cl-paidchk').checked)) $('md-cl-exp').value = mdCl.t === 'co' ? its.reduce((a, i) => a + Med.coExp(i, MD.cfg), 0) : Med.insExp(its, MD.cfg.ded);
@@ -5450,7 +5477,8 @@ function dataChecks(){
   { const nc = MP.items.filter(i => !i.clinic).length; if (nc) add(2, '도수치료', '병원 이름이 비어 있는 기록 ' + nc + '건', ['manual']);
     const nd = MP.items.filter(i => i.claimed && !i.cdate).length; if (nd) add(2, '도수치료', '청구했는데 청구·지급일이 없는 기록 ' + nd + '건', ['manual']); }
   try { const miss = MD.claims.filter(c => c.st === 'paid' && c.paid == null).length; if (miss) add(3, '의료비', '입금액이 기록되지 않은 청구 ' + miss + '건 — 시트 원본에서 읽지 못한 금액이에요', ['med']);
-    const ck = MD.items.filter(i => i.chk).length; if (ck) add(2, '의료비', '“확인 필요”로 표시된 진료 건 ' + ck + '건', ['med']); } catch (e) { /* 무시 */ }
+    const ck = MD.items.filter(i => i.chk).length; if (ck) add(2, '의료비', '“확인 필요”로 표시된 진료 건 ' + ck + '건', ['med']);
+    const nd = MD.claims.filter(c => !c.cdate && c.ids.some(id => MD.items.some(x => x.id === id))).length; if (nd) add(1, '의료비', '신청일이 비어 있는 신청 기록 ' + nd + '건 (신청 칩을 눌러 날짜를 넣어 주세요)', ['med']); } catch (e) { /* 무시 */ }
   { const nr = G.rounds.filter(r => !r.date).length; if (nr) add(2, '골프', '요금 기록 ' + nr + '건에 날짜가 없어요', ['golf']); }
   SB.items.filter(i => i.active).forEach(i => {
     if (i.amount == null && !(i.hist || []).length) add(1, '구독·보험', i.name + ' — 결제 금액이 없어요', ['sub', i.id]);
