@@ -653,6 +653,43 @@
   .sh-trade{ display:inline-block; margin-top:6px; padding:4px 9px; border:1px solid var(--accent); border-radius:8px; font-size:12px; font-weight:700; color:var(--accent); line-height:1.4; }
   .sh-row.hl, .sb-row.hl{ animation:hlflash 2.4s ease-out 1; } @keyframes hlflash{ 0%,60%{ background:var(--pc-soft); box-shadow:0 0 0 2px var(--accent) inset; } 100%{ background:transparent; box-shadow:none; } }
   .scard.link{ cursor:pointer; } .scard.link:hover{ background:var(--pc-soft); } .sb-needlink{ cursor:pointer; text-decoration:underline; }
+  .md-acts{ display:flex; gap:6px; margin:4px 0 10px; } .md-acts .pc-btn{ flex:1; white-space:nowrap; padding:9px 6px; font-size:13px; } .md-acts .pc-btn.primary{ flex:1.4; }
+  /* ===== 의료비 ===== */
+  #md-dlg, #md-cl-dlg, #md-sms-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,520px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
+  #md-dlg::backdrop, #md-cl-dlg::backdrop, #md-sms-dlg::backdrop{ background:rgba(0,0,0,.45); }
+  #md-dlg h3, #md-cl-dlg h3, #md-sms-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #md-dlg .pc-f input, #md-dlg .pc-f select, #md-cl-dlg .pc-f input, #md-sms-dlg .pc-f input, #md-sms-dlg .pc-f select, #md-sms-dlg textarea, #medView .pc-f select, #medView .pc-f input{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; box-sizing:border-box; }
+  #md-sms-dlg textarea{ min-height:96px; resize:vertical; }
+  #md-dlg .mp-chk, #md-cl-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #md-dlg .mp-chk input, #md-cl-dlg .mp-chk input{ width:auto; min-height:0; }
+  .md-flt{ display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px; }
+  .md-f{ font:inherit; font-size:12.5px; font-weight:700; padding:6px 11px; border-radius:999px; border:1px solid var(--line2); background:var(--surface); color:var(--ink2); cursor:pointer; }
+  .md-f i{ font-style:normal; opacity:.7; margin-left:2px; } .md-f.on{ background:var(--ink); border-color:var(--ink); color:var(--bg); }
+  .md-mo{ margin-top:14px; }
+  .md-row{ display:flex; justify-content:space-between; gap:8px; padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; align-items:flex-start; }
+  .md-row:hover{ background:var(--pc-soft); } .md-row.done{ opacity:.62; }
+  .md-row .l{ min-width:0; flex:1; } .md-row .l b{ font-size:14px; } .md-row .l small{ display:block; font-size:11.5px; color:var(--ink2); margin-top:2px; }
+  .md-row .r{ text-align:right; font-size:11.5px; color:var(--ink2); flex:none; } .md-row .r b{ display:block; font-size:14px; color:var(--ink); }
+  .md-ck{ flex:none; padding:2px 6px 0 0; } .md-ck input{ width:20px; height:20px; }
+  .md-chips{ display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+  .md-chip{ font:inherit; display:inline-block; font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px; border:1px solid var(--line2); color:var(--ink2); background:transparent; }
+  button.md-chip{ cursor:pointer; min-height:26px; }
+  .md-chip.ok{ border-color:var(--good); color:var(--good); } .md-chip.warn{ border-color:var(--warn); color:var(--warn); } .md-chip.wait{ border-color:var(--accent); color:var(--accent); } .md-chip.mute{ color:var(--ink3); }
+  .md-chk{ font-size:12px; color:var(--warn); margin-top:6px; line-height:1.5; }
+  .md-bar{ position:sticky; bottom:10px; z-index:5; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:12px; padding:10px 12px; border:1px solid var(--ink); border-radius:12px; background:var(--surface); box-shadow:0 4px 18px rgba(0,0,0,.18); font-size:13px; }
+  .md-bar-b{ display:flex; gap:6px; flex-wrap:wrap; }
+  #md-selmode.on{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  .md-calc{ margin-top:10px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; font-size:13px; line-height:1.6; } .md-calc small{ color:var(--ink2); }
+  .md-mp{ font-size:12px; color:var(--ink2); margin-top:8px; }
+  .md-st{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px; }
+  .md-closed{ margin-top:8px; font-weight:800; color:var(--good); font-size:13px; }
+  .md-ck2{ display:flex; align-items:center; gap:8px; padding:6px 0; font-size:13.5px; } .md-ck2 input{ width:auto; min-height:0; }
+  #md-cl-list{ margin:6px 0 10px; max-height:30vh; overflow-y:auto; }
+  .md-sms-card{ border:1px solid var(--line2); border-radius:10px; padding:10px 12px; margin-top:10px; } .md-sms-card.off{ opacity:.55; }
+  .md-sg{ display:flex; align-items:flex-end; }
+  .md-rule{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px solid var(--line); font-size:13px; }
+  #medView, #md-dlg, #md-cl-dlg, #md-sms-dlg{ --pc:var(--accent); --pc-soft:#FFF1E8; --pc-on:var(--on-accent); --pc-up:#D83A41; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #medView, :root:not([data-theme="light"]) #md-dlg, :root:not([data-theme="light"]) #md-cl-dlg, :root:not([data-theme="light"]) #md-sms-dlg{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; } }
+  [data-theme="dark"] #medView, [data-theme="dark"] #md-dlg, [data-theme="dark"] #md-cl-dlg, [data-theme="dark"] #md-sms-dlg{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; }
   #mp-dlg .mp-chk, #gd-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #mp-dlg .mp-chk input, #gd-dlg .mp-chk input{ width:auto; min-height:0; }
 </style>
 </head>
@@ -955,6 +992,31 @@
  </div>
 </div>
 
+<!-- ===== [신규] 의료비 (회사·실비 신청 · 입금 확인 · 종결) ===== -->
+<div id="medView" hidden>
+ <div class="pc-wrap">
+  <div class="strip" id="md-summary"></div>
+  <div class="sectionhead"><h3>🏥 의료비 정산</h3></div>
+  <div class="md-acts"><button class="pc-btn primary" data-md="sms">📩 문자로 등록</button><button class="pc-btn" data-md="add">+ 직접 등록</button><button class="pc-btn" data-md="selmode" id="md-selmode">☑ 여러 건 선택</button></div>
+  <div class="md-flt" id="md-flt"></div>
+  <div class="pc-row2 pc-filterrow"><label class="pc-f">기간<select id="md-flt-year"></select></label></div>
+  <div id="md-list"></div>
+  <datalist id="md-places"></datalist>
+  <div class="md-bar" id="md-bar" hidden><span id="md-bar-msg"></span><span class="md-bar-b"><button type="button" class="pc-btn small primary" data-md="bar-co">회사 신청</button><button type="button" class="pc-btn small primary" data-md="bar-in">실비 신청</button><button type="button" class="pc-btn small" data-md="bar-x">닫기</button></span></div>
+  <details class="td-card td-cfg" style="margin-top:14px"><summary>⚙ 카드 인식 규칙 · 계산 기준</summary>
+   <p class="td-note">카드 승인 문자에 아래 글자가 들어 있으면 해당 카드로 자동 등록돼요.</p>
+   <div id="md-cfg-rules"></div>
+   <div class="pc-row2" style="margin-top:8px"><label class="pc-f">문자에 있는 글자<input id="md-rule-pat" type="text" placeholder="예: 하나4*7*"></label><label class="pc-f">카드 이름<input id="md-rule-name" type="text" placeholder="예: 원더"></label></div>
+   <button type="button" class="pc-btn small" data-md="rule-add" style="margin-top:6px">+ 규칙 추가</button>
+   <div class="pc-row2" style="margin-top:14px"><label class="pc-f">실비 공제액(원)<input id="md-cfg-ded" type="number" inputmode="numeric" min="0"></label><label class="pc-f">회사 세금(%)<input id="md-cfg-tax" type="number" inputmode="decimal" min="0" step="0.1"></label></div>
+   <div class="pc-row2"><label class="pc-f">배우자 공제(원)<input id="md-cfg-sp" type="number" inputmode="numeric" min="0"></label><label class="pc-f">실비 입금 확인 알림(신청 후 N일)<input id="md-cfg-days" type="number" inputmode="numeric" min="0"></label></div>
+   <p class="td-note">이 설정은 시트 백업에 함께 저장돼요.</p>
+  </details>
+  <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-md="backup">☁ 지금 백업</button></div>
+  <p class="pc-hint">회사 지원금 = 본인부담금 − 세금(6.6%) − 배우자 공제(10,000원). 실비(메리츠) 예상 = 같은 날 병원+약국 총 결제금액 − 5,000원이며, 총 결제금액이 5,000원을 넘는 본인 건만 대상이에요(배우자·자녀·치과는 비대상). 정확한 지급은 회사·보험사 기준을 따르세요.</p>
+ </div>
+</div>
+
 <!-- ===== [신규] 연봉 이력 ===== -->
 <div id="payView" hidden>
  <div class="pc-wrap">
@@ -1028,6 +1090,67 @@
   <div class="mp-warn" id="mp-f-warn" aria-live="polite"></div>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-mp="d-cancel">취소</button><button class="pc-btn primary" data-mp="d-save">저장</button></div>
   <button id="mp-d-delete" class="pc-btn danger wide" data-mp="d-delete">이 기록 삭제</button>
+</dialog>
+
+<dialog id="md-dlg">
+  <h3 id="md-d-title">진료 건</h3>
+  <div class="pc-row2">
+    <label class="pc-f">진료일<input id="md-f-date" type="date"></label>
+    <label class="pc-f">대상<select id="md-f-who"><option>본인</option><option>배우자</option><option>자녀</option></select></label>
+  </div>
+  <label class="pc-f">병원·약국<input id="md-f-place" type="text" list="md-places" autocomplete="off" placeholder="예: 삼성H정형외과"></label>
+  <div class="pc-row2">
+    <label class="pc-f">총 결제금액(원)<input id="md-f-total" type="number" inputmode="numeric" min="0" step="any"></label>
+    <label class="pc-f">그 중 비급여(선택진료료 이외)<input id="md-f-extra" type="number" inputmode="numeric" min="0" step="any" placeholder="없으면 비움"></label>
+  </div>
+  <div id="md-f-sug" style="margin:4px 0"></div>
+  <label class="mp-chk"><input type="checkbox" id="md-f-incl"> 비급여도 회사 지원금 계산에 포함</label>
+  <div class="md-calc" id="md-f-calc" aria-live="polite"></div>
+  <div class="pc-row2">
+    <label class="pc-f">결제카드<select id="md-f-card"></select></label>
+    <label class="pc-f">할부(개월)<input id="md-f-inst" type="number" inputmode="numeric" min="0" step="1" placeholder="일시불은 비움"></label>
+  </div>
+  <div class="pc-row2">
+    <label class="pc-f">실비 대상<select id="md-f-tg"><option value="auto">자동 판정</option><option value="yes">대상으로 지정</option><option value="no">비대상으로 지정</option></select></label>
+    <label class="pc-f">비대상 사유(선택)<input id="md-f-why" type="text" placeholder="예: 비대상(치과)"></label>
+  </div>
+  <label class="pc-f">회사 예상 지원금 직접 입력(비우면 자동 계산)<input id="md-f-cov" type="number" inputmode="numeric" min="0" step="any"></label>
+  <label class="pc-f">메모(선택)<input id="md-f-memo" type="text"></label>
+  <div class="md-chk" id="md-f-chkwrap" hidden>⚠ <span id="md-f-chktext"></span><label class="mp-chk"><input type="checkbox" id="md-f-chkok"> 확인했어요 (표시 지우기)</label></div>
+  <div class="md-mp" id="md-f-mp"></div>
+  <h4 style="margin:14px 0 6px">신청 · 입금</h4>
+  <div id="md-f-settle"></div>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-md="d-cancel">닫기</button><button class="pc-btn primary" data-md="d-save">저장</button></div>
+  <button id="md-d-delete" class="pc-btn danger wide" data-md="d-delete">이 진료 건 삭제</button>
+</dialog>
+
+<dialog id="md-cl-dlg">
+  <h3 id="md-cl-title">신청 처리</h3>
+  <p class="pc-hint" style="margin-top:2px">여러 건을 한 번에 신청·입금받았다면 함께 묶어서 기록해요. <b id="md-cl-n"></b></p>
+  <div id="md-cl-list"></div>
+  <div class="pc-row2">
+    <label class="pc-f">신청일<input id="md-cl-cdate" type="date"></label>
+    <label class="pc-f" id="md-cl-due-wrap">지급예정일(선택)<input id="md-cl-due" type="date"></label>
+  </div>
+  <label class="pc-f">예상 지원금(원)<input id="md-cl-exp" type="number" inputmode="numeric" min="0" step="any"></label>
+  <div style="margin:-2px 0 4px"><button type="button" class="pc-btn small" data-md="cl-auto">자동 계산값으로 되돌리기</button></div>
+  <label class="mp-chk"><input type="checkbox" id="md-cl-paidchk"> 입금 확인됨 (정산 완료)</label>
+  <div id="md-cl-paidbox" hidden>
+    <div class="pc-row2">
+      <label class="pc-f">입금일<input id="md-cl-pdate" type="date"></label>
+      <label class="pc-f">실제 입금액(원)<input id="md-cl-paid" type="number" inputmode="numeric" min="0" step="any" placeholder="모르면 비움"></label>
+    </div>
+  </div>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-md="cl-cancel">취소</button><button class="pc-btn primary" data-md="cl-save">저장</button></div>
+  <button id="md-cl-del" class="pc-btn danger wide" data-md="cl-del">이 신청·입금 기록 지우기</button>
+</dialog>
+
+<dialog id="md-sms-dlg">
+  <h3>📩 카드 승인 문자로 등록</h3>
+  <p class="pc-hint" style="margin-top:2px">병원·약국 카드 승인 문자를 붙여넣으세요. 여러 건을 한꺼번에 붙여넣어도 돼요. 인식된 내용을 확인한 뒤 등록하면, 회사·실비는 “미신청”으로 들어가요.</p>
+  <textarea id="md-sms-in" rows="5" placeholder="[Web발신] 하나8*9*승인 고*희 45,650원 일시불 08/25 15:12 광교삼성H정형외과 누적…"></textarea>
+  <div id="md-sms-list"></div>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-md="s-cancel">닫기</button><button class="pc-btn primary" id="md-sms-go" data-md="s-go" disabled>등록</button></div>
 </dialog>
 
 <dialog id="gd-dlg">
@@ -2827,7 +2950,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-19-c (카드 통합 · 되돌리기 · 통합검색 · 이전 버전 복원 · 오늘 카드 선택)';
+const APP_BUILD_VERSION = '2026-10-19-d (의료비 정산 · 문자 등록 · 회사/실비 입금 확인)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4162,10 +4285,10 @@ function delSize(){
    ===================================================================== */
 const FEATURES = [
   { k: 'today', label: '오늘', ic: '🏠', id: 'modeToday' }, { k: 'meeting', label: '회의비', ic: '💰', id: 'modeMeeting' }, { k: 'shop', label: '보유품목', ic: '🛍', id: 'modeShop' }, { k: 'price', label: '구매가격분석', ic: '📈', id: 'modePrice' },
-  { k: 'sub', label: '구독·보험', ic: '🔁', id: 'modeSub' }, { k: 'people', label: '인맥', ic: '👥', id: 'modePeople' }, { k: 'manual', label: '도수치료', ic: '🦵', id: 'modeManual' }, { k: 'skin', label: '피부관리', ic: '🧴', id: 'modeSkin' },
+  { k: 'sub', label: '구독·보험', ic: '🔁', id: 'modeSub' }, { k: 'people', label: '인맥', ic: '👥', id: 'modePeople' }, { k: 'med', label: '의료비', ic: '🏥', id: 'modeMed' }, { k: 'manual', label: '도수치료', ic: '🦵', id: 'modeManual' }, { k: 'skin', label: '피부관리', ic: '🧴', id: 'modeSkin' },
   { k: 'pay', label: '연봉', ic: '💼', id: 'modePay' }, { k: 'guide', label: '가이드', ic: '📌', id: 'modeGuide' }];
 const NAV_KEY = 'nav_cfg_v1';
-const GROUPS = [{ g: 'home', label: '🏠 오늘', ks: ['today'] }, { g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'pay'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'manual', 'skin', 'guide'] }];
+const GROUPS = [{ g: 'home', label: '🏠 오늘', ks: ['today'] }, { g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'pay'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'med', 'manual', 'skin', 'guide'] }];
 const groupOf = k => GROUPS.find(x => x.ks.indexOf(k) >= 0), lastIn = {};
 function navNorm(o){
   o = o && typeof o === 'object' ? o : {};
@@ -4421,6 +4544,427 @@ function delMp(){
   MP.items = MP.items.filter(x => x.id !== mpEditing); MP.del[mpEditing] = nowIso(); mpSave(); changed(); $('mp-dlg').close(); renderAll();
 }
 
+/* =====================================================================
+   의료비 — 진료 건 · 회사/실비 청구(묶음 가능) · 입금 확인 · 종결 (2026-10-19-d)
+   데이터: 진료 건(items) + 청구(claims: 회사 co / 실비 in, 여러 건을 한 번에 신청·입금 가능)
+   ===================================================================== */
+// <CALC>
+/* 의료비 계산 · 문자 인식 (화면과 무관한 순수 함수 — Node로 따로 시험해요) */
+const Med = (function () {
+  const DED = 5000, TAXP = 6.6, SPOUSE = 10000;
+  const isDental = p => /치과/.test(p || '');
+  const isPharm = p => /약국/.test(p || '');
+  const num = v => (v === '' || v == null || !isFinite(Number(v))) ? 0 : Number(v);
+  const has = v => v !== '' && v != null && isFinite(Number(v));
+  const dayDiff = (a, b) => { const x = Date.parse(a + 'T00:00:00Z'), y = Date.parse(b + 'T00:00:00Z'); return isFinite(x) && isFinite(y) ? Math.round((y - x) / 86400000) : null; };
+
+  /* 회사 예상 지원금 = (본인부담[+비급여 포함 시 비급여]) − 세금(6.6%) − 배우자 공제(10,000). 직접 고친 값(cOv)이 있으면 그 값 */
+  function coExp(it, cfg) {
+    cfg = cfg || {};
+    if (has(it.cOv)) return Number(it.cOv);
+    const total = num(it.total), extra = Math.min(total, num(it.extra));
+    const base = total - extra + (it.incl ? extra : 0);
+    const tax = Math.floor(base * (has(cfg.taxPct) ? Number(cfg.taxPct) : TAXP) / 100 + 0.5);
+    const sp = it.who === '배우자' ? (has(cfg.spouse) ? Number(cfg.spouse) : SPOUSE) : 0;
+    return Math.max(0, base - tax - sp);
+  }
+  /* 같은 사람·같은 날 결제(병원+약국)를 한 묶음으로 보고, 묶음마다 공제액을 빼서 더함 */
+  function insExp(items, ded) {
+    ded = has(ded) ? Number(ded) : DED; const m = {};
+    items.forEach(i => { const k = i.who + '|' + i.date; m[k] = (m[k] || 0) + num(i.total); });
+    return Object.keys(m).reduce((a, k) => a + Math.max(0, m[k] - ded), 0);
+  }
+  function dayTotal(items, it) { let s = 0; items.forEach(i => { if (i.who === it.who && i.date === it.date && !isDental(i.place)) s += num(i.total); }); return s; }
+  /* 실비 대상: 직접 정한 값이 우선, 아니면 본인 · 치과 아님 · 당일 총 결제금액이 공제액(5천원)을 넘으면 대상 */
+  function elig(it, items, ded) {
+    if (it.tg === 'yes') return true; if (it.tg === 'no') return false;
+    if (it.who !== '본인' || isDental(it.place)) return false;
+    return dayTotal(items, it) > (has(ded) ? Number(ded) : DED);
+  }
+  function whyNo(it, items, ded) {
+    const d = has(ded) ? Number(ded) : DED;
+    if (it.why) return it.why;
+    if (it.who !== '본인') return '비대상(' + it.who + ')';
+    if (isDental(it.place)) return '비대상(치과)';
+    if (items && dayTotal(items, it) > d) return '비대상(직접 지정)';
+    return '비대상(' + d.toLocaleString('ko-KR') + '원 이하)';
+  }
+  function index(items, claims) {
+    const co = {}, ins = {};
+    (claims || []).forEach(c => (c.ids || []).forEach(id => { (c.t === 'co' ? co : ins)[id] = c; }));
+    return { co, ins };
+  }
+  function status(it, items, ix, cfg) {
+    const c = ix.co[it.id], i = ix.ins[it.id], el = elig(it, items, cfg && cfg.ded);
+    const cs = c ? (c.st === 'paid' ? 'paid' : 'claimed') : 'none';
+    const is = !el ? 'na' : (i ? (i.st === 'paid' ? 'paid' : 'claimed') : 'none');
+    return { cs, is, el, c, i, closed: cs === 'paid' && (is === 'na' || is === 'paid') };
+  }
+  /* 알림 대상: 회사 지급예정일 지남 / 실비 신청 후 N일 경과(미입금) / 미신청 */
+  function alerts(items, claims, cfg, today) {
+    const byId = {}; items.forEach(i => { byId[i.id] = i; });
+    const ix = index(items, claims), out = { coLate: [], insLate: [], coNone: [], insNone: [] };
+    const nd = has(cfg && cfg.insDays) ? Number(cfg.insDays) : 3;
+    (claims || []).forEach(c => {
+      if (c.st === 'paid') return;
+      const its = (c.ids || []).map(id => byId[id]).filter(Boolean); if (!its.length) return;
+      if (c.t === 'co') { if (c.due && c.due < today) out.coLate.push({ claim: c, days: dayDiff(c.due, today) }); }
+      else { const base = c.cdate || its.map(i => i.date).sort()[0], d = dayDiff(base, today); if (d != null && d >= nd) out.insLate.push({ claim: c, days: d }); }
+    });
+    items.forEach(it => { const s = status(it, items, ix, cfg); if (s.cs === 'none') out.coNone.push(it); if (s.is === 'none') out.insNone.push(it); });
+    return out;
+  }
+
+  /* ---- 카드 승인 문자 인식 (회의비 입력과 같은 방식: 금액 · 날짜 · 가맹점 · 카드) ---- */
+  const REGION = ['광교', '수원', '용인', '성남', '분당', '판교', '영통', '서울'];
+  function placeCore(s) {
+    let t = String(s || '').replace(/\s+/g, '');
+    for (let k = 0; k < REGION.length; k++) { const r = REGION[k]; if (t.indexOf(r) === 0 && t.length - r.length >= 3) { t = t.slice(r.length); break; } }
+    return t;
+  }
+  function matchPlace(raw, known) {
+    const c = placeCore(raw); let best = '';
+    if (!c) return '';
+    (known || []).forEach(k => {
+      const kc = placeCore(k); if (!kc) return;
+      if (kc === c || (c.length >= 3 && kc.indexOf(c) === 0) || (kc.length >= 3 && c.indexOf(kc) === 0)) { if (k.length > best.length) best = k; }
+    });
+    return best;
+  }
+  function splitSms(text) {
+    const t = String(text || '').replace(/\r/g, '');
+    let parts = t.split(/\[Web발신\]/i).map(s => s.trim()).filter(Boolean);
+    if (parts.length <= 1) {
+      parts = [];
+      t.split(/\n+/).map(s => s.trim()).filter(Boolean).forEach(l => { if (parts.length && l.indexOf('원') < 0) parts[parts.length - 1] += ' ' + l; else parts.push(l); });
+    }
+    return parts;
+  }
+  function parseOne(raw, o) {
+    const t = String(raw || '').replace(/\s+/g, ' ').trim(); if (!t) return null;
+    let amount = null, inst = 0;
+    const m = t.match(/([\d,]{3,})\s*원\s*\(?\s*(?:일시불|(\d+)\s*개월)/);
+    if (m) { amount = parseInt(m[1].replace(/,/g, ''), 10); inst = m[2] ? parseInt(m[2], 10) : 0; }
+    if (!amount) {
+      const all = []; const re = /([\d,]{3,})\s*원/g; let x;
+      while ((x = re.exec(t))) { if (!/누적\s*$/.test(t.slice(0, x.index))) all.push(parseInt(x[1].replace(/,/g, ''), 10)); }
+      amount = all[0] || null;
+    }
+    let date = null; const dm = t.match(/(\d{1,2})\/(\d{1,2})/);
+    if (dm) {
+      const now = o && o.today ? new Date(o.today + 'T00:00:00') : new Date();
+      let year = now.getFullYear(); const mm = dm[1].padStart(2, '0'), dd = dm[2].padStart(2, '0');
+      if (new Date(year + '-' + mm + '-' + dd + 'T00:00:00').getTime() - now.getTime() > 86400000) year -= 1;
+      date = year + '-' + mm + '-' + dd;
+    }
+    let place = '';
+    const ti = t.search(/\d{1,2}:\d{2}/);
+    if (ti >= 0) place = t.slice(ti).replace(/^\d{1,2}:\d{2}/, '').trim().split('누적')[0].trim();
+    else if (dm) place = t.slice(t.indexOf(dm[0]) + dm[0].length).trim().split('누적')[0].trim();
+    const nt = t.replace(/\s+/g, ''); let card = '';
+    ((o && o.cards) || []).some(r => { if (r && r.pat && nt.indexOf(String(r.pat).replace(/\s+/g, '')) >= 0) { card = r.name; return true; } return false; });
+    if (!amount && !place && !date) return null;
+    return { date, amount, place, card, inst, cancel: /취소/.test(t), raw: t };
+  }
+  /* 여러 건을 붙여넣어도 됨. known = 이미 등록된 병원 이름들 (카드사가 이름을 잘라 보내도 같은 병원으로 합쳐 줘요) */
+  function parseSms(text, o) {
+    o = o || {}; const known = (o.known || []).slice(), out = [];
+    splitSms(text).forEach(p => {
+      const r = parseOne(p, o); if (!r || !r.amount) return;
+      const hit = matchPlace(r.place, known);
+      if (hit) r.place = hit; else if (r.place) known.push(r.place);
+      out.push(r);
+    });
+    return out;
+  }
+  /* 같은 병원의 지난 비급여 금액 · 포함 여부 (입력 때 눌러서 채우도록 제안만 해요) */
+  function lastExtra(items, place) {
+    const c = placeCore(place); let best = null;
+    (items || []).forEach(i => { if (placeCore(i.place) === c && num(i.extra) > 0 && (!best || i.date > best.date)) best = i; });
+    return best ? { extra: num(best.extra), incl: !!best.incl } : null;
+  }
+  return { DED, isDental, isPharm, coExp, insExp, dayTotal, elig, whyNo, index, status, alerts, placeCore, matchPlace, parseOne, parseSms, lastExtra, dayDiff };
+})();
+// </CALC>
+
+const MD_KEY = 'medical_exp_v1', MD_WHO = ['본인', '배우자', '자녀'];
+const MD_CARDS_DEF = [{ pat: '하나4*7*', name: '원더' }, { pat: '하나7*9*', name: '토스' }, { pat: '하나8*9*', name: 'MG' }, { pat: '신한', name: '신한' }];
+const MD_SEED = {"items":[{"id":"md_s3","date":"2025-01-01","who":"자녀","place":"데미안안과","total":52300,"extra":0,"incl":false,"cOv":38848,"tg":"auto","why":"비대상(자녀)","card":"","chk":"","memo":"시트 기록: 고우리","u":""},{"id":"md_s4","date":"2025-04-26","who":"본인","place":"엘포트봄봄이비인후과","total":11300,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s5","date":"2025-04-26","who":"본인","place":"엘메디컬약국","total":7000,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s6","date":"2025-06-14","who":"본인","place":"중흥2층약국","total":6940,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"시트의 실비 입금액이 회사 입금액(5,710원·7,010원)과 같게 적혀 있어 정확한 실비 입금액을 알 수 없어요. 확인해 주세요.","memo":"","u":""},{"id":"md_s7","date":"2025-06-14","who":"본인","place":"아인성모이비인후과","total":7500,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"시트의 실비 입금액이 회사 입금액(5,710원·7,010원)과 같게 적혀 있어 정확한 실비 입금액을 알 수 없어요. 확인해 주세요.","memo":"","u":""},{"id":"md_s8","date":"2025-07-22","who":"본인","place":"삼성화이트치과","total":22300,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(치과)","card":"","chk":"","memo":"","u":""},{"id":"md_s9","date":"2025-08-11","who":"본인","place":"삼성H정형외과","total":199300,"extra":140000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s10","date":"2025-08-11","who":"본인","place":"도청약국","total":10700,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s11","date":"2025-08-23","who":"본인","place":"삼성H정형외과","total":157300,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s12","date":"2025-08-26","who":"본인","place":"삼성H정형외과","total":153900,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s13","date":"2025-08-30","who":"본인","place":"삼성H정형외과","total":157300,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s14","date":"2025-09-03","who":"본인","place":"삼성H정형외과","total":156500,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s15","date":"2025-09-06","who":"본인","place":"삼성H정형외과","total":154700,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s16","date":"2025-08-23","who":"본인","place":"도청약국","total":10700,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s17","date":"2025-08-30","who":"본인","place":"호수약국","total":10700,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s18","date":"2025-08-25","who":"배우자","place":"새솔외과","total":22080,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s19","date":"2025-08-26","who":"배우자","place":"새솔외과","total":18580,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s20","date":"2025-08-27","who":"배우자","place":"새솔외과","total":18480,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s21","date":"2025-08-28","who":"배우자","place":"새솔외과","total":18580,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s22","date":"2025-08-29","who":"배우자","place":"새솔외과","total":18480,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s23","date":"2025-08-30","who":"본인","place":"삼성화이트치과","total":9200,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(치과)","card":"","chk":"","memo":"","u":""},{"id":"md_s24","date":"2025-09-01","who":"본인","place":"도청약국","total":2400,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(5천미만)","card":"","chk":"","memo":"","u":""},{"id":"md_s25","date":"2025-09-01","who":"배우자","place":"새솔외과","total":19830,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s26","date":"2025-09-02","who":"배우자","place":"새솔외과","total":18380,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s27","date":"2025-09-04","who":"배우자","place":"새솔외과","total":17850,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s28","date":"2025-09-05","who":"배우자","place":"새솔외과","total":74150,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s29","date":"2025-09-08","who":"본인","place":"조정훈유바외과","total":130970,"extra":90000,"incl":true,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s30","date":"2025-09-13","who":"본인","place":"삼성H정형외과","total":154700,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s31","date":"2025-09-16","who":"배우자","place":"광교위드유외과","total":115700,"extra":60000,"incl":true,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s32","date":"2025-09-23","who":"본인","place":"삼성H정형외과","total":44700,"extra":40000,"incl":true,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s33","date":"2025-09-23","who":"본인","place":"도청약국","total":5200,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s34","date":"2025-09-27","who":"본인","place":"삼성H정형외과","total":154700,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s35","date":"2025-10-09","who":"본인","place":"삼성H정형외과","total":154700,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s36","date":"2025-10-09","who":"본인","place":"도청약국","total":5200,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s37","date":"2025-10-18","who":"본인","place":"삼성H정형외과","total":154700,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s38","date":"2025-10-09","who":"배우자","place":"삼성H정형외과","total":40300,"extra":30000,"incl":true,"cOv":"","tg":"auto","why":"비대상(배우자)","card":"","chk":"","memo":"","u":""},{"id":"md_s39","date":"2025-11-08","who":"본인","place":"삼성H정형외과","total":4700,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s40","date":"2025-11-08","who":"본인","place":"도청약국","total":8600,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s41","date":"2025-11-22","who":"본인","place":"올바른안과","total":16700,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s42","date":"2025-11-22","who":"본인","place":"엘메디칼약국","total":22800,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s43","date":"2025-12-06","who":"본인","place":"아인성모이비인후과","total":122600,"extra":110000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s44","date":"2025-12-06","who":"본인","place":"중흥2층약국","total":4900,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s45","date":"2025-12-13","who":"본인","place":"삼성H정형외과","total":154700,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s46","date":"2025-12-14","who":"본인","place":"광교이엠365의원","total":143080,"extra":131020,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s47","date":"2025-12-14","who":"본인","place":"365돌고래약국","total":7200,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s48","date":"2026-01-03","who":"본인","place":"김찬병원","total":906030,"extra":0,"incl":false,"cOv":288210,"tg":"auto","why":"","card":"","chk":"수술 건 묶음(김찬병원·약국)은 추정이에요. 확인해 주세요.","memo":"","u":""},{"id":"md_s49","date":"2026-01-09","who":"본인","place":"김찬병원","total":173800,"extra":0,"incl":false,"cOv":63340,"tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s50","date":"2026-01-09","who":"본인","place":"은혜온누리약국","total":8250,"extra":0,"incl":false,"cOv":3840,"tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s51","date":"2026-01-19","who":"본인","place":"삼성H정형외과","total":154000,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s52","date":"2026-02-20","who":"본인","place":"개금다나아내과의원","total":49900,"extra":43100,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s53","date":"2026-02-27","who":"본인","place":"삼성화이트치과","total":15900,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(치과)","card":"","chk":"","memo":"","u":""},{"id":"md_s54","date":"2026-02-27","who":"본인","place":"호수약국","total":3700,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(치과)","card":"","chk":"","memo":"","u":""},{"id":"md_s55","date":"2026-02-28","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s56","date":"2026-03-02","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s57","date":"2026-03-21","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s58","date":"2026-03-04","who":"본인","place":"삼성화이트치과","total":42590,"extra":29890,"incl":false,"cOv":"","tg":"auto","why":"비대상(치과)","card":"","chk":"","memo":"","u":""},{"id":"md_s59","date":"2026-03-10","who":"본인","place":"삼성화이트치과","total":22320,"extra":15720,"incl":false,"cOv":"","tg":"auto","why":"비대상(치과)","card":"","chk":"","memo":"","u":""},{"id":"md_s60","date":"2026-03-16","who":"본인","place":"삼성화이트치과","total":56860,"extra":39860,"incl":false,"cOv":"","tg":"auto","why":"비대상(치과)","card":"","chk":"","memo":"","u":""},{"id":"md_s61","date":"2026-04-04","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s62","date":"2026-04-25","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s63","date":"2026-04-27","who":"본인","place":"광교연세피부과","total":101200,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s64","date":"2026-04-27","who":"본인","place":"365광교프라자약국","total":6500,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s65","date":"2026-05-02","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s66","date":"2026-05-09","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s67","date":"2026-05-25","who":"본인","place":"삼성H정형외과","total":109500,"extra":50000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s68","date":"2026-05-25","who":"본인","place":"도청약국","total":12000,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s69","date":"2026-05-26","who":"본인","place":"삼성H정형외과","total":154000,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s70","date":"2026-05-30","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s71","date":"2026-06-12","who":"본인","place":"고려원이비인후과","total":49400,"extra":42600,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s72","date":"2026-06-20","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s73","date":"2026-06-25","who":"본인","place":"삼성H정형외과","total":154000,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s74","date":"2026-06-27","who":"본인","place":"삼성H정형외과","total":154800,"extra":150000,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s75","date":"2026-07-13","who":"본인","place":"엘포트봄봄이비인후과","total":32400,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s76","date":"2026-07-17","who":"본인","place":"삼성H정형외과","total":6500,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s77","date":"2026-07-25","who":"본인","place":"아인성모이비인후과","total":32600,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s78","date":"2026-07-25","who":"본인","place":"중흥2층약국","total":6820,"extra":0,"incl":false,"cOv":4670,"tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s79","date":"2026-08-07","who":"본인","place":"삼성H정형외과","total":3000,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"비대상(5천미만)","card":"","chk":"","memo":"","u":""},{"id":"md_s80","date":"2026-08-13","who":"본인","place":"삼성H정형외과","total":46450,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s81","date":"2026-08-25","who":"본인","place":"올바른안과","total":13100,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s82","date":"2026-08-25","who":"본인","place":"엘메디칼약국","total":22500,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s83","date":"2026-08-25","who":"본인","place":"삼성H정형외과","total":45650,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s84","date":"2026-09-21","who":"본인","place":"광교365메디컬의원","total":6900,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s85","date":"2026-09-21","who":"본인","place":"365별약국","total":4100,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"","memo":"","u":""},{"id":"md_s86","date":"2026-09-22","who":"본인","place":"서울나이스마취통증","total":132800,"extra":60700,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"진료일(9/22)이 회사 신청일(9/21)보다 늦어요. 진료일을 확인해 주세요.","memo":"","u":""},{"id":"md_s87","date":"2026-09-21","who":"본인","place":"사랑약국","total":5800,"extra":0,"incl":false,"cOv":"","tg":"auto","why":"","card":"","chk":"서울나이스마취통증 건과 함께 청구할 약국인지 확인해 주세요.","memo":"","u":""}],"claims":[{"id":"mc_co_3","t":"co","ids":["md_s3"],"cdate":"2025-01-24","due":"2025-02-25","exp":38848,"pdate":"","paid":39520,"st":"paid","u":""},{"id":"mc_co_4","t":"co","ids":["md_s4"],"cdate":"2025-05-12","due":"2025-06-10","exp":10554,"pdate":"","paid":10570,"st":"paid","u":""},{"id":"mc_co_5","t":"co","ids":["md_s5"],"cdate":"2025-05-12","due":"2025-06-10","exp":6538,"pdate":"","paid":6540,"st":"paid","u":""},{"id":"mc_co_6","t":"co","ids":["md_s6"],"cdate":"2025-09-16","due":"2025-10-10","exp":6482,"pdate":"","paid":5710,"st":"paid","u":""},{"id":"mc_co_7","t":"co","ids":["md_s7"],"cdate":"2025-09-16","due":"2025-10-10","exp":7005,"pdate":"","paid":7010,"st":"paid","u":""},{"id":"mc_co_8","t":"co","ids":["md_s8"],"cdate":"2025-07-25","due":"2025-08-08","exp":20828,"pdate":"","paid":20840,"st":"paid","u":""},{"id":"mc_co_9","t":"co","ids":["md_s9"],"cdate":"2025-08-11","due":"2025-09-10","exp":55386,"pdate":"","paid":55400,"st":"paid","u":""},{"id":"mc_co_10","t":"co","ids":["md_s10"],"cdate":"2025-08-11","due":"2025-09-10","exp":9994,"pdate":"","paid":5050,"st":"paid","u":""},{"id":"mc_co_11","t":"co","ids":["md_s11","md_s12","md_s13","md_s14","md_s15"],"cdate":"","due":"","exp":27740,"pdate":"","paid":27750,"st":"paid","u":""},{"id":"mc_co_16","t":"co","ids":["md_s16"],"cdate":"2025-12-09","due":"2025-12-24","exp":9994,"pdate":"","paid":5050,"st":"paid","u":""},{"id":"mc_co_17","t":"co","ids":["md_s17"],"cdate":"2025-09-16","due":"2025-10-10","exp":9994,"pdate":"","paid":5130,"st":"paid","u":""},{"id":"mc_co_18","t":"co","ids":["md_s18"],"cdate":"2025-09-24","due":"2025-10-24","exp":10623,"pdate":"","paid":9630,"st":"paid","u":""},{"id":"mc_co_19","t":"co","ids":["md_s19"],"cdate":"2025-09-24","due":"2025-10-24","exp":7354,"pdate":"","paid":5050,"st":"paid","u":""},{"id":"mc_co_20","t":"co","ids":["md_s20"],"cdate":"2025-09-24","due":"2025-10-24","exp":7260,"pdate":"","paid":5050,"st":"paid","u":""},{"id":"mc_co_21","t":"co","ids":["md_s21"],"cdate":"2025-09-24","due":"2025-10-24","exp":7354,"pdate":"","paid":5140,"st":"paid","u":""},{"id":"mc_co_22","t":"co","ids":["md_s22"],"cdate":"2025-09-24","due":"2025-10-24","exp":7260,"pdate":"","paid":5050,"st":"paid","u":""},{"id":"mc_co_23","t":"co","ids":["md_s23"],"cdate":"2025-12-09","due":"2025-12-24","exp":8593,"pdate":"","paid":8600,"st":"paid","u":""},{"id":"mc_co_24","t":"co","ids":["md_s24"],"cdate":"2025-09-16","due":"2025-10-10","exp":2242,"pdate":"","paid":2250,"st":"paid","u":""},{"id":"mc_co_25","t":"co","ids":["md_s25"],"cdate":"2025-09-24","due":"2025-10-24","exp":8521,"pdate":"","paid":5140,"st":"paid","u":""},{"id":"mc_co_26","t":"co","ids":["md_s26"],"cdate":"2025-09-24","due":"2025-10-24","exp":7167,"pdate":"","paid":5430,"st":"paid","u":""},{"id":"mc_co_27","t":"co","ids":["md_s27"],"cdate":"2025-09-24","due":"2025-10-24","exp":6672,"pdate":"","paid":5710,"st":"paid","u":""},{"id":"mc_co_28","t":"co","ids":["md_s28"],"cdate":"2025-09-24","due":"2025-10-24","exp":59256,"pdate":"","paid":5050,"st":"paid","u":""},{"id":"mc_co_29","t":"co","ids":["md_s29"],"cdate":"2025-09-08","due":"2025-09-25","exp":122326,"pdate":"","paid":122270,"st":"paid","u":""},{"id":"mc_co_30","t":"co","ids":["md_s30"],"cdate":"2025-09-24","due":"2025-10-24","exp":4390,"pdate":"","paid":4400,"st":"paid","u":""},{"id":"mc_co_31","t":"co","ids":["md_s31"],"cdate":"2025-09-16","due":"2025-10-10","exp":98064,"pdate":"","paid":98730,"st":"paid","u":""},{"id":"mc_co_32","t":"co","ids":["md_s32"],"cdate":"2025-09-24","due":"2025-10-24","exp":41750,"pdate":"","paid":32420,"st":"paid","u":""},{"id":"mc_co_33","t":"co","ids":["md_s33"],"cdate":"2025-09-24","due":"2025-10-24","exp":4857,"pdate":"","paid":4860,"st":"paid","u":""},{"id":"mc_co_34","t":"co","ids":["md_s34"],"cdate":"2025-09-27","due":"2025-10-24","exp":4390,"pdate":"","paid":4400,"st":"paid","u":""},{"id":"mc_co_35","t":"co","ids":["md_s35"],"cdate":"2025-12-12","due":"2026-01-10","exp":4390,"pdate":"","paid":4400,"st":"paid","u":""},{"id":"mc_co_36","t":"co","ids":["md_s36"],"cdate":"2025-12-12","due":"2026-01-10","exp":4857,"pdate":"","paid":4860,"st":"paid","u":""},{"id":"mc_co_37","t":"co","ids":["md_s37"],"cdate":"2025-12-12","due":"2026-01-10","exp":4390,"pdate":"","paid":4400,"st":"paid","u":""},{"id":"mc_co_38","t":"co","ids":["md_s38"],"cdate":"2025-12-12","due":"2026-01-10","exp":27640,"pdate":"","paid":28310,"st":"paid","u":""},{"id":"mc_co_39","t":"co","ids":["md_s39"],"cdate":"2025-12-09","due":"2025-12-24","exp":4390,"pdate":"","paid":4400,"st":"paid","u":""},{"id":"mc_co_40","t":"co","ids":["md_s40"],"cdate":"2025-12-09","due":"2025-12-24","exp":8032,"pdate":"","paid":8040,"st":"paid","u":""},{"id":"mc_co_41","t":"co","ids":["md_s41"],"cdate":"2025-12-12","due":"2026-01-10","exp":15598,"pdate":"","paid":15600,"st":"paid","u":""},{"id":"mc_co_42","t":"co","ids":["md_s42"],"cdate":"2025-12-12","due":"2026-01-10","exp":21295,"pdate":"","paid":21310,"st":"paid","u":""},{"id":"mc_co_43","t":"co","ids":["md_s43"],"cdate":"2025-12-12","due":"2026-01-10","exp":11768,"pdate":"","paid":11780,"st":"paid","u":""},{"id":"mc_co_44","t":"co","ids":["md_s44"],"cdate":"2025-12-12","due":"2026-01-10","exp":4577,"pdate":"","paid":4590,"st":"paid","u":""},{"id":"mc_co_45","t":"co","ids":["md_s45"],"cdate":"2025-12-13","due":"2026-01-10","exp":4390,"pdate":"","paid":4400,"st":"paid","u":""},{"id":"mc_co_46","t":"co","ids":["md_s46"],"cdate":"2025-12-14","due":"2026-01-10","exp":11264,"pdate":"","paid":11270,"st":"paid","u":""},{"id":"mc_co_47","t":"co","ids":["md_s47"],"cdate":"2025-12-14","due":"2026-01-10","exp":6725,"pdate":"","paid":6730,"st":"paid","u":""},{"id":"mc_co_48","t":"co","ids":["md_s48"],"cdate":"2026-01-09","due":"2026-01-25","exp":288210,"pdate":"","paid":288210,"st":"paid","u":""},{"id":"mc_co_49","t":"co","ids":["md_s49"],"cdate":"2026-01-09","due":"2026-01-25","exp":63340,"pdate":"","paid":63340,"st":"paid","u":""},{"id":"mc_co_50","t":"co","ids":["md_s50"],"cdate":"2026-01-09","due":"2026-01-25","exp":3840,"pdate":"","paid":3840,"st":"paid","u":""},{"id":"mc_co_51","t":"co","ids":["md_s51"],"cdate":"2026-02-23","due":"2026-03-10","exp":3736,"pdate":"","paid":3740,"st":"paid","u":""},{"id":"mc_co_52","t":"co","ids":["md_s52"],"cdate":"2026-02-28","due":"2026-03-25","exp":6351,"pdate":"","paid":6360,"st":"paid","u":""},{"id":"mc_co_53","t":"co","ids":["md_s53"],"cdate":"2026-03-01","due":"2026-03-25","exp":14851,"pdate":"","paid":14860,"st":"paid","u":""},{"id":"mc_co_54","t":"co","ids":["md_s54"],"cdate":"2026-03-01","due":"2026-03-25","exp":3456,"pdate":"","paid":3460,"st":"paid","u":""},{"id":"mc_co_55","t":"co","ids":["md_s55"],"cdate":"2026-02-28","due":"2026-03-25","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_56","t":"co","ids":["md_s56"],"cdate":"2026-03-02","due":"2026-03-25","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_57","t":"co","ids":["md_s57"],"cdate":"2026-03-21","due":"2026-03-25","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_58","t":"co","ids":["md_s58"],"cdate":"2026-03-23","due":"2026-04-10","exp":11862,"pdate":"","paid":11870,"st":"paid","u":""},{"id":"mc_co_59","t":"co","ids":["md_s59"],"cdate":"2026-03-23","due":"2026-04-10","exp":6164,"pdate":"","paid":6180,"st":"paid","u":""},{"id":"mc_co_60","t":"co","ids":["md_s60"],"cdate":"2026-03-23","due":"2026-04-10","exp":15878,"pdate":"","paid":15880,"st":"paid","u":""},{"id":"mc_co_61","t":"co","ids":["md_s61"],"cdate":"2026-04-13","due":"2026-05-08","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_62","t":"co","ids":["md_s62"],"cdate":"2026-04-25","due":"2026-05-22","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_63","t":"co","ids":["md_s63"],"cdate":"2026-04-28","due":"2026-05-22","exp":94521,"pdate":"","paid":94530,"st":"paid","u":""},{"id":"mc_co_64","t":"co","ids":["md_s64"],"cdate":"2026-04-28","due":"2026-05-22","exp":6071,"pdate":"","paid":6080,"st":"paid","u":""},{"id":"mc_co_65","t":"co","ids":["md_s65"],"cdate":"2026-05-02","due":"2026-05-22","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_66","t":"co","ids":["md_s66"],"cdate":"2026-05-26","due":"2026-06-25","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_67","t":"co","ids":["md_s67"],"cdate":"2026-05-26","due":"2026-06-25","exp":55573,"pdate":"","paid":55580,"st":"paid","u":""},{"id":"mc_co_68","t":"co","ids":["md_s68"],"cdate":"2026-05-26","due":"2026-06-25","exp":11208,"pdate":"","paid":6260,"st":"paid","u":""},{"id":"mc_co_69","t":"co","ids":["md_s69"],"cdate":"2026-05-26","due":"2026-06-25","exp":3736,"pdate":"","paid":6740,"st":"paid","u":""},{"id":"mc_co_70","t":"co","ids":["md_s70"],"cdate":"2026-05-30","due":"2026-06-25","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_71","t":"co","ids":["md_s71"],"cdate":"2026-06-18","due":"2026-07-10","exp":6351,"pdate":"","paid":6360,"st":"paid","u":""},{"id":"mc_co_72","t":"co","ids":["md_s72"],"cdate":"2026-06-20","due":"2026-07-10","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_73","t":"co","ids":["md_s73"],"cdate":"2026-06-29","due":"2026-07-25","exp":3736,"pdate":"","paid":3740,"st":"paid","u":""},{"id":"mc_co_74","t":"co","ids":["md_s74"],"cdate":"2026-06-29","due":"2026-07-25","exp":4483,"pdate":"","paid":4500,"st":"paid","u":""},{"id":"mc_co_75","t":"co","ids":["md_s75"],"cdate":"2026-07-14","due":"2026-08-10","exp":30262,"pdate":"","paid":30270,"st":"paid","u":""},{"id":"mc_co_76","t":"co","ids":["md_s76"],"cdate":"2026-07-21","due":"2026-08-10","exp":6071,"pdate":"","paid":6080,"st":"paid","u":""},{"id":"mc_co_77","t":"co","ids":["md_s77"],"cdate":"2026-07-27","due":"2026-08-25","exp":30448,"pdate":"","paid":30460,"st":"paid","u":""},{"id":"mc_co_78","t":"co","ids":["md_s78"],"cdate":"2026-07-27","due":"2026-08-25","exp":4670,"pdate":"","paid":4670,"st":"paid","u":""},{"id":"mc_co_79","t":"co","ids":["md_s79"],"cdate":"2026-08-11","due":"2026-09-10","exp":2802,"pdate":"","paid":null,"st":"claimed","u":""},{"id":"mc_co_80","t":"co","ids":["md_s80"],"cdate":"2026-08-14","due":"2026-09-10","exp":43384,"pdate":"","paid":43400,"st":"paid","u":""},{"id":"mc_co_81","t":"co","ids":["md_s81"],"cdate":"2026-08-25","due":"2026-09-10","exp":12235,"pdate":"","paid":12250,"st":"paid","u":""},{"id":"mc_co_82","t":"co","ids":["md_s82"],"cdate":"2026-08-25","due":"2026-09-10","exp":21015,"pdate":"","paid":21020,"st":"paid","u":""},{"id":"mc_co_83","t":"co","ids":["md_s83"],"cdate":"2026-08-25","due":"2026-09-10","exp":42637,"pdate":"","paid":43400,"st":"paid","u":""},{"id":"mc_co_84","t":"co","ids":["md_s84"],"cdate":"2026-09-21","due":"2026-10-10","exp":6445,"pdate":"","paid":null,"st":"claimed","u":""},{"id":"mc_co_85","t":"co","ids":["md_s85"],"cdate":"2026-09-21","due":"2026-10-10","exp":3829,"pdate":"","paid":null,"st":"claimed","u":""},{"id":"mc_co_86","t":"co","ids":["md_s86"],"cdate":"2026-09-21","due":"2026-10-10","exp":67341,"pdate":"","paid":null,"st":"claimed","u":""},{"id":"mc_co_87","t":"co","ids":["md_s87"],"cdate":"2026-09-21","due":"2026-10-10","exp":5417,"pdate":"","paid":null,"st":"claimed","u":""},{"id":"mc_in_4","t":"in","ids":["md_s4","md_s5"],"cdate":"","due":"","exp":13300,"pdate":"","paid":13300,"st":"paid","u":""},{"id":"mc_in_6","t":"in","ids":["md_s6","md_s7"],"cdate":"","due":"","exp":9440,"pdate":"2025-10-10","paid":null,"st":"paid","u":""},{"id":"mc_in_9","t":"in","ids":["md_s9","md_s10"],"cdate":"","due":"","exp":205000,"pdate":"","paid":205000,"st":"paid","u":""},{"id":"mc_in_11","t":"in","ids":["md_s11","md_s12","md_s13","md_s14","md_s15","md_s16","md_s17"],"cdate":"","due":"","exp":776100,"pdate":"","paid":776100,"st":"paid","u":""},{"id":"mc_in_29","t":"in","ids":["md_s29"],"cdate":"2025-09-09","due":"","exp":125970,"pdate":"2025-09-09","paid":125900,"st":"paid","u":""},{"id":"mc_in_30","t":"in","ids":["md_s30"],"cdate":"2025-09-25","due":"","exp":149700,"pdate":"2025-09-25","paid":149700,"st":"paid","u":""},{"id":"mc_in_32","t":"in","ids":["md_s32","md_s33"],"cdate":"","due":"","exp":44900,"pdate":"","paid":null,"st":"paid","u":""},{"id":"mc_in_34","t":"in","ids":["md_s34"],"cdate":"2025-09-26","due":"","exp":149700,"pdate":"2025-09-27","paid":149700,"st":"paid","u":""},{"id":"mc_in_35","t":"in","ids":["md_s35","md_s36","md_s37"],"cdate":"","due":"","exp":304600,"pdate":"","paid":304600,"st":"paid","u":""},{"id":"mc_in_39","t":"in","ids":["md_s39","md_s40"],"cdate":"","due":"","exp":8300,"pdate":"","paid":13300,"st":"paid","u":""},{"id":"mc_in_41","t":"in","ids":["md_s41","md_s42"],"cdate":"","due":"","exp":34500,"pdate":"","paid":null,"st":"paid","u":""},{"id":"mc_in_43","t":"in","ids":["md_s43","md_s44"],"cdate":"","due":"","exp":122500,"pdate":"","paid":62500,"st":"paid","u":""},{"id":"mc_in_45","t":"in","ids":["md_s45"],"cdate":"2025-12-14","due":"","exp":149700,"pdate":"2025-12-15","paid":149700,"st":"paid","u":""},{"id":"mc_in_46","t":"in","ids":["md_s46","md_s47"],"cdate":"","due":"","exp":145280,"pdate":"","paid":null,"st":"paid","u":""},{"id":"mc_in_48","t":"in","ids":["md_s48","md_s49","md_s50"],"cdate":"2026-01-09","due":"","exp":1078080,"pdate":"2026-01-09","paid":null,"st":"paid","u":""},{"id":"mc_in_51","t":"in","ids":["md_s51"],"cdate":"2026-02-23","due":"","exp":149000,"pdate":"2026-02-24","paid":149000,"st":"paid","u":""},{"id":"mc_in_52","t":"in","ids":["md_s52"],"cdate":"2026-03-01","due":"","exp":44900,"pdate":"2026-03-03","paid":44900,"st":"paid","u":""},{"id":"mc_in_55","t":"in","ids":["md_s55"],"cdate":"2026-02-28","due":"","exp":149800,"pdate":"2026-03-03","paid":149800,"st":"paid","u":""},{"id":"mc_in_56","t":"in","ids":["md_s56"],"cdate":"2026-03-02","due":"","exp":149800,"pdate":"2026-03-03","paid":149800,"st":"paid","u":""},{"id":"mc_in_57","t":"in","ids":["md_s57"],"cdate":"2026-03-02","due":"","exp":149800,"pdate":"2026-03-23","paid":149800,"st":"paid","u":""},{"id":"mc_in_61","t":"in","ids":["md_s61"],"cdate":"2026-04-13","due":"","exp":149800,"pdate":"2026-04-13","paid":149800,"st":"paid","u":""},{"id":"mc_in_62","t":"in","ids":["md_s62"],"cdate":"2026-04-25","due":"","exp":149800,"pdate":"2026-04-27","paid":149800,"st":"paid","u":""},{"id":"mc_in_63","t":"in","ids":["md_s63","md_s64"],"cdate":"","due":"","exp":102700,"pdate":"","paid":null,"st":"paid","u":""},{"id":"mc_in_65","t":"in","ids":["md_s65"],"cdate":"2026-05-02","due":"","exp":149800,"pdate":"2026-05-04","paid":149800,"st":"paid","u":""},{"id":"mc_in_66","t":"in","ids":["md_s66"],"cdate":"2026-05-26","due":"","exp":149800,"pdate":"2026-05-27","paid":149800,"st":"paid","u":""},{"id":"mc_in_67","t":"in","ids":["md_s67","md_s68"],"cdate":"","due":"","exp":116500,"pdate":"","paid":null,"st":"paid","u":""},{"id":"mc_in_69","t":"in","ids":["md_s69"],"cdate":"2026-05-26","due":"","exp":149000,"pdate":"2026-05-27","paid":149000,"st":"paid","u":""},{"id":"mc_in_70","t":"in","ids":["md_s70"],"cdate":"2026-05-30","due":"","exp":149800,"pdate":"2026-06-01","paid":149000,"st":"paid","u":""},{"id":"mc_in_71","t":"in","ids":["md_s71"],"cdate":"2026-06-18","due":"","exp":44400,"pdate":"2026-06-19","paid":44000,"st":"paid","u":""},{"id":"mc_in_72","t":"in","ids":["md_s72"],"cdate":"2026-06-20","due":"","exp":149800,"pdate":"2026-06-22","paid":149800,"st":"paid","u":""},{"id":"mc_in_73","t":"in","ids":["md_s73"],"cdate":"2026-06-25","due":"","exp":149000,"pdate":"2026-06-25","paid":149800,"st":"paid","u":""},{"id":"mc_in_74","t":"in","ids":["md_s74"],"cdate":"2026-06-27","due":"","exp":149800,"pdate":"2026-06-29","paid":149800,"st":"paid","u":""},{"id":"mc_in_75","t":"in","ids":["md_s75"],"cdate":"2026-07-13","due":"","exp":27400,"pdate":"2026-07-14","paid":27400,"st":"paid","u":""},{"id":"mc_in_76","t":"in","ids":["md_s76"],"cdate":"2026-07-17","due":"","exp":1500,"pdate":"2026-07-20","paid":1500,"st":"paid","u":""},{"id":"mc_in_77","t":"in","ids":["md_s77","md_s78"],"cdate":"","due":"","exp":34420,"pdate":"","paid":34420,"st":"paid","u":""},{"id":"mc_in_80","t":"in","ids":["md_s80"],"cdate":"2026-08-13","due":"","exp":41450,"pdate":"2026-08-14","paid":41450,"st":"paid","u":""},{"id":"mc_in_81","t":"in","ids":["md_s81","md_s82"],"cdate":"","due":"","exp":30600,"pdate":"","paid":null,"st":"paid","u":""},{"id":"mc_in_83","t":"in","ids":["md_s83"],"cdate":"2026-08-25","due":"","exp":40650,"pdate":"2026-08-25","paid":40650,"st":"paid","u":""},{"id":"mc_in_84","t":"in","ids":["md_s84","md_s85"],"cdate":"","due":"","exp":6000,"pdate":"","paid":null,"st":"claimed","u":""}],"cfg":{"ded":5000,"taxPct":6.6,"spouse":10000,"insDays":3,"cards":[{"pat":"하나4*7*","name":"원더"},{"pat":"하나7*9*","name":"토스"},{"pat":"하나8*9*","name":"MG"},{"pat":"신한","name":"신한"}],"u":""},"del":{}};
+function mdNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const nn = v => (v === '' || v == null || !isFinite(Number(v)) || Number(v) < 0 ? 0 : Number(v)), ov = v => (v === '' || v == null || !isFinite(Number(v)) ? '' : Number(v));
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Calc.validDate(i.date)).map(i => ({
+    id: String(i.id), date: i.date, who: String(i.who || '본인'), place: String(i.place || ''), total: nn(i.total), extra: Math.min(nn(i.extra), nn(i.total)), incl: i.incl === true || i.incl === 'true',
+    cOv: ov(i.cOv), tg: ['yes', 'no'].indexOf(i.tg) >= 0 ? i.tg : 'auto', why: String(i.why || ''), card: String(i.card || ''), inst: Math.max(0, Math.round(Number(i.inst)) || 0), chk: String(i.chk || ''), memo: String(i.memo || ''), u: String(i.u || '') }));
+  const claims = (Array.isArray(o.claims) ? o.claims : []).filter(c => c && c.id && (c.t === 'co' || c.t === 'in') && Array.isArray(c.ids) && c.ids.length).map(c => ({
+    id: String(c.id), t: c.t, ids: c.ids.map(String), cdate: Calc.validDate(c.cdate) || '', due: Calc.validDate(c.due) || '', exp: nn(c.exp), pdate: Calc.validDate(c.pdate) || '',
+    paid: (c.paid === '' || c.paid == null || !isFinite(Number(c.paid))) ? null : Number(c.paid), st: c.st === 'paid' ? 'paid' : 'claimed', u: String(c.u || '') }));
+  const k = o.cfg && typeof o.cfg === 'object' ? o.cfg : {};
+  const cards = (Array.isArray(k.cards) ? k.cards : []).filter(r => r && String(r.pat || '').trim() && String(r.name || '').trim()).map(r => ({ pat: String(r.pat).trim(), name: String(r.name).trim() }));
+  const cfg = { ded: k.ded != null && isFinite(Number(k.ded)) ? Number(k.ded) : 5000, taxPct: k.taxPct != null && isFinite(Number(k.taxPct)) ? Number(k.taxPct) : 6.6, spouse: k.spouse != null && isFinite(Number(k.spouse)) ? Number(k.spouse) : 10000,
+    insDays: k.insDays != null && isFinite(Number(k.insDays)) ? Math.max(0, Math.round(Number(k.insDays))) : 3, cards: cards.length ? cards : MD_CARDS_DEF.map(r => Object.assign({}, r)), u: String(k.u || '') };
+  return { items, claims, cfg, del: cleanDel(o.del) };
+}
+let MD = loadK(MD_KEY, MD_SEED, mdNorm);
+let mdFlt = { st: 'open', year: 'all' }, mdSelMode = false, mdSel = {}, mdEditing = null, mdCl = null, mdSmsRows = [];
+function mdSave(){ saveK(MD_KEY, MD); }
+const mdIx = () => Med.index(MD.items, MD.claims);
+const mdItem = id => MD.items.find(x => x.id === id);
+const mdMD = d => (d ? Number(d.slice(5, 7)) + '/' + Number(d.slice(8, 10)) : '');
+function mdCardNames(){
+  const s = []; const add = n => { n = String(n || '').trim(); if (n && s.indexOf(n) < 0) s.push(n); };
+  MD.cfg.cards.forEach(r => add(r.name)); ['MG', '원더', '토스'].forEach(add);
+  try { if (window.AppCards && window.AppCards.list) window.AppCards.list().forEach(add); } catch (e) { /* 무시 */ }
+  MD.items.forEach(i => add(i.card)); return s;
+}
+function mdRows(){
+  const ix = mdIx(); return MD.items.map(it => ({ it, s: Med.status(it, MD.items, ix, MD.cfg) }));
+}
+function mdMatch(r, k){
+  if (k === 'open') return !r.s.closed;
+  if (k === 'closed') return r.s.closed;
+  if (k === 'coNone') return r.s.cs === 'none';
+  if (k === 'insNone') return r.s.is === 'none';
+  if (k === 'wait') return r.s.cs === 'claimed' || r.s.is === 'claimed';
+  if (k === 'chk') return !!r.it.chk;
+  return true;
+}
+const MD_FLT = [['open', '진행중'], ['coNone', '회사 미신청'], ['insNone', '실비 미신청'], ['wait', '입금 대기'], ['chk', '확인 필요'], ['closed', '종결'], ['all', '전체']];
+function mdChips(r, t){
+  const s = r.s, cfg = MD.cfg; let co, ins;
+  if (s.cs === 'paid') co = '<button type="button" class="md-chip ok" data-md="co" data-id="' + esc(r.it.id) + '">회사 입금 ✓' + (s.c.ids.length > 1 ? ' · ' + s.c.ids.length + '건' : '') + '</button>';
+  else if (s.cs === 'claimed') { const late = s.c.due && s.c.due < t; co = '<button type="button" class="md-chip ' + (late ? 'warn' : 'wait') + '" data-md="co" data-id="' + esc(r.it.id) + '">회사 신청' + (s.c.due ? ' · 예정 ' + mdMD(s.c.due) : '') + (late ? ' (' + Med.dayDiff(s.c.due, t) + '일 지남)' : '') + '</button>'; }
+  else co = '<button type="button" class="md-chip warn" data-md="co" data-id="' + esc(r.it.id) + '">회사 미신청</button>';
+  if (s.is === 'na') ins = '<span class="md-chip mute">실비 ' + esc(Med.whyNo(r.it, MD.items, cfg.ded)) + '</span>';
+  else if (s.is === 'paid') ins = '<button type="button" class="md-chip ok" data-md="in" data-id="' + esc(r.it.id) + '">실비 입금 ✓' + (s.i.ids.length > 1 ? ' · ' + s.i.ids.length + '건' : '') + '</button>';
+  else if (s.is === 'claimed') { const base = s.i.cdate || r.it.date, d = Med.dayDiff(base, t), late = d != null && d >= cfg.insDays; ins = '<button type="button" class="md-chip ' + (late ? 'warn' : 'wait') + '" data-md="in" data-id="' + esc(r.it.id) + '">실비 신청' + (d != null ? ' · ' + d + '일째' : '') + '</button>'; }
+  else ins = '<button type="button" class="md-chip warn" data-md="in" data-id="' + esc(r.it.id) + '">실비 미신청</button>';
+  return co + ins;
+}
+function renderMed(){
+  const t = todayStr(), rows = mdRows(), cfg = MD.cfg, ix = mdIx();
+  const card = (l, v, s2) => '<div class="scard"><div class="l">' + l + '</div><div class="v tabular">' + v + '</div>' + (s2 ? '<div class="sub">' + s2 + '</div>' : '') + '</div>';
+  const byId = {}; MD.items.forEach(i => { byId[i.id] = i; });
+  const live = c => c.ids.some(id => byId[id]);
+  const open = rows.filter(r => !r.s.closed), coW = MD.claims.filter(c => c.t === 'co' && c.st !== 'paid' && live(c)), inW = MD.claims.filter(c => c.t === 'in' && c.st !== 'paid' && live(c));
+  const al = Med.alerts(MD.items, MD.claims, cfg, t), yr = t.slice(0, 4);
+  let paidY = 0, coY = 0, inY = 0;
+  MD.claims.forEach(c => { if (c.st !== 'paid' || c.paid == null) return; const f = c.ids.map(id => byId[id]).filter(Boolean).map(i => i.date).sort()[0]; if (f && f.slice(0, 4) === yr) { paidY += c.paid; if (c.t === 'co') coY += c.paid; else inY += c.paid; } });
+  $('md-summary').innerHTML = card('진행중', open.length + '건', '회사 미신청 ' + al.coNone.length + ' · 실비 미신청 ' + al.insNone.length) +
+    card('회사 입금 대기', won(coW.reduce((a, c) => a + c.exp, 0)), coW.length + '건' + (al.coLate.length ? ' · 지급예정일 지남 ' + al.coLate.length : '')) +
+    card('실비 입금 대기', won(inW.reduce((a, c) => a + c.exp, 0)), inW.length + '건' + (al.insLate.length ? ' · ' + cfg.insDays + '일 넘게 대기 ' + al.insLate.length : '')) +
+    card(yr + '년 받은 정산금', won(paidY), '회사 ' + won(coY) + ' · 실비 ' + won(inY));
+  const years = MD.items.map(i => i.date.slice(0, 4)).filter((y, i, a) => a.indexOf(y) === i).sort().reverse();
+  if (mdFlt.year !== 'all' && years.indexOf(mdFlt.year) < 0) mdFlt.year = 'all';
+  fillSelect($('md-flt-year'), [{ v: 'all', t: '전체 기간' }].concat(years.map(y => ({ v: y, t: y + '년' }))), mdFlt.year);
+  const inYear = rows.filter(r => mdFlt.year === 'all' || r.it.date.slice(0, 4) === mdFlt.year);
+  $('md-flt').innerHTML = MD_FLT.map(f => '<button type="button" class="md-f' + (mdFlt.st === f[0] ? ' on' : '') + '" data-md="flt" data-k="' + f[0] + '">' + f[1] + ' <i>' + inYear.filter(r => mdMatch(r, f[0])).length + '</i></button>').join('');
+  const list = inYear.filter(r => mdMatch(r, mdFlt.st)).sort((a, b) => b.it.date.localeCompare(a.it.date) || b.it.id.localeCompare(a.it.id));
+  let h = '', curM = '';
+  list.forEach(r => {
+    const it = r.it, m = it.date.slice(0, 7);
+    if (m !== curM) { curM = m; h += '<div class="grp md-mo">' + Number(m.slice(0, 4)) + '년 ' + Number(m.slice(5)) + '월</div>'; }
+    const sub = [it.who !== '본인' ? it.who : '', it.card, it.inst ? it.inst + '개월 할부' : '', it.extra ? '비급여 ' + won(it.extra) : '', Med.isPharm(it.place) ? '약국' : ''].filter(Boolean).join(' · ');
+    const dosu = MP.items.some(m2 => m2.date === it.date) && it.extra > 0 ? ' <span class="md-chip mute">🦵 도수 기록 있음</span>' : '';
+    const exp = r.s.cs === 'paid' ? '' : '회사 예상 ' + won(Med.coExp(it, cfg));
+    h += '<div class="md-row' + (r.s.closed ? ' done' : '') + '" data-md="open" data-id="' + esc(it.id) + '" tabindex="0">' +
+      (mdSelMode ? '<label class="md-ck"><input type="checkbox" data-md="sel" data-id="' + esc(it.id) + '"' + (mdSel[it.id] ? ' checked' : '') + '></label>' : '') +
+      '<div class="l"><b>' + mdMD(it.date) + ' · ' + esc(it.place || '(병원 미입력)') + '</b>' + (r.s.closed ? '<span class="md-chip ok">종결</span>' : '') + dosu +
+      (sub ? '<small>' + esc(sub) + '</small>' : '') + '<div class="md-chips">' + mdChips(r, t) + '</div>' + (it.chk ? '<div class="md-chk">⚠ ' + esc(it.chk) + '</div>' : '') + '</div>' +
+      '<div class="r"><b>' + won(it.total) + '</b>' + (exp ? exp : '') + '</div></div>';
+  });
+  $('md-list').innerHTML = h || '<div class="empty">' + (MD.items.length ? '조건에 맞는 진료 건이 없어요.' : '아직 기록이 없어요. “📩 문자로 등록”으로 시작해 보세요.') + '</div>';
+  $('md-places').innerHTML = MD.items.map(i => i.place).filter((p, i, a) => p && a.indexOf(p) === i).map(p => '<option value="' + esc(p) + '">').join('');
+  // 선택 모드 하단 막대
+  const sel = Object.keys(mdSel).filter(id => mdSel[id] && byId[id]), bar = $('md-bar');
+  bar.hidden = !mdSelMode; $('md-selmode').classList.toggle('on', mdSelMode);
+  if (mdSelMode) { $('md-bar-msg').innerHTML = '<b>' + sel.length + '건</b> 선택 · 결제 ' + won(sel.reduce((a, id) => a + byId[id].total, 0)); }
+  // 설정(카드 인식 규칙 · 계산 기준)
+  $('md-cfg-rules').innerHTML = cfg.cards.map((r, i) => '<div class="md-rule"><span>문자에 <b>' + esc(r.pat) + '</b> → <b>' + esc(r.name) + '</b></span><button type="button" class="pc-btn small" data-md="rule-del" data-i="' + i + '">삭제</button></div>').join('');
+  $('md-cfg-ded').value = cfg.ded; $('md-cfg-tax').value = cfg.taxPct; $('md-cfg-sp').value = cfg.spouse; $('md-cfg-days').value = cfg.insDays;
+  void ix;
+}
+/* ---------- 진료 건 입력 · 수정 ---------- */
+function mdPreview(){
+  const t = $('md-f-total').value === '' ? 0 : Number($('md-f-total').value), ex = Math.min(t, Number($('md-f-extra').value) || 0), who = $('md-f-who').value, place = $('md-f-place').value.trim();
+  const tmp = { id: mdEditing || '__new', date: $('md-f-date').value || todayStr(), who, place, total: t, extra: ex, incl: $('md-f-incl').checked, cOv: $('md-f-cov').value, tg: $('md-f-tg').value, why: $('md-f-why').value.trim() };
+  const others = MD.items.filter(x => x.id !== tmp.id), all = others.concat([tmp]), cfg = MD.cfg;
+  const base = t - ex + (tmp.incl ? ex : 0), tax = Math.floor(base * cfg.taxPct / 100 + 0.5), sp = who === '배우자' ? cfg.spouse : 0, co = Med.coExp(tmp, cfg), el = Med.elig(tmp, all, cfg.ded);
+  $('md-f-calc').innerHTML = '<b>회사 예상 지원금 ' + won(co) + '</b><br><small>' + (tmp.cOv !== '' && isFinite(Number(tmp.cOv)) ? '직접 입력한 금액이에요.' : '대상 금액 ' + won(base) + ' − 세금 ' + won(tax) + (sp ? ' − 배우자 공제 ' + won(sp) : '') + (ex && !tmp.incl ? ' (비급여 ' + won(ex) + '은 제외)' : '')) + '</small>' +
+    '<br><b>실비 ' + (el ? '대상' : Med.whyNo(tmp, all, cfg.ded)) + '</b><small>' + (el ? ' · 같은 날 총 ' + won(Med.dayTotal(all, tmp)) + ' − 공제 ' + won(cfg.ded) + ' = 예상 ' + won(Math.max(0, Med.dayTotal(all, tmp) - cfg.ded)) : '') + '</small>';
+  const sg = Med.lastExtra(MD.items.filter(x => x.id !== mdEditing), place);
+  $('md-f-sug').innerHTML = sg && !ex ? '<button type="button" class="pc-btn small" data-md="sug">지난번 비급여 ' + won(sg.extra) + ' 넣기</button>' : '';
+  $('md-f-sug')._sg = sg;
+}
+function mdOpen(id){
+  mdEditing = id || null; const r = id ? mdItem(id) : null;
+  $('md-d-title').textContent = r ? '진료 건 수정' : '진료 건 추가';
+  $('md-f-date').value = r ? r.date : todayStr(); $('md-f-who').value = r ? r.who : '본인'; $('md-f-place').value = r ? r.place : '';
+  $('md-f-total').value = r && r.total ? r.total : ''; $('md-f-extra').value = r && r.extra ? r.extra : ''; $('md-f-incl').checked = r ? r.incl : false;
+  fillSelect($('md-f-card'), [{ v: '', t: '(미지정)' }].concat(mdCardNames().map(n => ({ v: n, t: n }))), r ? r.card : '');
+  $('md-f-inst').value = r && r.inst ? r.inst : ''; $('md-f-tg').value = r ? r.tg : 'auto'; $('md-f-why').value = r ? r.why : ''; $('md-f-cov').value = r && r.cOv !== '' ? r.cOv : '';
+  $('md-f-memo').value = r ? r.memo : ''; $('md-f-chkwrap').hidden = !(r && r.chk); $('md-f-chktext').textContent = r ? r.chk : ''; $('md-f-chkok').checked = false;
+  $('md-d-delete').hidden = !r;
+  { const dosu = r && MP.items.find(m => m.date === r.date); $('md-f-mp').innerHTML = r ? (dosu ? '🦵 같은 날짜의 도수치료 기록이 있어요 (' + esc(dosu.part) + ' · 지급 ' + won(dosu.paid) + ')' : (r.extra > 0 && /정형외과|한의|재활/.test(r.place) ? '🦵 도수치료라면 도수치료 탭에도 기록해 주세요 (한도 카운팅용)' : '')) : ''; }
+  mdSettleHtml(); mdPreview(); $('md-dlg').showModal();
+}
+function mdSettleHtml(){
+  const box = $('md-f-settle'); if (!mdEditing) { box.innerHTML = '<small>저장한 뒤에 신청·입금 확인을 할 수 있어요.</small>'; return; }
+  const r = mdRows().find(x => x.it.id === mdEditing); if (!r) { box.innerHTML = ''; return; }
+  const s = r.s, t = todayStr();
+  const line = (lab, st, c, tp) => '<div class="md-st"><span><b>' + lab + '</b> ' + st + '</span><button type="button" class="pc-btn small' + (c ? '' : ' primary') + '" data-md="cl" data-t="' + tp + '" data-id="' + esc(mdEditing) + '">' + (c ? (c.st === 'paid' ? '내용 보기·수정' : '입금 확인') : '신청 처리') + '</button></div>';
+  box.innerHTML = line('회사', s.cs === 'paid' ? '입금 완료 ' + (s.c.paid != null ? won(s.c.paid) : '(금액 미상)') : s.cs === 'claimed' ? '신청함 ' + (s.c.cdate ? mdMD(s.c.cdate) : '') + ' · 예상 ' + won(s.c.exp) : '아직 신청 전', s.c, 'co') +
+    (s.is === 'na' ? '<div class="md-st"><span><b>실비</b> ' + esc(Med.whyNo(r.it, MD.items, MD.cfg.ded)) + '</span></div>' : line('실비(메리츠)', s.is === 'paid' ? '입금 완료 ' + (s.i.paid != null ? won(s.i.paid) : '(금액 미상)') : s.is === 'claimed' ? '신청함 ' + (s.i.cdate ? mdMD(s.i.cdate) : '') + ' · 예상 ' + won(s.i.exp) : '아직 신청 전', s.i, 'in')) +
+    (s.closed ? '<div class="md-closed">✅ 종결된 건이에요.</div>' : '');
+  void t;
+}
+function mdSaveItem(){
+  const date = Calc.validDate($('md-f-date').value), total = Number($('md-f-total').value) || 0, place = $('md-f-place').value.trim();
+  if (!date) { toast('진료일을 입력해 주세요.'); return; }
+  if (!place) { toast('병원·약국 이름을 입력해 주세요.'); return; }
+  if (total <= 0) { toast('총 결제금액을 입력해 주세요.'); return; }
+  const d = { date, who: $('md-f-who').value, place, total, extra: Math.min(total, Number($('md-f-extra').value) || 0), incl: $('md-f-incl').checked, cOv: $('md-f-cov').value === '' ? '' : Number($('md-f-cov').value),
+    tg: $('md-f-tg').value, why: $('md-f-why').value.trim(), card: $('md-f-card').value, inst: Math.max(0, Math.round(Number($('md-f-inst').value)) || 0), memo: $('md-f-memo').value.trim(), u: nowIso() };
+  if (mdEditing) { const r = mdItem(mdEditing); if (r) { Object.assign(r, d); if ($('md-f-chkok').checked) r.chk = ''; } } else MD.items.push(Object.assign({ id: uid('md'), chk: '' }, d));
+  MD = mdNorm(MD); mdSave(); changed(); $('md-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function mdDelItem(){
+  if (!mdEditing || !confirm('이 진료 건을 삭제할까요? (신청·입금 기록에서도 빠져요)')) return;
+  const id = mdEditing, t = nowIso();
+  MD.items = MD.items.filter(x => x.id !== id); MD.del[id] = t;
+  MD.claims.forEach(c => { if (c.ids.indexOf(id) >= 0) { c.ids = c.ids.filter(x => x !== id); c.u = t; } });
+  MD.claims.filter(c => !c.ids.length).forEach(c => { MD.del[c.id] = t; });
+  MD.claims = MD.claims.filter(c => c.ids.length); mdSave(); changed(); $('md-dlg').close(); renderAll();
+}
+/* ---------- 신청 처리 · 입금 확인 (청구) ---------- */
+function mdClOpen(tp, ids, claimId){
+  const ix = mdIx(); let cl = claimId ? MD.claims.find(c => c.id === claimId) : null;
+  if (!cl && ids && ids.length === 1) cl = (tp === 'co' ? ix.co : ix.ins)[ids[0]] || null;
+  if (!cl && tp === 'in' && ids && ids.length === 1) { const b = mdItem(ids[0]); if (b) MD.items.forEach(o => { if (o.id !== b.id && o.who === b.who && o.date === b.date && !ix.ins[o.id] && ids.indexOf(o.id) < 0) ids = ids.concat([o.id]); }); }   // 같은 날 병원+약국은 한 번에 신청
+  const members = cl ? cl.ids.filter(mdItem) : (ids || []).filter(id => { const it = mdItem(id); if (!it) return false; if ((tp === 'co' ? ix.co : ix.ins)[id]) return false; if (tp === 'in' && !Med.elig(it, MD.items, MD.cfg.ded)) return false; return true; });
+  const skipped = cl ? 0 : (ids || []).length - members.length;
+  if (!members.length) { toast(tp === 'in' ? '실비 신청할 수 있는 건이 없어요 (비대상이거나 이미 신청됨).' : '신청할 수 있는 건이 없어요 (이미 신청됨).'); return; }
+  if (skipped > 0) toast(skipped + '건은 이미 신청했거나 대상이 아니라 뺐어요.');
+  mdCl = { t: tp, id: cl ? cl.id : null, members: members.slice(), all: members.slice() };
+  const its = members.map(mdItem);
+  const expAuto = tp === 'co' ? its.reduce((a, i) => a + Med.coExp(i, MD.cfg), 0) : Med.insExp(its, MD.cfg.ded);
+  $('md-cl-title').textContent = (tp === 'co' ? '회사 ' : '실비(메리츠화재) ') + (cl ? (cl.st === 'paid' ? '신청·입금 내용' : '신청 내용 · 입금 확인') : '신청 처리');
+  $('md-cl-list').innerHTML = its.map(i => '<label class="md-ck2"><input type="checkbox" data-mdcl="m" data-id="' + esc(i.id) + '" checked> ' + mdMD(i.date) + ' ' + esc(i.place) + ' <small>' + won(i.total) + '</small></label>').join('');
+  $('md-cl-cdate').value = cl ? cl.cdate : todayStr(); $('md-cl-due-wrap').hidden = tp !== 'co'; $('md-cl-due').value = cl ? cl.due : '';
+  $('md-cl-exp').value = cl ? cl.exp : expAuto; $('md-cl-exp').dataset.auto = String(expAuto);
+  $('md-cl-paidchk').checked = !!(cl && cl.st === 'paid'); $('md-cl-pdate').value = cl && cl.pdate ? cl.pdate : ''; $('md-cl-paid').value = cl && cl.paid != null ? cl.paid : '';
+  $('md-cl-del').hidden = !cl; mdClUI(); $('md-cl-dlg').showModal();
+}
+function mdClUI(prefill){
+  const on = $('md-cl-paidchk').checked; $('md-cl-paidbox').hidden = !on;
+  if (on && prefill) { if (!$('md-cl-pdate').value) $('md-cl-pdate').value = todayStr(); if ($('md-cl-paid').value === '') $('md-cl-paid').value = $('md-cl-exp').value; }
+  const n = Array.prototype.filter.call(document.querySelectorAll('#md-cl-list input[data-mdcl="m"]'), x => x.checked).length;
+  $('md-cl-n').textContent = n + '건';
+}
+function mdClSave(){
+  const ids = Array.prototype.filter.call(document.querySelectorAll('#md-cl-list input[data-mdcl="m"]'), x => x.checked).map(x => x.dataset.id);
+  if (!ids.length) { toast('한 건 이상 선택해 주세요.'); return; }
+  const cdate = Calc.validDate($('md-cl-cdate').value) || ''; if (!cdate && !mdCl.id) { toast('신청일을 입력해 주세요.'); return; }   // 시트에서 날짜를 읽지 못한 기존 기록은 비워 둘 수 있어요
+  const paidOn = $('md-cl-paidchk').checked, t = nowIso();
+  const d = { ids, cdate, due: mdCl.t === 'co' ? (Calc.validDate($('md-cl-due').value) || '') : '', exp: Number($('md-cl-exp').value) || 0, st: paidOn ? 'paid' : 'claimed',
+    pdate: paidOn ? (Calc.validDate($('md-cl-pdate').value) || todayStr()) : '', paid: paidOn && $('md-cl-paid').value !== '' ? Number($('md-cl-paid').value) : null, u: t };
+  if (mdCl.id) { const c = MD.claims.find(x => x.id === mdCl.id); if (c) Object.assign(c, d); }
+  else MD.claims.push(Object.assign({ id: uid('mc'), t: mdCl.t }, d));
+  MD = mdNorm(MD); mdSave(); changed(); $('md-cl-dlg').close();
+  toast(paidOn ? '입금 확인했어요.' + (mdRows().filter(r => ids.indexOf(r.it.id) >= 0 && r.s.closed).length ? ' 정산이 끝난 건은 종결됐어요.' : '') : '신청으로 기록했어요.');
+  if ($('md-dlg').open) { mdSettleHtml(); }
+  mdSel = {}; renderAll();
+}
+function mdClDelete(){
+  if (!mdCl || !mdCl.id || !confirm('이 신청·입금 기록을 지울까요? (진료 건은 그대로 남고 “미신청”으로 돌아가요)')) return;
+  MD.claims = MD.claims.filter(c => c.id !== mdCl.id); MD.del[mdCl.id] = nowIso(); mdSave(); changed(); $('md-cl-dlg').close(); if ($('md-dlg').open) mdSettleHtml(); renderAll();
+}
+/* ---------- 문자로 등록 ---------- */
+function mdSmsOpen(){ $('md-sms-in').value = ''; mdSmsRows = []; mdSmsRender(); $('md-sms-dlg').showModal(); setTimeout(() => $('md-sms-in').focus(), 60); }
+function mdSmsParse(){
+  const txt = $('md-sms-in').value, known = MD.items.map(i => i.place).filter((p, i, a) => p && a.indexOf(p) === i);
+  const res = Med.parseSms(txt, { cards: MD.cfg.cards, known, today: todayStr() });
+  mdSmsRows = res.map(r => {
+    const dup = MD.items.some(i => i.date === r.date && i.total === r.amount && Med.placeCore(i.place) === Med.placeCore(r.place));
+    const sg = Med.lastExtra(MD.items, r.place);
+    return { ok: !dup && !r.cancel, date: r.date || todayStr(), who: '본인', place: r.place, total: r.amount, extra: 0, incl: sg ? sg.incl : false, card: r.card, inst: r.inst, dup, cancel: r.cancel, sg };
+  });
+  mdSmsRender(txt.trim() && !res.length);
+}
+function mdSmsRender(fail){
+  const box = $('md-sms-list'), cards = mdCardNames();
+  if (!mdSmsRows.length) { box.innerHTML = fail ? '<p class="td-note td-warn">문자에서 금액·병원을 못 찾았어요. 카드 승인 문자 전체를 붙여넣어 주세요.</p>' : ''; $('md-sms-go').disabled = true; $('md-sms-go').textContent = '등록'; return; }
+  box.innerHTML = mdSmsRows.map((r, i) => '<div class="md-sms-card' + (r.ok ? '' : ' off') + '"><label class="md-ck2"><input type="checkbox" data-mds="ok" data-i="' + i + '"' + (r.ok ? ' checked' : '') + '> <b>' + mdMD(r.date) + ' ' + esc(r.place || '(병원 미인식)') + '</b> ' + won(r.total) + (r.inst ? ' · ' + r.inst + '개월 할부' : '') + '</label>' +
+    (r.dup ? '<div class="md-chk">이미 같은 날짜·금액으로 등록된 건이에요. 체크하면 한 번 더 등록돼요.</div>' : '') + (r.cancel ? '<div class="md-chk">취소 문자로 보여요. 체크하면 등록돼요.</div>' : '') +
+    '<div class="pc-row2"><label class="pc-f">진료일<input type="date" data-mds="date" data-i="' + i + '" value="' + esc(r.date) + '"></label><label class="pc-f">병원·약국<input type="text" list="md-places" data-mds="place" data-i="' + i + '" value="' + esc(r.place) + '"></label></div>' +
+    '<div class="pc-row2"><label class="pc-f">대상<select data-mds="who" data-i="' + i + '">' + MD_WHO.map(w => '<option' + (w === r.who ? ' selected' : '') + '>' + w + '</option>').join('') + '</select></label>' +
+    '<label class="pc-f">결제카드<select data-mds="card" data-i="' + i + '"><option value="">(미지정)</option>' + cards.map(c => '<option' + (c === r.card ? ' selected' : '') + '>' + esc(c) + '</option>').join('') + '</select></label></div>' +
+    '<div class="pc-row2"><label class="pc-f">그 중 비급여(선택진료료 이외)<input type="number" inputmode="numeric" min="0" data-mds="extra" data-i="' + i + '" value="' + (r.extra || '') + '" placeholder="없으면 비움"></label>' +
+    '<div class="pc-f md-sg">' + (r.sg && !r.extra ? '<button type="button" class="pc-btn small" data-mds="sug" data-i="' + i + '">지난번 ' + won(r.sg.extra) + ' 넣기</button>' : '') + '</div></div></div>').join('');
+  const n = mdSmsRows.filter(r => r.ok).length; $('md-sms-go').disabled = !n; $('md-sms-go').textContent = n ? n + '건 등록' : '등록';
+}
+function mdSmsGo(){
+  const t = nowIso(); let n = 0;
+  mdSmsRows.filter(r => r.ok).forEach(r => {
+    if (!Calc.validDate(r.date) || !(r.total > 0) || !String(r.place).trim()) return;
+    MD.items.push({ id: uid('md'), date: r.date, who: r.who, place: String(r.place).trim(), total: r.total, extra: Math.min(r.total, Number(r.extra) || 0), incl: !!r.incl, cOv: '', tg: 'auto', why: '', card: r.card || '', inst: r.inst || 0, chk: '', memo: '', u: t }); n++;
+  });
+  if (!n) { toast('등록할 건이 없어요. 병원 이름·금액을 확인해 주세요.'); return; }
+  MD = mdNorm(MD); mdSave(); changed(); $('md-sms-dlg').close(); mdFlt.st = 'open'; toast(n + '건 등록했어요. 회사·실비 신청은 목록에서 이어서 체크하세요.'); renderAll();
+}
+/* ---------- 이벤트 ---------- */
+function mdCfgSave(){ MD.cfg.u = nowIso(); MD = mdNorm(MD); mdSave(); changed(); renderMed(); }
+$('medView').addEventListener('click', e => {
+  const el = e.target.closest('[data-md]'); if (!el) return;
+  const a = el.dataset.md, id = el.dataset.id;
+  if (a === 'sms') mdSmsOpen(); else if (a === 'add') mdOpen(null);
+  else if (a === 'flt') { mdFlt.st = el.dataset.k; renderMed(); }
+  else if (a === 'sel') { mdSel[id] = el.checked; renderMed(); return; }
+  else if (a === 'selmode') { mdSelMode = !mdSelMode; mdSel = {}; renderMed(); }
+  else if (a === 'bar-co' || a === 'bar-in') { const ids = Object.keys(mdSel).filter(k => mdSel[k]); if (!ids.length) { toast('먼저 진료 건을 선택해 주세요.'); return; } mdClOpen(a === 'bar-co' ? 'co' : 'in', ids, null); }
+  else if (a === 'bar-x') { mdSelMode = false; mdSel = {}; renderMed(); }
+  else if (a === 'co' || a === 'in') { e.stopPropagation(); if (mdSelMode) return; const it = mdItem(id); if (it) mdClOpen(a, [id], null); }
+  else if (a === 'open') { if (mdSelMode) { mdSel[id] = !mdSel[id]; renderMed(); } else mdOpen(id); }
+  else if (a === 'rule-del') { MD.cfg.cards.splice(Number(el.dataset.i), 1); if (!MD.cfg.cards.length) MD.cfg.cards = MD_CARDS_DEF.map(r => Object.assign({}, r)); mdCfgSave(); }
+  else if (a === 'rule-add') { const p = $('md-rule-pat').value.trim(), n = $('md-rule-name').value.trim(); if (!p || !n) { toast('문자에 들어있는 글자와 카드 이름을 모두 입력해 주세요.'); return; } MD.cfg.cards.push({ pat: p, name: n }); $('md-rule-pat').value = ''; $('md-rule-name').value = ''; mdCfgSave(); }
+  else if (a === 'backup') doBackup();
+});
+$('medView').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('.md-row')) mdOpen(e.target.dataset.id); });
+$('md-flt-year').addEventListener('change', e => { mdFlt.year = e.target.value; renderMed(); });
+[['md-cfg-ded', 'ded'], ['md-cfg-tax', 'taxPct'], ['md-cfg-sp', 'spouse'], ['md-cfg-days', 'insDays']].forEach(x => $(x[0]).addEventListener('change', e => { const v = Number(e.target.value); if (!isFinite(v) || v < 0) { renderMed(); return; } MD.cfg[x[1]] = v; mdCfgSave(); }));
+$('md-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md;
+  if (a === 'd-cancel') $('md-dlg').close(); else if (a === 'd-save') mdSaveItem(); else if (a === 'd-delete') mdDelItem();
+  else if (a === 'cl') { const id = el.dataset.id; mdClOpen(el.dataset.t, [id], null); }
+  else if (a === 'sug') { const sg = $('md-f-sug')._sg; if (sg) { $('md-f-extra').value = sg.extra; $('md-f-incl').checked = sg.incl; mdPreview(); } }
+});
+['md-f-date', 'md-f-who', 'md-f-place', 'md-f-total', 'md-f-extra', 'md-f-incl', 'md-f-tg', 'md-f-why', 'md-f-cov'].forEach(id => { $(id).addEventListener('input', mdPreview); $(id).addEventListener('change', mdPreview); });
+$('md-cl-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md;
+  if (a === 'cl-cancel') $('md-cl-dlg').close(); else if (a === 'cl-save') mdClSave(); else if (a === 'cl-del') mdClDelete();
+  else if (a === 'cl-auto') { $('md-cl-exp').value = $('md-cl-exp').dataset.auto; }
+});
+$('md-cl-dlg').addEventListener('change', e => {
+  if (e.target.id === 'md-cl-paidchk') mdClUI(true);
+  else if (e.target.matches('[data-mdcl="m"]')) {
+    const ids = Array.prototype.filter.call(document.querySelectorAll('#md-cl-list input[data-mdcl="m"]'), x => x.checked).map(x => x.dataset.id), its = ids.map(mdItem).filter(Boolean);
+    if (!(mdCl.id && $('md-cl-paidchk').checked)) $('md-cl-exp').value = mdCl.t === 'co' ? its.reduce((a, i) => a + Med.coExp(i, MD.cfg), 0) : Med.insExp(its, MD.cfg.ded);
+    $('md-cl-exp').dataset.auto = $('md-cl-exp').value; mdClUI();
+  }
+});
+$('md-sms-in').addEventListener('input', () => { clearTimeout(mdSmsParse._t); mdSmsParse._t = setTimeout(mdSmsParse, 150); });
+$('md-sms-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-md],[data-mds]'); if (!el) return;
+  if (el.dataset.md === 's-cancel') { $('md-sms-dlg').close(); return; } if (el.dataset.md === 's-go') { mdSmsGo(); return; }
+  if (el.dataset.mds === 'sug') { const r = mdSmsRows[Number(el.dataset.i)]; if (r && r.sg) { r.extra = r.sg.extra; r.incl = r.sg.incl; mdSmsRender(); } }
+});
+$('md-sms-dlg').addEventListener('change', e => {
+  const el = e.target.closest('[data-mds]'); if (!el) return; const r = mdSmsRows[Number(el.dataset.i)]; if (!r) return; const f = el.dataset.mds;
+  if (f === 'ok') { r.ok = el.checked; mdSmsRender(); return; }
+  if (f === 'date') r.date = el.value; else if (f === 'place') { r.place = el.value; const sg = Med.lastExtra(MD.items, r.place); r.sg = sg; if (sg && !r.extra) r.incl = sg.incl; mdSmsRender(); return; }
+  else if (f === 'who') r.who = el.value; else if (f === 'card') r.card = el.value; else if (f === 'extra') { r.extra = Math.max(0, Number(el.value) || 0); mdSmsRender(); }
+});
+
 /* ---------- 연봉 이력 ---------- */
 const PAY_KEY = 'salary_hist_v1', PAY_HIDE_KEY = 'py_hide_v1', PAY_NOSYNC_KEY = 'py_nosync_v1';
 const pyI = (year, cl, ten, salary, rate, parts, bonus, memo) => ({ id: 'py_seed_' + year, year, cl, tenure: ten, salary, rate: rate == null ? '' : rate, parts: parts || '', bonus: bonus || 0, memo: memo || '', u: '' });
@@ -4497,10 +5041,10 @@ window.AppSettings = { refresh: function () {
   renderSetCfg(); const pc = $('py-sync-chk'); if (pc) pc.checked = !pyNoSync();
 } };
 window.AppExtras = {
-  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'guide', 'pay', 'reminders', 'opts'],
+  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'medical', 'guide', 'pay', 'reminders', 'opts'],
   exportSync(){
     return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
-      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
+      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, medical: { items: MD.items, claims: MD.claims, cfg: MD.cfg, del: MD.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
   },
   strip(obj){ this.keys.forEach(k => { delete obj[k]; }); delete obj.inbox; },
   importSync(json){
@@ -4555,6 +5099,11 @@ window.AppExtras = {
     if (ok('manual')) {
       const r = json.manual, m = Shop.mergeById(MP.items, r.items, MP.del, cleanDel(r.del));
       MP = mpNorm({ items: m.items, del: m.del }); mpSave(); ch = true;
+    }
+    if (ok('medical')) {
+      const r = json.medical, mi = Shop.mergeById(MD.items, r.items, MD.del, cleanDel(r.del)), mc = Shop.mergeById(MD.claims, r.claims, MD.del, cleanDel(r.del));
+      const cfg = r.cfg && String(r.cfg.u || '') > String(MD.cfg.u || '') ? r.cfg : MD.cfg;
+      MD = mdNorm({ items: mi.items, claims: mc.items, cfg, del: mi.del }); mdSave(); ch = true;
     }
     if (ok('guide')) {
       const r = json.guide, m = Shop.mergeById(GD.items, r.items, GD.del, cleanDel(r.del));
@@ -4819,7 +5368,7 @@ window.AppLife = {
 
 if (window.AppMeeting) window.AppMeeting.refresh();   // 회의비 목록에 인맥 연결 이름 반영
 /* ---- 저장공간 · 백업 ---- */
-const STORE_NAMES = { shopping_history_app_v1: '소비(사진 포함)', meeting_budget_app_v1: '회의비', price_check_app_v2: '가격체크', people_v1: '인맥', skin_care_v1: '피부관리', manual_care_v1: '도수치료', subscriptions_v1: '구독·보험', golf_history_v1: '골프', size_chart_v1: '치수표', guide_v1: '가이드', salary_hist_v1: '연봉', reminders_v1: '알림', meeting_snap_v1: '회의비 동기화용 사본' };
+const STORE_NAMES = { shopping_history_app_v1: '소비(사진 포함)', meeting_budget_app_v1: '회의비', price_check_app_v2: '가격체크', people_v1: '인맥', skin_care_v1: '피부관리', manual_care_v1: '도수치료', medical_exp_v1: '의료비', subscriptions_v1: '구독·보험', golf_history_v1: '골프', size_chart_v1: '치수표', guide_v1: '가이드', salary_hist_v1: '연봉', reminders_v1: '알림', meeting_snap_v1: '회의비 동기화용 사본' };
 function storageInfo(){
   let tot = 0; const parts = [];
   try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i), n = k.length + (localStorage.getItem(k) || '').length; tot += n; parts.push([k, n]); } } catch (e) { /* 무시 */ }
@@ -4847,6 +5396,8 @@ function dataChecks(){
   Object.keys(seen).forEach(k => { const l = seen[k]; if (l.length > 1) add(1, '소비', l[0].item + ' — 같은 날 같은 금액으로 ' + l.length + '줄 등록돼 있어요 (같은 물건이면 한 줄로 합치는 것을 검토해 보세요)', ['shop', l[0].id]); });
   { const nc = MP.items.filter(i => !i.clinic).length; if (nc) add(2, '도수치료', '병원 이름이 비어 있는 기록 ' + nc + '건', ['manual']);
     const nd = MP.items.filter(i => i.claimed && !i.cdate).length; if (nd) add(2, '도수치료', '청구했는데 청구·지급일이 없는 기록 ' + nd + '건', ['manual']); }
+  try { const miss = MD.claims.filter(c => c.st === 'paid' && c.paid == null).length; if (miss) add(3, '의료비', '입금액이 기록되지 않은 청구 ' + miss + '건 — 시트 원본에서 읽지 못한 금액이에요', ['med']);
+    const ck = MD.items.filter(i => i.chk).length; if (ck) add(2, '의료비', '“확인 필요”로 표시된 진료 건 ' + ck + '건', ['med']); } catch (e) { /* 무시 */ }
   { const nr = G.rounds.filter(r => !r.date).length; if (nr) add(2, '골프', '요금 기록 ' + nr + '건에 날짜가 없어요', ['golf']); }
   SB.items.filter(i => i.active).forEach(i => {
     if (i.amount == null && !(i.hist || []).length) add(1, '구독·보험', i.name + ' — 결제 금액이 없어요', ['sub', i.id]);
@@ -4954,6 +5505,7 @@ function gsItems(){
   tr(() => GD.items.forEach(g => add('가이드', '📌', g.title, '', (g.lines || []).join(' '), 'guide', g.id)));
   tr(() => SK.items.forEach(i => add('피부', '✨', i.name, [i.clinic, i.func].filter(Boolean).join(' · '), i.memo, 'skin', i.id)));
   tr(() => MP.items.forEach(r => add('도수치료', '🩺', (r.date || '') + ' ' + (r.part || ''), r.clinic, [r.dz, r.symptom, r.memo].join(' '), 'manual', r.id)));
+  tr(() => MD.items.forEach(i => add('의료비', '🏥', (i.date || '') + ' ' + i.place, [i.who, won(i.total), i.card].filter(Boolean).join(' · '), [i.memo, i.why, i.chk].join(' '), 'med', i.id)));
   tr(() => G.courses.forEach(c => add('골프', '⛳', c.name, '', c.review, 'golf', c.id)));
   tr(() => RM.items.forEach(r => add('알림', '🔔', r.title, r.date, r.memo, 'rm', r.id)));
   tr(() => (window.AppMeeting && window.AppMeeting.list ? window.AppMeeting.list() : []).forEach(e => add('회의비', '💰', e.item, e.date + ' · ' + e.cardType + ' · ' + won(e.amount), '', 'meeting', e.id)));
@@ -4973,14 +5525,14 @@ function gsGo(h){
   if (a === 'shop') gotoShop(id); else if (a === 'sub') sbGoto([id], {});
   else if (a === 'people-list') { ppTab = 'list'; setMode('people'); } else if (a === 'people-log') { ppTab = 'log'; setMode('people'); }
   else if (a === 'rm') rmOpen(); else if (a === 'golf') tdGo('golf');
-  else setMode(a);
+  else { setMode(a); if (a === 'med' && id) setTimeout(() => mdOpen(id), 60); }
 }
 $('gSearch').addEventListener('click', () => { $('gs-dlg').showModal(); $('gs-q').value = ''; gsRender(); setTimeout(() => $('gs-q').focus(), 60); });
 { let gt = null; $('gs-q').addEventListener('input', () => { clearTimeout(gt); gt = setTimeout(gsRender, 120); }); }
 $('gs-res').addEventListener('click', e => { const b = e.target.closest('[data-gs]'); if (!b) return; const h = $('gs-res')._hits && $('gs-res')._hits[Number(b.dataset.gs)]; if (h) gsGo(h); });
 
 /* A9 오늘 화면 카드 켜기/끄기 (이 기기에만 저장) */
-const TD_CARDS = [['tasks', '할 일 · 일정'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['backup', '백업 · 저장공간'], ['check', '데이터 점검']];
+const TD_CARDS = [['tasks', '할 일 · 일정'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['backup', '백업 · 저장공간'], ['check', '데이터 점검']];
 function tdPrefs(){ try { const o = JSON.parse(localStorage.getItem('td_cards_v1') || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
 function tdFilter(h){
   const pr = tdPrefs(), parts = h.split(/<!--c:(\w+)-->/); let out = parts[0];
@@ -5080,6 +5632,12 @@ function tdTasks(){
   Life.overduePlans(Q.meets, t).forEach(m => L.push({ pri: 0, d: -1, ic: '👥', title: meetNames(m) + ' — 지난 예약', sub: '만났는지 확인해 주세요', when: m.date.slice(5).replace('-', '/'), act: 'people' }));
   Life.upcomingPlans(Q.meets, t).filter(m => Life.dd(t, m.date) <= 7).forEach(m => { const d = Life.dd(t, m.date); L.push({ pri: d <= 1 ? 0 : 1, d, ic: '👥', title: meetNames(m), sub: '만남 예약', when: d === 0 ? '오늘' : 'D-' + d, act: 'people' }); });
   Life.dueList(Q.people, Q.meets, Q.cfg, t).filter(x => x.state === 'over').slice(0, 3).forEach(x => L.push({ pri: 1, d: 99, ic: '🙂', title: x.p.name + ' — 만난 지 ' + x.since + '일', sub: '연락할 때가 됐어요 (주기 ' + x.cycle + '일)', when: '연락', act: 'people' }));
+  try {
+    const al = Med.alerts(MD.items, MD.claims, MD.cfg, t), sum = l => l.reduce((a, x) => a + x.claim.exp, 0);
+    if (al.insLate.length) L.push({ pri: 0, d: -3, ic: '🏥', title: '실비 입금 확인 ' + al.insLate.length + '건', sub: '신청 후 ' + MD.cfg.insDays + '일이 지났어요 · 예상 ' + won(sum(al.insLate)), when: '확인', act: 'med' });
+    if (al.coLate.length) L.push({ pri: 0, d: -3, ic: '🏢', title: '회사 지원금 입금 확인 ' + al.coLate.length + '건', sub: '지급예정일이 지났어요 · 예상 ' + won(sum(al.coLate)), when: '확인', act: 'med' });
+    if (al.coNone.length || al.insNone.length) L.push({ pri: 1, d: 98, ic: '🧾', title: '의료비 신청 전 — 회사 ' + al.coNone.length + '건 · 실비 ' + al.insNone.length + '건', sub: '병원 다녀온 뒤 신청했는지 체크해 주세요', when: '신청', act: 'med' });
+  } catch (e) { /* 의료비 오류가 할 일 목록을 막지 않게 */ }
   return L.sort((a, b) => (a.pri - b.pri) || (a.d - b.d));
 }
 function renderToday(){
@@ -5114,6 +5672,14 @@ function renderToday(){
     const sr = window.AppMeeting && window.AppMeeting.series ? window.AppMeeting.series(6) : [];
     if (sr.some(x => x.spent > 0 || x.budget > 0)) h += '<!--c:trend--><div class="td-card"><h3>📈 최근 6개월 회의비</h3>' + svgBars(sr.map(x => x.spent), sr.map(x => Number(x.mk.slice(5)) + '월'), { hi: sr.length - 1, marks: sr.map(x => x.budget), title: '월별 회의비' }) + '<p class="td-note">막대 = 사용액, 가로 짧은 선 = 그 달 예산이에요. 0원인 달은 입력이 비었을 수 있어요.</p></div>';
   } catch (er) { /* 차트 오류가 오늘 화면을 막지 않게 */ }
+  // 의료비 정산
+  try {
+    const rows = mdRows(), openN = rows.filter(r => !r.s.closed).length;
+    if (openN) {
+      const al = Med.alerts(MD.items, MD.claims, MD.cfg, t), coW = MD.claims.filter(c => c.t === 'co' && c.st !== 'paid').length, inW = MD.claims.filter(c => c.t === 'in' && c.st !== 'paid').length;
+      h += '<!--c:med--><div class="td-card"><h3>🏥 의료비 정산</h3><div class="td-big">' + openN + '건 <span class="td-note">진행중</span></div><p class="td-note">신청 전: 회사 <b>' + al.coNone.length + '</b> · 실비 <b>' + al.insNone.length + '</b> / 입금 대기: 회사 <b>' + coW + '</b> · 실비 <b>' + inW + '</b>' + (al.coLate.length + al.insLate.length ? ' <span class="td-warn">· 확인 필요 ' + (al.coLate.length + al.insLate.length) + '</span>' : '') + '</p><button type="button" class="pc-btn small" data-td="go" data-act="med">의료비 열기</button></div>';
+    }
+  } catch (er) { /* 의료비 오류가 오늘 화면을 막지 않게 */ }
   // 백업 · 저장공간
   const A = window.AppSync, st = storageInfo();
   if (A) {
@@ -5135,7 +5701,7 @@ function renderToday(){
 }
 function tdGo(act, id){
   if (act === 'rm') rmOpen(); else if (act === 'shop') gotoShop(id); else if (act === 'sub') { if (id) sbGoto([id], {}); else setMode('sub'); }
-  else if (act === 'people') setMode('people'); else if (act === 'manual') setMode('manual'); else if (act === 'meeting') setMode('meeting');
+  else if (act === 'people') setMode('people'); else if (act === 'manual') setMode('manual'); else if (act === 'med') setMode('med'); else if (act === 'meeting') setMode('meeting');
   else if (act === 'photo') { recompressPhotos(); } else if (act === 'golf') { shCat = 'golf'; szOpen = false; setMode('shop'); } else if (act === 'backup') { doBackup(); setTimeout(renderToday, 900); }
 }
 $('todayView').addEventListener('click', e => { const el = e.target.closest('[data-td="go"]'); if (el) tdGo(el.dataset.act, el.dataset.id); });
@@ -5181,6 +5747,8 @@ function renderGlobal(){
     if ((upc.length || odp.length) && navVisible('people')) list.push({ key: 'pp:' + upc.concat(odp).map(m => m.id + m.date).join(','), act: 'people',
       html: odp.length ? '👥 지난 예약 <b>' + odp.length + '건</b> — 만났는지 확인해 주세요' + (upc.length ? ' · 임박한 예약 ' + upc.length + '건' : '') : '👥 ' + (Life.dd(t0, upc[0].date) === 0 ? '오늘' : '내일') + ' 예약 <b>' + upc.length + '건</b> — ' + esc(meetNames(upc[0])) + (upc.length > 1 ? ' 외' : '') });
   }
+  { const al = Med.alerts(MD.items, MD.claims, MD.cfg, todayStr()), n = al.coLate.length + al.insLate.length;
+    if (n && navVisible('med') && mode !== 'med') list.push({ key: 'md:' + al.coLate.concat(al.insLate).map(x => x.claim.id).join(','), act: 'med', html: '🏥 의료비 입금 확인 <b>' + n + '건</b> — ' + [al.insLate.length ? '실비 신청 후 ' + MD.cfg.insDays + '일 넘게 대기 ' + al.insLate.length + '건' : '', al.coLate.length ? '회사 지급예정일 지남 ' + al.coLate.length + '건' : ''].filter(Boolean).join(' · ') }); }
   const html = list.filter(a => !dismissed(a.key)).map(a => '<div class="galert" data-g="' + a.act + '" data-key="' + esc(a.key) + '"' + (a.id ? ' data-id="' + esc(a.id) + '"' : '') + (a.mo ? ' data-mo="' + esc(a.mo) + '"' : '') + (a.need ? ' data-need="1"' : '') + ' role="button" tabindex="0"><span class="t">' + a.html + '</span><button class="x" data-g="x" data-key="' + esc(a.key) + '" aria-label="닫기">✕</button></div>').join('');
   if (gbox.dataset.sig !== html) { gbox.dataset.sig = html; gbox.innerHTML = html; }
   gbox.hidden = mode === 'today';   // 오늘 화면에서는 같은 내용을 본문에 보여주므로 상단 알림은 숨김
@@ -5195,7 +5763,7 @@ $('gBar').addEventListener('click', e => {
   if (a === 'sub' && el.dataset.id) sbGoto([el.dataset.id], { month: el.dataset.mo, open: el.dataset.need === '1' });
   else if (a === 'shop' && el.dataset.id) gotoShop(el.dataset.id);
   else if (a === 'remind') rmOpen();
-  else if (a === 'shop' || a === 'meeting' || a === 'sub' || a === 'people') setMode(a); else if (a === 'backup') doBackup(); else if (a === 'settings') window.AppSync.openSettings();
+  else if (a === 'shop' || a === 'meeting' || a === 'sub' || a === 'people' || a === 'med') setMode(a); else if (a === 'backup') doBackup(); else if (a === 'settings') window.AppSync.openSettings();
 });
 $('gSettings').addEventListener('click', () => { if (window.AppSync) window.AppSync.openDrawer(); });
 ['drawerClose', 'overlay'].forEach(id => { const el = $(id); if (el) el.addEventListener('click', () => setTimeout(renderGlobal, 80)); });
@@ -5205,7 +5773,7 @@ $('gBar').addEventListener('keydown', e => { if (e.key === 'Enter') { const el =
 
 /* ---------- 모드 / 화면 ---------- */
 let mode = 'meeting';
-const MODE_VIEWS = { today: 'todayView', meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', people: 'peopleView', skin: 'skinView', manual: 'skinView', pay: 'payView', guide: 'guideView' };
+const MODE_VIEWS = { today: 'todayView', meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', people: 'peopleView', skin: 'skinView', manual: 'skinView', med: 'medView', pay: 'payView', guide: 'guideView' };
 function setMode(m){
   if (!MODE_VIEWS[m] || !navVisible(m)) m = firstVisibleMode();
   mode = m; { const g = groupOf(m); if (g) lastIn[g.g] = m; }
@@ -5228,6 +5796,7 @@ function renderAll(){
   else if (mode === 'sub') renderSub();
   else if (mode === 'people') renderPeople();
   else if (mode === 'skin' || mode === 'manual') renderSkin();
+  else if (mode === 'med') renderMed();
   else if (mode === 'pay') renderPay();
   else if (mode === 'guide') renderGuide();
   else if (mode === 'today') renderToday();
