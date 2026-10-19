@@ -660,9 +660,9 @@
   .scard.link{ cursor:pointer; } .scard.link:hover{ background:var(--pc-soft); } .sb-needlink{ cursor:pointer; text-decoration:underline; }
   .md-acts{ display:flex; gap:6px; margin:4px 0 10px; } .md-acts .pc-btn{ flex:1; white-space:nowrap; padding:9px 6px; font-size:13px; } .md-acts .pc-btn.primary{ flex:1.4; }
   /* ===== 의료비 ===== */
-  #md-dlg, #md-cl-dlg, #md-sms-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,520px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
-  #md-dlg::backdrop, #md-cl-dlg::backdrop, #md-sms-dlg::backdrop{ background:rgba(0,0,0,.45); }
-  #md-dlg h3, #md-cl-dlg h3, #md-sms-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #md-dlg, #md-cl-dlg, #md-sms-dlg, #md-bd-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,520px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
+  #md-dlg::backdrop, #md-cl-dlg::backdrop, #md-sms-dlg::backdrop, #md-bd-dlg::backdrop{ background:rgba(0,0,0,.45); }
+  #md-dlg h3, #md-cl-dlg h3, #md-sms-dlg h3, #md-bd-dlg h3{ margin:0 0 4px; font-size:16px; }
   #md-dlg .pc-f input, #md-dlg .pc-f select, #md-cl-dlg .pc-f input, #md-sms-dlg .pc-f input, #md-sms-dlg .pc-f select, #md-sms-dlg textarea, #medView .pc-f select, #medView .pc-f input{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; box-sizing:border-box; }
   #md-sms-dlg textarea{ min-height:96px; resize:vertical; }
   #md-dlg .mp-chk, #md-cl-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #md-dlg .mp-chk input, #md-cl-dlg .mp-chk input{ width:auto; min-height:0; }
@@ -700,10 +700,14 @@
   .md-net-sub{ margin-top:8px; font-size:11.5px; color:var(--ink2); line-height:1.5; }
   .md-oop{ display:block; margin-top:2px; font-weight:800; color:var(--ink); } .md-oop.est{ font-weight:600; color:var(--ink2); }
   .md-mo small{ font-weight:600; margin-left:6px; opacity:.75; }
-.md-ins{ font-size:11.5px; color:var(--ink2); margin-top:6px; line-height:1.5; } .md-ins b{ color:var(--ink); }
-    #medView, #md-dlg, #md-cl-dlg, #md-sms-dlg{ --pc:var(--accent); --pc-soft:#FFF1E8; --pc-on:var(--on-accent); --pc-up:#D83A41; }
-  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #medView, :root:not([data-theme="light"]) #md-dlg, :root:not([data-theme="light"]) #md-cl-dlg, :root:not([data-theme="light"]) #md-sms-dlg{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; } }
-  [data-theme="dark"] #medView, [data-theme="dark"] #md-dlg, [data-theme="dark"] #md-cl-dlg, [data-theme="dark"] #md-sms-dlg{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; }
+.md-row.bd{ border-left:3px solid var(--pc); padding-left:8px; }
+  .md-link{ font:inherit; font-size:11.5px; font-weight:800; color:var(--pc); background:none; border:0; padding:2px 0 2px 6px; cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
+  #md-bd-list .md-ck2{ align-items:flex-start; border-bottom:1px solid var(--line); padding:8px 0; } #md-bd-list .md-ck2 input{ margin-top:3px; } #md-bd-list small{ display:block; color:var(--ink2); }
+  .md-bd-mem{ display:flex; flex-wrap:wrap; gap:4px; margin:4px 0; }
+  .md-ins{ font-size:11.5px; color:var(--ink2); margin-top:6px; line-height:1.5; } .md-ins b{ color:var(--ink); }
+    #medView, #md-dlg, #md-cl-dlg, #md-sms-dlg, #md-bd-dlg{ --pc:var(--accent); --pc-soft:#FFF1E8; --pc-on:var(--on-accent); --pc-up:#D83A41; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #medView, :root:not([data-theme="light"]) #md-dlg, :root:not([data-theme="light"]) #md-cl-dlg, :root:not([data-theme="light"]) #md-sms-dlg, :root:not([data-theme="light"]) #md-bd-dlg{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; } }
+  [data-theme="dark"] #medView, [data-theme="dark"] #md-dlg, [data-theme="dark"] #md-cl-dlg, [data-theme="dark"] #md-sms-dlg, [data-theme="dark"] #md-bd-dlg{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; }
   #mp-dlg .mp-chk, #gd-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #mp-dlg .mp-chk input, #gd-dlg .mp-chk input{ width:auto; min-height:0; }
 </style>
 </head>
@@ -1017,7 +1021,7 @@
   <div class="pc-row2 pc-filterrow"><label class="pc-f">기간<select id="md-flt-year"></select></label></div>
   <div id="md-list"></div>
   <datalist id="md-places"></datalist>
-  <div class="md-bar" id="md-bar" hidden><span id="md-bar-msg"></span><span class="md-bar-b"><button type="button" class="pc-btn small primary" data-md="bar-co">회사 신청</button><button type="button" class="pc-btn small primary" data-md="bar-in">실비 신청</button><button type="button" class="pc-btn small" data-md="bar-x">닫기</button></span></div>
+  <div class="md-bar" id="md-bar" hidden><span id="md-bar-msg"></span><span class="md-bar-b"><button type="button" class="pc-btn small primary" data-md="bar-co">회사 신청</button><button type="button" class="pc-btn small primary" data-md="bar-in">실비 신청</button><button type="button" class="pc-btn small" data-md="bar-bd">실비 묶기</button><button type="button" class="pc-btn small" data-md="bar-x">닫기</button></span></div>
   <details class="td-card td-cfg" style="margin-top:14px"><summary>⚙ 카드 인식 규칙 · 계산 기준</summary>
    <p class="td-note">카드 승인 문자에 아래 글자가 들어 있으면 해당 카드로 자동 등록돼요.</p>
    <div id="md-cfg-rules"></div>
@@ -1136,6 +1140,8 @@
   <label class="pc-f">메모(선택)<input id="md-f-memo" type="text"></label>
   <div class="md-chk" id="md-f-chkwrap" hidden>⚠ <span id="md-f-chktext"></span><label class="mp-chk"><input type="checkbox" id="md-f-chkok"> 확인했어요 (표시 지우기)</label></div>
   <div class="md-mp" id="md-f-mp"></div>
+  <h4 style="margin:14px 0 6px">실비 묶음</h4>
+  <div id="md-f-bd"></div>
   <h4 style="margin:14px 0 6px">신청 · 입금</h4>
   <div id="md-f-settle"></div>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-md="d-cancel">닫기</button><button class="pc-btn primary" data-md="d-save">저장</button></div>
@@ -1163,6 +1169,15 @@
   </div>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-md="cl-cancel">취소</button><button class="pc-btn primary" data-md="cl-save">저장</button></div>
   <button id="md-cl-del" class="pc-btn danger wide" data-md="cl-del">이 신청·입금 기록 지우기</button>
+</dialog>
+
+<dialog id="md-bd-dlg">
+  <h3>🔗 실비 묶음 고르기</h3>
+  <p class="pc-hint" style="margin-top:2px">같은 병원 방문(<b>병원 + 그 병원에서 간 약국</b>)을 체크하세요. 체크한 건은 금액을 합쳐서 <b>공제 5천원이 한 번만</b> 빠지고, 체크하지 않은 건은 따로 계산돼요.</p>
+  <div id="md-bd-list"></div>
+  <div class="md-calc" id="md-bd-calc" aria-live="polite"></div>
+  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-md="bd-cancel">취소</button><button class="pc-btn primary" data-md="bd-save">저장</button></div>
+  <button class="pc-btn wide" data-md="bd-solo" style="margin-top:8px">이 건은 묶지 않고 단독으로 계산</button>
 </dialog>
 
 <dialog id="md-sms-dlg">
@@ -2992,7 +3007,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-19-i (백업 저장중 멈춤 방지 · 모바일 상단 바)';
+const APP_BUILD_VERSION = '2026-10-19-j (실비 묶음 고르기)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4619,7 +4634,7 @@ const Med = (function () {
   /* 같은 사람·같은 날 결제(병원+약국)를 한 묶음으로 보고, 묶음마다 공제액을 빼서 더함 */
   function insExp(items, ded) {
     ded = has(ded) ? Number(ded) : DED; const m = {};
-    items.forEach(i => { const k = i.who + '|' + i.date; m[k] = (m[k] || 0) + num(i.total); });
+    items.forEach(i => { const k = i.vg ? 'v:' + i.vg : i.who + '|' + i.date; m[k] = (m[k] || 0) + num(i.total); });   // 묶음(vg)이 있으면 묶음 단위, 없으면 같은 날 단위
     return Object.keys(m).reduce((a, k) => a + Math.max(0, m[k] - ded), 0);
   }
   /* 회사 지급예정일: 신청(접수)일 11~25일 → 다음 달 10일 / 26일~다음 달 10일 → 25일 (26~말일 접수는 다음 달 25일, 1~10일 접수는 같은 달 25일) */
@@ -4635,12 +4650,14 @@ const Med = (function () {
   function insGroup(items, claims, it, ded) {
     ded = has(ded) ? Number(ded) : DED;
     const ix = index(items, claims), c = ix.ins[it.id];
-    const members = c ? items.filter(o => (c.ids || []).indexOf(o.id) >= 0) : items.filter(o => o.who === it.who && o.date === it.date && !ix.ins[o.id] && elig(o, items, ded));
+    const key = gk(it, ix), members = items.filter(o => gk(o, ix) === key && (elig(o, items, ded) || ix.ins[o.id]));
     const sum = members.reduce((a, o) => a + num(o.total), 0);
     const hosp = members.filter(o => !isPharm(o.place)).length;
-    return { members, sum, ded, ins: Math.max(0, sum - ded), claim: c || null, hosp };
+    return { members, sum, ded, ins: Math.max(0, sum - ded), claim: c || null, hosp, bundled: !!it.vg };
   }
-  function dayTotal(items, it) { let s = 0; items.forEach(i => { if (i.who === it.who && i.date === it.date && !isDental(i.place)) s += num(i.total); }); return s; }
+  /* 실비 계산 묶음: 직접 묶은 건(vg)끼리, 묶지 않았으면 같은 날(신청 단위가 다르면 따로) */
+  const gk = (i, ix) => i.vg ? 'v:' + i.vg : 'd:' + i.who + '|' + i.date + '|' + ((ix && ix.ins[i.id]) ? ix.ins[i.id].id : '-');
+  function dayTotal(items, it) { let s = 0; items.forEach(i => { if (!isDental(i.place) && (it.vg ? i.vg === it.vg : (!i.vg && i.who === it.who && i.date === it.date))) s += num(i.total); }); return s; }
   /* 실비 대상: 직접 정한 값이 우선, 아니면 본인 · 치과 아님 · 당일 총 결제금액이 공제액(5천원)을 넘으면 대상 */
   function elig(it, items, ded) {
     if (it.tg === 'yes') return true; if (it.tg === 'no') return false;
@@ -4757,7 +4774,7 @@ const Med = (function () {
     items.forEach(i => { byId[i.id] = i; });
     /* 같은 사람·같은 날 실비 대상 건을 합쳐 공제액(5천원)을 한 번만 빼요. 건별로 나눌 땐 금액이 큰 건(보통 병원)부터 공제 */
     const grp = {}, share = {}, ix0 = index(items, claims);
-    const gkey = i => ix0.ins[i.id] ? 'c:' + ix0.ins[i.id].id : 'd:' + i.who + '|' + i.date;   // 신청한 건은 신청 묶음 단위, 신청 전은 같은 날 단위
+    const gkey = i => gk(i, ix0);   // 직접 묶은 건은 묶음 단위, 아니면 같은 날(신청이 다르면 따로)
     items.forEach(i => { if (elig(i, items, ded) || ix0.ins[i.id]) (grp[gkey(i)] = grp[gkey(i)] || []).push(i); });
     Object.keys(grp).forEach(k => { let rem = ded; grp[k].slice().sort((a, b) => num(b.total) - num(a.total) || (a.id < b.id ? -1 : 1)).forEach(i => { const t = num(i.total), cut = Math.min(rem, t); rem -= cut; share[i.id] = t - cut; }); });
     const insShare = i => share[i.id] || 0;
@@ -4781,7 +4798,7 @@ const Med = (function () {
     });
     return out;
   }
-  return { DED, isDental, isPharm, oop, insGroup, dueFor, effDue, coExp, insExp, dayTotal, elig, whyNo, index, status, alerts, placeCore, matchPlace, parseOne, parseSms, lastExtra, dayDiff };
+  return { DED, isDental, isPharm, oop, insGroup, gk, dueFor, effDue, coExp, insExp, dayTotal, elig, whyNo, index, status, alerts, placeCore, matchPlace, parseOne, parseSms, lastExtra, dayDiff };
 })();
 // </CALC>
 
@@ -4793,7 +4810,7 @@ function mdNorm(o){
   const nn = v => (v === '' || v == null || !isFinite(Number(v)) || Number(v) < 0 ? 0 : Number(v)), ov = v => (v === '' || v == null || !isFinite(Number(v)) ? '' : Number(v));
   const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Calc.validDate(i.date)).map(i => ({
     id: String(i.id), date: i.date, who: String(i.who || '본인'), place: String(i.place || ''), total: nn(i.total), extra: Math.min(nn(i.extra), nn(i.total)), incl: i.incl === true || i.incl === 'true',
-    cOv: ov(i.cOv), tg: ['yes', 'no'].indexOf(i.tg) >= 0 ? i.tg : 'auto', why: String(i.why || ''), card: String(i.card || ''), inst: Math.max(0, Math.round(Number(i.inst)) || 0), chk: String(i.chk || ''), memo: String(i.memo || ''), u: String(i.u || '') }));
+    cOv: ov(i.cOv), tg: ['yes', 'no'].indexOf(i.tg) >= 0 ? i.tg : 'auto', why: String(i.why || ''), card: String(i.card || ''), inst: Math.max(0, Math.round(Number(i.inst)) || 0), vg: String(i.vg || ''), chk: String(i.chk || ''), memo: String(i.memo || ''), u: String(i.u || '') }));
   const claims = (Array.isArray(o.claims) ? o.claims : []).filter(c => c && c.id && (c.t === 'co' || c.t === 'in') && Array.isArray(c.ids) && c.ids.length).map(c => ({
     id: String(c.id), t: c.t, ids: c.ids.map(String), cdate: Calc.validDate(c.cdate) || '', due: Calc.validDate(c.due) || '', exp: nn(c.exp), pdate: Calc.validDate(c.pdate) || '',
     paid: (c.paid === '' || c.paid == null || !isFinite(Number(c.paid))) ? null : Number(c.paid), st: c.st === 'paid' ? 'paid' : 'claimed', u: String(c.u || '') }));
@@ -4850,10 +4867,10 @@ function mdInsLine(r){
   if (r.s.is === 'na') return '';
   const cfg = MD.cfg, g = Med.insGroup(MD.items, MD.claims, r.it, cfg.ded), n = g.members.length; if (!n) return '';
   const names = g.members.map(m => esc(m.place)).join(' + ');
-  let h = '<div class="md-ins">🧾 실비 ' + (n > 1 ? '(' + names + ' 합산) ' : '') + won(g.sum) + ' − 공제 ' + won(g.ded) + ' = <b>' + won(g.ins) + '</b> 입금 예상';
+  let h = '<div class="md-ins">' + (g.bundled && n > 1 ? '🔗 <b>묶음 ' + n + '건</b> · ' : '🧾 ') + '실비 ' + (n > 1 ? '(' + names + (g.bundled ? '' : ', 같은 날 자동') + ' 합산) ' : '') + won(g.sum) + ' − 공제 ' + won(g.ded) + ' = <b>' + won(g.ins) + '</b> 입금 예상';
   if (g.claim) h += ' · ' + (g.claim.st === 'paid' ? '실제 입금 ' + (g.claim.paid != null ? won(g.claim.paid) : '(금액 미기록)') : '신청액 ' + won(g.claim.exp));
-  h += '</div>';
-  if (!g.claim && g.hosp >= 2) h += '<div class="md-chk">ℹ 같은 날 병원이 ' + g.hosp + '곳이에요. 공제 5천원은 신청 한 건마다 빠지니, 병원별로(그 병원에서 간 약국과 함께) 나눠 신청해 주세요. 신청 화면에서 묶음을 고를 수 있어요.</div>';
+  h += '<button type="button" class="md-link" data-md="bd" data-id="' + esc(r.it.id) + '">묶음 고르기</button></div>';
+  if (!g.claim && !g.bundled && g.hosp >= 2) h += '<div class="md-chk">ℹ 같은 날 병원이 ' + g.hosp + '곳이에요. 공제 5천원은 신청 한 건마다 빠지니, 병원별로(그 병원에서 간 약국과 함께) 나눠 신청해 주세요. 신청 화면에서 묶음을 고를 수 있어요.</div>';
   return h;
 }
 /* 자동으로 붙은 ‘확인 필요’ 표시는 문제가 사라지면 저절로 지우고, 날짜가 바뀌면 최신 날짜로 다시 써요 */
@@ -4899,7 +4916,7 @@ function renderMed(){
     const sub = [it.who !== '본인' ? it.who : '', it.card, it.inst ? it.inst + '개월 할부' : '', it.extra ? '비급여 ' + won(it.extra) : '', Med.isPharm(it.place) ? '약국' : ''].filter(Boolean).join(' · ');
     const dosu = MP.items.some(m2 => m2.date === it.date) && it.extra > 0 ? ' <span class="md-chip mute">🦵 도수 기록 있음</span>' : '';
     const nx = net[it.id], exp = nx ? '<span class="md-oop' + (nx.sure ? '' : ' est') + '">실부담 ' + won(nx.oop) + (nx.sure ? '' : ' (예상)') + '</span>' : '';
-    h += '<div class="md-row' + (r.s.closed ? ' done' : '') + '" data-md="open" data-id="' + esc(it.id) + '" tabindex="0">' +
+    h += '<div class="md-row' + (r.s.closed ? ' done' : '') + (it.vg && it.vg.indexOf('u_') !== 0 ? ' bd' : '') + '" data-md="open" data-id="' + esc(it.id) + '" tabindex="0">' +
       (mdSelMode ? '<label class="md-ck"><input type="checkbox" data-md="sel" data-id="' + esc(it.id) + '"' + (mdSel[it.id] ? ' checked' : '') + '></label>' : '') +
       '<div class="l"><b>' + mdMD(it.date) + ' · ' + esc(it.place || '(병원 미입력)') + '</b>' + (r.s.closed ? '<span class="md-chip ok">종결</span>' : '') + dosu +
       (sub ? '<small>' + esc(sub) + '</small>' : '') + '<div class="md-chips">' + mdChips(r, t) + '</div>' + mdInsLine(r) + (it.chk ? '<div class="md-chk">⚠ ' + esc(it.chk) + '</div>' : '') + '</div>' +
@@ -4939,7 +4956,7 @@ function mdOpen(id){
   $('md-d-delete').hidden = !r;
   { const dosu = r && MP.items.find(m => m.date === r.date); $('md-f-mp').innerHTML = r ? (dosu ? '🦵 같은 날짜의 도수치료 기록이 있어요 (' + esc(dosu.part) + ' · 지급 ' + won(dosu.paid) + ')' : (r.extra > 0 && /정형외과|한의|재활/.test(r.place) ? '🦵 도수치료라면 도수치료 탭에도 기록해 주세요 (한도 카운팅용)' : '')) : ''; }
   $('md-f-qc').hidden = !!r; $('md-f-qchint').hidden = !!r; $('md-f-qco').value = ''; $('md-f-qin').value = ''; $('md-f-qchint').textContent = '비워 두면 “미신청”으로 등록돼요. 회사는 신청일을 넣으면 지급예정일이 자동 계산돼요.';
-  mdSettleHtml(); mdPreview(); $('md-dlg').showModal();
+  mdSettleHtml(); mdBdHtml(); mdPreview(); $('md-dlg').showModal();
 }
 function mdSettleHtml(){
   const box = $('md-f-settle'); if (!mdEditing) { box.innerHTML = '<small>저장한 뒤에 신청·입금 확인을 할 수 있어요.</small>'; return; }
@@ -4990,11 +5007,68 @@ function mdDelItem(){
   MD.claims.filter(c => !c.ids.length).forEach(c => { MD.del[c.id] = t; });
   MD.claims = MD.claims.filter(c => c.ids.length); mdSave(); changed(); $('md-dlg').close(); renderAll();
 }
+/* ---------- 실비 묶음 (병원 + 그 병원 약국을 직접 골라 묶기) ---------- */
+let mdBd = null;
+function mdBdMemberChips(g){ return '<div class="md-bd-mem">' + g.members.map(m => '<span class="md-chip ok">' + mdMD(m.date) + ' ' + esc(m.place) + ' ' + won(m.total) + '</span>').join('') + '</div>'; }
+function mdBdHtml(){   // 진료 건 팝업의 '실비 묶음' 영역
+  const box = $('md-f-bd'); if (!mdEditing) { box.innerHTML = '<small>저장한 뒤에 묶을 수 있어요.</small>'; return; }
+  const it = mdItem(mdEditing); if (!it) { box.innerHTML = ''; return; }
+  const g = Med.insGroup(MD.items, MD.claims, it, MD.cfg.ded);
+  if (!g.members.length) { box.innerHTML = '<small>실비 대상이 아닌 건이에요 (' + esc(Med.whyNo(it, MD.items, MD.cfg.ded)) + '). 대상으로 바꾸려면 위의 “실비 대상”을 조정해 주세요.</small>'; return; }
+  box.innerHTML = '<div class="md-calc"><b>' + (g.members.length > 1 ? '🔗 ' + g.members.length + '건 묶음' : '단독 계산') + '</b>' + (g.bundled ? '' : '<small> · 같은 날 자동 계산</small>') + mdBdMemberChips(g) +
+    '<small>합산 ' + won(g.sum) + ' − 공제 ' + won(g.ded) + ' = <b>' + won(g.ins) + '</b> 실비 예상</small></div>' +
+    '<button type="button" class="pc-btn small" data-md="bd" data-id="' + esc(mdEditing) + '" style="margin-top:6px">묶음 고르기</button>';
+}
+function mdBdOpen(id){
+  const it = mdItem(id); if (!it) return;
+  const g = Med.insGroup(MD.items, MD.claims, it, MD.cfg.ded), cur = {}; g.members.forEach(m => { cur[m.id] = true; }); cur[id] = true;
+  const base = Date.parse(it.date + 'T00:00:00Z');
+  const cand = MD.items.filter(o => o.who === it.who && !Med.isDental(o.place) && Math.abs(Date.parse(o.date + 'T00:00:00Z') - base) <= 7 * 86400000).sort((a, b) => a.date.localeCompare(b.date) || b.total - a.total);
+  mdBd = { id, cand: cand.map(o => o.id), sel: cur };
+  $('md-bd-list').innerHTML = cand.map(o => '<label class="md-ck2"><input type="checkbox" data-mdbd="m" data-id="' + esc(o.id) + '"' + (cur[o.id] ? ' checked' : '') + (o.id === id ? ' disabled' : '') + '><span><b>' + mdMD(o.date) + ' ' + esc(o.place) + '</b> ' + won(o.total) + (o.id === id ? ' <small>(지금 보고 있는 건)</small>' : (o.vg ? ' <small>🔗 다른 묶음에 들어 있어요 — 체크하면 이 묶음으로 옮겨요</small>' : '')) + '</span></label>').join('') || '<p class="td-note">±7일 안에 다른 진료 건이 없어요.</p>';
+  mdBdCalc(); $('md-bd-dlg').showModal();
+}
+function mdBdSel(){ return Array.prototype.filter.call(document.querySelectorAll('#md-bd-list input[data-mdbd="m"]'), x => x.checked).map(x => x.dataset.id).concat(mdBd && !document.querySelector('#md-bd-list input[data-id="' + mdBd.id + '"]') ? [mdBd.id] : []); }
+function mdBdCalc(){
+  const ids = mdBdSel(), its = ids.map(mdItem).filter(Boolean), sum = its.reduce((a, i) => a + i.total, 0), ded = MD.cfg.ded;
+  $('md-bd-calc').innerHTML = its.length ? '<b>' + its.length + '건 합산 ' + won(sum) + ' − 공제 ' + won(ded) + ' = ' + won(Math.max(0, sum - ded)) + '</b><br><small>' + its.map(i => esc(i.place)).join(' + ') + '</small>' : '';
+}
+/* 묶음에 들어간 건들의 실비 신청을 한 신청으로 맞춰요 (입금 확인된 신청이 섞여 있으면 건드리지 않고 알려요) */
+function mdBundleSync(ids){
+  const ix = Med.index(MD.items, MD.claims), cls = [], seen = {};
+  ids.forEach(id => { const c = ix.ins[id]; if (c && !seen[c.id]) { seen[c.id] = 1; cls.push(c); } });
+  if (!cls.length) return '';
+  const unclaimed = ids.filter(id => !ix.ins[id]);
+  if (cls.length === 1 && !unclaimed.length) { if (cls[0].st !== 'paid') cls[0].exp = Med.insExp(cls[0].ids.map(mdItem).filter(Boolean), MD.cfg.ded); cls[0].u = nowIso(); return ''; }
+  if (cls.some(c => c.st === 'paid')) return '묶음은 저장했지만, 입금 확인된 실비 신청이 섞여 있어 신청 기록은 그대로 두었어요. 신청 기록을 직접 확인해 주세요.';
+  const keep = cls[0], tn = nowIso(); let cd = keep.cdate;
+  cls.slice(1).forEach(c => { keep.ids = keep.ids.concat(c.ids.filter(x => keep.ids.indexOf(x) < 0)); if (c.cdate && (!cd || c.cdate < cd)) cd = c.cdate; MD.del[c.id] = tn; });
+  MD.claims = MD.claims.filter(c => cls.slice(1).indexOf(c) < 0);
+  unclaimed.forEach(id => { if (keep.ids.indexOf(id) < 0) keep.ids.push(id); });
+  keep.cdate = cd; keep.exp = Med.insExp(keep.ids.map(mdItem).filter(Boolean), MD.cfg.ded); keep.u = tn;
+  return '묶음에 맞춰 실비 신청도 한 건으로 합쳤어요.';
+}
+function mdBdApply(ids, solo){
+  const tn = nowIso(), its = ids.map(mdItem).filter(Boolean); if (!its.length) return;
+  const idSet = {}; ids.forEach(i => { idSet[i] = 1; });
+  if (solo) { its.forEach(i => { i.vg = 'u_' + i.id; i.u = tn; }); }
+  else {
+    const old = {}; its.forEach(i => { if (i.vg) old[i.vg] = 1; });
+    const vg = (mdItem(mdBd.id) && mdItem(mdBd.id).vg && mdItem(mdBd.id).vg.indexOf('u_') !== 0) ? mdItem(mdBd.id).vg : 'vg_' + uid('b');
+    MD.items.forEach(o => { if (!idSet[o.id] && o.vg && old[o.vg] && o.vg === vg) { o.vg = 'u_' + o.id; o.u = tn; } });   // 묶음에서 빠진 건은 단독으로
+    its.forEach(i => { i.vg = vg; i.u = tn; });
+  }
+  const msg = mdBundleSync(ids);
+  MD = mdNorm(MD); mdSave(); changed(); renderAll(); if ($('md-dlg').open) { mdBdHtml(); mdSettleHtml(); }
+  toast(solo ? '단독 계산으로 바꿨어요.' : (its.length + '건을 묶었어요.' + (msg ? ' ' + msg : '')));
+}
+function mdBdSave(){ const ids = mdBdSel(); if (ids.length < 2) { toast('묶을 건을 두 건 이상 체크해 주세요. 한 건만 계산하려면 “단독으로 계산”을 눌러 주세요.'); return; } $('md-bd-dlg').close(); mdBdApply(ids, false); }
+function mdBdSolo(){ const id = mdBd && mdBd.id; $('md-bd-dlg').close(); if (id) mdBdApply([id], true); }
 /* ---------- 신청 처리 · 입금 확인 (청구) ---------- */
 function mdClOpen(tp, ids, claimId){
   const ix = mdIx(); let cl = claimId ? MD.claims.find(c => c.id === claimId) : null;
   if (!cl && ids && ids.length === 1) cl = (tp === 'co' ? ix.co : ix.ins)[ids[0]] || null;
-  if (!cl && tp === 'in' && ids && ids.length === 1) { const b = mdItem(ids[0]); if (b) MD.items.forEach(o => { if (o.id !== b.id && o.who === b.who && o.date === b.date && !ix.ins[o.id] && ids.indexOf(o.id) < 0) ids = ids.concat([o.id]); }); }   // 같은 날 병원+약국은 한 번에 신청
+  if (!cl && tp === 'in' && ids && ids.length === 1) { const b = mdItem(ids[0]); if (b) Med.insGroup(MD.items, MD.claims, b, MD.cfg.ded).members.forEach(o => { if (!ix.ins[o.id] && ids.indexOf(o.id) < 0) ids = ids.concat([o.id]); }); }   // 묶음(또는 같은 날 병원+약국)은 한 번에 신청
   const members = cl ? cl.ids.filter(mdItem) : (ids || []).filter(id => { const it = mdItem(id); if (!it) return false; if ((tp === 'co' ? ix.co : ix.ins)[id]) return false; if (tp === 'in' && !Med.elig(it, MD.items, MD.cfg.ded)) return false; return true; });
   const skipped = cl ? 0 : (ids || []).length - members.length;
   if (!members.length) { toast(tp === 'in' ? '실비 신청할 수 있는 건이 없어요 (비대상이거나 이미 신청됨).' : '신청할 수 있는 건이 없어요 (이미 신청됨).'); return; }
@@ -5027,7 +5101,7 @@ function mdClSave(){
   else MD.claims.push(Object.assign({ id: uid('mc'), t: mdCl.t }, d));
   MD = mdNorm(MD); mdSave(); changed(); $('md-cl-dlg').close();
   toast(paidOn ? '입금 확인했어요.' + (mdRows().filter(r => ids.indexOf(r.it.id) >= 0 && r.s.closed).length ? ' 정산이 끝난 건은 종결됐어요.' : '') : '신청으로 기록했어요.');
-  if ($('md-dlg').open) { mdSettleHtml(); }
+  if ($('md-dlg').open) { mdSettleHtml(); mdBdHtml(); }
   mdSel = {}; renderAll();
 }
 function mdClDelete(){
@@ -5081,6 +5155,8 @@ $('medView').addEventListener('click', e => {
   else if (a === 'sel') { mdSel[id] = el.checked; renderMed(); return; }
   else if (a === 'selmode') { mdSelMode = !mdSelMode; mdSel = {}; renderMed(); }
   else if (a === 'bar-co' || a === 'bar-in') { const ids = Object.keys(mdSel).filter(k => mdSel[k]); if (!ids.length) { toast('먼저 진료 건을 선택해 주세요.'); return; } mdClOpen(a === 'bar-co' ? 'co' : 'in', ids, null); }
+  else if (a === 'bar-bd') { const ids = Object.keys(mdSel).filter(k => mdSel[k] && mdItem(k)); if (ids.length < 2) { toast('묶을 진료 건을 두 건 이상 선택해 주세요.'); return; } const who = mdItem(ids[0]).who; if (ids.some(k => mdItem(k).who !== who)) { toast('같은 사람의 진료 건만 묶을 수 있어요.'); return; } mdBd = { id: ids[0] }; mdBdApply(ids, false); mdSelMode = false; mdSel = {}; renderMed(); }
+  else if (a === 'bd') { e.stopPropagation(); if (!mdSelMode) mdBdOpen(id); }
   else if (a === 'bar-x') { mdSelMode = false; mdSel = {}; renderMed(); }
   else if (a === 'co' || a === 'in') { e.stopPropagation(); if (mdSelMode) return; const it = mdItem(id); if (it) mdClOpen(a, [id], null); }
   else if (a === 'open') { if (mdSelMode) { mdSel[id] = !mdSel[id]; renderMed(); } else mdOpen(id); }
@@ -5093,11 +5169,14 @@ $('md-flt-year').addEventListener('change', e => { mdFlt.year = e.target.value; 
 [['md-cfg-ded', 'ded'], ['md-cfg-tax', 'taxPct'], ['md-cfg-sp', 'spouse'], ['md-cfg-days', 'insDays']].forEach(x => $(x[0]).addEventListener('change', e => { const v = Number(e.target.value); if (!isFinite(v) || v < 0) { renderMed(); return; } MD.cfg[x[1]] = v; mdCfgSave(); }));
 $('md-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md;
+  if (a === 'bd') { mdBdOpen(el.dataset.id); return; }
   if (a === 'd-cancel') $('md-dlg').close(); else if (a === 'd-save') mdSaveItem(); else if (a === 'd-delete') mdDelItem();
   else if (a === 'cl') { const id = el.dataset.id; mdClOpen(el.dataset.t, [id], null); }
   else if (a === 'sug') { const sg = $('md-f-sug')._sg; if (sg) { $('md-f-extra').value = sg.extra; $('md-f-incl').checked = sg.incl; mdPreview(); } }
 });
 ['md-f-date', 'md-f-who', 'md-f-place', 'md-f-total', 'md-f-extra', 'md-f-incl', 'md-f-tg', 'md-f-why', 'md-f-cov'].forEach(id => { $(id).addEventListener('input', mdPreview); $(id).addEventListener('change', mdPreview); });
+$('md-bd-dlg').addEventListener('click', e => { const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md; if (a === 'bd-cancel') $('md-bd-dlg').close(); else if (a === 'bd-save') mdBdSave(); else if (a === 'bd-solo') mdBdSolo(); });
+$('md-bd-dlg').addEventListener('change', e => { if (e.target.matches('[data-mdbd="m"]')) mdBdCalc(); });
 $('md-cl-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md;
   if (a === 'cl-cancel') $('md-cl-dlg').close(); else if (a === 'cl-save') mdClSave(); else if (a === 'cl-del') mdClDelete();
