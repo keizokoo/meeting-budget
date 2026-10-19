@@ -3007,7 +3007,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-19-j (실비 묶음 고르기)';
+const APP_BUILD_VERSION = '2026-10-19-l (아비쥬 시술권 정리)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5516,6 +5516,29 @@ function migrateR(){
   try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
 }
 
+function migrateU(){
+  // 아비쥬 보유 시술권 2건 등록 (1회만, 고정 id · 지웠으면 다시 만들지 않음). 결제금·결제일은 모르므로 비워 둠 → 수정 화면에서 입력
+  const MK = 'mig_u_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const t = nowIso(), add = [
+    { id: 'sk_abj_pico10', name: '피코토닝+비타민관리 10회', func: '색소·잡티', pre: 2, memo: '피코토닝 10회 + 비타민관리 10회 (아비쥬 마이페이지 기준) · 사용 2회(날짜 모름)' }
+  ];
+  add.forEach(a => { if (SK.del[a.id] || SK.items.some(x => x.id === a.id)) return; SK.items.push({ id: a.id, name: a.name, clinic: '아비쥬', func: a.func, date: '', cost: 0, total: 10, pre: a.pre, open: false, memo: a.memo, u: t }); });
+  SK = skNorm(SK); skSave(); changed();
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
+
+function migrateV(){
+  // 아비쥬 시술권 정리: 내맘대로패키지와 피코토닝+비타민관리는 같은 시술권 → 하나만 남기고 사용 2회로 맞춤 (1회만)
+  const MK = 'mig_v_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const t = nowIso(), fid = 'sk_abj_free10', pid = 'sk_abj_pico10';
+  if (SK.items.some(x => x.id === fid)) { SK.sessions.filter(x => x.itemId === fid).forEach(x => { SK.del[x.id] = t; }); SK.sessions = SK.sessions.filter(x => x.itemId !== fid); SK.items = SK.items.filter(x => x.id !== fid); }
+  SK.del[fid] = t;
+  const p = SK.items.find(x => x.id === pid);
+  if (p && p.pre === 0 && !SK.sessions.some(x => x.itemId === pid)) { p.pre = 2; p.memo = '피코토닝 10회 + 비타민관리 10회 (아비쥬 마이페이지 기준) · 사용 2회(날짜 모름)'; p.u = t; }
+  SK = skNorm(SK); skSave(); changed();
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
+
 const MP_CLINIC_KEY = 'mp_clinic_def_v1', MP_CLINIC_BASE = '삼성H정형외과';
 function mpClinicDef(){ try { return localStorage.getItem(MP_CLINIC_KEY) || MP_CLINIC_BASE; } catch (e) { return MP_CLINIC_BASE; } }
 function migrateT(){   // 도수치료 병원: 기존 기록을 모두 삼성H정형외과로 (1회만)
@@ -6288,7 +6311,7 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
-migrateQ(); migrateR(); migrateS(); migrateT();
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV();
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
