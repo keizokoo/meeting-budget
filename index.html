@@ -687,6 +687,14 @@
   .md-sms-card{ border:1px solid var(--line2); border-radius:10px; padding:10px 12px; margin-top:10px; } .md-sms-card.off{ opacity:.55; }
   .md-sg{ display:flex; align-items:flex-end; }
   .md-rule{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px solid var(--line); font-size:13px; }
+  .md-net{ margin:6px 0 12px; padding:12px; border:1px solid var(--ink); border-radius:12px; background:var(--pc-soft); }
+  .md-net-h{ font-weight:800; font-size:14px; margin-bottom:8px; } .md-net-h small{ font-weight:600; color:var(--ink2); margin-left:4px; }
+  .md-net-eq{ display:flex; align-items:flex-end; flex-wrap:wrap; gap:4px 8px; font-size:11.5px; color:var(--ink2); }
+  .md-net-eq span{ display:flex; flex-direction:column; } .md-net-eq b{ font-size:14px; color:var(--ink); } .md-net-eq i{ font-style:normal; padding-bottom:2px; }
+  .md-net-eq .big b{ font-size:18px; color:var(--pc); }
+  .md-net-sub{ margin-top:8px; font-size:11.5px; color:var(--ink2); line-height:1.5; }
+  .md-oop{ display:block; margin-top:2px; font-weight:800; color:var(--ink); } .md-oop.est{ font-weight:600; color:var(--ink2); }
+  .md-mo small{ font-weight:600; margin-left:6px; opacity:.75; }
   #medView, #md-dlg, #md-cl-dlg, #md-sms-dlg{ --pc:var(--accent); --pc-soft:#FFF1E8; --pc-on:var(--on-accent); --pc-up:#D83A41; }
   @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #medView, :root:not([data-theme="light"]) #md-dlg, :root:not([data-theme="light"]) #md-cl-dlg, :root:not([data-theme="light"]) #md-sms-dlg{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; } }
   [data-theme="dark"] #medView, [data-theme="dark"] #md-dlg, [data-theme="dark"] #md-cl-dlg, [data-theme="dark"] #md-sms-dlg{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; }
@@ -998,6 +1006,7 @@
   <div class="strip" id="md-summary"></div>
   <div class="sectionhead"><h3>🏥 의료비 정산</h3></div>
   <div class="md-acts"><button class="pc-btn primary" data-md="sms">📩 문자로 등록</button><button class="pc-btn" data-md="add">+ 직접 등록</button><button class="pc-btn" data-md="selmode" id="md-selmode">☑ 여러 건 선택</button></div>
+  <div class="md-net" id="md-net"></div>
   <div class="md-flt" id="md-flt"></div>
   <div class="pc-row2 pc-filterrow"><label class="pc-f">기간<select id="md-flt-year"></select></label></div>
   <div id="md-list"></div>
@@ -2017,7 +2026,15 @@
 
     // 카드구분 추정: 문자에 등록된 카드구분 이름이 그대로 들어있으면 그걸 사용
     let cardType = null;
-    for(const c of data.cardTypes){
+    // 의료비와 같은 카드 인식 규칙(예: 하나4*7* → 원더)을 먼저 적용
+    try{
+      const nt = t.replace(/\s+/g, '');
+      ((window.AppSmsRules && window.AppSmsRules()) || []).some(r => {
+        if(r && r.pat && nt.indexOf(String(r.pat).replace(/\s+/g, '')) >= 0){ cardType = (window.AppCards && window.AppCards.norm) ? window.AppCards.norm(r.name) : r.name; return true; }
+        return false;
+      });
+    }catch(e){ /* 무시 */ }
+    if(!cardType) for(const c of data.cardTypes){
       if(c && t.includes(c)){ cardType = c; break; }
     }
     if(!cardType && /MG\+?/i.test(t) && data.cardTypes.includes('MG')) cardType = 'MG';
@@ -2037,6 +2054,8 @@
       return;
     }
     if(parsed.date) el('newDate').value = parsed.date;
+    let cardAdded = false;
+    if(parsed.cardType && !data.cardTypes.includes(parsed.cardType)){ try{ cardAdded = window.AppCards.add(parsed.cardType); }catch(e){ /* 무시 */ } }
     if(parsed.cardType) el('newCard').value = parsed.cardType;
     if(parsed.item) el('newItem').value = parsed.item;
     if(parsed.amount) el('newAmount').value = parsed.amount;
@@ -2045,7 +2064,7 @@
     if(parsed.cardType) parts.push(parsed.cardType);
     if(parsed.item) parts.push(parsed.item);
     if(parsed.amount) parts.push(won(parsed.amount));
-    note.textContent = `✓ 인식됨: ${parts.join(' · ')} — 확인 후 "+ 추가"를 눌러주세요`;
+    note.textContent = `✓ 인식됨: ${parts.join(' · ')} — 확인 후 "+ 추가"를 눌러주세요` + (cardAdded ? ` (카드구분에 '${parsed.cardType}'을 추가했어요)` : '');
     note.classList.remove('warn');
   }
   let smsParseTimer = null;
@@ -2950,7 +2969,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-19-d (의료비 정산 · 문자 등록 · 회사/실비 입금 확인)';
+const APP_BUILD_VERSION = '2026-10-19-e (의료비 실부담 계산 · 회의비 카드번호 인식)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4683,7 +4702,34 @@ const Med = (function () {
     (items || []).forEach(i => { if (placeCore(i.place) === c && num(i.extra) > 0 && (!best || i.date > best.date)) best = i; });
     return best ? { extra: num(best.extra), incl: !!best.incl } : null;
   }
-  return { DED, isDental, isPharm, coExp, insExp, dayTotal, elig, whyNo, index, status, alerts, placeCore, matchPlace, parseOne, parseSms, lastExtra, dayDiff };
+
+  /* ---- 실제 부담금 = 총 결제금액 − 회사 지원금 − 실비 보험금 (건별) ----
+     묶음 신청(여러 건)은 건별 예상액 비율로 나눠요. 입금 확인된 금액(입금액을 안 건)은 '확정', 아직 신청 전·대기·금액 미상은 예상 금액으로 계산해 '예상'으로 표시해요. */
+  function oop(items, claims, cfg) {
+    cfg = cfg || {}; const ded = has(cfg.ded) ? Number(cfg.ded) : DED, byId = {}, g = {}, out = {};
+    items.forEach(i => { byId[i.id] = i; const k = i.who + '|' + i.date; g[k] = (g[k] || 0) + num(i.total); });
+    const insShare = i => { const gt = g[i.who + '|' + i.date] || 0; return (elig(i, items, ded) && gt > 0) ? Math.max(0, gt - ded) * num(i.total) / gt : 0; };
+    const ix = index(items, claims);
+    function alloc(c, w) {                       // 청구 1건의 금액을 포함된 진료 건에 나눔
+      const its = (c.ids || []).map(id => byId[id]).filter(Boolean); if (!its.length) return {};
+      const known = c.st === 'paid' && c.paid != null, amt = c.st === 'paid' ? (c.paid != null ? Number(c.paid) : num(c.exp)) : num(c.exp);
+      let ws = its.map(w), sum = ws.reduce((a, b) => a + b, 0); if (sum <= 0) { ws = its.map(() => 1); sum = its.length; }
+      const res = {}; let left = amt;
+      its.forEach((i, n) => { const v = n === its.length - 1 ? left : Math.round(amt * ws[n] / sum); res[i.id] = { v, known }; left -= v; });
+      return res;
+    }
+    const coA = {}, inA = {};
+    (claims || []).forEach(c => { Object.assign(c.t === 'co' ? coA : inA, alloc(c, i => coExp(i, cfg) * (c.t === 'co' ? 1 : 0) + (c.t === 'co' ? 0 : insShare(i)))); });
+    items.forEach(i => {
+      const hasCo = !!ix.co[i.id], el = elig(i, items, ded), hasIn = !!ix.ins[i.id];
+      const co = hasCo ? coA[i.id] : { v: coExp(i, cfg), known: false };
+      const ins = hasIn ? inA[i.id] : { v: el ? Math.round(insShare(i)) : 0, known: !el };
+      const t = num(i.total), o = t - co.v - ins.v;   // 음수 = 회사+실비로 받은 돈이 낸 돈보다 많음
+      out[i.id] = { total: t, co: co.v, ins: ins.v, oop: o, sure: !!(hasCo && co.known && (!el || (hasIn && ins.known))) };
+    });
+    return out;
+  }
+  return { DED, isDental, isPharm, oop, coExp, insExp, dayTotal, elig, whyNo, index, status, alerts, placeCore, matchPlace, parseOne, parseSms, lastExtra, dayDiff };
 })();
 // </CALC>
 
@@ -4706,6 +4752,7 @@ function mdNorm(o){
   return { items, claims, cfg, del: cleanDel(o.del) };
 }
 let MD = loadK(MD_KEY, MD_SEED, mdNorm);
+window.AppSmsRules = () => (MD && MD.cfg && MD.cfg.cards) || [];
 let mdFlt = { st: 'open', year: 'all' }, mdSelMode = false, mdSel = {}, mdEditing = null, mdCl = null, mdSmsRows = [];
 function mdSave(){ saveK(MD_KEY, MD); }
 const mdIx = () => Med.index(MD.items, MD.claims);
@@ -4747,7 +4794,7 @@ function renderMed(){
   const byId = {}; MD.items.forEach(i => { byId[i.id] = i; });
   const live = c => c.ids.some(id => byId[id]);
   const open = rows.filter(r => !r.s.closed), coW = MD.claims.filter(c => c.t === 'co' && c.st !== 'paid' && live(c)), inW = MD.claims.filter(c => c.t === 'in' && c.st !== 'paid' && live(c));
-  const al = Med.alerts(MD.items, MD.claims, cfg, t), yr = t.slice(0, 4);
+  const al = Med.alerts(MD.items, MD.claims, cfg, t), yr = t.slice(0, 4), net = Med.oop(MD.items, MD.claims, cfg);
   let paidY = 0, coY = 0, inY = 0;
   MD.claims.forEach(c => { if (c.st !== 'paid' || c.paid == null) return; const f = c.ids.map(id => byId[id]).filter(Boolean).map(i => i.date).sort()[0]; if (f && f.slice(0, 4) === yr) { paidY += c.paid; if (c.t === 'co') coY += c.paid; else inY += c.paid; } });
   $('md-summary').innerHTML = card('진행중', open.length + '건', '회사 미신청 ' + al.coNone.length + ' · 실비 미신청 ' + al.insNone.length) +
@@ -4758,15 +4805,20 @@ function renderMed(){
   if (mdFlt.year !== 'all' && years.indexOf(mdFlt.year) < 0) mdFlt.year = 'all';
   fillSelect($('md-flt-year'), [{ v: 'all', t: '전체 기간' }].concat(years.map(y => ({ v: y, t: y + '년' }))), mdFlt.year);
   const inYear = rows.filter(r => mdFlt.year === 'all' || r.it.date.slice(0, 4) === mdFlt.year);
+  { const z = { total: 0, co: 0, ins: 0, oop: 0, sureO: 0, estO: 0, n: 0, nEst: 0 };
+    inYear.forEach(r => { const x = net[r.it.id]; if (!x) return; z.total += x.total; z.co += x.co; z.ins += x.ins; z.oop += x.oop; z.n++; if (x.sure) z.sureO += x.oop; else { z.estO += x.oop; z.nEst++; } });
+    $('md-net').innerHTML = '<div class="md-net-h">💸 실제 낸 돈 <small>' + (mdFlt.year === 'all' ? '전체 기간' : mdFlt.year + '년') + ' · ' + z.n + '건</small></div>' +
+      '<div class="md-net-eq"><span>총 결제<b>' + won(z.total) + '</b></span><i>−</i><span>회사<b>' + won(z.co) + '</b></span><i>−</i><span>실비<b>' + won(z.ins) + '</b></span><i>=</i><span class="big">실부담<b>' + won(z.oop) + '</b></span></div>' +
+      '<div class="md-net-sub">확정 ' + won(z.sureO) + (z.nEst ? ' · 예상 ' + won(z.estO) + ' (' + z.nEst + '건은 입금 전·금액 미상이라 예상 지원금으로 계산)' : ' · 모두 입금 확인된 금액이에요') + '<br>실부담이 마이너스(−)면 회사·실비로 받은 돈이 낸 돈보다 많다는 뜻이에요.</div>'; }
   $('md-flt').innerHTML = MD_FLT.map(f => '<button type="button" class="md-f' + (mdFlt.st === f[0] ? ' on' : '') + '" data-md="flt" data-k="' + f[0] + '">' + f[1] + ' <i>' + inYear.filter(r => mdMatch(r, f[0])).length + '</i></button>').join('');
   const list = inYear.filter(r => mdMatch(r, mdFlt.st)).sort((a, b) => b.it.date.localeCompare(a.it.date) || b.it.id.localeCompare(a.it.id));
-  let h = '', curM = '';
+  let h = '', curM = ''; const monO = {}; list.forEach(r => { const x = net[r.it.id], m0 = r.it.date.slice(0, 7); if (x) monO[m0] = (monO[m0] || 0) + x.oop; });
   list.forEach(r => {
     const it = r.it, m = it.date.slice(0, 7);
-    if (m !== curM) { curM = m; h += '<div class="grp md-mo">' + Number(m.slice(0, 4)) + '년 ' + Number(m.slice(5)) + '월</div>'; }
+    if (m !== curM) { curM = m; h += '<div class="grp md-mo">' + Number(m.slice(0, 4)) + '년 ' + Number(m.slice(5)) + '월 <small>실부담 ' + won(monO[m] || 0) + '</small></div>'; }
     const sub = [it.who !== '본인' ? it.who : '', it.card, it.inst ? it.inst + '개월 할부' : '', it.extra ? '비급여 ' + won(it.extra) : '', Med.isPharm(it.place) ? '약국' : ''].filter(Boolean).join(' · ');
     const dosu = MP.items.some(m2 => m2.date === it.date) && it.extra > 0 ? ' <span class="md-chip mute">🦵 도수 기록 있음</span>' : '';
-    const exp = r.s.cs === 'paid' ? '' : '회사 예상 ' + won(Med.coExp(it, cfg));
+    const nx = net[it.id], exp = nx ? '<span class="md-oop' + (nx.sure ? '' : ' est') + '">실부담 ' + won(nx.oop) + (nx.sure ? '' : ' (예상)') + '</span>' : '';
     h += '<div class="md-row' + (r.s.closed ? ' done' : '') + '" data-md="open" data-id="' + esc(it.id) + '" tabindex="0">' +
       (mdSelMode ? '<label class="md-ck"><input type="checkbox" data-md="sel" data-id="' + esc(it.id) + '"' + (mdSel[it.id] ? ' checked' : '') + '></label>' : '') +
       '<div class="l"><b>' + mdMD(it.date) + ' · ' + esc(it.place || '(병원 미입력)') + '</b>' + (r.s.closed ? '<span class="md-chip ok">종결</span>' : '') + dosu +
@@ -4816,6 +4868,7 @@ function mdSettleHtml(){
   box.innerHTML = line('회사', s.cs === 'paid' ? '입금 완료 ' + (s.c.paid != null ? won(s.c.paid) : '(금액 미상)') : s.cs === 'claimed' ? '신청함 ' + (s.c.cdate ? mdMD(s.c.cdate) : '') + ' · 예상 ' + won(s.c.exp) : '아직 신청 전', s.c, 'co') +
     (s.is === 'na' ? '<div class="md-st"><span><b>실비</b> ' + esc(Med.whyNo(r.it, MD.items, MD.cfg.ded)) + '</span></div>' : line('실비(메리츠)', s.is === 'paid' ? '입금 완료 ' + (s.i.paid != null ? won(s.i.paid) : '(금액 미상)') : s.is === 'claimed' ? '신청함 ' + (s.i.cdate ? mdMD(s.i.cdate) : '') + ' · 예상 ' + won(s.i.exp) : '아직 신청 전', s.i, 'in')) +
     (s.closed ? '<div class="md-closed">✅ 종결된 건이에요.</div>' : '');
+  { const x = Med.oop(MD.items, MD.claims, MD.cfg)[mdEditing]; if (x) box.innerHTML += '<div class="md-calc"><b>실제 부담 ' + won(x.oop) + (x.sure ? '' : ' (예상)') + '</b><br><small>총 결제 ' + won(x.total) + ' − 회사 ' + won(x.co) + ' − 실비 ' + won(x.ins) + (x.sure ? '' : ' · 입금 확인 전이거나 금액 미상인 부분은 예상 지원금으로 계산했어요') + (((s.c && s.c.ids.length > 1) || (s.i && s.i.ids.length > 1)) ? ' · 여러 건 묶음 신청은 건별 예상액 비율로 나눴어요' : '') + '</small></div>'; }
   void t;
 }
 function mdSaveItem(){
