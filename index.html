@@ -3078,7 +3078,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-19-p (캘린더 일원화 · 자산·체중 카드)';
+const APP_BUILD_VERSION = '2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -6127,7 +6127,7 @@ function agAddDays(t, d){ return new Date(Date.parse(t + 'T00:00:00Z') + d * 864
 function agFmtAt(iso){ if (!iso) return ''; const d = new Date(iso); if (isNaN(d)) return ''; return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
 async function agGet(url, ms){
   const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null, tm = setTimeout(() => { if (ctl) ctl.abort(); }, ms || 15000);
-  try { const r = await fetch(url + (url.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now(), { method: 'GET', cache: 'no-store', signal: ctl ? ctl.signal : undefined }); const j = JSON.parse(await r.text()); if (j && j.error && !j.ok) throw new Error(String(j.error)); return j; }
+  try { const r = await fetch(url + (url.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now(), { method: 'GET', cache: 'no-store', signal: ctl ? ctl.signal : undefined }); const j = JSON.parse(await r.text()); if (j && j.error && !j.ok) throw new Error(String(j.error) + (j.mode ? ' · 서버 기준: ' + j.mode + ' · 서버가 받은 키 ' + j.got + '자' : '')); return j; }
   finally { clearTimeout(tm); }
 }
 // 마이라이프 앱 항목 중 '날짜가 있는' 것만 캘린더에 복사할 목록으로 만든다(인맥 예약·의료비 입금은 서버가 이미 따로 동기화하므로 제외)
@@ -6171,7 +6171,7 @@ function agMoneyCard(){
   const c = agCfg(); if (!c.moneyUrl || !c.moneyKey) return '';
   const m = agCache().money || {}, ok = typeof m.total === 'number';
   return '<!--c:assets--><div class="td-card"><h3>💎 자산 합계</h3>' + (ok ? '<div class="td-big">' + won(m.total) + '</div><p class="td-note">' + (typeof m.diff === 'number' ? '전일 대비 <b style="color:' + (m.diff >= 0 ? 'var(--good)' : 'var(--warn)') + '">' + (m.diff >= 0 ? '+' : '-') + won(Math.abs(m.diff)) + '</b> · ' : '') + '기준일 ' + esc(m.asOf || '') + ' · 대시보드 기준(숨김 계좌 제외)</p>' : '<p class="td-note">아직 불러온 값이 없어요.</p>') +
-    '<p class="td-note' + (m.err ? ' td-warn' : '') + '">' + (m.at ? '마지막 불러온 시각 ' + agFmtAt(m.at) : '') + (m.err ? ' · 불러오기 실패(' + esc(m.err) + ') — 회사 PC에서는 막힐 수 있어요' : '') + ' <button type="button" class="pc-btn small" data-ag="refresh" data-id="money">새로고침</button></p></div>';
+    '<p class="td-note' + (m.err ? ' td-warn' : '') + '">' + (m.at ? '마지막 불러온 시각 ' + agFmtAt(m.at) : '') + (m.err ? ' · 불러오기 실패(' + esc(m.err) + ') — ' + (/unauthorized/.test(m.err) ? '입력한 키 ' + String(c.moneyKey).length + '자(서버가 받은 글자 수와 같아야 해요)' : '회사 PC에서는 막힐 수 있어요') : '') + ' <button type="button" class="pc-btn small" data-ag="refresh" data-id="money">새로고침</button></p></div>';
 }
 function agBodyCard(){
   const c = agCfg(); if (!c.bodyUrl) return '';
@@ -6192,7 +6192,7 @@ function agConnCard(){
     (c.calOn ? (hasUrl ? '<div class="td-ag-sub"><button type="button" class="pc-btn small" data-ag="loadcals">캘린더 목록 불러오기</button>' + (cs.length ? cs.map(k => '<label class="td-ag-l"><input type="checkbox" data-ag="cal" value="' + esc(k.id) + '"' + (sel.indexOf(k.id) >= 0 ? ' checked' : '') + '> ' + esc(k.name) + '</label>').join('') : '<p class="td-note">“캘린더 목록 불러오기”를 눌러 볼 캘린더를 고르세요.</p>') + '</div>' : '<p class="td-note td-warn">먼저 ⚙ 설정에서 백업 시트(Apps Script) 주소를 입력해 주세요.</p>') : '') +
     '<label class="td-ag-l"><input type="checkbox" data-ag="mirror"' + (c.mirror === true ? ' checked' : '') + '> 날짜 있는 앱 항목(알림·정기결제·혜택 지급일 등)을 캘린더에도 알림으로 복사 <span class="td-note">(당일 오전 8시 + 전날 오후 6시 알림)</span></label>' +
     '<div class="td-ag-f"><span>머니트레일 서버 주소</span><input type="url" data-ag="moneyUrl" value="' + esc(c.moneyUrl || '') + '" placeholder="https://script.google.com/macros/s/.../exec"></div>' +
-    '<div class="td-ag-f"><span>머니트레일 키(SYNC_KEY)</span><input type="password" data-ag="moneyKey" value="' + esc(c.moneyKey || '') + '" autocomplete="off"></div>' +
+    '<div class="td-ag-f"><span>머니트레일 키(SYNC_KEY)</span><input type="password" data-ag="moneyKey" value="' + esc(c.moneyKey || '') + '" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false"></div>' +
     '<div class="td-ag-f"><span>바디 서버 주소</span><input type="url" data-ag="bodyUrl" value="' + esc(c.bodyUrl || '') + '" placeholder="https://script.google.com/macros/s/.../exec"></div>' +
     '<p class="td-note">주소·키를 비우면 해당 카드는 숨겨져요. 회사 PC처럼 script.google.com이 막힌 곳에서는 마지막으로 불러온 값이 표시돼요.</p></details>';
 }
@@ -6201,7 +6201,7 @@ $('todayView').addEventListener('change', e => {
   if (k === 'calOn') { agSet({ calOn: x.checked }); if (x.checked) agRefresh('cal', true); }
   else if (k === 'mirror') { agSet({ mirror: x.checked }); if (window.AppSync) { window.AppSync.touch(); window.AppSync.up(true); } toast(x.checked ? '다음 백업부터 캘린더에 복사해요.' : '캘린더에 복사해 둔 알림을 정리해요.'); }
   else if (k === 'cal') { const sel = Array.prototype.slice.call(document.querySelectorAll('#td-body [data-ag="cal"]:checked')).map(i => i.value); agSet({ cals: sel }); agRefresh('cal', true); }
-  else if (k === 'moneyUrl' || k === 'moneyKey' || k === 'bodyUrl') { const o = {}; o[k] = x.value.trim(); agSet(o); agRefresh(k === 'bodyUrl' ? 'body' : 'money', true); return; }
+  else if (k === 'moneyUrl' || k === 'moneyKey' || k === 'bodyUrl') { const o = {}; o[k] = k === 'moneyKey' ? x.value.replace(/[\s\u200B-\u200D\uFEFF]/g, '') : x.value.trim(); agSet(o); agRefresh(k === 'bodyUrl' ? 'body' : 'money', true); return; }
   renderToday(true);
 });
 $('todayView').addEventListener('click', async e => {
