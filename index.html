@@ -620,7 +620,7 @@
   .td-bar{ height:9px; background:var(--line); border-radius:6px; overflow:hidden; margin:8px 0 4px; } .td-bar i{ display:block; height:100%; background:var(--accent); } .td-bar.warn i{ background:var(--warn); }
   .td-ag-l{ display:flex; gap:8px; align-items:flex-start; font-size:13.5px; padding:6px 0; } .td-ag-sub{ margin:0 0 6px 22px; } .td-ag-f{ display:flex; flex-direction:column; gap:3px; margin:8px 0; font-size:12.5px; color:var(--ink2); } .td-ag-f input{ width:100%; padding:9px 10px; border:1px solid var(--line2); border-radius:8px; background:var(--surface); color:var(--ink); font-size:14px; }
   .td-sec{ font-size:12px; font-weight:800; color:var(--ink2); margin:10px 2px 0; letter-spacing:-.01em; } .td-sec:first-of-type{ margin-top:2px; }
-  .td-ib{ display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:0 6px; margin-top:10px; font-size:13px; align-items:center; } .td-ib>div{ padding:6px 0; border-bottom:1px solid var(--line); } .td-ib .h{ font-size:11.5px; color:var(--ink2); font-weight:700; border-bottom:1px solid var(--line); } .td-ib .l b{ display:block; font-size:15px; } .td-ib .l small{ font-size:11.5px; color:var(--ink2); } .td-ib .g{ color:var(--good); font-weight:800; } .td-ib .w{ color:var(--warn); font-weight:800; } .td-ib .z{ color:var(--ink2); }
+  .td-ib{ display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:0; margin-top:10px; font-size:13px; align-items:stretch; } .td-ib>div{ padding:7px 6px 7px 0; border-bottom:1px solid var(--line); display:flex; align-items:center; min-height:48px; box-sizing:border-box; } .td-ib>div+div{ padding-left:8px; } .td-ib .h{ min-height:0; font-size:11.5px; color:var(--ink2); font-weight:700; } .td-ib .l{ display:block; align-self:stretch; } .td-ib .l b{ display:block; font-size:15px; line-height:1.25; } .td-ib .l small{ display:block; font-size:11.5px; color:var(--ink2); line-height:1.25; } .td-ib .g{ color:var(--good); font-weight:800; } .td-ib .w{ color:var(--warn); font-weight:800; } .td-ib .z{ color:var(--ink2); }
   .td-big{ font-size:20px; font-weight:900; } .td-note{ font-size:12.5px; color:var(--ink2); margin:4px 0; line-height:1.5; } .td-note b{ color:var(--ink); } .td-warn{ color:var(--warn); font-weight:700; }
 
   /* 2026-10-19-c */
@@ -3089,7 +3089,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
+const APP_BUILD_VERSION = '2026-10-20-i (인바디 표 가로선 정렬) / 이전: 2026-10-20-h (의료비 입력도 오늘에 머무름 · 등록하면 오늘 숫자 갱신) / 이전: 2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5355,7 +5355,7 @@ function mdSmsGo(){
   });
   if (!n) { toast('등록할 건이 없어요. 병원 이름·금액을 확인해 주세요.'); return; }
   if (quick.length) mdQuickClaims(quick);
-  MD = mdNorm(MD); mdSave(); changed(); $('md-sms-dlg').close(); mdFlt.st = 'open'; toast(n + '건 등록했어요.' + (quick.length ? ' 신청일을 넣은 건은 신청으로 기록했어요.' : ' 회사·실비 신청은 목록에서 이어서 체크하세요.')); renderAll();
+  MD = mdNorm(MD); mdSave(); changed(); $('md-sms-dlg').close(); mdFlt.st = 'open'; toast(n + '건 등록했어요.' + (quick.length ? ' 신청일을 넣은 건은 신청으로 기록했어요.' : (mode === 'today' ? ' 회사·실비 신청은 “의료비 열기”에서 이어서 체크하세요.' : ' 회사·실비 신청은 목록에서 이어서 체크하세요.'))); renderAll(); if (mode === 'today') { try { renderToday(true); } catch (e) { /* 무시 */ } }
 }
 /* ---------- 이벤트 ---------- */
 function mdCfgSave(){ MD.cfg.u = nowIso(); MD = mdNorm(MD); mdSave(); changed(); renderMed(); }
@@ -6418,7 +6418,7 @@ function tdGo(act, id){
   if (act === 'rm') rmOpen(); else if (act === 'shop') gotoShop(id); else if (act === 'sub') { if (id) sbGoto([id], {}); else setMode('sub'); }
   else if (act === 'people') setMode('people'); else if (act === 'manual') setMode('manual'); else if (act === 'med') { if (id && /^(chk|noCd|noAmt|open|all)$/.test(id)) { mdFlt.st = id; mdFlt.year = 'all'; } setMode('med'); } else if (act === 'meeting') setMode('meeting');
   else if (act === 'photo') { recompressPhotos(); } else if (act === 'golf') { shCat = 'golf'; szOpen = false; setMode('shop'); } else if (act === 'backup') { doBackup(); setTimeout(renderToday, 900); } else if (act === 'settings') { window.AppSync.openSettings(); }
-  else if (act === 'qk-exp') qkExpOpen(); else if (act === 'qk-meet') { if (!Q.people.length) { toast('먼저 인맥 탭에서 사람을 등록해 주세요.'); return; } openMeet(null, null); } else if (act === 'qk-skin') qkSkinOpen(); else if (act === 'qk-med') { setMode('med'); mdSmsOpen(); }
+  else if (act === 'qk-exp') qkExpOpen(); else if (act === 'qk-meet') { if (!Q.people.length) { toast('먼저 인맥 탭에서 사람을 등록해 주세요.'); return; } openMeet(null, null); } else if (act === 'qk-skin') qkSkinOpen(); else if (act === 'qk-med') { mdSmsOpen(); }
   else if (act === 'chkall') { window.__tdChkAll = !window.__tdChkAll; renderToday(); } else if (act === 'wizard') { setMode('med'); mdWzOpen(); } else if (act === 'skin') { setMode('skin'); if (id) { try { openSkin(id); } catch (e) { /* 무시 */ } } } else if (act === 'people-log') { ppTab = 'log'; setMode('people'); }
 }
 /* ---------- 오늘 화면 빠른 입력 ---------- */
