@@ -617,6 +617,7 @@
   .td-row:last-child{ border-bottom:0; } .td-row .ic{ font-size:17px; } .td-row .tx{ flex:1; min-width:0; display:flex; flex-direction:column; gap:1px; } .td-row .tx i{ font-style:normal; font-size:12px; color:var(--ink2); }
   .td-row .dd{ font-size:12px; font-weight:800; color:var(--accent); white-space:nowrap; } .td-row.soon .dd{ color:var(--ink2); }
   .td-bar{ height:9px; background:var(--line); border-radius:6px; overflow:hidden; margin:8px 0 4px; } .td-bar i{ display:block; height:100%; background:var(--accent); } .td-bar.warn i{ background:var(--warn); }
+  .td-ag-l{ display:flex; gap:8px; align-items:flex-start; font-size:13.5px; padding:6px 0; } .td-ag-sub{ margin:0 0 6px 22px; } .td-ag-f{ display:flex; flex-direction:column; gap:3px; margin:8px 0; font-size:12.5px; color:var(--ink2); } .td-ag-f input{ width:100%; padding:9px 10px; border:1px solid var(--line2); border-radius:8px; background:var(--surface); color:var(--ink); font-size:14px; }
   .td-big{ font-size:20px; font-weight:900; } .td-note{ font-size:12.5px; color:var(--ink2); margin:4px 0; line-height:1.5; } .td-note b{ color:var(--ink); } .td-warn{ color:var(--warn); font-weight:700; }
 
   /* 2026-10-19-c */
@@ -2398,7 +2399,7 @@
       if(mergeRemote(remote)){ render(); }
       stage = 'push'; syncState.stage = 'push'; setSyncStatus('saving');
       const rev = 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: rev }));
+      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: rev, _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
       try{ await fetchT(url, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body }, 45000); }
       catch(pe){ /* 보내는 중 응답이 늦어도 시트엔 저장됐을 수 있어요 — 아래 확인 단계에서 다시 확인 */ }
       stage = 'verify'; syncState.stage = 'verify'; setSyncStatus('saving');
@@ -2435,7 +2436,7 @@
     try{
       const url = data.settings.sheetUrl;
       if(!url || !data.settings.autoBackup || !isDirty() || !pulledThisSession) return;
-      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: 'h' + Date.now().toString(36) }));
+      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: 'h' + Date.now().toString(36), _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
       if(body.length * 3 > 60000) return;   // 닫히는 중 전송은 약 64KB 제한 — 큰 데이터는 다음 접속 때 합쳐서 올림
       fetch(url, { method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain;charset=utf-8'}, body });
     }catch(e){ /* 무시 */ }
@@ -2643,6 +2644,7 @@
     up: syncUp,
     auto: () => !!(data.settings.autoBackup && data.settings.sheetUrl),
     hasUrl: () => !!data.settings.sheetUrl,
+    url: () => data.settings.sheetUrl || '',
     last: () => data.settings.lastSync,
     openDrawer: () => openDrawer(),
     openSettings: () => { openDrawer(); setTimeout(() => { const u = el('sheetUrlInput'); if(u && u.scrollIntoView) u.scrollIntoView({block:'center'}); }, 300); },
@@ -3076,7 +3078,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-19-o (입금일 보정 · 입금 알림 · 만남 주기)';
+const APP_BUILD_VERSION = '2026-10-19-p (캘린더 일원화 · 자산·체중 카드)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -6021,7 +6023,7 @@ $('gSearch').addEventListener('click', () => { $('gs-dlg').showModal(); $('gs-q'
 $('gs-res').addEventListener('click', e => { const b = e.target.closest('[data-gs]'); if (!b) return; const h = $('gs-res')._hits && $('gs-res')._hits[Number(b.dataset.gs)]; if (h) gsGo(h); });
 
 /* A9 오늘 화면 카드 켜기/끄기 (이 기기에만 저장) */
-const TD_CARDS = [['tasks', '할 일 · 일정'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['quick', '빠른 입력'], ['review', '이번 달 돌아보기'], ['backup', '백업'], ['check', '데이터 점검']];
+const TD_CARDS = [['tasks', '할 일 · 일정'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['assets', '자산 합계'], ['body', '오늘 체중·식단'], ['conn', '캘린더·요약 연결 설정'], ['quick', '빠른 입력'], ['review', '이번 달 돌아보기'], ['backup', '백업'], ['check', '데이터 점검']];
 function tdPrefs(){ try { const o = JSON.parse(localStorage.getItem('td_cards_v1') || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
 function tdFilter(h){
   const pr = tdPrefs(), parts = h.split(/<!--c:(\w+)-->/); let out = parts[0];
@@ -6111,8 +6113,111 @@ async function recompressPhotos(){
   toast(n + '장을 줄였어요 (약 ' + fmtKB(saved * 2) + ' 절약).'); renderAll();
 }
 
+/* ---- 구글 캘린더 일원화 · 자산/체중 요약 카드 (2026-10-19 추가, 모두 이 기기에만 저장 · 백업 제외) ---- */
+const AG_KEY = 'ag_cfg_v1', AG_DONE = 'ag_done_v1', AG_CACHE = 'ag_cache_v1';
+const agBusy = {};
+function agJ(k, d){ try { const o = JSON.parse(localStorage.getItem(k) || 'null'); return o && typeof o === 'object' ? o : d; } catch (e) { return d; } }
+function agCfg(){ return agJ(AG_KEY, {}); }
+function agSet(p){ const o = Object.assign(agCfg(), p); try { localStorage.setItem(AG_KEY, JSON.stringify(o)); } catch (e) { /* 무시 */ } return o; }
+function agCache(){ return agJ(AG_CACHE, {}); }
+function agCacheSet(k, v){ const c = agCache(); c[k] = v; try { localStorage.setItem(AG_CACHE, JSON.stringify(c)); } catch (e) { /* 무시 */ } }
+function agDone(){ return agJ(AG_DONE, {}); }
+function agDoneAdd(key, date){ const o = agDone(), t = todayStr(); o[key] = date; Object.keys(o).forEach(k => { if (String(o[k]) < t) delete o[k]; }); try { localStorage.setItem(AG_DONE, JSON.stringify(o)); } catch (e) { /* 무시 */ } }
+function agAddDays(t, d){ return new Date(Date.parse(t + 'T00:00:00Z') + d * 86400000).toISOString().slice(0, 10); }
+function agFmtAt(iso){ if (!iso) return ''; const d = new Date(iso); if (isNaN(d)) return ''; return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+async function agGet(url, ms){
+  const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null, tm = setTimeout(() => { if (ctl) ctl.abort(); }, ms || 15000);
+  try { const r = await fetch(url + (url.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now(), { method: 'GET', cache: 'no-store', signal: ctl ? ctl.signal : undefined }); const j = JSON.parse(await r.text()); if (j && j.error && !j.ok) throw new Error(String(j.error)); return j; }
+  finally { clearTimeout(tm); }
+}
+// 마이라이프 앱 항목 중 '날짜가 있는' 것만 캘린더에 복사할 목록으로 만든다(인맥 예약·의료비 입금은 서버가 이미 따로 동기화하므로 제외)
+function agMirror(){
+  const c = agCfg();
+  if (c.mirror !== true && c.mirror !== false) return undefined;   // 한 번도 안 만졌으면 서버에 아무것도 보내지 않음
+  if (c.mirror === false) return { on: false, items: [] };
+  const t = todayStr(), items = [];
+  try { tdTasks(true).forEach(x => { if (['rm', 'shop', 'sub'].indexOf(x.act) < 0 || x.d < 0 || x.d > 14) return; const date = agAddDays(t, x.d); items.push({ k: x.act + '|' + (x.id || x.title) + '|' + date, date, title: x.title, sub: x.sub || '' }); }); } catch (e) { /* 무시 */ }
+  return { on: true, items };
+}
+window.AppAgenda = { mirror: agMirror };
+function agEvents(){
+  const c = agCfg(); if (!c.calOn) return [];
+  const ca = agCache().cal; if (!ca || !Array.isArray(ca.events)) return [];
+  const t = todayStr(), dn = agDone();
+  return ca.events.filter(e => e && e.date >= t && e.date <= agAddDays(t, 7) && !dn[e.id + '|' + e.date]);
+}
+function agRow(x){
+  return '<div class="td-row' + (x.pri ? ' soon' : '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span><button type="button" class="pc-btn small" data-ag="done" data-id="' + esc(x.id) + '" data-date="' + esc(x.date || '') + '">확인</button></div>';
+}
+async function agRefresh(kind, force){
+  const c = agCfg(), ca = agCache(), now = Date.now();
+  if (agBusy[kind]) return;
+  const prev = ca[kind] || {}; if (!force && prev.tryAt && now - prev.tryAt < 10 * 60 * 1000) return;
+  let url = '';
+  if (kind === 'cal') { if (!c.calOn || !c.cals || !c.cals.length || !(window.AppSync && window.AppSync.url())) return; url = window.AppSync.url() + '?action=agenda&days=7&cals=' + encodeURIComponent(c.cals.join(',')); }
+  else if (kind === 'money') { if (!c.moneyUrl || !c.moneyKey) return; url = c.moneyUrl + '?action=summary&key=' + encodeURIComponent(c.moneyKey); }
+  else if (kind === 'body') { if (!c.bodyUrl) return; url = c.bodyUrl + '?summary=1'; }
+  else return;
+  agBusy[kind] = true;
+  const ent = Object.assign({}, prev, { tryAt: now });
+  try {
+    const j = await agGet(url);
+    if (!j || j.ok === false) throw new Error((j && j.error) || '응답 이상');
+    agCacheSet(kind, Object.assign({}, j, { at: new Date().toISOString(), tryAt: now, err: '' }));
+  } catch (e) { ent.err = e && e.message ? String(e.message) : '실패'; agCacheSet(kind, ent); }
+  finally { agBusy[kind] = false; if (mode === 'today') renderToday(true); }
+}
+function agMoneyCard(){
+  const c = agCfg(); if (!c.moneyUrl || !c.moneyKey) return '';
+  const m = agCache().money || {}, ok = typeof m.total === 'number';
+  return '<!--c:assets--><div class="td-card"><h3>💎 자산 합계</h3>' + (ok ? '<div class="td-big">' + won(m.total) + '</div><p class="td-note">' + (typeof m.diff === 'number' ? '전일 대비 <b style="color:' + (m.diff >= 0 ? 'var(--good)' : 'var(--warn)') + '">' + (m.diff >= 0 ? '+' : '-') + won(Math.abs(m.diff)) + '</b> · ' : '') + '기준일 ' + esc(m.asOf || '') + ' · 대시보드 기준(숨김 계좌 제외)</p>' : '<p class="td-note">아직 불러온 값이 없어요.</p>') +
+    '<p class="td-note' + (m.err ? ' td-warn' : '') + '">' + (m.at ? '마지막 불러온 시각 ' + agFmtAt(m.at) : '') + (m.err ? ' · 불러오기 실패(' + esc(m.err) + ') — 회사 PC에서는 막힐 수 있어요' : '') + ' <button type="button" class="pc-btn small" data-ag="refresh" data-id="money">새로고침</button></p></div>';
+}
+function agBodyCard(){
+  const c = agCfg(); if (!c.bodyUrl) return '';
+  const b = agCache().body || {}, ib = b.inbody, ml = b.mealToday, ok = !!b.at && (ib || ml);
+  let h = '<!--c:body--><div class="td-card"><h3>🏋 오늘 체중 · 식단</h3>';
+  if (ok) {
+    h += '<div class="td-qk" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
+      '<div><div class="td-note">인바디' + (ib ? '(' + esc(String(ib.date || '').slice(5).replace('-', '/')) + ')' : '') + '</div><div class="td-big">' + (ib && ib.weight != null ? esc(ib.weight) + 'kg' : '-') + '</div><div class="td-note">' + (ib && ib.fatPct != null ? '체지방률 ' + esc(ib.fatPct) + '%' : '') + (b.fatPctMA7 != null ? ' · 최근 7번 평균 ' + esc(Math.round(b.fatPctMA7 * 10) / 10) + '%' : '') + '</div></div>' +
+      '<div><div class="td-note">오늘 식단</div><div class="td-big">' + (ml && ml.recorded ? Math.round(ml.calories || 0).toLocaleString('ko-KR') + 'kcal' : '미기록') + '</div><div class="td-note">' + (ml && ml.recorded ? '단백질 ' + Math.round(ml.protein || 0) + 'g' + (ml.estimated ? ' · 추정 포함' : '') : '') + '</div></div></div>';
+  } else h += '<p class="td-note">아직 불러온 값이 없어요.</p>';
+  return h + '<p class="td-note' + (b.err ? ' td-warn' : '') + '">' + (b.at ? '마지막 불러온 시각 ' + agFmtAt(b.at) : '') + (b.err ? ' · 불러오기 실패(' + esc(b.err) + ')' : '') + ' <button type="button" class="pc-btn small" data-ag="refresh" data-id="body">새로고침</button></p></div>';
+}
+function agConnCard(){
+  const c = agCfg(), cs = (agCache().cals || {}).list || [], sel = c.cals || [], hasUrl = !!(window.AppSync && window.AppSync.url());
+  return '<!--c:conn--><details class="td-card td-ag"><summary>🔗 캘린더 · 요약 연결 설정</summary>' +
+    '<p class="td-note">이 설정과 키는 <b>이 기기에만</b> 저장되고 백업·동기화에는 들어가지 않아요. 기기마다 한 번씩 입력해 주세요.</p>' +
+    '<label class="td-ag-l"><input type="checkbox" data-ag="calOn"' + (c.calOn ? ' checked' : '') + '> 구글 캘린더 일정을 “할 일 · 일정”에 함께 보기</label>' +
+    (c.calOn ? (hasUrl ? '<div class="td-ag-sub"><button type="button" class="pc-btn small" data-ag="loadcals">캘린더 목록 불러오기</button>' + (cs.length ? cs.map(k => '<label class="td-ag-l"><input type="checkbox" data-ag="cal" value="' + esc(k.id) + '"' + (sel.indexOf(k.id) >= 0 ? ' checked' : '') + '> ' + esc(k.name) + '</label>').join('') : '<p class="td-note">“캘린더 목록 불러오기”를 눌러 볼 캘린더를 고르세요.</p>') + '</div>' : '<p class="td-note td-warn">먼저 ⚙ 설정에서 백업 시트(Apps Script) 주소를 입력해 주세요.</p>') : '') +
+    '<label class="td-ag-l"><input type="checkbox" data-ag="mirror"' + (c.mirror === true ? ' checked' : '') + '> 날짜 있는 앱 항목(알림·정기결제·혜택 지급일 등)을 캘린더에도 알림으로 복사 <span class="td-note">(당일 오전 8시 + 전날 오후 6시 알림)</span></label>' +
+    '<div class="td-ag-f"><span>머니트레일 서버 주소</span><input type="url" data-ag="moneyUrl" value="' + esc(c.moneyUrl || '') + '" placeholder="https://script.google.com/macros/s/.../exec"></div>' +
+    '<div class="td-ag-f"><span>머니트레일 키(SYNC_KEY)</span><input type="password" data-ag="moneyKey" value="' + esc(c.moneyKey || '') + '" autocomplete="off"></div>' +
+    '<div class="td-ag-f"><span>바디 서버 주소</span><input type="url" data-ag="bodyUrl" value="' + esc(c.bodyUrl || '') + '" placeholder="https://script.google.com/macros/s/.../exec"></div>' +
+    '<p class="td-note">주소·키를 비우면 해당 카드는 숨겨져요. 회사 PC처럼 script.google.com이 막힌 곳에서는 마지막으로 불러온 값이 표시돼요.</p></details>';
+}
+$('todayView').addEventListener('change', e => {
+  const x = e.target.closest('[data-ag]'); if (!x) return; const k = x.dataset.ag;
+  if (k === 'calOn') { agSet({ calOn: x.checked }); if (x.checked) agRefresh('cal', true); }
+  else if (k === 'mirror') { agSet({ mirror: x.checked }); if (window.AppSync) { window.AppSync.touch(); window.AppSync.up(true); } toast(x.checked ? '다음 백업부터 캘린더에 복사해요.' : '캘린더에 복사해 둔 알림을 정리해요.'); }
+  else if (k === 'cal') { const sel = Array.prototype.slice.call(document.querySelectorAll('#td-body [data-ag="cal"]:checked')).map(i => i.value); agSet({ cals: sel }); agRefresh('cal', true); }
+  else if (k === 'moneyUrl' || k === 'moneyKey' || k === 'bodyUrl') { const o = {}; o[k] = x.value.trim(); agSet(o); agRefresh(k === 'bodyUrl' ? 'body' : 'money', true); return; }
+  renderToday(true);
+});
+$('todayView').addEventListener('click', async e => {
+  const x = e.target.closest('[data-ag]'); if (!x || x.tagName === 'INPUT') return; const k = x.dataset.ag;
+  if (k === 'done') { agDoneAdd(x.dataset.id, x.dataset.date || todayStr()); renderToday(true); }
+  else if (k === 'refresh') { x.textContent = '불러오는 중…'; agRefresh(x.dataset.id, true); }
+  else if (k === 'loadcals') {
+    const u = window.AppSync && window.AppSync.url(); if (!u) return; x.textContent = '불러오는 중…';
+    try { const j = await agGet(u + '?action=cals'); if (!j.ok) throw new Error(j.error || '실패'); agCacheSet('cals', { list: j.cals || [], at: new Date().toISOString() }); }
+    catch (er) { toast('캘린더 목록을 못 가져왔어요: ' + (er && er.message ? er.message : '') + ' (서버를 새 버전(v24)으로 배포했는지 확인)'); }
+    renderToday(true);
+  }
+});
+
 /* ---- 오늘 화면 ---- */
-function tdTasks(){
+function tdTasks(noCal){
   const t = todayStr(), L = [];
   RM.items.filter(r => !r.done).forEach(r => { const d = rmDiff(r); if (d === null) return; if (d <= r.lead) L.push({ pri: 0, d, ic: '🔔', title: r.title, sub: r.memo || '', when: rmWhen(r), act: 'rm' }); else if (d <= 14) L.push({ pri: 1, d, ic: '🗓', title: r.title, sub: r.memo || '', when: 'D-' + d, act: 'rm' }); });
   Shop.dueBenefits(SH.items, t).forEach(b => L.push({ pri: 0, d: Life.dd(t, b.date) || 0, ic: '🎁', title: b.item + ' — ' + b.name + ' ' + won(b.amount), sub: '소비 혜택 지급일이 됐어요', when: b.date.slice(5).replace('-', '/'), act: 'shop', id: b.id }));
@@ -6128,14 +6233,16 @@ function tdTasks(){
     if (al.coLate.length) L.push({ pri: 0, d: -3, ic: '🏢', title: '회사 지원금 입금 확인 ' + al.coLate.length + '건', sub: '지급예정일이 지났어요 · 예상 ' + won(sum(al.coLate)), when: '확인', act: 'med' });
     if (al.coNone.length || al.insNone.length) L.push({ pri: 1, d: 98, ic: '🧾', title: '의료비 신청 전 — 회사 ' + al.coNone.length + '건 · 실비 ' + al.insNone.length + '건', sub: '병원 다녀온 뒤 신청했는지 체크해 주세요', when: '신청', act: 'med' });
   } catch (e) { /* 의료비 오류가 할 일 목록을 막지 않게 */ }
+  if (!noCal) { try { agEvents().forEach(ev => { const d = Life.dd(t, ev.date) || 0; L.push({ pri: d <= 1 ? 0 : 1, d, ic: '📅', title: ev.title, sub: (ev.time ? ev.time + ' · ' : '') + ev.cal, when: d === 0 ? '오늘' : 'D-' + d, act: 'cal', id: ev.id + '|' + ev.date, date: ev.date }); }); } catch (e) { /* 캘린더 오류가 할 일 목록을 막지 않게 */ } }
   return L.sort((a, b) => (a.pri - b.pri) || (a.d - b.d));
 }
-function renderToday(){
+function renderToday(quiet){
   const t = todayStr(), tasks = tdTasks(), urgent = tasks.filter(x => x.pri === 0).length, soon = tasks.length - urgent;
   const wd = ['일', '월', '화', '수', '목', '금', '토'][new Date().getDay()];
   let h = '<div class="td-head"><div class="td-date">' + Number(t.slice(5, 7)) + '월 ' + Number(t.slice(8)) + '일 (' + wd + ')</div><div class="td-sub">' + (tasks.length ? '지금 확인할 일 ' + urgent + '건 · 곧 다가오는 일 ' + soon + '건' : '확인할 일이 없어요. 편안한 하루 보내세요.') + '</div></div>';
-  const row = x => '<button type="button" class="td-row' + (x.pri ? ' soon' : '') + '" data-td="go" data-act="' + x.act + '" data-id="' + esc(x.id || '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span></button>';
+  const row = x => x.act === 'cal' ? agRow(x) : '<button type="button" class="td-row' + (x.pri ? ' soon' : '') + '" data-td="go" data-act="' + x.act + '" data-id="' + esc(x.id || '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span></button>';
   if (tasks.length) h += '<!--c:tasks--><div class="td-card"><h3>할 일 · 일정</h3>' + tasks.slice(0, 12).map(row).join('') + (tasks.length > 12 ? '<p class="td-note">외 ' + (tasks.length - 12) + '건</p>' : '') + '</div>';
+  h += agMoneyCard() + agBodyCard();
   // 회의비
   const mt = window.AppMeeting ? window.AppMeeting.summary() : null;
   if (mt) {
@@ -6189,6 +6296,7 @@ function renderToday(){
       rows.map(r => '<div class="td-rv-r"><span>' + r[0] + (r[3] ? '<small>' + esc(r[3]) + '</small>' : '') + '</span><b>' + esc(r[1]) + '</b><b class="mute">' + esc(r[2]) + '</b></div>').join('') + '</div><p class="td-note">각 탭에 입력된 값을 그대로 모았어요. 의료비는 입금 전 건이 예상 지원금으로 계산돼요.</p></div>';
   } catch (er) { /* 돌아보기 오류가 오늘 화면을 막지 않게 */ }
   // 빠른 입력
+  h += agConnCard();
   h += '<!--c:quick--><div class="td-card"><h3>⚡ 빠른 입력</h3><div class="td-qk"><button type="button" class="pc-btn" data-td="go" data-act="qk-exp">💰 회의비 지출</button><button type="button" class="pc-btn" data-td="go" data-act="qk-meet">👥 만남 기록</button><button type="button" class="pc-btn" data-td="go" data-act="qk-skin">✨ 시술 받았어요</button><button type="button" class="pc-btn" data-td="go" data-act="qk-med">🏥 진료 문자 등록</button></div></div>';
   // 백업 · 저장공간
   const A = window.AppSync, st = storageInfo();
@@ -6207,7 +6315,12 @@ function renderToday(){
     ck.slice(0, window.__tdChkAll ? 300 : 15).map(x => '<button type="button" class="td-row' + (x.sev >= 3 ? ' soon' : '') + '" data-td="go" data-act="' + x.go[0] + '" data-id="' + esc(x.go[1] || '') + '"><span class="ic">' + (x.sev === 1 ? '❗' : x.sev === 2 ? '⚠' : 'ℹ') + '</span><span class="tx"><b>' + esc(x.text) + '</b><i>' + esc(x.area) + '</i></span></button>').join('') +
     (ck.length > 15 ? '<button type="button" class="pc-btn small" data-td="go" data-act="chkall" style="margin-top:6px">' + (window.__tdChkAll ? '접기' : '나머지 ' + (ck.length - 15) + '건 더 보기') + '</button>' : '') + '</details>';
   h = tdFilter(h);
+  const agAct = document.activeElement, agTyping = !!(agAct && agAct.closest && agAct.closest('#td-body .td-ag') && /INPUT|TEXTAREA/.test(agAct.tagName));
+  if (quiet === true && agTyping) return;     // 연결 설정에 입력 중이면 자동 갱신으로 화면을 다시 그리지 않음
+  const agOpen = !!document.querySelector('#td-body .td-ag[open]');
   $('td-body').innerHTML = h;
+  if (agOpen) { const dd = document.querySelector('#td-body .td-ag'); if (dd) dd.open = true; }
+  if (quiet !== true) { agRefresh('cal'); agRefresh('money'); agRefresh('body'); }
 }
 function tdGo(act, id){
   if (act === 'rm') rmOpen(); else if (act === 'shop') gotoShop(id); else if (act === 'sub') { if (id) sbGoto([id], {}); else setMode('sub'); }
