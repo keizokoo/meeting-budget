@@ -618,6 +618,8 @@
   .td-row .dd{ font-size:12px; font-weight:800; color:var(--accent); white-space:nowrap; } .td-row.soon .dd{ color:var(--ink2); }
   .td-bar{ height:9px; background:var(--line); border-radius:6px; overflow:hidden; margin:8px 0 4px; } .td-bar i{ display:block; height:100%; background:var(--accent); } .td-bar.warn i{ background:var(--warn); }
   .td-ag-l{ display:flex; gap:8px; align-items:flex-start; font-size:13.5px; padding:6px 0; } .td-ag-sub{ margin:0 0 6px 22px; } .td-ag-f{ display:flex; flex-direction:column; gap:3px; margin:8px 0; font-size:12.5px; color:var(--ink2); } .td-ag-f input{ width:100%; padding:9px 10px; border:1px solid var(--line2); border-radius:8px; background:var(--surface); color:var(--ink); font-size:14px; }
+  .td-sec{ font-size:12px; font-weight:800; color:var(--ink2); margin:10px 2px 0; letter-spacing:-.01em; } .td-sec:first-of-type{ margin-top:2px; }
+  .td-ib{ display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:0 6px; margin-top:10px; font-size:13px; align-items:center; } .td-ib>div{ padding:6px 0; border-bottom:1px solid var(--line); } .td-ib .h{ font-size:11.5px; color:var(--ink2); font-weight:700; border-bottom:1px solid var(--line); } .td-ib .l b{ display:block; font-size:15px; } .td-ib .l small{ font-size:11.5px; color:var(--ink2); } .td-ib .g{ color:var(--good); font-weight:800; } .td-ib .w{ color:var(--warn); font-weight:800; } .td-ib .z{ color:var(--ink2); }
   .td-big{ font-size:20px; font-weight:900; } .td-note{ font-size:12.5px; color:var(--ink2); margin:4px 0; line-height:1.5; } .td-note b{ color:var(--ink); } .td-warn{ color:var(--warn); font-weight:700; }
 
   /* 2026-10-19-c */
@@ -3078,7 +3080,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
+const APP_BUILD_VERSION = '2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -6146,8 +6148,13 @@ function agEvents(){
   const t = todayStr(), dn = agDone();
   return ca.events.filter(e => e && e.date >= t && e.date <= agAddDays(t, 7) && !dn[e.id + '|' + e.date]);
 }
+function agHiddenN(){
+  const ca = agCache().cal; if (!agCfg().calOn || !ca || !Array.isArray(ca.events)) return 0;
+  const t = todayStr(), dn = agDone(), end = agAddDays(t, 7);
+  return ca.events.filter(e => e && e.date >= t && e.date <= end && dn[e.id + '|' + e.date]).length;
+}
 function agRow(x){
-  return '<div class="td-row' + (x.pri ? ' soon' : '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span><button type="button" class="pc-btn small" data-ag="done" data-id="' + esc(x.id) + '" data-date="' + esc(x.date || '') + '">확인</button></div>';
+  return '<div class="td-row' + (x.pri ? ' soon' : '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span><button type="button" class="pc-btn small" data-ag="done" data-id="' + esc(x.id) + '" data-date="' + esc(x.date || '') + '" title="이 앱에서만 가려요. 구글 캘린더 일정은 그대로예요.">숨기기</button></div>';
 }
 async function agRefresh(kind, force){
   const c = agCfg(), ca = agCache(), now = Date.now();
@@ -6163,9 +6170,64 @@ async function agRefresh(kind, force){
   try {
     const j = await agGet(url);
     if (!j || j.ok === false) throw new Error((j && j.error) || '응답 이상');
+    if (kind === 'body') agIbRecord(j.inbody);
     agCacheSet(kind, Object.assign({}, j, { at: new Date().toISOString(), tryAt: now, err: '' }));
   } catch (e) { ent.err = e && e.message ? String(e.message) : '실패'; agCacheSet(kind, ent); }
   finally { agBusy[kind] = false; if (mode === 'today') renderToday(true); }
+}
+/* 인바디 변화(어제·직전 / 7회 평균 대비): 서버가 prev·ma7를 주면 그것을 쓰고, 없으면 이 기기가 본 기록으로 계산 */
+const AG_IBH = 'ag_ibh_v1';
+const IB_KEYS = { w: ['weight', 'wt'], m: ['skeletalMuscle', 'skeletalMuscleMass', 'smm', 'muscle'], f: ['fatMass', 'bodyFatMass', 'fatKg'], p: ['fatPct', 'pbf', 'bodyFatPct'] };
+function agIbNum(v){ if (v == null || v === '') return null; const n = Number(v); return isNaN(n) ? null : n; }
+function agIbSnap(o){
+  if (!o || typeof o !== 'object') return null;
+  const r = {}; Object.keys(IB_KEYS).forEach(k => { r[k] = null; IB_KEYS[k].some(n => { const v = agIbNum(o[n]); if (v != null) { r[k] = v; return true; } return false; }); });
+  if (r.f == null && r.w != null && r.p != null) r.f = Math.round(r.w * r.p) / 100;   // 체지방량 = 체중 × 체지방률
+  return r;
+}
+function agIbRecord(ib){
+  if (!ib || !/^\d{4}-\d{2}-\d{2}/.test(String(ib.date || ''))) return;
+  const sn = agIbSnap(ib); if (!sn || sn.w == null) return;
+  const h = agJ(AG_IBH, {}); h[String(ib.date).slice(0, 10)] = sn;
+  Object.keys(h).sort().slice(0, -40).forEach(k => { delete h[k]; });
+  try { localStorage.setItem(AG_IBH, JSON.stringify(h)); } catch (e) { /* 무시 */ }
+}
+function agIbDelta(b){
+  const ib = b && b.inbody, cur = agIbSnap(ib); if (!cur) return null;
+  const dt = String(ib.date || '').slice(0, 10), h = agJ(AG_IBH, {}), ds = Object.keys(h).sort();
+  let prev = null, prevDate = '';
+  const sp = agIbSnap(b.inbodyPrev || b.prev);
+  if (sp && sp.w != null) { prev = sp; prevDate = String((b.inbodyPrev || b.prev).date || '').slice(0, 10); }
+  else { const pd = ds.filter(d => d < dt).pop(); if (pd) { prev = h[pd]; prevDate = pd; } }
+  const sm = agIbSnap(b.ma7 || b.inbodyMA7) || {}, ma = {}; let n = 0;
+  const last7 = ds.filter(d => d <= dt).slice(-7); n = last7.length;
+  Object.keys(IB_KEYS).forEach(k => {
+    let v = sm[k]; if (k === 'p' && v == null) v = agIbNum(b.fatPctMA7);
+    if (v == null && n >= 3) { const xs = last7.map(d => h[d] && h[d][k]).filter(x => x != null); if (xs.length >= 3) v = xs.reduce((a, c) => a + c, 0) / xs.length; }
+    ma[k] = v == null ? null : v;
+  });
+  const dd = prevDate && dt ? Math.round((Date.parse(dt + 'T00:00:00Z') - Date.parse(prevDate + 'T00:00:00Z')) / 86400000) : null;
+  return { cur, prev, ma, prevLabel: !prev ? '직전' : (dd === 1 ? '어제' : '직전 ' + Number(prevDate.slice(5, 7)) + '/' + Number(prevDate.slice(8))), n };
+}
+function agIbTable(b){
+  const d = agIbDelta(b); if (!d) return '';
+  const rows = [['w', '체중', 'kg', -1, 1], ['m', '골격근', 'kg', 1, 1], ['f', '체지방', 'kg', -1, 1], ['p', '체지방률', '%', -1, 1]];
+  const cell = (v, base, good, dec) => {
+    if (v == null || base == null) return '<div class="z">—</div>';
+    const x = Math.round((v - base) * Math.pow(10, dec)) / Math.pow(10, dec);
+    if (x === 0) return '<div class="z">±0</div>';
+    return '<div class="' + (x * good > 0 ? 'g' : 'w') + '">' + (x > 0 ? '+' : '−') + Math.abs(x).toFixed(dec) + '</div>';
+  };
+  let h = '<div class="td-ib"><div class="h">인바디</div><div class="h">' + esc(d.prevLabel) + ' 대비</div><div class="h">7회 평균 대비' + (d.n && d.n < 7 ? '(' + d.n + '회)' : '') + '</div>';
+  rows.forEach(r => {
+    const k = r[0], v = d.cur[k];
+    h += '<div class="l"><b>' + (v == null ? '-' : v.toFixed(1)) + r[2] + '</b><small>' + r[1] + '</small></div>' + cell(v, d.prev && d.prev[k], r[3], r[4]) + cell(v, d.ma[k], r[3], r[4]);
+  });
+  h += '</div>';
+  const notes = [];
+  if (d.cur.m == null) notes.push('골격근량은 바디 서버 요약에 아직 없어서 표시되지 않아요.');
+  if (!d.prev) notes.push('비교할 이전 기록이 아직 없어요. 이 앱을 열 때마다 쌓여요.');
+  return h + (notes.length ? '<p class="td-note">' + notes.join(' ') + '</p>' : '') + '<p class="td-note">초록 = 좋은 방향(체중·지방은 감소, 골격근은 증가). 서버가 이전·평균값을 주지 않으면 이 기기가 본 기록으로 계산해요.</p>';
 }
 function agMoneyCard(){
   const c = agCfg(); if (!c.moneyUrl || !c.moneyKey) return '';
@@ -6179,8 +6241,8 @@ function agBodyCard(){
   let h = '<!--c:body--><div class="td-card"><h3>🏋 오늘 체중 · 식단</h3>';
   if (ok) {
     h += '<div class="td-qk" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
-      '<div><div class="td-note">인바디' + (ib ? '(' + esc(String(ib.date || '').slice(5).replace('-', '/')) + ')' : '') + '</div><div class="td-big">' + (ib && ib.weight != null ? esc(ib.weight) + 'kg' : '-') + '</div><div class="td-note">' + (ib && ib.fatPct != null ? '체지방률 ' + esc(ib.fatPct) + '%' : '') + (b.fatPctMA7 != null ? ' · 최근 7번 평균 ' + esc(Math.round(b.fatPctMA7 * 10) / 10) + '%' : '') + '</div></div>' +
-      '<div><div class="td-note">오늘 식단</div><div class="td-big">' + (ml && ml.recorded ? Math.round(ml.calories || 0).toLocaleString('ko-KR') + 'kcal' : '미기록') + '</div><div class="td-note">' + (ml && ml.recorded ? '단백질 ' + Math.round(ml.protein || 0) + 'g' + (ml.estimated ? ' · 추정 포함' : '') : '') + '</div></div></div>';
+      '<div><div class="td-note">인바디' + (ib ? '(' + esc(String(ib.date || '').slice(5).replace('-', '/')) + ')' : '') + '</div><div class="td-big">' + (ib && ib.weight != null ? esc(ib.weight) + 'kg' : '-') + '</div><div class="td-note">' + (ib && ib.fatPct != null ? '체지방률 ' + esc(ib.fatPct) + '%' : '') + '</div></div>' +
+      '<div><div class="td-note">오늘 식단</div><div class="td-big">' + (ml && ml.recorded ? Math.round(ml.calories || 0).toLocaleString('ko-KR') + 'kcal' : '미기록') + '</div><div class="td-note">' + (ml && ml.recorded ? '단백질 ' + Math.round(ml.protein || 0) + 'g' + (ml.estimated ? ' · 추정 포함' : '') : '') + '</div></div></div>' + (ib ? agIbTable(b) : '');
   } else h += '<p class="td-note">아직 불러온 값이 없어요.</p>';
   return h + '<p class="td-note' + (b.err ? ' td-warn' : '') + '">' + (b.at ? '마지막 불러온 시각 ' + agFmtAt(b.at) : '') + (b.err ? ' · 불러오기 실패(' + esc(b.err) + ')' : '') + ' <button type="button" class="pc-btn small" data-ag="refresh" data-id="body">새로고침</button></p></div>';
 }
@@ -6206,7 +6268,8 @@ $('todayView').addEventListener('change', e => {
 });
 $('todayView').addEventListener('click', async e => {
   const x = e.target.closest('[data-ag]'); if (!x || x.tagName === 'INPUT') return; const k = x.dataset.ag;
-  if (k === 'done') { agDoneAdd(x.dataset.id, x.dataset.date || todayStr()); renderToday(true); }
+  if (k === 'done') { agDoneAdd(x.dataset.id, x.dataset.date || todayStr()); toast('이 앱에서만 숨겼어요. 구글 캘린더 일정은 그대로예요.'); renderToday(true); }
+  else if (k === 'undo') { try { localStorage.removeItem(AG_DONE); } catch (er) { /* 무시 */ } toast('숨긴 일정을 다시 보여요.'); renderToday(true); }
   else if (k === 'refresh') { x.textContent = '불러오는 중…'; agRefresh(x.dataset.id, true); }
   else if (k === 'loadcals') {
     const u = window.AppSync && window.AppSync.url(); if (!u) return; x.textContent = '불러오는 중…';
@@ -6241,7 +6304,10 @@ function renderToday(quiet){
   const wd = ['일', '월', '화', '수', '목', '금', '토'][new Date().getDay()];
   let h = '<div class="td-head"><div class="td-date">' + Number(t.slice(5, 7)) + '월 ' + Number(t.slice(8)) + '일 (' + wd + ')</div><div class="td-sub">' + (tasks.length ? '지금 확인할 일 ' + urgent + '건 · 곧 다가오는 일 ' + soon + '건' : '확인할 일이 없어요. 편안한 하루 보내세요.') + '</div></div>';
   const row = x => x.act === 'cal' ? agRow(x) : '<button type="button" class="td-row' + (x.pri ? ' soon' : '') + '" data-td="go" data-act="' + x.act + '" data-id="' + esc(x.id || '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span></button>';
-  if (tasks.length) h += '<!--c:tasks--><div class="td-card"><h3>할 일 · 일정</h3>' + tasks.slice(0, 12).map(row).join('') + (tasks.length > 12 ? '<p class="td-note">외 ' + (tasks.length - 12) + '건</p>' : '') + '</div>';
+  { const hid = agHiddenN(), shown = tasks.slice(0, 12); let lastPri = -1;
+    if (tasks.length || hid) h += '<!--c:tasks--><div class="td-card"><h3>할 일 · 일정</h3>' + shown.map(x => { const sec = x.pri !== lastPri ? '<div class="td-sec">' + (x.pri === 0 ? '🔔 지금 확인할 일' : '🗓 곧 다가오는 일') + '</div>' : ''; lastPri = x.pri; return sec + row(x); }).join('') + (tasks.length > 12 ? '<p class="td-note">외 ' + (tasks.length - 12) + '건</p>' : '') +
+      (tasks.length ? '<p class="td-note">🔔 지금 확인할 일은 다른 탭 위쪽 알림에도 떠요(구글 캘린더 일정은 오늘 화면에만). 🗓 곧 다가오는 일은 오늘 화면에만 보여요.' + (tasks.some(x => x.act === 'cal') ? ' “숨기기”는 이 앱에서만 가려요.' : '') + '</p>' : '') +
+      (hid ? '<p class="td-note">숨긴 캘린더 일정 ' + hid + '건 · <button type="button" class="pc-btn small" data-ag="undo">다시 보기</button></p>' : '') + '</div>'; }
   h += agMoneyCard() + agBodyCard();
   // 회의비
   const mt = window.AppMeeting ? window.AppMeeting.summary() : null;
