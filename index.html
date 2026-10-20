@@ -126,7 +126,7 @@
   .miniicon{ background:none; border:none; color:var(--ink2); font-size:14px; padding:2px 4px; border-radius:6px; }
   .miniicon:hover{ color:var(--ink); background:var(--line); }
 
-  .erow.editmode input, .erow.editmode select{
+  .erow.editmode input, .erow.editmode select, .erow.editmode textarea{
     width:100%; border:1px solid var(--line2); border-radius:7px; padding:6px 8px; font-size:12.5px; background:var(--bg); color:var(--ink);
   }
 
@@ -254,9 +254,10 @@
     background:var(--surface); border:1px solid var(--ink); border-top:none; border-radius:0 0 10px 10px;
     padding:0 12px 12px;
   }
-  .addrow-memo input{
+  .addrow-memo input, .addrow-memo textarea{
     width:100%; border:1px solid var(--line2); border-radius:8px; padding:7px 10px; font-size:12px; background:var(--bg); color:var(--ink);
   }
+  .addrow-memo textarea, .erow.editmode textarea{ font-family:inherit; line-height:1.5; min-height:56px; max-height:50vh; resize:vertical; box-sizing:border-box; display:block; }
 
   /* ---------- badges ---------- */
   .badge-caution{ display:inline-block; margin-top:10px; background:transparent; border:1.5px solid var(--ink3); color:var(--ink2); font-size:11.5px; font-weight:700; padding:3.5px 10px; border-radius:999px; }
@@ -676,6 +677,9 @@
   #md-dlg h3, #md-cl-dlg h3, #md-sms-dlg h3, #md-bd-dlg h3, #md-wz-dlg h3{ margin:0 0 4px; font-size:16px; }
   #md-dlg .pc-f input, #md-dlg .pc-f select, #md-cl-dlg .pc-f input, #md-wz-dlg .pc-f input, #md-sms-dlg .pc-f input, #md-sms-dlg .pc-f select, #md-sms-dlg textarea, #medView .pc-f select, #medView .pc-f input{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; box-sizing:border-box; }
   #md-sms-dlg textarea{ min-height:96px; resize:vertical; }
+  textarea.ml{ font:inherit; font-size:15px; line-height:1.5; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:96px; max-height:55vh; resize:vertical; box-sizing:border-box; display:block; }
+  textarea.ml:focus-visible{ outline:3px solid var(--pc); outline-offset:2px; }
+  #md-dlg .pc-f textarea{ font:inherit; font-size:15px; line-height:1.55; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:220px; max-height:65vh; resize:vertical; box-sizing:border-box; }
   #md-dlg .mp-chk, #md-cl-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #md-dlg .mp-chk input, #md-cl-dlg .mp-chk input{ width:auto; min-height:0; }
   .md-flt{ display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px; }
   .md-f{ font:inherit; font-size:12.5px; font-weight:700; padding:6px 11px; border-radius:999px; border:1px solid var(--line2); background:var(--surface); color:var(--ink2); cursor:pointer; }
@@ -811,7 +815,7 @@
         <button id="addExpenseBtn">+ 추가</button>
       </div>
       <div class="addrow-memo">
-        <input type="text" id="newMemo" placeholder="메모 (선택)">
+        <textarea id="newMemo" rows="2" placeholder="메모 (선택)"></textarea>
       </div>
     </div>
     <datalist id="itemSuggestions"></datalist>
@@ -1129,7 +1133,7 @@
   <label class="pc-f">질병·사고 (같은 질병끼리 한도 계산)<select id="mp-f-dz"></select></label>
   <label class="pc-f" id="mp-f-dznew-wrap" hidden>새 질병·사고 이름<input id="mp-f-dznew" type="text" autocomplete="off" placeholder="예: 경추간판장애 (M50)"></label>
   <label class="pc-f">증상<input id="mp-f-symptom" type="text" placeholder="예: 고관절 우측 다리 통증"></label>
-  <label class="pc-f">메모(선택)<input id="mp-f-memo" type="text"></label>
+  <label class="pc-f">메모(선택)<textarea id="mp-f-memo" class="ml" rows="3"></textarea></label>
   <div class="mp-warn" id="mp-f-warn" aria-live="polite"></div>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-mp="d-cancel">취소</button><button class="pc-btn primary" data-mp="d-save">저장</button></div>
   <button id="mp-d-delete" class="pc-btn danger wide" data-mp="d-delete">이 기록 삭제</button>
@@ -1160,7 +1164,7 @@
   <label class="pc-f">회사 예상 지원금 직접 입력(비우면 자동 계산)<input id="md-f-cov" type="number" inputmode="numeric" min="0" step="any"></label>
   <div id="md-f-qc" class="pc-row2"><label class="pc-f">회사 신청일(이미 신청했다면)<input id="md-f-qco" type="date"></label><label class="pc-f">실비 신청일(이미 신청했다면)<input id="md-f-qin" type="date"></label></div>
   <p class="pc-hint" id="md-f-qchint" style="margin:0 0 6px"></p>
-  <label class="pc-f">메모(선택)<input id="md-f-memo" type="text"></label>
+  <label class="pc-f">메모(선택)<textarea id="md-f-memo" rows="6" placeholder="보험사 안내 문자 등 긴 내용도 그대로 붙여넣을 수 있어요"></textarea></label>
   <div class="md-chk" id="md-f-chkwrap" hidden>⚠ <span id="md-f-chktext"></span><label class="mp-chk"><input type="checkbox" id="md-f-chkok"> 확인했어요 (표시 지우기)</label></div>
   <div class="md-mp" id="md-f-mp"></div>
   <h4 style="margin:14px 0 6px">실비 묶음</h4>
@@ -1262,7 +1266,7 @@
     <label class="pc-f">OPI률(%) (비우면 자동 계산)<input id="py-f-opirate" type="number" inputmode="decimal" min="0" step="any"></label>
   </div>
   <label class="pc-f">인상률 구성<input id="py-f-parts" type="text" placeholder="예: 3% + 2.8%(나)"></label>
-  <label class="pc-f">메모(선택)<input id="py-f-memo" type="text"></label>
+  <label class="pc-f">메모(선택)<textarea id="py-f-memo" class="ml" rows="3"></textarea></label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-py="d-cancel">취소</button><button class="pc-btn primary" data-py="d-save">저장</button></div>
   <button id="py-d-delete" class="pc-btn danger wide" data-py="d-delete">이 기록 삭제</button>
 </dialog>
@@ -1285,7 +1289,7 @@
   <label class="sh-donechk"><input type="checkbox" id="sk-f-open"> 횟수 제한 없이, 받을 때마다 체크해서 추가 (예: 보톡스) — 위 금액은 1회 기본 가격이고 시술마다 다른 가격도 입력할 수 있어요</label>
   <label class="pc-f">이전에 받은 횟수 (날짜를 모르는 것)<input id="sk-f-pre" type="number" inputmode="numeric" min="0" step="1" placeholder="0"></label>
   <label class="pc-f">결제일<input id="sk-f-date" type="date"></label>
-  <label class="pc-f">메모(선택)<input id="sk-f-memo" type="text"></label>
+  <label class="pc-f">메모(선택)<textarea id="sk-f-memo" class="ml" rows="3"></textarea></label>
   <div class="sk-calc" id="sk-f-calc" aria-live="polite"></div>
   <div class="grp" style="margin-top:12px">시술 기록 <span id="sk-f-count" class="sk-cnt"></span></div>
   <div id="sk-f-sess"></div>
@@ -1309,7 +1313,7 @@
   <datalist id="sz-brand-list"></datalist>
   <div class="grp">실측 치수 (cm)</div>
   <div id="sz-f-fields" class="pc-row2 sz-fields"></div>
-  <label class="pc-f">메모(선택)<input id="sz-f-note" type="text" placeholder="예: 어깨가 조금 큼, 세탁 후 줄어듦"></label>
+  <label class="pc-f">메모(선택)<textarea id="sz-f-note" class="ml" rows="3" placeholder="예: 어깨가 조금 큼, 세탁 후 줄어듦"></textarea></label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-sz="d-cancel">취소</button><button class="pc-btn primary" data-sz="d-save">저장</button></div>
   <button id="sz-d-delete" class="pc-btn danger wide" data-sz="d-delete">이 치수 삭제</button>
 </dialog>
@@ -1343,7 +1347,7 @@
   </div>
   <label class="pc-f">가격(원)<input id="gr-f-price" type="number" min="0" step="1000" inputmode="numeric"></label>
   <p class="pc-preview" id="gr-f-prev"></p>
-  <label class="pc-f">메모<input id="gr-f-note" type="text"></label>
+  <label class="pc-f">메모<textarea id="gr-f-note" class="ml" rows="3"></textarea></label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-gf="r-cancel">취소</button><button class="pc-btn primary" data-gf="r-save">저장</button></div>
   <button id="gr-d-delete" class="pc-btn danger wide" data-gf="r-delete">이 요금 기록 삭제</button>
 </dialog>
@@ -1355,7 +1359,7 @@
     <label class="pc-f">분류<select id="sb-f-cat"></select></label>
   </div>
   <label class="pc-f">내용<input id="sb-f-name" type="text"></label>
-  <label class="pc-f">메모(선택)<input id="sb-f-memo" type="text" placeholder="예: 건강보험"></label>
+  <label class="pc-f">메모(선택)<textarea id="sb-f-memo" class="ml" rows="3" placeholder="예: 건강보험"></textarea></label>
   <label class="pc-f">카드 (회의비 카드 구분과 같은 목록)<select id="sb-f-card" data-cb="1"></select><input id="sb-f-card-new" type="text" hidden placeholder="새 카드 이름 (회의비에도 함께 추가돼요)"></label>
   <div class="grp" style="margin-top:12px;font-size:11.5px;font-weight:700;color:var(--ink2)">💳 카드를 바꿔야 하나요?</div>
   <div class="pc-row2">
@@ -1390,7 +1394,7 @@
   </div>
   <div id="pp-f-clubs" class="pk-tags"></div>
   <label class="pc-f">만나는 주기(일) — 이 사람만 따로 정하기<input id="pp-f-cycle" type="number" min="1" max="365" inputmode="numeric" placeholder="비우면 그룹 기본"><small id="pp-f-cycle-h" class="pc-hint" style="display:block;margin:3px 0 0"></small></label>
-  <label class="pc-f">메모(선택)<input id="pp-f-memo" type="text"></label>
+  <label class="pc-f">메모(선택)<textarea id="pp-f-memo" class="ml" rows="3"></textarea></label>
   <label class="pc-f">등록일(만난 적 없을 때 기준)<input id="pp-f-since" type="date"></label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-pp="p-cancel">취소</button><button class="pc-btn primary" data-pp="p-save">저장</button></div>
   <button id="pp-d-delete" class="pc-btn danger wide" data-pp="p-delete">이 사람 삭제</button>
@@ -1435,7 +1439,7 @@
   </div>
   <label class="pc-f">장소(선택)<input id="mt-f-place" type="text"></label>
   <label class="pc-f" id="mt-f-energy-wrap">만난 뒤 에너지(선택)<select id="mt-f-energy"><option value="">기록 안 함</option><option value="charge">충전됐어요</option><option value="normal">보통</option><option value="drain">방전됐어요</option></select></label>
-  <label class="pc-f">한 줄 메모<input id="mt-f-memo" type="text"></label>
+  <label class="pc-f">메모<textarea id="mt-f-memo" class="ml" rows="3"></textarea></label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-pp="m-cancel">취소</button><button class="pc-btn primary" data-pp="m-save">저장</button></div>
   <div id="mt-f-bd" class="pc-f" hidden><span id="mt-f-bd-txt"></span><button type="button" class="pc-btn small" data-pp="bd-open" style="margin-top:6px">🔗 같은 날 다른 기록과 한 번으로 묶기</button></div>
   <button id="mt-d-delete" class="pc-btn danger wide" data-pp="m-delete">이 기록 삭제</button>
@@ -2205,7 +2209,7 @@
         <button class="miniicon" data-save="${id}" title="저장">✔</button>
         <button class="miniicon" data-cancel="${id}" title="취소">✕</button>
       </div>
-      <input type="text" value="${escapeHtml(exp.memo||'')}" data-f="memo" placeholder="메모 (선택)" style="grid-column:3; margin-top:2px;">`;
+      <textarea data-f="memo" rows="3" placeholder="메모 (선택)" style="grid-column:1 / -1; margin-top:2px;">${escapeHtml(exp.memo||'')}</textarea>`;
     row.querySelector('[data-save]').addEventListener('click', () => {
       const date = row.querySelector('[data-f="date"]').value;
       const cardType = row.querySelector('[data-f="cardType"]').value;
@@ -3080,7 +3084,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
+const APP_BUILD_VERSION = '2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5745,6 +5749,22 @@ function migrateV(){
   try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
 }
 
+function migrateX(){
+  // 2026-10-11 광교365메디컬의원 진료 건 메모에 메리츠화재 안내 문자(영양제 5만원 제외) 추가 (해당 진료 기록이 있을 때 1회만)
+  const MK = 'mig_x_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const c = MD.items.filter(i => i.date === '2026-10-11' && String(i.place || '').indexOf('광교365메디컬') >= 0);
+  const it = c.find(i => Number(i.total) === 104800) || c[0]; if (!it) return;   // 아직 이 기기에 기록이 없으면 다음 실행 때 다시 시도
+  const SMS = ['[메리츠화재 안내 문자] 사고번호 2026-10130192 · 손사 담당 신수연', '',
+    '청구하신 내역 중 [스모프리피드주]는 영양제에 해당하여 약관상 보상하지 않는 사항으로 보험금 지급에서 제외됩니다.', '',
+    '※ 약관 상 보상하지 않는 사항', '· 영양제', '· 면역력증진, 비타민제, 보신용 투약, 호르몬 투약 및 예방접종 등', '· 단순한 피로 및 권태', '',
+    '★ 접수번호: 2026-10130192', '★ 병원/내원일자: 2026-10-11일자 광교365메디컬의원', '★ 보험금 조정내역: 50,000원', '',
+    '※ 아래 내용 확인 시 재심사 가능', '● 검사결과지(결핍 수치 증명)', '- 영양제: 혈청 총단백(혈액검사) 6.0 g/dl 이하 · 혈청 알부민(혈액검사) 3.5 g/dl 이하 · 이 외 영양소 관련 객관적 검사 기준 수치 이하',
+    '- 비타민제: 비타민 결핍수치가 증명되는 혈액검사 결과지, 결핍수치 30 이하', '',
+    '문의: 신수연 010-4159-9157 (업무용 전화로 문자 수신은 안 됨)'].join('\n');
+  if (String(it.memo || '').indexOf('2026-10130192') < 0) { it.memo = (String(it.memo || '').trim() ? String(it.memo).trim() + '\n\n' : '') + SMS; it.u = nowIso(); MD = mdNorm(MD); mdSave(); changed(); }
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
+
 function migrateW(){
   // 회사 지급예정일이 주말·공휴일이면 앞 평일로 당기는 규칙이 생김 → 아직 입금 전이고 예전 규칙으로 자동 계산돼 있던 지급예정일만 새 규칙으로 갱신(직접 고친 날짜는 그대로, 1회만)
   const MK = 'mig_w_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
@@ -6763,7 +6783,7 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW();
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX();
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
