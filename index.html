@@ -1176,7 +1176,10 @@
 </dialog>
 
 <dialog id="qk-dlg">
-  <h3>💰 회의비 지출 빠른 추가</h3>
+  <h3>📩 회의비 입력 (카드 승인 문자)</h3>
+  <p class="pc-hint" style="margin:2px 0 8px">카드 승인 문자를 붙여넣으면 날짜·카드·항목·금액이 자동으로 채워져요. 확인한 뒤 “추가”를 눌러 주세요.</p>
+  <textarea id="qk-sms" class="ml" rows="4" placeholder="[Web발신] 하나4*7*승인 고*희 12,000원 일시불 10/20 12:10 식당이름 누적…"></textarea>
+  <p class="td-note" id="qk-note" style="min-height:18px"></p>
   <div class="pc-row2"><label class="pc-f">날짜<input id="qk-date" type="date"></label><label class="pc-f">카드<select id="qk-card"></select></label></div>
   <label class="pc-f">항목<input id="qk-item" type="text" list="itemSuggestions" placeholder="예: 점심 식대"></label>
   <label class="pc-f">결제금액(원)<input id="qk-amt" type="number" inputmode="numeric" min="0" step="100"></label>
@@ -1230,7 +1233,7 @@
 </dialog>
 
 <dialog id="md-sms-dlg">
-  <h3>📩 카드 승인 문자로 등록</h3>
+  <h3>📩 의료비 입력 (카드 승인 문자)</h3>
   <p class="pc-hint" style="margin-top:2px">병원·약국 카드 승인 문자를 붙여넣으세요. 여러 건을 한꺼번에 붙여넣어도 돼요. 인식된 내용을 확인한 뒤 등록하면, 회사·실비는 “미신청”으로 들어가요.</p>
   <textarea id="md-sms-in" rows="5" placeholder="[Web발신] 하나8*9*승인 고*희 45,650원 일시불 08/25 15:12 광교삼성H정형외과 누적…"></textarea>
   <div id="md-sms-list"></div>
@@ -2634,6 +2637,8 @@
     list: () => (data.expenses || []).map(e => ({ id: e.id, date: e.date, item: e.item, amount: Number(e.amount) || 0, cardType: e.cardType })),
     series: n => { const out = []; let [y, m] = todayMonth().split('-').map(Number); for(let i = 0; i < n; i++){ const mk = y + '-' + String(m).padStart(2, '0'); out.unshift({ mk, spent: monthSpent(mk), budget: monthBudget(mk) || 0 }); m--; if(m < 1){ m = 12; y--; } } return out; },
     byCard: mk => { const o = {}; monthExpenses(mk).forEach(e => { const c = e.cardType || '기타'; o[c] = (o[c] || 0) + (Number(e.amount) || 0); }); return o; },
+    parseSms: t => parseSmsExpense(t),
+    hasDup: (date, item, amount) => (data.expenses || []).some(e => e.date === date && Number(e.amount) === Number(amount) && String(e.item || '').trim() === String(item || '').trim()),
     expense: id => { const e = data.expenses.find(x => x.id === id); return e ? { id: e.id, date: e.date, item: e.item, amount: Number(e.amount) || 0, cardType: e.cardType } : null; },
     missingMonths: () => { const ms = allMonthsSorted(), out = []; if(!ms.length) return out; const tm = todayMonth(); let [y, m] = ms[0].split('-').map(Number);
       for(let i = 0; i < 120; i++){ const k = y + '-' + String(m).padStart(2, '0'); if(k >= tm) break; if(!data.budgets[k] && !monthExpenses(k).length) out.push(k); m++; if(m > 12){ m = 1; y++; } }
@@ -3084,7 +3089,7 @@ optReg(() => { Life.TYPES.length = 0; LIFE_BASE.forEach(x => Life.TYPES.push(x))
 
 (function(){
 "use strict";
-const APP_BUILD_VERSION = '2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
+const APP_BUILD_VERSION = '2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -6220,13 +6225,14 @@ function agIbDelta(b){
   if (sp && sp.w != null) { prev = sp; prevDate = String((b.inbodyPrev || b.prev).date || '').slice(0, 10); }
   else { const pd = ds.filter(d => d < dt).pop(); if (pd) { prev = h[pd]; prevDate = pd; } }
   const sm = agIbSnap(b.ma7 || b.inbodyMA7) || {}, ma = {}; let n = 0;
-  const last7 = ds.filter(d => d < dt).slice(-7); n = last7.length;
+  const last7 = ds.filter(d => d <= dt).slice(-7); n = last7.length;
   Object.keys(IB_KEYS).forEach(k => {
     let v = sm[k]; if (k === 'p' && v == null) v = agIbNum(b.fatPctMA7);
     if (v == null && n >= 3) { const xs = last7.map(d => h[d] && h[d][k]).filter(x => x != null); if (xs.length >= 3) v = xs.reduce((a, c) => a + c, 0) / xs.length; }
     ma[k] = v == null ? null : v;
   });
   const dd = prevDate && dt ? Math.round((Date.parse(dt + 'T00:00:00Z') - Date.parse(prevDate + 'T00:00:00Z')) / 86400000) : null;
+  const srvMa = sm.w != null || sm.p != null; if (srvMa) { const mc = b.ma7Count && agIbNum(b.ma7Count.weight); n = mc || 7; }
   return { cur, prev, ma, prevLabel: !prev ? '직전' : (dd === 1 ? '어제' : '직전 ' + Number(prevDate.slice(5, 7)) + '/' + Number(prevDate.slice(8))), n };
 }
 function agIbTable(b){
@@ -6383,7 +6389,7 @@ function renderToday(quiet){
   } catch (er) { /* 돌아보기 오류가 오늘 화면을 막지 않게 */ }
   // 빠른 입력
   h += agConnCard();
-  h += '<!--c:quick--><div class="td-card"><h3>⚡ 빠른 입력</h3><div class="td-qk"><button type="button" class="pc-btn" data-td="go" data-act="qk-exp">💰 회의비 지출</button><button type="button" class="pc-btn" data-td="go" data-act="qk-meet">👥 만남 기록</button><button type="button" class="pc-btn" data-td="go" data-act="qk-skin">✨ 시술 받았어요</button><button type="button" class="pc-btn" data-td="go" data-act="qk-med">🏥 진료 문자 등록</button></div></div>';
+  h += '<!--c:quick--><div class="td-card"><h3>⚡ 빠른 입력</h3><div class="td-qk"><button type="button" class="pc-btn" data-td="go" data-act="qk-exp">💰 회의비 입력</button><button type="button" class="pc-btn" data-td="go" data-act="qk-meet">👥 만남 기록</button><button type="button" class="pc-btn" data-td="go" data-act="qk-skin">✨ 시술 받았어요</button><button type="button" class="pc-btn" data-td="go" data-act="qk-med">🏥 의료비 입력</button></div></div>';
   // 백업 · 저장공간
   const A = window.AppSync, st = storageInfo();
   if (A) {
@@ -6420,8 +6426,26 @@ function qkExpOpen(){
   const A = window.AppCards, cards = A && A.list ? A.list() : [];
   $('qk-card').innerHTML = cards.map(c => '<option value="' + esc(c) + '">' + esc(c) + '</option>').join('');
   try { const last = localStorage.getItem('qk_card_v1'); if (last && cards.indexOf(last) >= 0) $('qk-card').value = last; } catch (e) { /* 무시 */ }
-  $('qk-date').value = todayStr(); $('qk-item').value = ''; $('qk-amt').value = ''; $('qk-dlg').showModal();
+  $('qk-date').value = todayStr(); $('qk-item').value = ''; $('qk-amt').value = ''; $('qk-sms').value = ''; $('qk-note').textContent = ''; $('qk-note').classList.remove('td-warn'); $('qk-dlg').showModal();
+  setTimeout(() => $('qk-sms').focus(), 60);
 }
+function qkSmsParse(){
+  const raw = $('qk-sms').value, note = $('qk-note'), A = window.AppMeeting, C = window.AppCards;
+  if (!raw.trim()) { note.textContent = ''; note.classList.remove('td-warn'); return; }
+  let p = null; try { p = A && A.parseSms ? A.parseSms(raw) : null; } catch (e) { p = null; }
+  if (!p || (!p.amount && !p.item)) { note.textContent = '문자에서 금액·가맹점을 못 찾았어요. 카드 승인 문자 전체를 붙여넣거나 아래에 직접 입력해 주세요.'; note.classList.add('td-warn'); return; }
+  if (p.date) $('qk-date').value = p.date;
+  if (p.item) $('qk-item').value = p.item;
+  if (p.amount) $('qk-amt').value = p.amount;
+  let added = false;
+  if (p.cardType && C && C.list().indexOf(p.cardType) < 0) { try { added = !!C.add(p.cardType); } catch (e) { /* 무시 */ } }
+  if (p.cardType && C) { $('qk-card').innerHTML = C.list().map(c => '<option value="' + esc(c) + '">' + esc(c) + '</option>').join(''); $('qk-card').value = p.cardType; }
+  const parts = []; if (p.date) parts.push(p.date.slice(5).replace('-', '.')); if (p.cardType) parts.push(p.cardType); if (p.item) parts.push(p.item); if (p.amount) parts.push(won(p.amount));
+  const dup = A && A.hasDup && A.hasDup($('qk-date').value, $('qk-item').value.trim(), Number($('qk-amt').value));
+  note.textContent = '✓ 인식됨: ' + parts.join(' · ') + ' — 확인 후 “추가”를 눌러 주세요' + (added ? ' (카드구분에 ‘' + p.cardType + '’을 추가했어요)' : '') + (dup ? ' ⚠ 같은 날짜·항목·금액이 이미 있어요.' : '');
+  note.classList.toggle('td-warn', !!dup);
+}
+$('qk-sms').addEventListener('input', () => { clearTimeout(qkSmsParse._t); qkSmsParse._t = setTimeout(qkSmsParse, 150); });
 function qkExpSave(){
   if (!$('qk-date').value || !$('qk-item').value.trim() || !(Number($('qk-amt').value) > 0)) { toast('날짜 · 항목 · 금액을 입력해 주세요.'); return; }
   $('newDate').value = $('qk-date').value; if ($('qk-card').value) $('newCard').value = $('qk-card').value; $('newItem').value = $('qk-item').value.trim(); $('newAmount').value = $('qk-amt').value;
