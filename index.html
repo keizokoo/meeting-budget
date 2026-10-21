@@ -3107,7 +3107,7 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-21-a (묶음 풀림 방지: 옛 버전 앱이 덮어써도 묶음 유지 · 풀린 묶음 1회 복구 · 옛 버전 기기 경고/저장 중단) / 이전: 2026-10-20-k (메모 목록 표시: 줄바꿈 유지 · 2줄까지만 보이고 누르면 펼침 — 의료비·회의비·쇼핑·구독/결제 메모) / 이전: 2026-10-20-j (의료비: 보험사 제외 금액 입력칸 · 의료비 탭 버튼 이름 “의료비 입력”으로 통일) / 이전: 2026-10-20-i (인바디 표 가로선 정렬) / 이전: 2026-10-20-h (의료비 입력도 오늘에 머무름 · 등록하면 오늘 숫자 갱신) / 이전: 2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
+const APP_BUILD_VERSION = '2026-10-21-b (가이드 갱신 수신: 시트 등록대기의 guide 항목을 id로 덮어쓰기) / 이전: 2026-10-21-a (묶음 풀림 방지: 옛 버전 앱이 덮어써도 묶음 유지 · 풀린 묶음 1회 복구 · 옛 버전 기기 경고/저장 중단) / 이전: 2026-10-20-k (메모 목록 표시: 줄바꿈 유지 · 2줄까지만 보이고 누르면 펼침 — 의료비·회의비·쇼핑·구독/결제 메모) / 이전: 2026-10-20-j (의료비: 보험사 제외 금액 입력칸 · 의료비 탭 버튼 이름 “의료비 입력”으로 통일) / 이전: 2026-10-20-i (인바디 표 가로선 정렬) / 이전: 2026-10-20-h (의료비 입력도 오늘에 머무름 · 등록하면 오늘 숫자 갱신) / 이전: 2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5549,9 +5549,18 @@ window.AppExtras = {
       SH = sNormalize({ items: m.items, del: m.del }); sSave(); ch = true;
     }
     if (Array.isArray(json && json.inbox)) {   /* 시트 '등록대기' 탭에 적어 둔 새 소비 기록 — 같은 id는 더 최근에 수정한 쪽이 우선 */
-      let ic = false;
+      let ic = false, gc = 0;
       json.inbox.forEach(r => {
         try {
+          if (r && r.kind === 'guide' && r.item && r.item.id) {   /* 가이드 항목 갱신(Claude가 정희님 컨펌 후 적어 둔 것) — 같은 id를 덮어쓰되, 이 앱에서 더 최근에 고친 건 그대로 둠. 수정시각(u)이 없으면 무시 */
+            const o = r.item, id = String(o.id), tt = String(o.title || '').trim(), uu = String(o.u || '');
+            if (!tt || !uu || !Array.isArray(o.lines) || GD.del[id]) return;
+            const ex = GD.items.find(x => x.id === id);
+            if (ex && String(ex.u || '') >= uu) return;
+            const nx = { id, kind: o.kind || 'skin', title: tt, ordered: !!o.ordered, o: (o.o === undefined ? null : o.o), lines: o.lines.map(x => String(x == null ? '' : x)), u: uu };
+            if (ex) Object.assign(ex, nx); else GD.items.push(nx);
+            gc++; return;
+          }
           if (!r || r.kind !== 'shop' || !r.item || !r.item.id) return;
           const o = r.item, id = String(o.id); if (SH.del[id]) return;
           const ex = SH.items.find(x => x.id === id);
@@ -5561,6 +5570,7 @@ window.AppExtras = {
         } catch (e) { /* 한 줄이 잘못돼도 나머지는 계속 */ }
       });
       if (ic) { SH = sNormalize(SH); sSave(); ch = true; }
+      if (gc) { GD = gdNorm(GD); gdSave(); ch = true; try { toast('가이드 ' + gc + '건이 갱신됐어요.'); } catch (e) { /* 무시 */ } }
     }
     if (ok('golf')) {
       const r = json.golf, mc = Shop.mergeById(G.courses, r.courses, G.del, cleanDel(r.del)), mr = Shop.mergeById(G.rounds, r.rounds, G.del, cleanDel(r.del));
