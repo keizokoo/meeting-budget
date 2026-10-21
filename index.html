@@ -2394,6 +2394,7 @@
     retryTimer = setTimeout(() => { syncUp(true); }, waits[Math.min(retryCount, waits.length - 1)]);
     retryCount++;
   }
+  const curBuild_ = () => { try { return typeof APP_BUILD_VERSION === 'string' ? APP_BUILD_VERSION.split(' ')[0] : ''; } catch (e) { return ''; } };
   async function syncUp(silent){
     const url = data.settings.sheetUrl;
     if(!url){ if(!silent) showToast('먼저 Apps Script URL을 입력해주세요'); return false; }
@@ -2409,10 +2410,18 @@
       if(!silent) showToast('백업 중...');
       const remote = await fetchRemote(url);
       pulledThisSession = true;
+      { // 다른 기기가 더 새 버전으로 저장했으면, 옛 버전인 이 기기는 덮어쓰지 않고 멈춤 / 옛 버전이 저장한 흔적이 있으면 알림
+        const myB = curBuild_(), remB = String((remote && remote._build) || '');
+        if(myB && remB && remB > myB){
+          setSyncStatus('fail', '이 기기의 앱이 옛 버전(' + myB + ')이에요 — 시트는 ' + remB + '로 저장돼 있어 덮어쓰지 않았어요. 앱을 완전히 닫고 두 번 새로고침해 주세요');
+          showToast('⚠ 이 기기의 앱이 옛 버전이라 저장을 멈췄어요. 앱을 완전히 닫고 두 번 새로고침해 주세요'); return false;
+        }
+        try{ if(myB && !remB && localStorage.getItem('mylife_pushed_b')) showToast('⚠ 옛 버전 앱을 쓰는 다른 기기가 시트에 저장했어요. 그 기기 앱을 완전히 닫고 두 번 새로고침해 주세요'); }catch(e){}
+      }
       if(mergeRemote(remote)){ render(); }
       stage = 'push'; syncState.stage = 'push'; setSyncStatus('saving');
       const rev = 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: rev, _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
+      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: rev, _build: curBuild_(), _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
       try{ await fetchT(url, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body }, 45000); }
       catch(pe){ /* 보내는 중 응답이 늦어도 시트엔 저장됐을 수 있어요 — 아래 확인 단계에서 다시 확인 */ }
       stage = 'verify'; syncState.stage = 'verify'; setSyncStatus('saving');
@@ -2423,6 +2432,7 @@
       }
       if(!ok && lastErr) throw lastErr;
       if(!ok) throw new Error('시트에 저장됐는지 확인하지 못했어요');
+      try{ if(curBuild_()) localStorage.setItem('mylife_pushed_b', curBuild_()); }catch(e){}
       data.settings.lastSync = new Date().toISOString();
       persistOnly(data); // lastSync 기록만 반영 (자동백업 재귀 방지)
       if(seqAtStart === changeSeq) setDirty(false);   // 저장하는 동안 새 변경이 없었을 때만 '미저장' 해제
@@ -2449,7 +2459,7 @@
     try{
       const url = data.settings.sheetUrl;
       if(!url || !data.settings.autoBackup || !isDirty() || !pulledThisSession) return;
-      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: 'h' + Date.now().toString(36), _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
+      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: 'h' + Date.now().toString(36), _build: curBuild_(), _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
       if(body.length * 3 > 60000) return;   // 닫히는 중 전송은 약 64KB 제한 — 큰 데이터는 다음 접속 때 합쳐서 올림
       fetch(url, { method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain;charset=utf-8'}, body });
     }catch(e){ /* 무시 */ }
@@ -3097,7 +3107,7 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-20-k (메모 목록 표시: 줄바꿈 유지 · 2줄까지만 보이고 누르면 펼침 — 의료비·회의비·쇼핑·구독/결제 메모) / 이전: 2026-10-20-j (의료비: 보험사 제외 금액 입력칸 · 의료비 탭 버튼 이름 “의료비 입력”으로 통일) / 이전: 2026-10-20-i (인바디 표 가로선 정렬) / 이전: 2026-10-20-h (의료비 입력도 오늘에 머무름 · 등록하면 오늘 숫자 갱신) / 이전: 2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
+const APP_BUILD_VERSION = '2026-10-21-a (묶음 풀림 방지: 옛 버전 앱이 덮어써도 묶음 유지 · 풀린 묶음 1회 복구 · 옛 버전 기기 경고/저장 중단) / 이전: 2026-10-20-k (메모 목록 표시: 줄바꿈 유지 · 2줄까지만 보이고 누르면 펼침 — 의료비·회의비·쇼핑·구독/결제 메모) / 이전: 2026-10-20-j (의료비: 보험사 제외 금액 입력칸 · 의료비 탭 버튼 이름 “의료비 입력”으로 통일) / 이전: 2026-10-20-i (인바디 표 가로선 정렬) / 이전: 2026-10-20-h (의료비 입력도 오늘에 머무름 · 등록하면 오늘 숫자 갱신) / 이전: 2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5521,6 +5531,13 @@ window.AppExtras = {
   strip(obj){ this.keys.forEach(k => { delete obj[k]; }); delete obj.inbox; },
   importSync(json){
     let ch = false;
+    /* 묶음(vg) 보호: 옛 버전 앱이 저장하면 묶음 값만 빈칸으로 바뀌고 수정시각은 그대로 남아, 병합에서 빈 값이 이겨 묶음이 풀려요.
+       병합 결과의 vg가 비었는데 다른 쪽 사본에 묶음이 있으면 되살려요. strict(의료비): 빈 값은 앱이 쓰는 일이 없어 항상 되살림 / 아니면(인맥): 수정시각이 같거나 더 오래됐을 때만 */
+    const keepVg = (merged, lists, strict) => {
+      const best = {}; lists.forEach(l => (l || []).forEach(x => { if (x && x.id && x.vg) { const c = best[x.id]; if (!c || String(x.u || '') > String(c.u || '')) best[x.id] = x; } }));
+      let n = 0; merged.forEach(x => { const b = best[x.id]; if (b && !x.vg && (strict || String(b.u || '') >= String(x.u || ''))) { x.vg = b.vg; n++; } });
+      return n;
+    };
     const ok = k => json && json[k] && typeof json[k] === 'object';
     if (ok('opts')) { optMerge(json.opts); ch = true; }
     if (ok('priceCheck')) {
@@ -5556,6 +5573,7 @@ window.AppExtras = {
     }
     if (ok('people')) {
       const r = json.people, mp = Shop.mergeById(Q.people, r.people, Q.del, cleanDel(r.del)), mm = Shop.mergeById(Q.meets, r.meets, Q.del, cleanDel(r.del));
+      keepVg(mm.items, [Q.meets, r.meets], false);
       const cfg = r.cfg && String(r.cfg.u || '') > String(Q.cfg.u || '') ? r.cfg : Q.cfg;
       const mc = Shop.mergeById(Q.clubs, r.clubs, Q.del, cleanDel(r.del));
       Q = qNorm({ people: mp.items, meets: mm.items, clubs: mc.items, cfg, del: mp.del }); seedClubs(); qSave(); ch = true;
@@ -5574,6 +5592,7 @@ window.AppExtras = {
     }
     if (ok('medical')) {
       const r = json.medical, mi = Shop.mergeById(MD.items, r.items, MD.del, cleanDel(r.del)), mc = Shop.mergeById(MD.claims, r.claims, MD.del, cleanDel(r.del));
+      keepVg(mi.items, [MD.items, r.items], true);
       const cfg = r.cfg && String(r.cfg.u || '') > String(MD.cfg.u || '') ? r.cfg : MD.cfg;
       MD = mdNorm({ items: mi.items, claims: mc.items, cfg, del: mi.del }); mdSave(); ch = true;
     }
@@ -5785,6 +5804,18 @@ function migrateX(){
   try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
 }
 
+function migrateY(){
+  // 옛 버전 앱이 시트를 덮어써서 풀린 묶음(의료비 40건·인맥 4건)을 10/20 저장본 기준으로 한 번만 되살림. 지금 묶음이 비어 있는 건만 복구하고, 이미 새로 묶은 건은 그대로 둠
+  const MK = 'mig_y_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const MAP = {"med":{"md_s4":"vg_bmvf524zje442","md_s5":"vg_bmvf524zje442","md_s6":"vg_bmvf527pndv3s","md_s7":"vg_bmvf527pndv3s","md_s9":"vg_bmvf52bee2gdj","md_s10":"vg_bmvf52bee2gdj","md_s11":"vg_bmvf52dnimkco","md_s13":"vg_bmvf52k9arszb","md_s16":"vg_bmvf52dnimkco","md_s17":"vg_bmvf52k9arszb","md_s32":"vg_bmvf52sgsddbi","md_s33":"vg_bmvf52sgsddbi","md_s35":"vg_bmvf52we7ozk8","md_s36":"vg_bmvf52we7ozk8","md_s39":"vg_bmvf52zkxvmg8","md_s40":"vg_bmvf52zkxvmg8","md_s41":"vg_bmvf531jcu5bq","md_s42":"vg_bmvf531jcu5bq","md_s43":"vg_bmvf534xbo4l7","md_s44":"vg_bmvf534xbo4l7","md_s46":"vg_bmvf53875z8e2","md_s47":"vg_bmvf53875z8e2","md_s49":"vg_bmvf51o244rwo","md_s50":"vg_bmvf51o244rwo","md_s63":"vg_bmvf50y4yi418","md_s64":"vg_bmvf50y4yi418","md_s67":"vg_bmvf50shl0d35","md_s68":"vg_bmvf50shl0d35","md_s77":"vg_bmvf504yuno7n","md_s78":"vg_bmvf504yuno7n","md_s81":"vg_bmvf4zzdv0vh1","md_s82":"vg_bmvf4zzdv0vh1","md_s84":"vg_bmvf4z5yjp2da","md_s85":"vg_bmvf4z5yjp2da","md_s86":"vg_bmvf4yulotvpr","md_s87":"vg_bmvf4yulotvpr","mdmvew24q0buig":"vg_bmvf4zc358fib","mdmvew49wh2cla":"vg_bmvf4zc358fib","mdmvf0iwib1ov3":"vg_bmvf568ez176k","mdmvf563qvg9cr":"vg_bmvf568ez176k"},"meets":{"mtmvfcf5mbejdq":"vgmvfdsr5m4ryn","mtmvfcfe7ancvo":"vgmvfdsr5m4ryn","mtmvfcgq96w9yk":"vgmvfdsqkjxrga","mtmvfch1529c0j":"vgmvfdsqkjxrga"}};
+  const t = nowIso(); let ch = false, cq = false, seen = 0;
+  MD.items.forEach(i => { const v = MAP.med[i.id]; if (!v) return; seen++; if (!i.vg) { i.vg = v; i.u = t; ch = true; } });
+  Q.meets.forEach(m => { const v = MAP.meets[m.id]; if (!v) return; seen++; if (!m.vg) { m.vg = v; m.u = t; cq = true; } });
+  if (ch) { MD = mdNorm(MD); mdSave(); }
+  if (cq) { Q = qNorm(Q); qSave(); }
+  if (ch || cq) changed();
+  if (seen) { try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ } if (ch || cq) toast('풀렸던 묶음을 되살렸어요.'); }
+}
 function migrateW(){
   // 회사 지급예정일이 주말·공휴일이면 앞 평일로 당기는 규칙이 생김 → 아직 입금 전이고 예전 규칙으로 자동 계산돼 있던 지급예정일만 새 규칙으로 갱신(직접 고친 날짜는 그대로, 1회만)
   const MK = 'mig_w_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
@@ -6822,7 +6853,7 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX();
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY();
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
