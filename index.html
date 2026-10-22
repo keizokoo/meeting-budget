@@ -633,6 +633,7 @@
   #undo-bar button{ border:0; background:none; color:var(--accent); font:inherit; font-weight:800; cursor:pointer; padding:4px 6px; } #undo-bar[hidden]{ display:none; }
   svg.ch{ width:100%; height:auto; display:block; margin:6px 0 2px; } svg.ch rect{ fill:var(--line2); } svg.ch rect.hi{ fill:var(--accent); } svg.ch line.mk{ stroke:var(--ink); stroke-width:1.5; } svg.ch text{ fill:var(--ink2); font-size:9px; text-anchor:middle; }
   .td-cfg label{ display:flex; align-items:center; gap:8px; padding:6px 0; font-size:13.5px; } .td-cfg input{ width:auto; min-height:0; }
+  .td-ckg > summary{ cursor:pointer; font-weight:700; font-size:13px; min-height:38px; display:flex; align-items:center; gap:6px; border-bottom:1px solid var(--line); } .td-ckrow{ display:flex; align-items:center; gap:6px; } .td-ckrow .td-row{ flex:1; width:auto; min-width:0; } .td-ckrow .pc-btn{ flex:none; }
   .td-chk summary{ cursor:pointer; font-weight:800; font-size:14px; min-height:36px; display:flex; align-items:center; } .td-chk .td-row{ min-height:44px; font-size:13px; }
   .rm-done summary{ cursor:pointer; font-size:13px; font-weight:800; color:var(--ink2); padding:10px 0; min-height:40px; }
   .fz-guide summary{ cursor:pointer; font-weight:800; font-size:14px; min-height:40px; display:flex; align-items:center; } .fz-guide{ margin:10px 0; } .fz-guide .fz-t{ font-size:12px; font-weight:800; color:var(--ink2); margin:12px 0 4px; }
@@ -707,6 +708,8 @@
   .md-closed{ margin-top:8px; font-weight:800; color:var(--good); font-size:13px; }
   .md-ck2{ display:flex; align-items:center; gap:8px; padding:6px 0; font-size:13.5px; } .md-ck2 input{ width:auto; min-height:0; }
   #md-cl-list{ margin:6px 0 10px; max-height:30vh; overflow-y:auto; }
+  .qk-mrow{ border:1px solid var(--line2); border-radius:10px; padding:8px 10px; margin-top:8px; } .qk-mrow.off{ opacity:.55; } .qk-mrow .qk-mh{ display:flex; gap:8px; align-items:center; font-size:13px; } .qk-mrow .qk-mh b{ flex:1; min-width:0; } .qk-mrow .qk-mi{ display:flex; gap:6px; margin-top:6px; } .qk-mrow input[type=text]{ flex:1; min-width:0; } .qk-mrow input[type=number]{ width:96px; }
+  .hist-row{ flex-wrap:wrap; } .hist-pv{ flex-basis:100%; font-size:12px; color:var(--ink2); margin-top:4px; }
   .md-sms-card{ border:1px solid var(--line2); border-radius:10px; padding:10px 12px; margin-top:10px; } .md-sms-card.off{ opacity:.55; }
   .md-sg{ display:flex; align-items:flex-end; }
   .md-rule{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px solid var(--line); font-size:13px; }
@@ -1108,6 +1111,12 @@
   <div id="hist-list"></div>
   <div style="margin-top:12px;text-align:right"><button type="button" class="pc-btn" id="hist-close">닫기</button></div>
 </dialog>
+<dialog id="srv-dlg">
+  <h3>🩺 서버 연결 점검</h3>
+  <p class="td-note">시트의 Apps Script에 읽기 전용으로 물어봐요. 데이터는 바뀌지 않아요.</p>
+  <div id="srv-list"></div>
+  <div style="margin-top:12px;text-align:right"><button type="button" class="pc-btn" id="srv-close">닫기</button></div>
+</dialog>
 <dialog id="bulk-dlg">
   <h3>📅 지난 만남 한꺼번에 입력</h3>
   <p class="pc-hint">사람마다 “마지막으로 만난 날”만 고르면 만남 기록이 만들어져요. 비워 둔 사람은 건너뛰어요. (사람당 1건)</p>
@@ -1182,12 +1191,15 @@
 <dialog id="qk-dlg">
   <h3>📩 회의비 입력 (카드 승인 문자)</h3>
   <p class="pc-hint" style="margin:2px 0 8px">카드 승인 문자를 붙여넣으면 날짜·카드·항목·금액이 자동으로 채워져요. 확인한 뒤 “추가”를 눌러 주세요.</p>
-  <textarea id="qk-sms" class="ml" rows="4" placeholder="[Web발신] 하나4*7*승인 고*희 12,000원 일시불 10/20 12:10 식당이름 누적…"></textarea>
+  <textarea id="qk-sms" class="ml" rows="4" placeholder="[Web발신] 하나4*7*승인 고*희 12,000원 일시불 10/20 12:10 식당이름 누적…  (여러 건을 한꺼번에 붙여넣어도 돼요)"></textarea>
   <p class="td-note" id="qk-note" style="min-height:18px"></p>
+  <div id="qk-multi"></div>
+  <div id="qk-one">
   <div class="pc-row2"><label class="pc-f">날짜<input id="qk-date" type="date"></label><label class="pc-f">카드<select id="qk-card"></select></label></div>
   <label class="pc-f">항목<input id="qk-item" type="text" list="itemSuggestions" placeholder="예: 점심 식대"></label>
   <label class="pc-f">결제금액(원)<input id="qk-amt" type="number" inputmode="numeric" min="0" step="100"></label>
-  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-qk="cancel">취소</button><button class="pc-btn primary" data-qk="save">추가</button></div>
+  </div>
+  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-qk="cancel">취소</button><button class="pc-btn primary" id="qk-save" data-qk="save">추가</button></div>
 </dialog>
 <dialog id="qk-sk-dlg">
   <h3>✨ 오늘 받은 시술 체크</h3>
@@ -1608,6 +1620,12 @@
         <button class="primary" id="drawerSyncUp">☁ 지금 백업</button>
         <button id="drawerSyncDown">↓ 시트에서 불러오기</button>
         <button id="drawerHist" type="button">🕘 이전 버전에서 복원</button>
+        <button id="drawerSrvChk" type="button">🩺 서버 연결 점검</button>
+      </div>
+      <div class="fieldrow" style="margin-top:10px">
+        <label>이 기기 이름 (백업에 기록돼요 · 어느 기기가 저장했는지 확인용)</label>
+        <input type="text" id="devNameInput" maxlength="20" placeholder="예: 폰, 태블릿, 회사PC" autocomplete="off">
+        <div class="urlsaved" id="devLastNote"></div>
       </div>
       <label style="display:flex; align-items:center; gap:7px; margin-top:12px; font-size:12.5px; color:var(--ink);">
         <input type="checkbox" id="autoBackupToggle" style="width:auto;">
@@ -2133,6 +2151,10 @@
     const raw = el('smsPasteInput').value;
     const note = el('smsPasteNote');
     if(!raw.trim()){ note.textContent = ''; note.classList.remove('warn'); return; }
+    { let many = []; try{ many = window.AppMeeting && window.AppMeeting.parseMany ? window.AppMeeting.parseMany(raw) : []; }catch(e){ many = []; }
+      if((many.length >= 2 || (many.length === 1 && many[0].cancel)) && window.AppQuick){   // 여러 건·취소 문자는 한꺼번에 입력 창에서 확인
+        el('smsPasteInput').value = ''; note.textContent = ''; note.classList.remove('warn'); window.AppQuick.open(raw); return;
+      } }
     const parsed = parseSmsExpense(raw);
     if(!parsed || (!parsed.amount && !parsed.item)){
       note.textContent = '문자에서 금액/가맹점을 못 찾았어요. 직접 입력해주세요.';
@@ -2394,7 +2416,13 @@
     retryTimer = setTimeout(() => { syncUp(true); }, waits[Math.min(retryCount, waits.length - 1)]);
     retryCount++;
   }
-  const curBuild_ = () => { try { return typeof APP_BUILD_VERSION === 'string' ? APP_BUILD_VERSION.split(' ')[0] : ''; } catch (e) { return ''; } };
+  const devName_ = () => { try {
+    const mine = localStorage.getItem('mylife_dev_name'); if(mine) return mine;
+    let id = localStorage.getItem('mylife_dev_id'); if(!id){ id = Math.random().toString(36).slice(2, 6); localStorage.setItem('mylife_dev_id', id); }
+    const ua = navigator.userAgent || '', k = /iPhone/.test(ua) ? '아이폰' : /iPad/.test(ua) ? '아이패드' : /Android/.test(ua) ? (/Mobile/.test(ua) ? '안드로이드폰' : '안드로이드태블릿') : /Windows/.test(ua) ? '윈도우PC' : /Macintosh/.test(ua) ? '맥' : '기기';
+    return k + '-' + id;
+  } catch(e){ return ''; } };
+  const curBuild_ = () => { try { return typeof window.APP_BUILD_VERSION === 'string' ? window.APP_BUILD_VERSION.split(' ')[0] : ''; } catch (e) { return ''; } };   // 스크립트2의 빌드 문자열은 window로 공유 (이전엔 못 읽어 _build가 항상 빈 값이었어요)
   async function syncUp(silent){
     const url = data.settings.sheetUrl;
     if(!url){ if(!silent) showToast('먼저 Apps Script URL을 입력해주세요'); return false; }
@@ -2410,10 +2438,11 @@
       if(!silent) showToast('백업 중...');
       const remote = await fetchRemote(url);
       pulledThisSession = true;
+      try{ if(remote && remote._dev) localStorage.setItem('mylife_remote_last', JSON.stringify({ dev: String(remote._dev), b: String(remote._build || ''), rev: String(remote._rev || ''), at: Date.now() })); }catch(e){}
       { // 다른 기기가 더 새 버전으로 저장했으면, 옛 버전인 이 기기는 덮어쓰지 않고 멈춤 / 옛 버전이 저장한 흔적이 있으면 알림
         const myB = curBuild_(), remB = String((remote && remote._build) || '');
         if(myB && remB && remB > myB){
-          setSyncStatus('fail', '이 기기의 앱이 옛 버전(' + myB + ')이에요 — 시트는 ' + remB + '로 저장돼 있어 덮어쓰지 않았어요. 앱을 완전히 닫고 두 번 새로고침해 주세요');
+          setSyncStatus('fail', '이 기기의 앱이 옛 버전(' + myB + ')이에요 — 시트는 ' + remB + (remote._dev ? '(' + remote._dev + ')' : '') + '로 저장돼 있어 덮어쓰지 않았어요. 앱을 완전히 닫고 두 번 새로고침해 주세요');
           showToast('⚠ 이 기기의 앱이 옛 버전이라 저장을 멈췄어요. 앱을 완전히 닫고 두 번 새로고침해 주세요'); return false;
         }
         try{ if(myB && !remB && localStorage.getItem('mylife_pushed_b')) showToast('⚠ 옛 버전 앱을 쓰는 다른 기기가 시트에 저장했어요. 그 기기 앱을 완전히 닫고 두 번 새로고침해 주세요'); }catch(e){}
@@ -2421,7 +2450,7 @@
       if(mergeRemote(remote)){ render(); }
       stage = 'push'; syncState.stage = 'push'; setSyncStatus('saving');
       const rev = 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: rev, _build: curBuild_(), _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
+      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: rev, _build: curBuild_(), _dev: devName_(), _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
       try{ await fetchT(url, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body }, 45000); }
       catch(pe){ /* 보내는 중 응답이 늦어도 시트엔 저장됐을 수 있어요 — 아래 확인 단계에서 다시 확인 */ }
       stage = 'verify'; syncState.stage = 'verify'; setSyncStatus('saving');
@@ -2459,7 +2488,7 @@
     try{
       const url = data.settings.sheetUrl;
       if(!url || !data.settings.autoBackup || !isDirty() || !pulledThisSession) return;
-      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: 'h' + Date.now().toString(36), _build: curBuild_(), _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
+      const body = JSON.stringify(Object.assign({}, data, window.AppExtras ? window.AppExtras.exportSync() : {}, { _rev: 'h' + Date.now().toString(36), _build: curBuild_(), _dev: devName_(), _agenda: window.AppAgenda ? window.AppAgenda.mirror() : undefined }));
       if(body.length * 3 > 60000) return;   // 닫히는 중 전송은 약 64KB 제한 — 큰 데이터는 다음 접속 때 합쳐서 올림
       fetch(url, { method:'POST', mode:'no-cors', keepalive:true, headers:{'Content-Type':'text/plain;charset=utf-8'}, body });
     }catch(e){ /* 무시 */ }
@@ -2500,7 +2529,7 @@
       const rows = lst.list;
       if(!Array.isArray(rows)){ box.innerHTML = '<p class="td-note">시트의 Apps Script가 아직 이전 버전 조회(v21)를 지원하지 않아요. code.gs v21을 새 버전으로 배포해 주세요.</p>'; return; }
       if(!rows.length){ box.innerHTML = '<p class="td-note">보관된 이전 버전이 아직 없어요. 백업이 쌓이면 30분 간격으로 최대 12개가 보관돼요.</p>'; return; }
-      box.innerHTML = rows.map(x => '<div class="hist-row"><span><b>' + new Date(x.at).toLocaleString('ko-KR') + '</b><i>데이터 약 ' + Math.max(1, Math.round(Number(x.len) / 1024)) + 'KB</i></span><button type="button" class="primary" data-hist="' + x.i + '">이 시점과 합치기</button></div>').join('');
+      box.innerHTML = rows.map(x => '<div class="hist-row"><span><b>' + new Date(x.at).toLocaleString('ko-KR') + '</b><i>데이터 약 ' + Math.max(1, Math.round(Number(x.len) / 1024)) + 'KB</i></span><button type="button" class="primary" data-hist="' + x.i + '">이 시점과 합치기</button><button type="button" class="pc-btn small" data-histv="' + x.i + '">내용 보기</button><div class="hist-pv" id="hpv' + x.i + '"></div></div>').join('');
     }catch(e){ box.innerHTML = '<p class="td-note">목록을 불러오지 못했어요: ' + String(e.message || e).replace(/</g, '&lt;') + '</p>'; }
   }
   el('hist-list').addEventListener('click', async ev => {
@@ -2524,6 +2553,49 @@
       showToast('이전 버전과 합쳤어요. ☁ 지금 백업으로 시트에도 반영해 주세요');
     }catch(e){ showToast('복원 실패: ' + String(e.message || e)); }
   });
+  el('hist-list').addEventListener('click', async ev => {   // 합치기 전에 그 시점의 기기·빌드·건수를 미리 봐요 (읽기 전용)
+    const b = ev.target.closest('[data-histv]'); if(!b) return;
+    const url = data.settings.sheetUrl, box = el('hpv' + b.dataset.histv); if(!url || !box) return;
+    box.textContent = '불러오는 중…';
+    try{
+      const r = await fetchT(url + (url.indexOf('?') >= 0 ? '&' : '?') + 'action=hist&i=' + encodeURIComponent(b.dataset.histv) + '&t=' + Date.now(), { method:'GET', cache:'no-store' }, 30000);
+      const j = JSON.parse(await r.text()); if(j && j.error) throw new Error(j.error);
+      const sub = k => { let v = j[k]; if(typeof v === 'string'){ try{ v = JSON.parse(v); }catch(e){ v = null; } } return v && typeof v === 'object' ? v : null; };
+      const med = sub('medical'), ppl = sub('people'), parts = [];
+      parts.push('기기 ' + (j._dev || '기록 없음(옛 버전)') + ' · 앱 ' + (j._build || '기록 없음'));
+      parts.push('회의비 지출 ' + (Array.isArray(j.expenses) ? j.expenses.length : '?') + '건');
+      if(med && Array.isArray(med.items)) parts.push('의료비 ' + med.items.length + '건 (묶음 ' + med.items.filter(i => i && i.vg).length + '건)');
+      if(ppl && Array.isArray(ppl.meets)) parts.push('인맥 만남 ' + ppl.meets.length + '건 (묶음 ' + ppl.meets.filter(i => i && i.vg).length + '건)');
+      box.textContent = parts.join(' · ');
+    }catch(e){ box.textContent = '미리보기 실패: ' + String(e.message || e); }
+  });
+  { const di = el('devNameInput'); if(di){ try{ di.value = localStorage.getItem('mylife_dev_name') || ''; di.placeholder = '자동: ' + devName_() + ' (원하면 직접 입력)'; }catch(e){}
+    di.addEventListener('change', () => { try{ const v = di.value.trim(); if(v) localStorage.setItem('mylife_dev_name', v); else localStorage.removeItem('mylife_dev_name'); di.placeholder = '자동: ' + devName_() + ' (원하면 직접 입력)'; }catch(e){} showToast('기기 이름을 저장했어요. 다음 백업부터 기록돼요'); });
+    const upd = () => { const n = el('devLastNote'); if(!n) return; try{ const o = JSON.parse(localStorage.getItem('mylife_remote_last') || 'null'); n.textContent = o && o.dev ? '시트에 마지막으로 저장한 기기: ' + o.dev + (o.b ? ' · 앱 ' + o.b : '') : '시트에 저장한 기기 기록이 아직 없어요 (다음 백업 뒤 표시)'; }catch(e){} };
+    upd(); el('syncNowBtn').addEventListener('click', upd); } }
+  async function srvCheck(){
+    const url = data.settings.sheetUrl, dlg = el('srv-dlg'), box = el('srv-list');
+    if(!url){ showToast('먼저 Apps Script URL을 입력해주세요'); return; }
+    box.innerHTML = '<p class="td-note">점검 중… (최대 1분)</p>'; if(!dlg.open) dlg.showModal();
+    const ex_ = v => String(v == null ? '' : v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])), rows = [], add = (st, t, d) => rows.push('<div class="hist-row"><span><b>' + (st === 1 ? '✅ ' : st === 0 ? '⚠ ' : '❌ ') + ex_(t) + '</b><i>' + ex_(d) + '</i></span></div>');
+    const q = a => url + (url.indexOf('?') >= 0 ? '&' : '?') + 'action=' + a + '&t=' + Date.now();
+    const get = async u => { const t0 = Date.now(), r = await fetchT(u, { method:'GET', cache:'no-store' }, 30000), tx = await r.text(); let j = null; try{ j = JSON.parse(tx); }catch(e){} return { j, ms: Date.now() - t0, len: tx.length }; };
+    try{
+      const b = await get(url + (url.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now());
+      if(!b.j || b.j.error){ add(-1, '백업 읽기', String((b.j && b.j.error) || '응답을 읽지 못했어요') + ' — URL·배포(Anyone) 설정을 확인하세요'); }
+      else{
+        add(1, '백업 읽기', (b.ms / 1000).toFixed(1) + '초 · 약 ' + Math.max(1, Math.round(b.len / 1024)) + 'KB');
+        const sb = String(b.j._build || ''), mb = curBuild_();
+        add(!sb ? 0 : sb === mb ? 1 : (sb > mb ? -1 : 0), '앱 빌드', '이 기기 ' + mb + ' · 시트 ' + (sb || '기록 없음') + (sb && sb > mb ? ' — 이 기기가 옛 버전이에요. 앱을 닫고 두 번 새로고침하세요' : sb && sb < mb ? ' — 다음 백업 때 맞춰져요' : ''));
+        add(b.j._dev ? 1 : 0, '마지막 저장 기기', b.j._dev ? String(b.j._dev) : '기록 없음 — 이 버전 이전 앱이 마지막으로 저장했거나 아직 이 버전으로 백업한 적이 없어요');
+      }
+    }catch(e){ add(-1, '백업 읽기', '연결 실패: ' + String(e.message || e)); }
+    try{ const h = await get(q('hist')); add(h.j && Array.isArray(h.j.list) ? 1 : -1, '이전 버전 복원 (v21 이상)', h.j && Array.isArray(h.j.list) ? '보관된 이전 버전 ' + h.j.list.length + '개' : '지원하지 않아요 — code.gs를 최신본으로 새 버전 배포하세요'); }catch(e){ add(-1, '이전 버전 복원 (v21 이상)', '연결 실패: ' + String(e.message || e)); }
+    try{ const c = await get(q('cals')); add(c.j && c.j.ok && Array.isArray(c.j.cals) ? 1 : -1, '캘린더 목록 (v24 이상)', c.j && c.j.ok && Array.isArray(c.j.cals) ? '캘린더 ' + c.j.cals.length + '개 확인' : '지원하지 않거나 권한이 없어요 — 최신 code.gs 배포 · 캘린더 권한 확인'); }catch(e){ add(-1, '캘린더 목록 (v24 이상)', '연결 실패: ' + String(e.message || e)); }
+    box.innerHTML = rows.join('') + '<p class="td-note">서버가 버전을 직접 알려주지 않아, 지원하는 기능으로 버전을 추정해요.</p>';
+  }
+  el('drawerSrvChk').addEventListener('click', srvCheck);
+  el('srv-close').addEventListener('click', () => el('srv-dlg').close());
   el('hist-close').addEventListener('click', () => el('hist-dlg').close());
   el('drawerHist').addEventListener('click', restoreHistory);
   el('syncNowBtn').addEventListener('click', () => { openDrawer(); });
@@ -2652,6 +2724,49 @@
     series: n => { const out = []; let [y, m] = todayMonth().split('-').map(Number); for(let i = 0; i < n; i++){ const mk = y + '-' + String(m).padStart(2, '0'); out.unshift({ mk, spent: monthSpent(mk), budget: monthBudget(mk) || 0 }); m--; if(m < 1){ m = 12; y--; } } return out; },
     byCard: mk => { const o = {}; monthExpenses(mk).forEach(e => { const c = e.cardType || '기타'; o[c] = (o[c] || 0) + (Number(e.amount) || 0); }); return o; },
     parseSms: t => parseSmsExpense(t),
+    /* 여러 건을 한꺼번에 붙여넣은 문자 → 건별로 나눠서 인식 ([Web발신] 기준, 없으면 줄 기준) */
+    parseMany: t => {
+      const txt = String(t || '').replace(/\r/g, '');
+      let parts = txt.split(/\[Web발신\]/i).map(x => x.trim()).filter(Boolean);
+      if(parts.length <= 1){
+        parts = [];
+        txt.split(/\n+/).map(x => x.trim()).filter(Boolean).forEach(l => { if(parts.length && l.indexOf('원') < 0) parts[parts.length - 1] += ' ' + l; else parts.push(l); });
+      }
+      const out = [];
+      parts.forEach(p => { let r = null; try{ r = parseSmsExpense(p); }catch(e){ r = null; } if(r && r.amount && r.item){ r.cancel = /취소/.test(p); out.push(r); } });
+      return out;
+    },
+    /* rows: [{date, cardType, item, amount}] 를 한 번에 저장 (저장·화면 갱신은 1회) */
+    addMany: rows => {
+      let n = 0, lastMk = null; const ids = [];
+      (rows || []).forEach(r => {
+        const date = r.date, item = String(r.item || '').trim(), amount = Number(r.amount);
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(date || '') || !item || !(amount > 0)) return;
+        let ct = r.cardType || ''; if(ct){ ct = CARD_ALIAS[ct] || ct; if(!data.cardTypes.includes(ct)) data.cardTypes.push(ct); }
+        const mk = monthKey(date);
+        if(!data.budgets[mk]){ const months = allMonthsSorted(), last = months[months.length - 1]; data.budgets[mk] = last ? monthBudget(last) : 550000; }
+        const nid = uid(); data.expenses.push({ id: nid, date, cardType: ct || (data.cardTypes[0] || ''), item, amount, memo: '' });
+        ids.push(nid); lastMk = mk; n++;
+      });
+      if(n){ saveData(data); if(lastMk) currentMonth = lastMk; try{ render(); }catch(e){ /* 무시 */ } }
+      return ids;
+    },
+    /* 취소 문자에 해당하는 기존 지출 찾기: 같은 금액 · 취소일 이전(31일 안) · 항목이 같거나 비슷하면 우선. 금액만 맞으면 weak */
+    findCancelTarget: r => {
+      const amt = Number(r.amount), nm = x => String(x || '').replace(/\s+/g, '').toLowerCase(), want = nm(r.item);
+      const c = (data.expenses || []).filter(e => Number(e.amount) === amt && e.date && e.date <= (r.date || '9999') && (!r.date || (Date.parse(r.date) - Date.parse(e.date)) / 86400000 <= 31));
+      if(!c.length) return null;
+      const same = c.filter(e => { const n = nm(e.item); return n && want && (n === want || n.indexOf(want) >= 0 || want.indexOf(n) >= 0); }).sort((a, b) => b.date.localeCompare(a.date));
+      if(same.length) return { id: same[0].id, date: same[0].date, item: same[0].item, weak: false };
+      if(c.length === 1) return { id: c[0].id, date: c[0].date, item: c[0].item, weak: true };
+      return null;
+    },
+    removeMany: ids => {
+      const set = {}; (ids || []).forEach(i => { set[i] = 1; });
+      const gone = (data.expenses || []).filter(e => set[e.id]); if(!gone.length) return [];
+      data.expenses = data.expenses.filter(e => !set[e.id]); saveData(data); try{ render(); }catch(e){ /* 무시 */ }
+      return gone.map(e => ({ date: e.date, cardType: e.cardType, item: e.item, amount: e.amount }));
+    },
     hasDup: (date, item, amount) => (data.expenses || []).some(e => e.date === date && Number(e.amount) === Number(amount) && String(e.item || '').trim() === String(item || '').trim()),
     expense: id => { const e = data.expenses.find(x => x.id === id); return e ? { id: e.id, date: e.date, item: e.item, amount: Number(e.amount) || 0, cardType: e.cardType } : null; },
     missingMonths: () => { const ms = allMonthsSorted(), out = []; if(!ms.length) return out; const tm = todayMonth(); let [y, m] = ms[0].split('-').map(Number);
@@ -3107,7 +3222,8 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-21-b (가이드 갱신 수신: 시트 등록대기의 guide 항목을 id로 덮어쓰기) / 이전: 2026-10-21-a (묶음 풀림 방지: 옛 버전 앱이 덮어써도 묶음 유지 · 풀린 묶음 1회 복구 · 옛 버전 기기 경고/저장 중단) / 이전: 2026-10-20-k (메모 목록 표시: 줄바꿈 유지 · 2줄까지만 보이고 누르면 펼침 — 의료비·회의비·쇼핑·구독/결제 메모) / 이전: 2026-10-20-j (의료비: 보험사 제외 금액 입력칸 · 의료비 탭 버튼 이름 “의료비 입력”으로 통일) / 이전: 2026-10-20-i (인바디 표 가로선 정렬) / 이전: 2026-10-20-h (의료비 입력도 오늘에 머무름 · 등록하면 오늘 숫자 갱신) / 이전: 2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
+const APP_BUILD_VERSION = '2026-10-22-b (취소 문자 자동 상계 · 일괄 등록 되돌리기 · 회의비 탭 여러 건 입력 · 기기 이름 기록 · 이전 버전 내용 보기 · 서버 연결 점검 · 데이터 점검 영역별 접기/숨기기) · 옛 버전 기기 감지 오류 수정(빌드 값이 시트에 안 올라가던 문제) / 이전: 2026-10-22-a (회의비 문자 여러 건 한꺼번에 입력 · 아비쥬 결제금/결제일 점검 한 줄로 · 캘린더 선택 연속 변경/전체 해제 오류 수정) / 이전: 2026-10-21-b (가이드 갱신 수신: 시트 등록대기의 guide 항목을 id로 덮어쓰기) / 이전: 2026-10-21-a (묶음 풀림 방지: 옛 버전 앱이 덮어써도 묶음 유지 · 풀린 묶음 1회 복구 · 옛 버전 기기 경고/저장 중단) / 이전: 2026-10-20-k (메모 목록 표시: 줄바꿈 유지 · 2줄까지만 보이고 누르면 펼침 — 의료비·회의비·쇼핑·구독/결제 메모) / 이전: 2026-10-20-j (의료비: 보험사 제외 금액 입력칸 · 의료비 탭 버튼 이름 “의료비 입력”으로 통일) / 이전: 2026-10-20-i (인바디 표 가로선 정렬) / 이전: 2026-10-20-h (의료비 입력도 오늘에 머무름 · 등록하면 오늘 숫자 갱신) / 이전: 2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
+window.APP_BUILD_VERSION = APP_BUILD_VERSION;
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5944,6 +6060,22 @@ function storageInfo(){
 const fmtKB = n => n >= 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB';
 
 /* ---- 데이터 점검 ---- */
+const CKI_KEY = 'ck_ign_v1';
+function ckIgn(){ try { const o = JSON.parse(localStorage.getItem(CKI_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
+function ckIgnSave(o){ const now = Date.now(); Object.keys(o).forEach(k => { if (now - o[k] > 90 * 86400000) delete o[k]; }); try { localStorage.setItem(CKI_KEY, JSON.stringify(o)); } catch (e) { /* 무시 */ } }
+window.__tdCkOpen = window.__tdCkOpen || {};
+function ckGroups(ck){   // 영역별로 접어서 보여줘요 (중요한 영역이 먼저)
+  const g = {}, order = []; ck.forEach(x => { if (!g[x.area]) { g[x.area] = []; order.push(x.area); } g[x.area].push(x); });
+  return order.map(a => { const l = g[a], imp = l.filter(x => x.sev <= 2).length;
+    return '<details class="td-ckg" data-ckarea="' + esc(a) + '"' + (window.__tdCkOpen[a] ? ' open' : '') + '><summary>' + esc(a) + ' · ' + l.length + '건' + (imp ? ' <span class="td-warn">(중요 ' + imp + ')</span>' : '') + '</summary>' +
+      l.map(x => '<div class="td-ckrow"><button type="button" class="td-row' + (x.sev >= 3 ? ' soon' : '') + '" data-td="go" data-act="' + x.go[0] + '" data-id="' + esc(x.go[1] || '') + '"><span class="ic">' + (x.sev === 1 ? '❗' : x.sev === 2 ? '⚠' : 'ℹ') + '</span><span class="tx"><b>' + esc(x.text) + '</b></span></button><button type="button" class="pc-btn small" data-td="ckign" data-k="' + esc(x.area + '|' + x.text) + '" title="이 항목을 숨겨요 (이 기기에서만)">숨기기</button></div>').join('') + '</details>'; }).join('');
+}
+$('todayView').addEventListener('click', e => {
+  const ig = e.target.closest('[data-td="ckign"]'), un = e.target.closest('[data-td="ckun"]');
+  if (ig) { const o = ckIgn(); o[ig.dataset.k] = Date.now(); ckIgnSave(o); toast('숨겼어요. 내용이 바뀌면 다시 나타나요.'); renderToday(true); }
+  else if (un) { try { localStorage.removeItem(CKI_KEY); } catch (er) { /* 무시 */ } renderToday(true); }
+});
+$('todayView').addEventListener('toggle', e => { const d = e.target; if (d && d.dataset && d.dataset.ckarea !== undefined) window.__tdCkOpen[d.dataset.ckarea] = d.open; }, true);
 function dataChecks(){
   const out = [], t = todayStr(), add = (sev, area, text, go) => out.push({ sev, area, text, go });
   SH.items.forEach(i => {
@@ -5972,8 +6104,10 @@ function dataChecks(){
   { const q = mdWzQueue().length; if (q) add(1, '의료비', '신청일·입금액이 빠진 청구 ' + q + '건 — 눌러서 한 건씩 채우기', ['wizard']); }
   SK.items.forEach(i => {
     const st = Skin.stats(i, SK.sessions);
-    if (!i.open && !(Number(i.cost) > 0)) add(2, '피부관리', i.name + ' — 결제금이 비어 있어요 (1회당 가격 계산이 안 돼요)', ['skin', i.id]);
-    if (!i.open && !i.date) add(3, '피부관리', i.name + ' — 결제일이 비어 있어요', ['skin', i.id]);
+    { const noC = !i.open && !(Number(i.cost) > 0), noD = !i.open && !i.date;
+      if (noC && noD) add(2, '피부관리', i.name + ' — 결제금 · 결제일이 비어 있어요 (눌러서 한 번에 입력 · 1회당 가격 계산에 필요)', ['skin', i.id]);
+      else if (noC) add(2, '피부관리', i.name + ' — 결제금이 비어 있어요 (1회당 가격 계산이 안 돼요)', ['skin', i.id]);
+      else if (noD) add(3, '피부관리', i.name + ' — 결제일이 비어 있어요', ['skin', i.id]); }
     if (st.over) add(2, '피부관리', i.name + ' — 총 횟수보다 ' + st.over + '회 더 체크됐어요', ['skin', i.id]);
   });
   { const bd = mtBdSuggest().length; if (bd) add(3, '인맥', '같은 날 같은 사람과 만난 기록 ' + bd + '건 — 한 번으로 묶으면 횟수·기분이 정확해져요', ['people-log']); }
@@ -6015,7 +6149,7 @@ function svgBars(vals, labels, o){
 }
 
 /* A2 되돌리기: 삭제 확인 직전 상태를 메모리에 저장해 두고, 삭제 직후 12초 동안 [되돌리기]를 보여줘요 */
-const UNDO = { snap: null, timer: null };
+const UNDO = { snap: null, timer: null, fn: null };
 (function(){
   const orig = window.confirm.bind(window);
   window.confirm = function(msg){
@@ -6027,7 +6161,12 @@ const UNDO = { snap: null, timer: null };
     return ok;
   };
 })();
+function undoBatch(msg, fn){   // 삭제 확인창이 없는 일괄 작업용 되돌리기 (fn이 직접 되돌림)
+  UNDO.snap = null; UNDO.fn = fn; clearTimeout(UNDO.timer);
+  $('undo-msg').textContent = msg; $('undo-bar').hidden = false; UNDO.timer = setTimeout(undoHide, 15000);
+}
 function undoCapture(){
+  UNDO.fn = null; $('undo-msg').textContent = '삭제했어요';
   const snap = {};
   try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); snap[k] = localStorage.getItem(k); } } catch (e) { return; }
   UNDO.snap = snap;
@@ -6039,8 +6178,9 @@ function undoCapture(){
     UNDO.timer = setTimeout(undoHide, 12000);
   }, 150);
 }
-function undoHide(){ $('undo-bar').hidden = true; clearTimeout(UNDO.timer); }
+function undoHide(){ $('undo-bar').hidden = true; clearTimeout(UNDO.timer); UNDO.fn = null; $('undo-msg').textContent = '삭제했어요'; }
 function undoApply(){
+  if (UNDO.fn) { const f = UNDO.fn; undoHide(); try { f(); } catch (e) { toast('되돌리지 못했어요.'); } return; }
   const s0 = UNDO.snap; if (!s0) return;
   const now = nowIso();
   Object.keys(s0).forEach(k => {
@@ -6237,9 +6377,10 @@ function agHiddenN(){
 function agRow(x){
   return '<div class="td-row' + (x.pri ? ' soon' : '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span><button type="button" class="pc-btn small" data-ag="done" data-id="' + esc(x.id) + '" data-date="' + esc(x.date || '') + '" title="이 앱에서만 가려요. 구글 캘린더 일정은 그대로예요.">숨기기</button></div>';
 }
+const agPend = {};
 async function agRefresh(kind, force){
   const c = agCfg(), ca = agCache(), now = Date.now();
-  if (agBusy[kind]) return;
+  if (agBusy[kind]) { if (force) agPend[kind] = true; return; }   // 불러오는 중에 캘린더를 또 고르면 끝난 뒤 한 번 더 불러와요
   const prev = ca[kind] || {}; if (!force && prev.tryAt && now - prev.tryAt < 10 * 60 * 1000) return;
   let url = '';
   if (kind === 'cal') { if (!c.calOn || !c.cals || !c.cals.length || !(window.AppSync && window.AppSync.url())) return; url = window.AppSync.url() + '?action=agenda&days=7&cals=' + encodeURIComponent(c.cals.join(',')); }
@@ -6254,7 +6395,7 @@ async function agRefresh(kind, force){
     if (kind === 'body') agIbRecord(j.inbody);
     agCacheSet(kind, Object.assign({}, j, { at: new Date().toISOString(), tryAt: now, err: '' }));
   } catch (e) { ent.err = e && e.message ? String(e.message) : '실패'; agCacheSet(kind, ent); }
-  finally { agBusy[kind] = false; if (mode === 'today') renderToday(true); }
+  finally { agBusy[kind] = false; if (mode === 'today') renderToday(true); if (agPend[kind]) { agPend[kind] = false; agRefresh(kind, true); } }
 }
 /* 인바디 변화(어제·직전 / 7회 평균 대비): 서버가 prev·ma7를 주면 그것을 쓰고, 없으면 이 기기가 본 기록으로 계산 */
 const AG_IBH = 'ag_ibh_v1';
@@ -6344,7 +6485,7 @@ $('todayView').addEventListener('change', e => {
   const x = e.target.closest('[data-ag]'); if (!x) return; const k = x.dataset.ag;
   if (k === 'calOn') { agSet({ calOn: x.checked }); if (x.checked) agRefresh('cal', true); }
   else if (k === 'mirror') { agSet({ mirror: x.checked }); if (window.AppSync) { window.AppSync.touch(); window.AppSync.up(true); } toast(x.checked ? '다음 백업부터 캘린더에 복사해요.' : '캘린더에 복사해 둔 알림을 정리해요.'); }
-  else if (k === 'cal') { const sel = Array.prototype.slice.call(document.querySelectorAll('#td-body [data-ag="cal"]:checked')).map(i => i.value); agSet({ cals: sel }); agRefresh('cal', true); }
+  else if (k === 'cal') { const sel = Array.prototype.slice.call(document.querySelectorAll('#td-body [data-ag="cal"]:checked')).map(i => i.value); agSet({ cals: sel }); if (!sel.length) agCacheSet('cal', {}); agRefresh('cal', true); }
   else if (k === 'moneyUrl' || k === 'moneyKey' || k === 'bodyUrl') { const o = {}; o[k] = k === 'moneyKey' ? x.value.replace(/[\s\u200B-\u200D\uFEFF]/g, '') : x.value.trim(); agSet(o); agRefresh(k === 'bodyUrl' ? 'body' : 'money', true); return; }
   renderToday(true);
 });
@@ -6458,10 +6599,9 @@ function renderToday(quiet){
       (st.pct >= 70 ? '<p class="td-note td-warn">저장공간이 차고 있어요. ' + (st.other > st.mine ? '다른 앱 데이터가 더 커요(해당 앱에서 정리). ' : '사진이 큰 품목의 사진을 줄여 주세요.') + '</p>' : '') + '</details></div>';
   }
   // 데이터 점검
-  const ck = dataChecks(), warn = ck.filter(x => x.sev <= 2).length;
+  const ckAll = dataChecks(), ckIg = ckIgn(), ck = ckAll.filter(x => !ckIg[x.area + '|' + x.text]), ckIgnCount = ckAll.length - ck.length, warn = ck.filter(x => x.sev <= 2).length;
   h += '<!--c:check--><details class="td-card td-chk"' + (warn ? ' open' : '') + '><summary>🩺 데이터 점검 — ' + (ck.length ? '확인할 항목 ' + ck.length + '건' + (warn ? ' (중요 ' + warn + ')' : '') : '문제 없어요') + '</summary>' +
-    ck.slice(0, window.__tdChkAll ? 300 : 15).map(x => '<button type="button" class="td-row' + (x.sev >= 3 ? ' soon' : '') + '" data-td="go" data-act="' + x.go[0] + '" data-id="' + esc(x.go[1] || '') + '"><span class="ic">' + (x.sev === 1 ? '❗' : x.sev === 2 ? '⚠' : 'ℹ') + '</span><span class="tx"><b>' + esc(x.text) + '</b><i>' + esc(x.area) + '</i></span></button>').join('') +
-    (ck.length > 15 ? '<button type="button" class="pc-btn small" data-td="go" data-act="chkall" style="margin-top:6px">' + (window.__tdChkAll ? '접기' : '나머지 ' + (ck.length - 15) + '건 더 보기') + '</button>' : '') + '</details>';
+    ckGroups(ck) + (ckIgnCount ? '<p class="td-note">숨긴 항목 ' + ckIgnCount + '건 (이 기기에서만 · 내용이 바뀌면 다시 나타나요) · <button type="button" class="pc-btn small" data-td="ckun">모두 다시 보기</button></p>' : '') + '</details>';
   h = tdFilter(h);
   const agAct = document.activeElement, agTyping = !!(agAct && agAct.closest && agAct.closest('#td-body .td-ag') && /INPUT|TEXTAREA/.test(agAct.tagName));
   if (quiet === true && agTyping) return;     // 연결 설정에 입력 중이면 자동 갱신으로 화면을 다시 그리지 않음
@@ -6482,12 +6622,38 @@ function qkExpOpen(){
   const A = window.AppCards, cards = A && A.list ? A.list() : [];
   $('qk-card').innerHTML = cards.map(c => '<option value="' + esc(c) + '">' + esc(c) + '</option>').join('');
   try { const last = localStorage.getItem('qk_card_v1'); if (last && cards.indexOf(last) >= 0) $('qk-card').value = last; } catch (e) { /* 무시 */ }
-  $('qk-date').value = todayStr(); $('qk-item').value = ''; $('qk-amt').value = ''; $('qk-sms').value = ''; $('qk-note').textContent = ''; $('qk-note').classList.remove('td-warn'); $('qk-dlg').showModal();
+  qkMany = []; $('qk-multi').innerHTML = ''; $('qk-one').hidden = false; $('qk-save').disabled = false; $('qk-save').textContent = '추가'; $('qk-date').value = todayStr(); $('qk-item').value = ''; $('qk-amt').value = ''; $('qk-sms').value = ''; $('qk-note').textContent = ''; $('qk-note').classList.remove('td-warn'); $('qk-dlg').showModal();
   setTimeout(() => $('qk-sms').focus(), 60);
 }
+let qkMany = [];
+function qkMultiRender(){
+  const box = $('qk-multi'), one = $('qk-one'), A = window.AppMeeting;
+  one.hidden = qkMany.length >= 1; box.innerHTML = qkMany.map((r, i) => {
+    const head = '<label class="qk-mh"><input type="checkbox" data-qkm="ok" data-i="' + i + '"' + (r.ok ? ' checked' : '') + (r.mode === 'skip' ? ' disabled' : '') + '> <b>' + (r.mode === 'del' ? '↩ 취소 · ' : '') + esc(r.date.slice(5).replace('-', '.')) + (r.cardType ? ' · ' + esc(r.cardType) : '') + '</b></label>';
+    if (r.mode === 'del') return '<div class="qk-mrow' + (r.ok ? '' : ' off') + '">' + head + '<div class="td-note"><b>' + esc(r.item) + ' ' + won(r.amount) + '</b> 취소 → 기존 지출 <b>' + esc(r.tg.date.slice(5).replace('-', '.')) + ' ' + esc(r.tg.item) + '</b>을(를) 삭제해요.' + (r.tg.weak ? ' <span class="td-warn">금액만 같은 건이에요. 맞는지 확인하세요.</span>' : '') + '</div></div>';
+    if (r.mode === 'skip') return '<div class="qk-mrow off">' + head + '<div class="td-note td-warn">' + esc(r.item) + ' ' + won(r.amount) + ' 취소 문자예요. 지울 기존 지출(같은 금액)을 못 찾아 등록하지 않아요.</div></div>';
+    return '<div class="qk-mrow' + (r.ok ? '' : ' off') + '">' + head +
+      (r.dup ? '<div class="td-note td-warn">같은 날짜·항목·금액이 이미 있어요. 체크하면 한 번 더 등록돼요.</div>' : '') +
+      '<div class="qk-mi"><input type="text" data-qkm="item" data-i="' + i + '" value="' + esc(r.item) + '"><input type="number" inputmode="numeric" min="0" data-qkm="amount" data-i="' + i + '" value="' + esc(String(r.amount)) + '"></div></div>';
+  }).join('');
+  const nAdd = qkMany.filter(r => r.ok && r.mode === 'add').length, nDel = qkMany.filter(r => r.ok && r.mode === 'del').length, b = $('qk-save');
+  b.textContent = !qkMany.length ? '추가' : (nAdd + nDel ? (nAdd ? nAdd + '건 추가' : '') + (nAdd && nDel ? ' · ' : '') + (nDel ? nDel + '건 삭제' : '') : '추가'); b.disabled = qkMany.length > 0 && !(nAdd + nDel);
+}
+$('qk-multi').addEventListener('input', e => { const t = e.target.closest('[data-qkm]'); if (!t) return; const r = qkMany[Number(t.dataset.i)]; if (!r) return; if (t.dataset.qkm === 'item') r.item = t.value; else if (t.dataset.qkm === 'amount') r.amount = Number(t.value) || 0; });
+$('qk-multi').addEventListener('change', e => { const t = e.target.closest('[data-qkm="ok"]'); if (!t) return; const r = qkMany[Number(t.dataset.i)]; if (r) { r.ok = t.checked; qkMultiRender(); } });
 function qkSmsParse(){
   const raw = $('qk-sms').value, note = $('qk-note'), A = window.AppMeeting, C = window.AppCards;
+  qkMany = []; $('qk-multi').innerHTML = ''; $('qk-one').hidden = false; $('qk-save').disabled = false; $('qk-save').textContent = '추가';
   if (!raw.trim()) { note.textContent = ''; note.classList.remove('td-warn'); return; }
+  { let many = []; try { many = A && A.parseMany ? A.parseMany(raw) : []; } catch (e) { many = []; }
+    if (many.length >= 2 || (many.length === 1 && many[0].cancel)) {
+      const seen = {}, taken = {};
+      qkMany = many.map(r => { const date = r.date || todayStr();
+        if (r.cancel) { const tg = A.findCancelTarget ? A.findCancelTarget({ date, item: r.item, amount: r.amount }) : null; if (tg && !taken[tg.id]) { taken[tg.id] = 1; return { ok: !tg.weak, mode: 'del', date, cardType: r.cardType || '', item: r.item, amount: r.amount, tg }; } return { ok: false, mode: 'skip', date, cardType: r.cardType || '', item: r.item, amount: r.amount }; }
+        const key = date + '|' + r.item + '|' + r.amount, dup = !!(A.hasDup && A.hasDup(date, r.item, r.amount)) || !!seen[key]; seen[key] = 1;
+        return { ok: !dup, mode: 'add', date, cardType: r.cardType || '', item: r.item, amount: r.amount, dup }; });
+      note.textContent = '✓ ' + qkMany.length + '건을 찾았어요 — 항목·금액은 고칠 수 있고, 체크한 건만 반영돼요. 반영 뒤 15초 안에 되돌릴 수 있어요.'; note.classList.remove('td-warn'); qkMultiRender(); return;
+    } }
   let p = null; try { p = A && A.parseSms ? A.parseSms(raw) : null; } catch (e) { p = null; }
   if (!p || (!p.amount && !p.item)) { note.textContent = '문자에서 금액·가맹점을 못 찾았어요. 카드 승인 문자 전체를 붙여넣거나 아래에 직접 입력해 주세요.'; note.classList.add('td-warn'); return; }
   if (p.date) $('qk-date').value = p.date;
@@ -6501,8 +6667,18 @@ function qkSmsParse(){
   note.textContent = '✓ 인식됨: ' + parts.join(' · ') + ' — 확인 후 “추가”를 눌러 주세요' + (added ? ' (카드구분에 ‘' + p.cardType + '’을 추가했어요)' : '') + (dup ? ' ⚠ 같은 날짜·항목·금액이 이미 있어요.' : '');
   note.classList.toggle('td-warn', !!dup);
 }
+window.AppQuick = { open: txt => { qkExpOpen(); $('qk-sms').value = txt; qkSmsParse(); } };
 $('qk-sms').addEventListener('input', () => { clearTimeout(qkSmsParse._t); qkSmsParse._t = setTimeout(qkSmsParse, 150); });
 function qkExpSave(){
+  if (qkMany.length) {
+    const M = window.AppMeeting, adds = qkMany.filter(r => r.ok && r.mode === 'add'), dels = qkMany.filter(r => r.ok && r.mode === 'del');
+    if (!adds.length && !dels.length) { toast('반영할 건을 체크해 주세요.'); return; }
+    const goneRows = dels.length ? M.removeMany(dels.map(r => r.tg.id)) : [], newIds = adds.length ? M.addMany(adds) : [];
+    if (adds.length && !newIds.length && !goneRows.length) { toast('날짜 · 항목 · 금액을 확인해 주세요.'); return; }
+    $('qk-dlg').close(); const msg = (newIds.length ? newIds.length + '건 등록' : '') + (newIds.length && goneRows.length ? ' · ' : '') + (goneRows.length ? goneRows.length + '건 취소 삭제' : '');
+    undoBatch(msg + '했어요', () => { if (newIds.length) M.removeMany(newIds); if (goneRows.length) M.addMany(goneRows); toast('되돌렸어요.'); });
+    setTimeout(() => { if (mode === 'today') renderToday(); }, 200); return;
+  }
   if (!$('qk-date').value || !$('qk-item').value.trim() || !(Number($('qk-amt').value) > 0)) { toast('날짜 · 항목 · 금액을 입력해 주세요.'); return; }
   $('newDate').value = $('qk-date').value; if ($('qk-card').value) $('newCard').value = $('qk-card').value; $('newItem').value = $('qk-item').value.trim(); $('newAmount').value = $('qk-amt').value;
   try { localStorage.setItem('qk_card_v1', $('qk-card').value); } catch (e) { /* 무시 */ }
