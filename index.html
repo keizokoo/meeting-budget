@@ -1404,6 +1404,13 @@
   <button id="sb-d-delete" class="pc-btn danger wide" data-sb="d-delete">이 항목 삭제 (구독 종료)</button>
 </dialog>
 
+<dialog id="snz-dlg">
+  <h3 id="snz-title">연락 알림 미루기</h3>
+  <p class="td-note">언제까지 오늘 화면에서 가릴까요? 그 사이 만남을 기록하거나 예약을 잡으면 자동으로 정리돼요.</p>
+  <div class="pc-row2"><button type="button" class="pc-btn" data-snz="7">1주일</button><button type="button" class="pc-btn" data-snz="14">2주일</button></div>
+  <div class="pc-row2" style="margin-top:8px"><button type="button" class="pc-btn" data-snz="30">한 달</button><button type="button" class="pc-btn" data-snz="off">이 사람은 알림 끄기</button></div>
+  <button type="button" class="pc-btn wide" data-snz="x" style="margin-top:10px">닫기</button>
+</dialog>
 <dialog id="pp-dlg">
   <h3 id="pp-d-title">사람</h3>
   <label class="pc-f">이름(별칭도 좋아요)<input id="pp-f-name" type="text"></label>
@@ -1415,6 +1422,7 @@
   <label class="pc-f">만나는 주기(일) — 이 사람만 따로 정하기<input id="pp-f-cycle" type="number" min="1" max="365" inputmode="numeric" placeholder="비우면 그룹 기본"><small id="pp-f-cycle-h" class="pc-hint" style="display:block;margin:3px 0 0"></small></label>
   <label class="pc-f">메모(선택)<textarea id="pp-f-memo" class="ml" rows="3"></textarea></label>
   <label class="pc-f">등록일(만난 적 없을 때 기준)<input id="pp-f-since" type="date"></label>
+  <label class="mp-chk" style="margin-top:8px"><input type="checkbox" id="pp-f-nodue"> 이 사람은 “만난 지 N일” 알림 받지 않기</label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-pp="p-cancel">취소</button><button class="pc-btn primary" data-pp="p-save">저장</button></div>
   <button id="pp-d-delete" class="pc-btn danger wide" data-pp="p-delete">이 사람 삭제</button>
 </dialog>
@@ -3173,12 +3181,18 @@ const Life = (() => {
   const cmpPlan = (a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : ((a.time || '') < (b.time || '') ? -1 : (a.time || '') > (b.time || '') ? 1 : 0));
   function upcomingPlans(meets, today){ return meets.filter(m => isPlan(m) && m.date >= today).sort(cmpPlan); }
   function overduePlans(meets, today){ return meets.filter(m => isPlan(m) && m.date < today).sort(cmpPlan); }
+  /* 이 사람과 앞으로 잡아 둔 가장 가까운 예약일 (없으면 '') */
+  function nextPlan(p, meets, today){ let n = ''; meets.forEach(m => { if (isPlan(m) && m.date >= today && (m.pids || []).indexOf(p.id) >= 0 && (!n || m.date < n)) n = m.date; }); return n; }
+  /* state: over(주기 지남) · soon(곧) · ok / 알림에서 빠지는 경우: planned(예약 있음) · snoozed(미룸) · off(이 사람 알림 끔) — 이때 rawState에 원래 상태가 남아요 */
   function status(p, meets, cfg, today){
     const last = lastMeet(p, meets), base = last || p.since || today, since = dd(base, today), cycle = cycleOf(p, cfg);
     const ratio = since === null ? 0 : since / cycle;
-    return { last, since, cycle, ratio, never: !last, state: ratio >= 1 ? 'over' : (ratio >= 0.8 - 1e-9 ? 'soon' : 'ok') };
+    const rawState = ratio >= 1 ? 'over' : (ratio >= 0.8 - 1e-9 ? 'soon' : 'ok'), plan = nextPlan(p, meets, today), snz = p.snz && p.snz > today ? p.snz : '';
+    let state = rawState;
+    if (rawState !== 'ok') { if (p.nodue) state = 'off'; else if (snz) state = 'snoozed'; else if (plan && dd(today, plan) <= Math.max(cycle, 30)) state = 'planned'; }
+    return { last, since, cycle, ratio, never: !last, state, rawState, plan, snz };
   }
-  function dueList(people, meets, cfg, today){ return people.map(p => Object.assign({ p }, status(p, meets, cfg, today))).filter(x => x.state !== 'ok').sort((a, b) => b.ratio - a.ratio); }
+  function dueList(people, meets, cfg, today){ return people.map(p => Object.assign({ p }, status(p, meets, cfg, today))).filter(x => x.state === 'over' || x.state === 'soon').sort((a, b) => b.ratio - a.ratio); }
   // 한 번의 만남(방문) = 같은 묶음(vg)의 기록들 · 묶지 않은 기록은 각각 1번. 횟수·방식·기분 통계는 모두 이 기준.
   const typesOf = m => { const a = [m.type].concat(Array.isArray(m.more) ? m.more : []).filter(Boolean); return a.filter((x, i) => a.indexOf(x) === i); };
   function visits(meets, from, to){
@@ -3222,7 +3236,7 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-22-c (의료비: 진료 건의 금액·비급여를 고치면 입금 전 신청(회사·실비)의 예상액도 자동 갱신 · 저장 전 미리보기 안내) / 이전: 2026-10-22-b (취소 문자 자동 상계 · 일괄 등록 되돌리기 · 회의비 탭 여러 건 입력 · 기기 이름 기록 · 이전 버전 내용 보기 · 서버 연결 점검 · 데이터 점검 영역별 접기/숨기기) · 옛 버전 기기 감지 오류 수정(빌드 값이 시트에 안 올라가던 문제) / 이전: 2026-10-22-a (회의비 문자 여러 건 한꺼번에 입력 · 아비쥬 결제금/결제일 점검 한 줄로 · 캘린더 선택 연속 변경/전체 해제 오류 수정) / 이전: 2026-10-21-b (가이드 갱신 수신: 시트 등록대기의 guide 항목을 id로 덮어쓰기) / 이전: 2026-10-21-a (묶음 풀림 방지: 옛 버전 앱이 덮어써도 묶음 유지 · 풀린 묶음 1회 복구 · 옛 버전 기기 경고/저장 중단) / 이전: 2026-10-20-k (메모 목록 표시: 줄바꿈 유지 · 2줄까지만 보이고 누르면 펼침 — 의료비·회의비·쇼핑·구독/결제 메모) / 이전: 2026-10-20-j (의료비: 보험사 제외 금액 입력칸 · 의료비 탭 버튼 이름 “의료비 입력”으로 통일) / 이전: 2026-10-20-i (인바디 표 가로선 정렬) / 이전: 2026-10-20-h (의료비 입력도 오늘에 머무름 · 등록하면 오늘 숫자 갱신) / 이전: 2026-10-20-g (오늘 빠른 입력: 회의비 입력·의료비 입력을 카드 문자 붙여넣기 방식으로 통일) / 이전: 2026-10-20-f (인바디 7회 평균을 서버 기준(최신 포함 유효 7회)으로 정정 · 바디 Code.gs 2026-10-20과 짝) / 이전: 2026-10-20-e (인바디 7회 평균을 오늘 제외 직전 7회로 통일 · 체지방 kg 필드 인식) / 이전: 2026-10-20-d (모든 메모칸 여러 줄 입력) / 이전: 2026-10-20-c (의료비 메모 큰 입력칸 · 메리츠 안내 문자 메모 추가) / 이전: 2026-10-20-b (확인→숨기기·되돌리기 · 인바디 골격근·어제/7회 평균 대비 · 오늘 목록 구분) / 이전: 2026-10-20-a (캘린더 일원화 · 자산·체중 카드 · 키 진단)';
+const APP_BUILD_VERSION = '2026-10-22-e (인맥: 예약이 있는 사람은 “만난 지 N일”에서 제외 · 연락 알림 미루기/끄기 · 캘린더: 오늘 화면 갱신 시각·새로고침·90초 자동 갱신) · 직전: 2026-10-22-d (앱 수정 이력 표시를 최근 것만 남기고 간소화 · 직전 변경: 의료비 금액·비급여 수정 시 신청 예상액 자동 갱신)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
@@ -4064,7 +4078,7 @@ function qNorm(o){
   let groups = (Array.isArray(c.groups) ? c.groups : []).map(g => String(g == null ? '' : g).trim()).filter(Boolean); groups = groups.filter((g, i) => groups.indexOf(g) === i);
   if (!groups.length) groups = Life.GROUPS.slice();
   const people = (Array.isArray(o.people) ? o.people : []).filter(p => p && p.id && p.name).map(p => { const g = String(p.group == null ? '' : p.group).trim() || groups[0]; if (groups.indexOf(g) < 0) groups.push(g);
-    return { id: String(p.id), name: String(p.name), group: g, cycle: Number(p.cycle) > 0 ? Number(p.cycle) : '', prefs: (Array.isArray(p.prefs) ? p.prefs : []).filter(x => Life.TYPES.indexOf(x) >= 0), memo: String(p.memo || ''), since: Calc.validDate(p.since) || '', u: String(p.u || '') }; });
+    return { id: String(p.id), name: String(p.name), group: g, cycle: Number(p.cycle) > 0 ? Number(p.cycle) : '', prefs: (Array.isArray(p.prefs) ? p.prefs : []).filter(x => Life.TYPES.indexOf(x) >= 0), memo: String(p.memo || ''), since: Calc.validDate(p.since) || '', snz: Calc.validDate(p.snz) || '', nodue: p.nodue === true, u: String(p.u || '') }; });
   const meets = (Array.isArray(o.meets) ? o.meets : []).filter(m => m && m.id && Calc.validDate(m.date)).map(m => ({ id: String(m.id), date: m.date, pids: (Array.isArray(m.pids) ? m.pids : []).map(String), type: Life.normType(m.type), cid: String(m.cid || ''), xid: String(m.xid || ''), vg: String(m.vg || ''), more: (Array.isArray(m.more) ? m.more : []).map(x => Life.normType(x)).filter((x, i, a) => x && x !== Life.normType(m.type) && a.indexOf(x) === i), memo: String(m.memo || ''), energy: ENERGY[m.energy] ? m.energy : '', st: (m.st === 'plan' || m.st === 'done') ? m.st : (m.date > todayStr() ? 'plan' : 'done'), time: /^\d{2}:\d{2}$/.test(String(m.time || '')) ? String(m.time) : '', place: String(m.place || ''), u: String(m.u || '') }));
   const clubs = (Array.isArray(o.clubs) ? o.clubs : []).filter(x => x && x.id && String(x.name || '').trim()).map(x => { const ps = (Array.isArray(x.pids) ? x.pids : []).map(String); return { id: String(x.id), name: String(x.name).trim(), pids: ps.filter((v, i) => ps.indexOf(v) === i), u: String(x.u || '') }; });
   const cy = {}; groups.forEach(g => { cy[g] = Number(c.cycles && c.cycles[g]) > 0 ? Number(c.cycles[g]) : (Life.DEFAULT_CFG.cycles[g] || 30); });
@@ -4122,7 +4136,7 @@ function renderPeople(){
       .sort((a, b) => (a.next && b.next ? (a.next < b.next ? -1 : 1) : (a.next ? -1 : (b.next ? 1 : (b.since || 0) - (a.since || 0)))));
     $('pp-people').innerHTML = list.length ? list.map(x => { const avg = Life.avgInterval(x.p, Q.meets);
       return '<div class="pp-row" data-pp="edit-person" data-id="' + esc(x.p.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(x.p.name) + '<span class="pp-tag">' + esc(x.p.group) + '</span>' + clubSummary(x.p.id) + '</div><div class="pp-meta">' + esc(ago(x)) + (avg ? ' · 실제 평균 ' + Math.round(avg) + '일 간격' : '') + ' · 주기 ' + x.cycle + '일' + (x.p.cycle ? '(개인)' : '') + '</div></div>' +
-        (x.next ? '<span class="pp-st soon">예약 ' + esc(x.next.slice(5).replace('-', '/')) + '</span>' : '') + '<button class="pc-btn small" data-pp="quick" data-id="' + esc(x.p.id) + '">만났어요</button></div>'; }).join('') : '<p class="pc-hint">아직 등록된 사람이 없어요. “+ 사람 추가”로 시작해 보세요.</p>';
+        (x.next ? '<span class="pp-st soon">예약 ' + esc(x.next.slice(5).replace('-', '/')) + '</span>' : '') + (x.state === 'off' ? '<span class="pp-st">알림 꺼짐</span>' : x.state === 'snoozed' ? '<span class="pp-st">미룸 ' + esc(x.snz.slice(5).replace('-', '/')) + '</span>' : '') + '<button class="pc-btn small" data-pp="quick" data-id="' + esc(x.p.id) + '">만났어요</button></div>'; }).join('') : '<p class="pc-hint">아직 등록된 사람이 없어요. “+ 사람 추가”로 시작해 보세요.</p>';
   } else if (ppTab === 'clubs') {
     clFilter.club = selOpts($('cl-flt-club'), [{ v: 'all', t: '모임 전체 (' + Q.clubs.length + '개)' }].concat(Q.clubs.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko')).map(c => ({ v: c.id, t: c.name + ' (' + c.pids.filter(personById).length + '명)' }))), clFilter.club); $('cl-flt-sort').value = clFilter.sort;
     const yr = t.slice(0, 4);
@@ -4244,7 +4258,7 @@ function openPerson(id){
   fillSelect($('pp-f-group'), Q.cfg.groups.map(g => ({ v: g, t: g })), p ? p.group : (ppFilter !== 'all' ? ppFilter : Q.cfg.groups[0]));
   ppClubDraft = Q.clubs.filter(c => (p && c.pids.indexOf(p.id) >= 0) || (!p && ppClub === c.id)).map(c => c.id); ppClubRender(); $('pp-f-clubs-wrap').hidden = !Q.clubs.length;
   $('pp-f-cycle').value = p && p.cycle ? p.cycle : ''; ppCycleHint();
-  $('pp-f-name').value = p ? p.name : ''; $('pp-f-memo').value = p ? p.memo : ''; $('pp-f-since').value = p && p.since ? p.since : todayStr();
+  $('pp-f-nodue').checked = !!(p && p.nodue); $('pp-f-name').value = p ? p.name : ''; $('pp-f-memo').value = p ? p.memo : ''; $('pp-f-since').value = p && p.since ? p.since : todayStr();
   $('pp-d-delete').hidden = !p; $('pp-dlg').showModal();
 }
 let ppClubDraft = [];
@@ -4257,7 +4271,7 @@ function ppClubRender(){
 function savePerson(){
   const name = $('pp-f-name').value.trim(); if (!name) { toast('이름을 입력해 주세요.'); return; }
   const old = ppEditing ? personById(ppEditing) : null;
-  const d = { name, group: $('pp-f-group').value, cycle: (() => { const v = Math.round(Number($('pp-f-cycle').value)); return v > 0 ? Math.min(365, v) : ''; })(), prefs: old ? old.prefs : [], memo: $('pp-f-memo').value.trim(), since: Calc.validDate($('pp-f-since').value) || todayStr(), u: nowIso() };
+  const d = { name, group: $('pp-f-group').value, cycle: (() => { const v = Math.round(Number($('pp-f-cycle').value)); return v > 0 ? Math.min(365, v) : ''; })(), prefs: old ? old.prefs : [], memo: $('pp-f-memo').value.trim(), since: Calc.validDate($('pp-f-since').value) || todayStr(), nodue: $('pp-f-nodue').checked, u: nowIso() };
   let pid = ppEditing; if (ppEditing) Object.assign(personById(ppEditing), d); else { pid = uid('pp'); Q.people.push(Object.assign({ id: pid }, d)); }
   { const pick = ppClubDraft.slice(), tt = nowIso();
     Q.clubs.forEach(c => { const has = c.pids.indexOf(pid) >= 0, want = pick.indexOf(c.id) >= 0; if (has && !want) { c.pids = c.pids.filter(x => x !== pid); c.u = tt; } else if (!has && want) { c.pids.push(pid); c.u = tt; } }); }
@@ -6391,10 +6405,11 @@ function agRow(x){
   return '<div class="td-row' + (x.pri ? ' soon' : '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span><button type="button" class="pc-btn small" data-ag="done" data-id="' + esc(x.id) + '" data-date="' + esc(x.date || '') + '" title="이 앱에서만 가려요. 구글 캘린더 일정은 그대로예요.">숨기기</button></div>';
 }
 const agPend = {};
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && typeof mode !== 'undefined' && mode === 'today') { try { agRefresh('cal'); } catch (e) { /* 무시 */ } } });
 async function agRefresh(kind, force){
   const c = agCfg(), ca = agCache(), now = Date.now();
   if (agBusy[kind]) { if (force) agPend[kind] = true; return; }   // 불러오는 중에 캘린더를 또 고르면 끝난 뒤 한 번 더 불러와요
-  const prev = ca[kind] || {}; if (!force && prev.tryAt && now - prev.tryAt < 10 * 60 * 1000) return;
+  const prev = ca[kind] || {}; if (!force && prev.tryAt && now - prev.tryAt < (kind === 'cal' ? 90 * 1000 : 10 * 60 * 1000)) return;   // 캘린더는 90초, 나머지는 10분
   let url = '';
   if (kind === 'cal') { if (!c.calOn || !c.cals || !c.cals.length || !(window.AppSync && window.AppSync.url())) return; url = window.AppSync.url() + '?action=agenda&days=7&cals=' + encodeURIComponent(c.cals.join(',')); }
   else if (kind === 'money') { if (!c.moneyUrl || !c.moneyKey) return; url = c.moneyUrl + '?action=summary&key=' + encodeURIComponent(c.moneyKey); }
@@ -6524,7 +6539,7 @@ function tdTasks(noCal){
   { const nm = window.AppSync && window.AppSync.newMonth ? window.AppSync.newMonth() : ''; if (nm) L.push({ pri: 0, d: -2, ic: '📅', title: '회의비: ' + nm, sub: '', when: '새 달', act: 'meeting' }); }
   Life.overduePlans(Q.meets, t).forEach(m => L.push({ pri: 0, d: -1, ic: '👥', title: meetNames(m) + ' — 지난 예약', sub: '만났는지 확인해 주세요', when: m.date.slice(5).replace('-', '/'), act: 'people' }));
   Life.upcomingPlans(Q.meets, t).filter(m => Life.dd(t, m.date) <= 7).forEach(m => { const d = Life.dd(t, m.date); L.push({ pri: d <= 1 ? 0 : 1, d, ic: '👥', title: meetNames(m), sub: '만남 예약', when: d === 0 ? '오늘' : 'D-' + d, act: 'people' }); });
-  Life.dueList(Q.people, Q.meets, Q.cfg, t).filter(x => x.state === 'over').slice(0, 3).forEach(x => L.push({ pri: 1, d: 99, ic: '🙂', title: x.p.name + ' — 만난 지 ' + x.since + '일', sub: '연락할 때가 됐어요 (주기 ' + x.cycle + '일)', when: '연락', act: 'people' }));
+  Life.dueList(Q.people, Q.meets, Q.cfg, t).filter(x => x.state === 'over').slice(0, 3).forEach(x => L.push({ pri: 1, d: 99, ic: '🙂', title: x.p.name + ' — 만난 지 ' + x.since + '일', sub: '연락할 때가 됐어요 (주기 ' + x.cycle + '일) · 예약이 있으면 나오지 않아요', when: '연락', act: 'people', pid: x.p.id }));
   try {
     const al = Med.alerts(MD.items, MD.claims, MD.cfg, t), sum = l => l.reduce((a, x) => a + x.claim.exp, 0);
     if (al.coToday.length) L.push({ pri: 0, d: -4, ic: '🏢', title: '오늘 회사 의료비 입금 예정 ' + al.coToday.length + '건 · ' + won(sum(al.coToday)), sub: '통장을 확인하고 입금되면 “입금 확인”을 눌러 주세요', when: '오늘', act: 'med' });
@@ -6539,11 +6554,13 @@ function renderToday(quiet){
   const t = todayStr(), tasks = tdTasks(), urgent = tasks.filter(x => x.pri === 0).length, soon = tasks.length - urgent;
   const wd = ['일', '월', '화', '수', '목', '금', '토'][new Date().getDay()];
   let h = '<div class="td-head"><div class="td-date">' + Number(t.slice(5, 7)) + '월 ' + Number(t.slice(8)) + '일 (' + wd + ')</div><div class="td-sub">' + (tasks.length ? '지금 확인할 일 ' + urgent + '건 · 곧 다가오는 일 ' + soon + '건' : '확인할 일이 없어요. 편안한 하루 보내세요.') + '</div></div>';
-  const row = x => x.act === 'cal' ? agRow(x) : '<button type="button" class="td-row' + (x.pri ? ' soon' : '') + '" data-td="go" data-act="' + x.act + '" data-id="' + esc(x.id || '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span></button>';
+  const row = x => x.act === 'cal' ? agRow(x) : x.pid ? '<div class="td-ckrow"><button type="button" class="td-row soon" data-td="go" data-act="' + x.act + '" data-id=""><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span></button><button type="button" class="pc-btn small" data-td="snz" data-id="' + esc(x.pid) + '">미루기</button></div>' : '<button type="button" class="td-row' + (x.pri ? ' soon' : '') + '" data-td="go" data-act="' + x.act + '" data-id="' + esc(x.id || '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span></button>';
   { const hid = agHiddenN(), shown = tasks.slice(0, 12); let lastPri = -1;
-    if (tasks.length || hid) h += '<!--c:tasks--><div class="td-card"><h3>할 일 · 일정</h3>' + shown.map(x => { const sec = x.pri !== lastPri ? '<div class="td-sec">' + (x.pri === 0 ? '🔔 지금 확인할 일' : '🗓 곧 다가오는 일') + '</div>' : ''; lastPri = x.pri; return sec + row(x); }).join('') + (tasks.length > 12 ? '<p class="td-note">외 ' + (tasks.length - 12) + '건</p>' : '') +
+    const calOn = !!agCfg().calOn;
+    if (tasks.length || hid || calOn) h += '<!--c:tasks--><div class="td-card"><h3>할 일 · 일정</h3>' + shown.map(x => { const sec = x.pri !== lastPri ? '<div class="td-sec">' + (x.pri === 0 ? '🔔 지금 확인할 일' : '🗓 곧 다가오는 일') + '</div>' : ''; lastPri = x.pri; return sec + row(x); }).join('') + (tasks.length > 12 ? '<p class="td-note">외 ' + (tasks.length - 12) + '건</p>' : '') +
       (tasks.length ? '<p class="td-note">🔔 지금 확인할 일은 다른 탭 위쪽 알림에도 떠요(구글 캘린더 일정은 오늘 화면에만). 🗓 곧 다가오는 일은 오늘 화면에만 보여요.' + (tasks.some(x => x.act === 'cal') ? ' “숨기기”는 이 앱에서만 가려요.' : '') + '</p>' : '') +
-      (hid ? '<p class="td-note">숨긴 캘린더 일정 ' + hid + '건 · <button type="button" class="pc-btn small" data-ag="undo">다시 보기</button></p>' : '') + '</div>'; }
+      (hid ? '<p class="td-note">숨긴 캘린더 일정 ' + hid + '건 · <button type="button" class="pc-btn small" data-ag="undo">다시 보기</button></p>' : '') +
+      (calOn ? (() => { const ca = agCache().cal || {}; return '<p class="td-note' + (ca.err ? ' td-warn' : '') + '">📅 캘린더 ' + (ca.at ? agFmtAt(ca.at) + ' 기준' : '아직 불러오지 못했어요') + (ca.err ? ' · 불러오기 실패(' + esc(ca.err) + ') — 지난 일정이 보일 수 있어요' : '') + ' · <button type="button" class="pc-btn small" data-ag="refresh" data-id="cal">새로고침</button></p>'; })() : '') + '</div>'; }
   h += agMoneyCard() + agBodyCard();
   // 회의비
   const mt = window.AppMeeting ? window.AppMeeting.summary() : null;
@@ -6705,6 +6722,16 @@ function qkSkinOpen(){
 $('qk-dlg').addEventListener('click', e => { const b = e.target.closest('[data-qk]'); if (!b) return; if (b.dataset.qk === 'cancel') $('qk-dlg').close(); else if (b.dataset.qk === 'save') qkExpSave(); });
 $('qk-sk-dlg').addEventListener('click', e => { const b = e.target.closest('[data-qk]'); if (!b) return; if (b.dataset.qk === 'cancel') $('qk-sk-dlg').close(); else if (b.dataset.qk === 'sk') { $('qk-sk-dlg').close(); skToday(b.dataset.id); } });
 $('todayView').addEventListener('click', e => { const el = e.target.closest('[data-td="go"]'); if (el) tdGo(el.dataset.act, el.dataset.id); });
+let snzPid = null;
+$('todayView').addEventListener('click', e => { const b = e.target.closest('[data-td="snz"]'); if (!b) return; const p = personById(b.dataset.id); if (!p) return; snzPid = p.id; $('snz-title').textContent = p.name + ' — 연락 알림 미루기'; $('snz-dlg').showModal(); });
+$('snz-dlg').addEventListener('click', e => {
+  const b = e.target.closest('[data-snz]'); if (!b) return; const v = b.dataset.snz, p = snzPid ? personById(snzPid) : null;
+  if (v === 'x' || !p) { $('snz-dlg').close(); return; }
+  const t = nowIso();
+  if (v === 'off') { p.nodue = true; p.u = t; toast(p.name + ' — 연락 알림을 껐어요. (사람 수정에서 다시 켤 수 있어요)'); }
+  else { const d = new Date(); d.setDate(d.getDate() + Number(v)); p.snz = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); p.u = t; toast(p.name + ' — ' + p.snz.slice(5).replace('-', '/') + '까지 미뤘어요.'); }
+  qSave(); changed(); $('snz-dlg').close(); renderToday(true); if (typeof ppTab !== 'undefined') { try { renderAll(); } catch (er) { /* 무시 */ } }
+});
 $('gd-q').addEventListener('input', e => { gdQ = e.target.value; renderGuide(); });
 
 /* ---------- 공용 상태줄 + 공통 알림 (모든 모드 위에 표시) ---------- */
