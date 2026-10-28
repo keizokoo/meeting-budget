@@ -725,6 +725,15 @@
   .md-link{ font:inherit; font-size:11.5px; font-weight:800; color:var(--pc); background:none; border:0; padding:2px 0 2px 6px; cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
   #md-bd-list .md-ck2{ align-items:flex-start; border-bottom:1px solid var(--line); padding:8px 0; } #md-bd-list .md-ck2 input{ margin-top:3px; } #md-bd-list small{ display:block; color:var(--ink2); }
   .md-bd-mem{ display:flex; flex-wrap:wrap; gap:4px; margin:4px 0; }
+  .md-sw{ margin-top:6px; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .md-sl{ display:grid; grid-template-columns:30px 1fr; column-gap:6px; width:100%; font:inherit; font-size:12px; text-align:left; background:transparent; color:var(--ink); border:0; border-top:1px solid var(--line); padding:6px 8px; cursor:pointer; }
+  .md-sl:first-child{ border-top:0; }
+  .md-sl .k{ font-weight:800; grid-row:1 / 3; padding-top:1px; }
+  .md-sl .m{ color:var(--ink2); font-size:11.5px; } .md-sl .m b{ color:var(--ink); font-weight:700; } .md-sl .m small{ display:inline; font-size:10.5px; color:var(--ink3); margin:0; }
+  .md-sl .a{ margin-top:1px; } .md-sl .a b{ font-weight:800; font-size:13px; }
+  .md-sl.ok .a{ color:var(--good); } .md-sl.wait .a{ color:var(--accent); } .md-sl.warn .a{ color:var(--warn); }
+  .md-sl.mute{ cursor:default; color:var(--ink3); } .md-sl.mute .m{ grid-row:1 / 3; align-self:center; color:var(--ink3); }
+  .md-sl .df{ font-size:10.5px; color:var(--ink3); margin-left:4px; } .md-sl .df.bad{ color:var(--warn); font-weight:800; }
   .md-ins{ font-size:11.5px; color:var(--ink2); margin-top:6px; line-height:1.5; } .md-ins b{ color:var(--ink); }
     #medView, #md-dlg, #md-cl-dlg, #md-sms-dlg, #md-bd-dlg{ --pc:var(--accent); --pc-soft:#FFF1E8; --pc-on:var(--on-accent); --pc-up:#D83A41; }
   @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #medView, :root:not([data-theme="light"]) #md-dlg, :root:not([data-theme="light"]) #md-cl-dlg, :root:not([data-theme="light"]) #md-sms-dlg, :root:not([data-theme="light"]) #md-bd-dlg{ --pc-soft:#2B1B12; --pc-up:#FF7A7F; } }
@@ -3258,7 +3267,7 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-28-b (의료비: 입금 일괄 확인 추가 · 입금 확인 배너 매일 재알림 · 입금 예정일 폰(캘린더) 알림 켜짐 / 가격: 증정 전체 용량 입력)';
+const APP_BUILD_VERSION = '2026-10-28-c (의료비 목록: 신청일·예상·입금일·실제 입금액을 상세 창 없이 목록에서 바로 표시, 차이·예정일 지남 경고)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
@@ -5222,6 +5231,29 @@ function mdChips(r, t){
   else ins = '<button type="button" class="md-chip warn" data-md="in" data-id="' + esc(r.it.id) + '">실비 미신청</button>';
   return co + ins;
 }
+/* 목록에서 바로 보이는 정산 줄: 신청일 · 예상 · 입금일 · 실제 입금액 (2026-10-28) */
+function mdSettleLines(r, t){
+  const s = r.s, cfg = MD.cfg, it = r.it;
+  const diff = (exp, paid, tol) => { const d = paid - exp; if (!d) return ''; const bad = Math.abs(d) > tol; return '<span class="df' + (bad ? ' bad' : '') + '">' + (bad ? '⚠ ' : '') + (d > 0 ? '+' : '') + Math.round(d).toLocaleString('ko-KR') + '</span>'; };
+  const line = (tp, lab, st, c, expAuto) => {
+    const attr = ' data-md="' + tp + '" data-id="' + esc(it.id) + '"';
+    if (st === 'none') return '<button type="button" class="md-sl warn"' + attr + '><span class="k">' + lab + '</span><span class="m">미신청 · 예상 <b>' + won(Math.round(expAuto)) + '</b></span><span class="a"><b>신청 필요</b></span></button>';
+    const grp = c.ids.length > 1 ? ' <small>(묶음 ' + c.ids.length + '건 합계)</small>' : '';
+    const meta = '<span class="m">신청 ' + (c.cdate ? mdMD(c.cdate) : '(날짜 없음)') + ' · 예상 <b>' + won(c.exp) + '</b>' + grp + '</span>';
+    if (st === 'paid') {
+      const amt = c.paid == null ? '입금 확인됨 · <b>금액 미기록</b>' : '입금 ' + (c.pdate ? mdMD(c.pdate) : '(날짜 없음)') + ' · <b>' + won(c.paid) + '</b>';
+      return '<button type="button" class="md-sl ok"' + attr + '><span class="k">' + lab + '</span>' + meta + '<span class="a">' + amt + ' ✓ ' + (c.paid == null ? '' : diff(c.exp, c.paid, tp === 'co' ? 30 : 0)) + '</span></button>';
+    }
+    if (tp === 'co') { const dd = Med.effDue(c), late = dd && dd < t, dn = dd ? Med.dayDiff(t, dd) : null;
+      return '<button type="button" class="md-sl ' + (late ? 'warn' : 'wait') + '"' + attr + '><span class="k">' + lab + '</span>' + meta + '<span class="a">' + (dd ? '입금 예정 ' + mdMD(dd) + ' · <b>' + (late ? Med.dayDiff(dd, t) + '일 지남' : (dn === 0 ? '오늘' : 'D-' + dn)) + '</b>' : '입금 예정일 없음') + '</span></button>'; }
+    const base = c.cdate || it.date, d = Med.dayDiff(base, t), late = d != null && d >= cfg.insDays;
+    return '<button type="button" class="md-sl ' + (late ? 'warn' : 'wait') + '"' + attr + '><span class="k">' + lab + '</span>' + meta + '<span class="a">입금 대기 · <b>' + (d != null ? d + '일째' : '-') + '</b></span></button>';
+  };
+  let h = line('co', '회사', s.cs, s.c, Med.coExp(it, cfg));
+  if (s.is === 'na') h += '<div class="md-sl mute"><span class="k">실비</span><span class="m">' + esc(Med.whyNo(it, MD.items, cfg.ded)) + '</span></div>';
+  else { let ea = 0; if (s.is === 'none') { try { ea = Med.insGroup(MD.items, MD.claims, it, cfg.ded).ins; } catch (e) { ea = 0; } } h += line('in', '실비', s.is, s.i, ea); }
+  return '<div class="md-sw">' + h + '</div>';
+}
 /* 실비 입금 예상 한 줄: 같은 날 병원+약국 합산 − 공제액. 합쳐서 신청되지 않은 날은 경고 */
 function mdInsLine(r){
   if (r.s.is === 'na') return '';
@@ -5279,7 +5311,7 @@ function renderMed(){
     h += '<div class="md-row' + (r.s.closed ? ' done' : '') + (it.vg && it.vg.indexOf('u_') !== 0 ? ' bd' : '') + '" data-md="open" data-id="' + esc(it.id) + '" tabindex="0">' +
       (mdSelMode ? '<label class="md-ck"><input type="checkbox" data-md="sel" data-id="' + esc(it.id) + '"' + (mdSel[it.id] ? ' checked' : '') + '></label>' : '') +
       '<div class="l"><b>' + mdMD(it.date) + ' · ' + esc(it.place || '(병원 미입력)') + '</b>' + (r.s.closed ? '<span class="md-chip ok">종결</span>' : '') + dosu +
-      (sub ? '<small>' + esc(sub) + '</small>' : '') + '<div class="md-chips">' + mdChips(r, t) + '</div>' + mdInsLine(r) + (it.memo ? '<div class="md-memo mx">📝 ' + esc(it.memo) + '</div>' : '') + (it.chk ? '<div class="md-chk">⚠ ' + esc(it.chk) + '</div>' : '') + '</div>' +
+      (sub ? '<small>' + esc(sub) + '</small>' : '') + mdSettleLines(r, t) + (r.s.is === 'paid' ? '' : mdInsLine(r)) + (it.memo ? '<div class="md-memo mx">📝 ' + esc(it.memo) + '</div>' : '') + (it.chk ? '<div class="md-chk">⚠ ' + esc(it.chk) + '</div>' : '') + '</div>' +
       '<div class="r"><b>' + won(it.total) + '</b>' + (exp ? exp : '') + '</div></div>';
   });
   $('md-list').innerHTML = h || '<div class="empty">' + (MD.items.length ? '조건에 맞는 진료 건이 없어요.' : '아직 기록이 없어요. “📩 의료비 입력”으로 시작해 보세요.') + '</div>';
