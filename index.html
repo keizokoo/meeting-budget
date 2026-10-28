@@ -3267,7 +3267,7 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-28-c (의료비 목록: 신청일·예상·입금일·실제 입금액을 상세 창 없이 목록에서 바로 표시, 차이·예정일 지남 경고)';
+const APP_BUILD_VERSION = '2026-10-29-a (오늘 화면 자산 합계: 장 시작 전 임시 값 제외, 직전 마감 기준 표시)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
@@ -6695,8 +6695,11 @@ function agIbTable(b){
 }
 function agMoneyCard(){
   const c = agCfg(); if (!c.moneyUrl || !c.moneyKey) return '';
-  const m = agCache().money || {}, ok = typeof m.total === 'number';
-  return '<!--c:assets--><div class="td-card"><h3>💎 자산 합계</h3>' + (ok ? '<div class="td-big">' + won(m.total) + '</div><p class="td-note">' + (typeof m.diff === 'number' ? '전일 대비 <b style="color:' + (m.diff >= 0 ? 'var(--good)' : 'var(--warn)') + '">' + (m.diff >= 0 ? '+' : '-') + won(Math.abs(m.diff)) + '</b> · ' : '') + '기준일 ' + esc(m.asOf || '') + ' · 대시보드 기준(숨김 계좌 제외)</p>' : '<p class="td-note">아직 불러온 값이 없어요.</p>') +
+  let m = agCache().money || {}; const ok = typeof m.total === 'number';
+  /* 장 시작 전(평일 09시 전)에 서버가 오늘 날짜로 준 값은 옛 시세로 만든 임시 값일 수 있어요 → 직전 마감 값(= 합계 − 전일 대비)을 보여줘요 */
+  let pre = false;
+  if (ok && typeof m.diff === 'number' && m.asOf === todayStr()) { const nw = new Date(), dw = nw.getDay(); if (dw >= 1 && dw <= 5 && nw.getHours() < 9) { pre = true; m = Object.assign({}, m, { total: m.total - m.diff, diff: null }); } }
+  return '<!--c:assets--><div class="td-card"><h3>💎 자산 합계</h3>' + (ok ? '<div class="td-big">' + won(m.total) + '</div><p class="td-note">' + (pre ? '장 시작 전이라 오늘 값은 제외하고 <b>직전 마감 기준</b>으로 보여줘요 · ' : '') + (typeof m.diff === 'number' ? '전일 대비 <b style="color:' + (m.diff >= 0 ? 'var(--good)' : 'var(--warn)') + '">' + (m.diff >= 0 ? '+' : '-') + won(Math.abs(m.diff)) + '</b> · ' : '') + (pre ? '' : '기준일 ' + esc(m.asOf || '') + ' · ') + '대시보드 기준(숨김 계좌 제외)</p>' : '<p class="td-note">아직 불러온 값이 없어요.</p>') +
     '<p class="td-note' + (m.err ? ' td-warn' : '') + '">' + (m.at ? '마지막 불러온 시각 ' + agFmtAt(m.at) : '') + (m.err ? ' · 불러오기 실패(' + esc(m.err) + ') — ' + (/unauthorized/.test(m.err) ? '입력한 키 ' + String(c.moneyKey).length + '자(서버가 받은 글자 수와 같아야 해요)' : '회사 PC에서는 막힐 수 있어요') : '') + ' <button type="button" class="pc-btn small" data-ag="refresh" data-id="money">새로고침</button></p></div>';
 }
 function agBodyCard(){
