@@ -1046,7 +1046,7 @@
  <div class="pc-wrap">
   <div class="strip" id="md-summary"></div>
   <div class="sectionhead"><h3>🏥 의료비 정산</h3></div>
-  <div class="md-acts"><button class="pc-btn primary" data-md="sms">📩 의료비 입력</button><button class="pc-btn" data-md="add">+ 직접 등록</button><button class="pc-btn" data-md="selmode" id="md-selmode">☑ 여러 건 선택</button><button class="pc-btn" data-md="wz" id="md-wz-btn" hidden>🧹 누락 정리</button><button class="pc-btn" data-md="lk">🔗 도수치료 연동</button></div>
+  <div class="md-acts"><button class="pc-btn primary" data-md="sms">📩 의료비 입력</button><button class="pc-btn" data-md="add">+ 직접 등록</button><button class="pc-btn" data-md="selmode" id="md-selmode">☑ 여러 건 선택</button><button class="pc-btn" data-md="wz" id="md-wz-btn" hidden>🧹 누락 정리</button><button class="pc-btn" data-md="bk">💳 입금 일괄 확인</button><button class="pc-btn" data-md="lk">🔗 도수치료 연동</button></div>
   <div class="md-net" id="md-net"></div>
   <div class="md-flt" id="md-flt"></div>
   <div class="pc-row2 pc-filterrow"><label class="pc-f">기간<select id="md-flt-year"></select></label></div>
@@ -1061,7 +1061,7 @@
    <div class="pc-row2" style="margin-top:14px"><label class="pc-f">실비 공제액(원)<input id="md-cfg-ded" type="number" inputmode="numeric" min="0"></label><label class="pc-f">회사 세금(%)<input id="md-cfg-tax" type="number" inputmode="decimal" min="0" step="0.1"></label></div>
    <div class="pc-row2"><label class="pc-f">배우자 공제(원)<input id="md-cfg-sp" type="number" inputmode="numeric" min="0"></label><label class="pc-f">실비 입금 확인 알림(신청 후 N일)<input id="md-cfg-days" type="number" inputmode="numeric" min="0"></label></div>
    <label class="mp-chk" style="margin-top:10px"><input type="checkbox" id="md-cfg-cal"> 📅 회사 의료비 입금 예정일을 구글캘린더에 넣고 당일 아침 9시에 알림 받기</label>
-   <p class="pc-hint" style="margin:2px 0 0">☁ 백업할 때 Apps Script(v23)가 캘린더에 일정을 만들어요. 앱을 열지 않아도 폰 캘린더 알림이 울려요. 입금 확인을 하면 일정이 지워져요. (앱 안 알림은 이 설정과 관계없이 입금 당일에 떠요.)</p>
+   <p class="pc-hint" style="margin:2px 0 0">☁ 백업할 때 Apps Script(v23)가 캘린더에 일정을 만들어요. 앱을 열지 않아도 폰 캘린더 알림이 울려요. 입금 확인을 하면 일정이 지워져요. (앱 안 알림은 이 설정과 관계없이 입금 당일에 떠요. 앱을 열어야 보이므로 폰 알림은 이 설정을 켜 두세요.)</p>
    <p class="td-note">이 설정은 시트 백업에 함께 저장돼요.</p>
   </details>
   <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-md="backup">☁ 지금 백업</button></div>
@@ -1219,6 +1219,15 @@
   <div id="md-lk-list"></div>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-mdlk="cancel">닫기</button><button class="pc-btn primary" id="md-lk-go" data-mdlk="go" disabled>연동</button></div>
 </dialog>
+<dialog id="md-bk-dlg">
+  <h3>💳 입금 일괄 확인</h3>
+  <p class="pc-hint" style="margin:2px 0 6px">은행 앱에 찍힌 입금 금액을 줄마다 적거나 입금 내역을 붙여넣으세요. 금액이 맞는 신청 건을 찾아 한 번에 입금 확인해요. “10.23”처럼 날짜가 함께 있으면 입금일로 써요(없으면 아래 날짜). 잔액처럼 맞는 신청이 없는 금액은 무시해요.</p>
+  <textarea id="md-bk-in" rows="6" placeholder="예)&#10;10.23 전자의료비 67,350원&#10;5,430원&#10;100,650원"></textarea>
+  <label class="pc-f" style="margin-top:6px">기본 입금일<input id="md-bk-date" type="date"></label>
+  <div id="md-bk-list"></div>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-md="bk-cancel">닫기</button><button class="pc-btn primary" id="md-bk-go" data-md="bk-go" disabled>입금 확인 처리</button></div>
+</dialog>
+
 <dialog id="md-wz-dlg">
   <h3>🧹 의료비 누락 정리</h3>
   <p class="pc-hint" style="margin:0 0 6px" id="md-wz-prog"></p>
@@ -3249,7 +3258,7 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-28-a (가격 체크: 증정을 1개당이 아닌 전체 용량으로 입력·계산, 기존 기록 자동 변환)';
+const APP_BUILD_VERSION = '2026-10-28-b (의료비: 입금 일괄 확인 추가 · 입금 확인 배너 매일 재알림 · 입금 예정일 폰(캘린더) 알림 켜짐 / 가격: 증정 전체 용량 입력)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
@@ -5644,12 +5653,57 @@ function mdSmsGo(){
   if (quick.length) mdQuickClaims(quick);
   MD = mdNorm(MD); mdSave(); changed(); $('md-sms-dlg').close(); mdFlt.st = 'open'; toast(n + '건 등록했어요.' + (quick.length ? ' 신청일을 넣은 건은 신청으로 기록했어요.' : (mode === 'today' ? ' 회사·실비 신청은 “의료비 열기”에서 이어서 체크하세요.' : ' 회사·실비 신청은 목록에서 이어서 체크하세요.'))); renderAll(); if (mode === 'today') { try { renderToday(true); } catch (e) { /* 무시 */ } }
 }
+/* ---------- 입금 일괄 확인: 은행 입금 금액 → 금액이 맞는 신청 건 찾기 (2026-10-28) ---------- */
+let mdBkRows = [];
+function mdBkOpen(){ $('md-bk-in').value = ''; $('md-bk-date').value = todayStr(); mdBkRows = []; mdBkRender(); $('md-bk-dlg').showModal(); setTimeout(() => $('md-bk-in').focus(), 60); }
+function mdBkParse(){
+  const txt = $('md-bk-in').value, base = Calc.validDate($('md-bk-date').value) || todayStr(), yr = Number(todayStr().slice(0, 4));
+  const found = []; let curDate = '', kind = '';
+  String(txt).split(/\r?\n/).forEach(line => {
+    const dm = /(?:^|[^\d])(\d{1,2})[.\/](\d{1,2})(?!\d)(?![,\d]*원)/.exec(line.replace(/\d{1,2}:\d{2}/g, ' '));
+    if (dm && Number(dm[1]) >= 1 && Number(dm[1]) <= 12 && Number(dm[2]) >= 1 && Number(dm[2]) <= 31) { let y = yr; const d = y + '-' + String(dm[1]).padStart(2, '0') + '-' + String(dm[2]).padStart(2, '0'); curDate = d > todayStr() ? (y - 1) + d.slice(4) : d; }
+    if (/메리츠|보험/.test(line)) kind = 'in'; else if (/의료비|삼성전자|급여/.test(line)) kind = 'co';
+    const clean = line.replace(/\d{1,2}:\d{2}/g, ' ').replace(/(\d{1,2})[.\/](\d{1,2})(?!\d)(?![,\d]*원)/g, ' ');
+    const re = /(-?)(\d{1,3}(?:,\d{3})+|\d{3,})(?:\s*원)?/g; let m;
+    while ((m = re.exec(clean))) { if (m[1] === '-') continue; const v = Number(m[2].replace(/,/g, '')); if (v >= 1000) found.push({ amt: v, date: curDate || base, kind }); }
+  });
+  const open = MD.claims.filter(c => c.st !== 'paid' && (c.ids || []).some(mdItem)), used = {}, rows = [];
+  found.forEach(f => {
+    let best = null;
+    open.forEach(c => {
+      if (used[c.id] || (f.kind && f.kind !== c.t)) return;
+      const diff = Math.abs(f.amt - (Number(c.exp) || 0)), tol = c.t === 'co' ? 20 : 10;
+      if (diff <= tol && (!best || diff < best.diff || (diff === best.diff && (c.cdate || '') < (best.c.cdate || '')))) best = { c, diff, n: 0 };
+    });
+    if (best) { best.n = open.filter(c => !used[c.id] && c !== best.c && (!f.kind || f.kind === c.t) && Math.abs(f.amt - (Number(c.exp) || 0)) <= (c.t === 'co' ? 20 : 10) && c.t === best.c.t).length; used[best.c.id] = true; rows.push({ f, c: best.c, n: best.n, on: true }); }
+  });
+  return { rows, total: found.length };
+}
+function mdBkRender(res){
+  const box = $('md-bk-list'), go = $('md-bk-go');
+  if (!res) { box.innerHTML = ''; go.disabled = true; return; }
+  mdBkRows = res.rows;
+  if (!res.rows.length) { box.innerHTML = '<p class="pc-hint">' + (res.total ? '금액이 맞는 신청 건이 없어요. (' + res.total + '개 금액 확인) 이미 입금 확인했거나 신청 기록이 없을 수 있어요.' : '금액을 찾지 못했어요. 숫자(예: 67,350)를 적어 주세요.') + '</p>'; go.disabled = true; return; }
+  box.innerHTML = '<p class="pc-hint" style="margin:8px 0 4px">' + res.rows.length + '건 찾았어요. 확인하고 체크가 맞으면 처리하세요.' + (res.total > res.rows.length ? ' (맞는 신청이 없는 금액 ' + (res.total - res.rows.length) + '개는 무시)' : '') + '</p>' +
+    res.rows.map((r, i) => { const its = r.c.ids.map(mdItem).filter(Boolean); return '<label class="md-ck2"><input type="checkbox" data-bk="' + i + '" checked> <b>' + (r.c.t === 'co' ? '회사' : '실비') + '</b> ' + esc(its.map(x => mdMD(x.date) + ' ' + x.place).join(', ')) + '<br><small>신청액 ' + won(r.c.exp) + ' → 입금 ' + won(r.f.amt) + ' (' + mdMD(r.f.date) + ')' + (r.n ? ' · 같은 금액 신청이 ' + r.n + '건 더 있어요(신청일 빠른 순으로 맞췄어요)' : '') + '</small></label>'; }).join('');
+  go.disabled = false;
+}
+function mdBkGo(){
+  const on = Array.prototype.filter.call(document.querySelectorAll('#md-bk-list input[data-bk]'), x => x.checked).map(x => mdBkRows[Number(x.dataset.bk)]).filter(Boolean);
+  if (!on.length) { toast('처리할 건을 선택해 주세요.'); return; }
+  const t = nowIso();
+  on.forEach(r => { const c = MD.claims.find(x => x.id === r.c.id); if (c) { c.st = 'paid'; c.pdate = Calc.validDate(r.f.date) || todayStr(); c.paid = r.f.amt; c.u = t; } });
+  MD = mdNorm(MD); mdSave(); changed(); $('md-bk-dlg').close(); toast(on.length + '건 입금 확인했어요.'); renderAll();
+}
+$('md-bk-in').addEventListener('input', () => { mdBkRender(mdBkParse()); });
+$('md-bk-date').addEventListener('change', () => { mdBkRender(mdBkParse()); });
+$('md-bk-dlg').addEventListener('click', e => { const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md; if (a === 'bk-cancel') $('md-bk-dlg').close(); else if (a === 'bk-go') mdBkGo(); });
 /* ---------- 이벤트 ---------- */
 function mdCfgSave(){ MD.cfg.u = nowIso(); MD = mdNorm(MD); mdSave(); changed(); renderMed(); }
 $('medView').addEventListener('click', e => {
   const el = e.target.closest('[data-md]'); if (!el) return;
   const a = el.dataset.md, id = el.dataset.id;
-  if (a === 'sms') mdSmsOpen(); else if (a === 'add') mdOpen(null); else if (a === 'lk') mdLkOpen();
+  if (a === 'sms') mdSmsOpen(); else if (a === 'add') mdOpen(null); else if (a === 'lk') mdLkOpen(); else if (a === 'bk') mdBkOpen();
   else if (a === 'wz') mdWzOpen();
   else if (a === 'flt') { mdFlt.st = el.dataset.k; renderMed(); }
   else if (a === 'sel') { mdSel[id] = el.checked; renderMed(); return; }
@@ -6094,6 +6148,13 @@ function migrateW(){
   const t = nowIso(); let ch = false;
   MD.claims.forEach(c => { if (c.t !== 'co' || c.st === 'paid' || !c.cdate || !c.due) return; if (c.due === Med.dueNominal(c.cdate) && c.due !== Med.dueFor(c.cdate)) { c.due = Med.dueFor(c.cdate); c.u = t; ch = true; } });
   if (ch) { MD = mdNorm(MD); mdSave(); changed(); }
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
+
+function migrateZ(){
+  // 의료비 입금 예정일 폰 알림(구글캘린더)을 한 번만 켬 (2026-10-28 정희님 요청). 이후 설정에서 끄면 그대로 유지
+  const MK = 'mig_z_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  if (MD.cfg.cal !== true) { MD.cfg.cal = true; MD.cfg.u = nowIso(); MD = mdNorm(MD); mdSave(); changed(); }
   try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
 }
 
@@ -6891,7 +6952,7 @@ function renderGlobal(){
   }
   { const al0 = Med.alerts(MD.items, MD.claims, MD.cfg, todayStr()); if (al0.coToday.length && navVisible('med') && mode !== 'med') list.push({ key: 'mdpay:' + todayStr() + ':' + al0.coToday.map(x => x.claim.id).join(','), act: 'med', html: '🏢 <b>오늘 회사 의료비 입금일</b> — ' + al0.coToday.length + '건 · 예상 ' + won(al0.coToday.reduce((a, x) => a + x.claim.exp, 0)) + ' · 통장 확인 후 “입금 확인”' }); }
   { const al = Med.alerts(MD.items, MD.claims, MD.cfg, todayStr()), n = al.coLate.length + al.insLate.length;
-    if (n && navVisible('med') && mode !== 'med') list.push({ key: 'md:' + al.coLate.concat(al.insLate).map(x => x.claim.id).join(','), act: 'med', html: '🏥 의료비 입금 확인 <b>' + n + '건</b> — ' + [al.insLate.length ? '실비 신청 후 ' + MD.cfg.insDays + '일 넘게 대기 ' + al.insLate.length + '건' : '', al.coLate.length ? '회사 지급예정일 지남 ' + al.coLate.length + '건' : ''].filter(Boolean).join(' · ') }); }
+    if (n && navVisible('med') && mode !== 'med') list.push({ key: 'md:' + todayStr() + ':' + al.coLate.concat(al.insLate).map(x => x.claim.id).join(','), act: 'med', html: '🏥 의료비 입금 확인 <b>' + n + '건</b> — ' + [al.insLate.length ? '실비 신청 후 ' + MD.cfg.insDays + '일 넘게 대기 ' + al.insLate.length + '건' : '', al.coLate.length ? '회사 지급예정일 지남 ' + al.coLate.length + '건' : ''].filter(Boolean).join(' · ') }); }
   const html = list.filter(a => !dismissed(a.key)).map(a => '<div class="galert" data-g="' + a.act + '" data-key="' + esc(a.key) + '"' + (a.id ? ' data-id="' + esc(a.id) + '"' : '') + (a.mo ? ' data-mo="' + esc(a.mo) + '"' : '') + (a.need ? ' data-need="1"' : '') + ' role="button" tabindex="0"><span class="t">' + a.html + '</span><button class="x" data-g="x" data-key="' + esc(a.key) + '" aria-label="닫기">✕</button></div>').join('');
   if (gbox.dataset.sig !== html) { gbox.dataset.sig = html; gbox.innerHTML = html; }
   gbox.hidden = mode === 'today';   // 오늘 화면에서는 같은 내용을 본문에 보여주므로 상단 알림은 숨김
@@ -7199,7 +7260,7 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY();
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ();
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
