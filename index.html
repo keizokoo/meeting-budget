@@ -1191,6 +1191,7 @@
   <div class="md-chk" id="md-f-chkwrap" hidden>⚠ <span id="md-f-chktext"></span><label class="mp-chk"><input type="checkbox" id="md-f-chkok"> 확인했어요 (표시 지우기)</label></div>
   <div class="md-mp" id="md-f-mp"></div>
   <label class="mp-chk" style="margin-top:6px"><input type="checkbox" id="md-f-mpl"> 🦴 도수치료 기록과 연동 (한도 횟수에 함께 반영)</label>
+  <label class="mp-chk" id="md-f-mpn-wrap"><input type="checkbox" id="md-f-mpn"> 도수치료가 아니에요 (“도수 미연동” 표시 끄기)</label>
   <div id="md-f-mpbox" hidden>
     <label class="pc-f">연동할 도수치료 기록<select id="md-f-mpsel"></select></label>
     <label class="pc-f" id="md-f-mpcnt-wrap">횟수(새로 만들 때)<input id="md-f-mpcnt" type="number" inputmode="numeric" min="1" step="1" value="1"></label>
@@ -3267,7 +3268,7 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-29-d (도수치료 연동: 새 기록이 합산되는 질병·실비 한도(사용 횟수 전→후) 표시)';
+const APP_BUILD_VERSION = '2026-10-29-f (도수치료 연동 마무리: 5/30·6/25 입금액 바로잡기, 전 건 자동 연동, 연동 현황·도수치료 아님 표시)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
@@ -4865,7 +4866,7 @@ function mpNorm(o){
   o = o && typeof o === 'object' ? o : {};
   const nn = v => (Number(v) >= 0 && v !== '' && v != null ? Number(v) : 0);
   const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Calc.validDate(i.date)).map(i => ({ id: String(i.id), date: i.date, dz: String(i.dz || ''), part: String(i.part || '기타'), cnt: Math.max(1, Math.round(Number(i.cnt)) || 1), clinic: String(i.clinic || ''),
-    cost: nn(i.cost), paid: nn(i.paid), claimed: i.claimed !== false, cdate: Calc.validDate(i.cdate) || '', symptom: String(i.symptom || ''), memo: String(i.memo || ''), u: String(i.u || '') }));
+    cost: nn(i.cost), paid: nn(i.paid), grp: i.grp === true || i.grp === 'true', claimed: i.claimed !== false, cdate: Calc.validDate(i.cdate) || '', symptom: String(i.symptom || ''), memo: String(i.memo || ''), u: String(i.u || '') }));
   return { items, del: cleanDel(o.del) };
 }
 let mpFilter = { dz: 'all', scope: 'all', part: 'all', claim: 'all' }, mpCur = {};
@@ -5179,7 +5180,7 @@ function mdNorm(o){
   const nn = v => (v === '' || v == null || !isFinite(Number(v)) || Number(v) < 0 ? 0 : Number(v)), ov = v => (v === '' || v == null || !isFinite(Number(v)) ? '' : Number(v));
   const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Calc.validDate(i.date)).map(i => ({
     id: String(i.id), date: i.date, who: String(i.who || '본인'), place: String(i.place || ''), total: nn(i.total), extra: Math.min(nn(i.extra), nn(i.total)), incl: i.incl === true || i.incl === 'true',
-    xcl: Math.min(nn(i.xcl), nn(i.total)), cOv: ov(i.cOv), tg: ['yes', 'no'].indexOf(i.tg) >= 0 ? i.tg : 'auto', why: String(i.why || ''), card: String(i.card || ''), inst: Math.max(0, Math.round(Number(i.inst)) || 0), vg: String(i.vg || ''), mp: String(i.mp || ''), chk: String(i.chk || ''), memo: String(i.memo || ''), u: String(i.u || '') }));
+    xcl: Math.min(nn(i.xcl), nn(i.total)), cOv: ov(i.cOv), tg: ['yes', 'no'].indexOf(i.tg) >= 0 ? i.tg : 'auto', why: String(i.why || ''), card: String(i.card || ''), inst: Math.max(0, Math.round(Number(i.inst)) || 0), vg: String(i.vg || ''), mp: String(i.mp || ''), mpn: i.mpn === true || i.mpn === 'true', chk: String(i.chk || ''), memo: String(i.memo || ''), u: String(i.u || '') }));
   const claims = (Array.isArray(o.claims) ? o.claims : []).filter(c => c && c.id && (c.t === 'co' || c.t === 'in') && Array.isArray(c.ids) && c.ids.length).map(c => ({
     id: String(c.id), t: c.t, ids: c.ids.map(String), cdate: Calc.validDate(c.cdate) || '', due: Calc.validDate(c.due) || '', exp: nn(c.exp), pdate: Calc.validDate(c.pdate) || '',
     paid: (c.paid === '' || c.paid == null || !isFinite(Number(c.paid))) ? null : Number(c.paid), st: c.st === 'paid' ? 'paid' : 'claimed', u: String(c.u || '') }));
@@ -5306,7 +5307,7 @@ function renderMed(){
     const it = r.it, m = it.date.slice(0, 7);
     if (m !== curM) { curM = m; h += '<div class="grp md-mo">' + Number(m.slice(0, 4)) + '년 ' + Number(m.slice(5)) + '월 <small>실부담 ' + won(monO[m] || 0) + '</small></div>'; }
     const sub = [it.who !== '본인' ? it.who : '', it.card, it.inst ? it.inst + '개월 할부' : '', it.extra ? '비급여 ' + won(it.extra) : '', Med.isPharm(it.place) ? '약국' : ''].filter(Boolean).join(' · ');
-    const dosu = mdMpRec(it) ? ' <span class="md-chip ok">🔗 도수치료 연동</span>' : (MP.items.some(m2 => m2.date === it.date) && it.extra > 0 ? ' <span class="md-chip mute">🦵 도수 기록 있음</span>' : (it.extra > 0 && mdMpElig(it.place) ? ' <span class="md-chip warn">🦴 도수 미연동</span>' : ''));
+    const dosu = mdMpRec(it) ? ' <span class="md-chip ok">🔗 도수치료 연동</span>' : mdMpCovered(it) ? ' <span class="md-chip ok">🔗 도수치료 연동(묶음)</span>' : (MP.items.some(m2 => m2.date === it.date) && it.extra > 0 ? ' <span class="md-chip mute">🦵 도수 기록 있음</span>' : (it.extra > 0 && !it.mpn && mdMpElig(it.place) ? ' <span class="md-chip warn">🦴 도수 미연동</span>' : ''));
     const nx = net[it.id], exp = nx ? '<span class="md-oop' + (nx.sure ? '' : ' est') + '">실부담 ' + won(nx.oop) + (nx.sure ? '' : ' (예상)') + '</span>' : '';
     h += '<div class="md-row' + (r.s.closed ? ' done' : '') + (it.vg && it.vg.indexOf('u_') !== 0 ? ' bd' : '') + '" data-md="open" data-id="' + esc(it.id) + '" tabindex="0">' +
       (mdSelMode ? '<label class="md-ck"><input type="checkbox" data-md="sel" data-id="' + esc(it.id) + '"' + (mdSel[it.id] ? ' checked' : '') + '></label>' : '') +
@@ -5430,6 +5431,19 @@ const mpClinicOf = r => r.clinic || MP_CLINIC_BASE;
 const mdIsPharm = p => /약국/.test(p || '');
 function mdMpRec(it){ return it && it.mp ? (MP.items.find(x => x.id === it.mp) || null) : null; }
 function mdMpOwner(recId, exceptId){ return MD.items.find(x => x.mp === recId && x.id !== exceptId) || null; }
+function mdGrp(it){   // 이 진료 건이 속한 실비 묶음(2건 이상): 합계·입금액
+  let g; try { g = Med.insGroup(MD.items, MD.claims, it, MD.cfg.ded); } catch (e) { return null; }
+  if (!g) return null;
+  const c = g.claim;
+  if (g.members.length < 2 && !(c && c.ids.length > 1)) return null;
+  if (c && c.ids.length > 1) { const ms = c.ids.map(mdItem).filter(Boolean); if (ms.length > 1) return { sum: ms.reduce((a, m) => a + m.total, 0), n: ms.length, members: ms, claim: c, paid: c.st === 'paid' && c.paid != null ? c.paid : null }; }   // 여러 날이 한 번에 청구된 건은 청구 단위로
+  return { sum: g.sum, n: g.members.length, members: g.members, claim: c || null, paid: c && c.st === 'paid' && c.paid != null ? c.paid : null };
+}
+const mpCostOk = (r, total, gsum) => r.cost === total || (gsum > 0 && Math.abs(r.cost - gsum) <= 100);   // 도수 청구금액 = 의료비 금액 또는 실비 묶음 합계(±100원)
+function mdMpCovered(it){   // 직접 연동은 안 됐지만 같은 실비 묶음의 다른 건이 도수치료 기록과 연동돼 이 기록에 포함된 경우
+  if (!it || it.mp) return null; const g = mdGrp(it); if (!g) return null;
+  const o = g.members.find(m => m.id !== it.id && m.mp); return o ? mdMpRec(o) : null;
+}
 function mdMpLastDate(){ return MP.items.reduce((a, r) => r.date > a ? r.date : a, ''); }
 function mdMpClaim(it){   // 이 진료 건의 실비 청구 정보
   const c = MD.claims.find(x => x.t === 'in' && x.ids.indexOf(it.id) >= 0); if (!c) return { has: false, cdate: '', paid: null };
@@ -5440,9 +5454,11 @@ function mdMpClaim(it){   // 이 진료 건의 실비 청구 정보
 function mpFill(it, r){
   const cl = mdMpClaim(it); let ch = false;
   const set = (k, v) => { if (r[k] !== v) { r[k] = v; ch = true; } };
-  set('date', it.date); set('clinic', it.place); set('cost', it.total);
+  const gp = mdGrp(it), grpMode = !!(gp && (r.grp || Math.abs(r.cost - gp.sum) <= 100));   // 도수 기록이 실비 묶음(병원+약국, 여러 날) 전체를 가리키면 묶음 합계·입금액 기준
+  if (grpMode && !r.grp) { r.grp = true; ch = true; }
+  set('date', it.date); set('clinic', it.place); set('cost', grpMode ? gp.sum : it.total);
   if (cl.has) { set('claimed', true); if (cl.cdate) set('cdate', cl.cdate); }
-  if (cl.paid != null) set('paid', cl.paid);
+  if (grpMode && gp.paid != null) set('paid', gp.paid); else if (cl.paid != null) set('paid', cl.paid);
   if (ch) r.u = nowIso(); return ch;
 }
 function mdMpSyncAll(){ let ch = false; MD.items.forEach(it => { const r = mdMpRec(it); if (r && mpFill(it, r)) ch = true; }); if (ch) { MP = mpNorm(MP); mpSave(); } return ch; }
@@ -5455,7 +5471,10 @@ let mdMpAuto = true;
 function mdMpSuggest(){   // 입력한 병원이 도수치료 기록의 병원과 같고 비급여가 있고, 마지막 도수치료 기록 이후의 진료면 연동 제안
   const place = $('md-f-place').value.trim(), ex = Number($('md-f-extra').value) || 0, date = $('md-f-date').value;
   if (!place || mdIsPharm(place) || !(ex > 0)) return false;
-  return MP.items.some(r => mpSame(mpClinicOf(r), place)) && (!date || date >= mdMpLastDate());
+  if (!MP.items.some(r => mpSame(mpClinicOf(r), place))) return false;
+  if (!date || date >= mdMpLastDate()) return true;
+  const it0 = mdEditing ? mdItem(mdEditing) : null, g0 = it0 ? mdGrp(it0) : null, tot = Number($('md-f-total').value) || 0;   // 과거 건이라도 같은 날·같은 금액(또는 실비 묶음 합계)의 도수치료 기록이 있으면 연동 제안
+  return mdMpCands(date, place, tot, mdEditing, [], g0 ? g0.sum : 0).some(r => r.date === date && mpCostOk(r, tot, g0 ? g0.sum : 0));
 }
 function mpNewInfo(cnt){   // 새로 만드는 도수치료 기록이 어느 질병·사고(한도 주기)에 합산되는지 설명
   const last = MP.items.slice().sort((a, b) => b.date.localeCompare(a.date))[0] || {}, dz = last.dz || '', n = Math.max(1, Math.round(Number(cnt)) || 1);
@@ -5464,30 +5483,32 @@ function mpNewInfo(cnt){   // 새로 만드는 도수치료 기록이 어느 질
   return '기존 도수 실비 「' + (dz || '미분류') + '」에 ' + n + '회 합산돼요.' + use;
 }
 function mdMpElig(place){ return !!place && !mdIsPharm(place) && MP.items.some(r => mpSame(mpClinicOf(r), place)); }
-function mdMpCands(date, place, total, exceptId, usedIds){   // 같은 병원의 아직 연동 안 된 도수치료 기록 (같은 날짜 → 금액 일치 → 날짜 가까운 순)
+function mdMpCands(date, place, total, exceptId, usedIds, gsum){   // 같은 병원의 아직 연동 안 된 도수치료 기록 (같은 날짜 → 금액 일치 → 날짜 가까운 순)
   const t0 = Date.parse((date || todayStr()) + 'T00:00:00Z');
   const dist = r => Math.abs(Date.parse(r.date + 'T00:00:00Z') - t0);
   return MP.items.filter(r => !mdMpOwner(r.id, exceptId) && (usedIds || []).indexOf(r.id) < 0 && mpSame(mpClinicOf(r), place))
-    .sort((a, b) => ((a.date === date ? 0 : 1) - (b.date === date ? 0 : 1)) || ((a.cost === total ? 0 : 1) - (b.cost === total ? 0 : 1)) || (dist(a) - dist(b))).slice(0, 15);
+    .sort((a, b) => ((a.date === date ? 0 : 1) - (b.date === date ? 0 : 1)) || ((mpCostOk(a, total, gsum) ? 0 : 1) - (mpCostOk(b, total, gsum) ? 0 : 1)) || (dist(a) - dist(b))).slice(0, 15);
 }
-function mdMpOptLabel(r, date, total){ return r.date.slice(5).replace('-', '/') + ' ' + mpClinicOf(r) + ' ' + r.cnt + '회 · 청구 ' + won(r.cost) + (r.date !== date ? ' ⚠날짜 다름' : '') + (r.cost === total ? ' (금액 일치)' : ''); }
+function mdMpOptLabel(r, date, total, gsum){ return r.date.slice(5).replace('-', '/') + ' ' + mpClinicOf(r) + ' ' + r.cnt + '회 · 청구 ' + won(r.cost) + (r.date !== date ? ' ⚠날짜 다름' : '') + (r.cost === total ? ' (금액 일치)' : (mpCostOk(r, total, gsum) ? ' (실비 묶음 합계 일치)' : '')); }
 function mdMpRefresh(fromOpen){
   const cb = $('md-f-mpl'), box = $('md-f-mpbox'), it = mdEditing ? mdItem(mdEditing) : null, linked = mdMpRec(it);
-  if (fromOpen === true) { mdMpAuto = !linked; $('md-f-mpsel').innerHTML = ''; cb.checked = !!linked || mdMpSuggest(); }
+  if (fromOpen === true) { mdMpAuto = !linked; $('md-f-mpsel').innerHTML = ''; cb.checked = !!linked || mdMpSuggest(); $('md-f-mpn').checked = !!(it && it.mpn); }
   else if (mdMpAuto && !linked) cb.checked = mdMpSuggest();
+  $('md-f-mpn-wrap').hidden = cb.checked;
   box.hidden = !cb.checked; if (!cb.checked) return;
   const date = $('md-f-date').value, place = $('md-f-place').value.trim(), total = Number($('md-f-total').value) || 0, prev = $('md-f-mpsel').value;
-  const cands = mdMpCands(date, place, total, mdEditing, []);
+  const gpE = mdEditing && it ? mdGrp(it) : null, gsum = gpE ? gpE.sum : 0, cands = mdMpCands(date, place, total, mdEditing, [], gsum);
   if (linked && cands.every(r => r.id !== linked.id)) cands.unshift(linked);
-  const opts = [{ v: '__new', t: '＋ 새로 도수치료 기록 만들기' }].concat(cands.map(r => ({ v: r.id, t: mdMpOptLabel(r, date, total) })));
-  const sel = prev && opts.some(o => o.v === prev) ? prev : (linked ? linked.id : (cands[0] && cands[0].date === date && cands[0].cost === total ? cands[0].id : '__new'));
+  const opts = [{ v: '__new', t: '＋ 새로 도수치료 기록 만들기' }].concat(cands.map(r => ({ v: r.id, t: mdMpOptLabel(r, date, total, gsum) })));
+  const sel = prev && opts.some(o => o.v === prev) ? prev : (linked ? linked.id : (cands[0] && cands[0].date === date && mpCostOk(cands[0], total, gsum) ? cands[0].id : '__new'));
   fillSelect($('md-f-mpsel'), opts, sel);
   $('md-f-mpcnt-wrap').hidden = sel !== '__new';
-  $('md-f-mpnote').textContent = sel === '__new' ? '저장하면 도수치료 기록이 새로 만들어져요 (청구 ' + won(total) + '). ' + mpNewInfo($('md-f-mpcnt').value) + ' 보험금은 실비 입금을 확인하면 자동으로 채워져요.' : (function () { const rc = MP.items.find(x => x.id === sel); let m = '선택한 기록과 연동돼요. 진료일·병원·청구금액·보험금은 의료비 기준으로 맞춰져요.'; if (rc && rc.date !== date) m += ' ⚠ 도수치료 기록의 진료일이 ' + rc.date + ' → ' + date + '(으)로 바뀌어요.'; if (rc && rc.cost !== total) m += ' ⚠ 청구금액이 ' + won(rc.cost) + ' → ' + won(total) + '(으)로 바뀌어요.'; return m; })();
+  $('md-f-mpnote').textContent = sel === '__new' ? '저장하면 도수치료 기록이 새로 만들어져요 (청구 ' + won(total) + '). ' + mpNewInfo($('md-f-mpcnt').value) + ' 보험금은 실비 입금을 확인하면 자동으로 채워져요.' : (function () { const rc = MP.items.find(x => x.id === sel); let m = '선택한 기록과 연동돼요. 진료일·병원·청구금액·보험금은 의료비 기준으로 맞춰져요.'; if (rc && rc.date !== date) m += ' ⚠ 도수치료 기록의 진료일이 ' + rc.date + ' → ' + date + '(으)로 바뀌어요.'; if (rc && gsum && mpCostOk(rc, total, gsum) && rc.cost !== total) m = '✅ 실비 묶음 ' + gpE.n + '건 합계 ' + won(gsum) + '이 도수치료 청구 ' + won(rc.cost) + '과 같아요. 청구금액은 묶음 합계 기준으로, 지급 보험금은 ' + (gpE.paid != null ? '실비 입금액 ' + won(gpE.paid) : '실비 입금 확인 시') + '으로 맞춰져요.' + (rc.date !== date ? ' ⚠ 도수치료 진료일이 ' + rc.date + ' → ' + date + '(으)로 바뀌어요.' : ''); else if (rc && rc.cost !== total) m += ' ⚠ 청구금액이 ' + won(rc.cost) + ' → ' + won(total) + '(으)로 바뀌어요.'; return m; })();
 }
 function mdMpApply(id){   // 진료 건 저장 때 연동 체크 상태를 반영 (반환: 토스트에 붙일 말)
   const it = mdItem(id); if (!it) return '';
-  const want = $('md-f-mpl').checked;
+  const want = $('md-f-mpl').checked, nmp = !want && $('md-f-mpn').checked;
+  if (!!it.mpn !== nmp) { it.mpn = nmp; it.u = nowIso(); }
   if (!want) { if (it.mp) { it.mp = ''; it.u = nowIso(); return ' 도수치료 연동을 해제했어요(도수치료 기록은 그대로).'; } return ''; }
   const sel = $('md-f-mpsel').value || '__new'; let rec = null, made = false;
   if (sel === '__new') { rec = mpCreateFor(it, $('md-f-mpcnt').value); made = true; }
@@ -5497,14 +5518,15 @@ function mdMpApply(id){   // 진료 건 저장 때 연동 체크 상태를 반�
   mpFill(it, rec); MP = mpNorm(MP); mpSave(); mpbSync();
   return made ? ' 도수치료에 ' + rec.cnt + '회 새로 등록했어요.' : ' 도수치료 기록과 연동했어요.';
 }
-function mdLkProposals(){   // 과거 건 일괄 연동 후보
+function mdLkProposals(){   // 과거 건 일괄 연동 후보 (금액은 의료비 금액 또는 실비 묶음 합계와 비교)
   const out = [], used = {}, last = mdMpLastDate();
-  MP.items.filter(r => !mdMpOwner(r.id) && !mpbHeld(r.id)).sort((a, b) => a.date.localeCompare(b.date)).forEach(r => {
-    const c = MD.items.filter(i => !i.mp && !used[i.id] && !mdIsPharm(i.place) && i.date === r.date && mpSame(mpClinicOf(r), i.place)).sort((a, b) => (b.total === r.cost) - (a.total === r.cost))[0];
-    if (!c) return; used[c.id] = 1;
-    out.push({ k: c.total === r.cost ? 'match' : 'maybe', it: c, r, ok: c.total === r.cost });
+  MP.items.filter(r => !mdMpOwner(r.id)).sort((a, b) => a.date.localeCompare(b.date)).forEach(r => {
+    const cs = MD.items.filter(i => !i.mp && !used[i.id] && !mdIsPharm(i.place) && i.date === r.date && mpSame(mpClinicOf(r), i.place)).map(i => { const g = mdGrp(i); return { i, g, hit: mpCostOk(r, i.total, g ? g.sum : 0) }; }).sort((a, b) => (b.hit - a.hit));
+    const c = cs[0]; if (!c) return; used[c.i.id] = 1;
+    const gg = c.g && c.hit && r.cost !== c.i.total ? c.g : null, exp = gg ? gg.paid : mdMpClaim(c.i).paid, cl0 = MD.claims.find(x => x.t === 'in' && x.ids.indexOf(c.i.id) >= 0), pm = c.hit && exp != null && r.paid > 0 && exp !== r.paid ? { rec: r.paid, exp, ce: cl0 ? cl0.exp : null } : null;
+    out.push({ k: c.hit ? 'match' : 'maybe', it: c.i, r, g: gg, pm, ok: c.hit && !pm });
   });
-  MD.items.filter(i => !i.mp && !used[i.id] && !mdIsPharm(i.place) && i.extra > 0 && i.date >= last && MP.items.some(r => mpSame(mpClinicOf(r), i.place)) && !MP.items.some(r => r.date === i.date && mpSame(mpClinicOf(r), i.place)))
+  MD.items.filter(i => !i.mp && !i.mpn && !used[i.id] && !mdMpCovered(i) && !mdIsPharm(i.place) && i.extra > 0 && i.date >= last && MP.items.some(r => mpSame(mpClinicOf(r), i.place)) && !MP.items.some(r => r.date === i.date && mpSame(mpClinicOf(r), i.place)))
     .sort((a, b) => a.date.localeCompare(b.date)).forEach(i => out.push({ k: 'new', it: i, r: null, ok: true, cnt: 1 }));
   return out;
 }
@@ -5513,19 +5535,26 @@ function mdLkOpen(){ mdLk = mdLkProposals(); mdLkRender(); $('md-lk-dlg').showMo
 function mdLkRender(){
   const box = $('md-lk-list');
   box.innerHTML = mdLk.length ? mdLk.map((x, i) => '<div class="md-sms-card' + (x.ok ? '' : ' off') + '"><label class="md-ck2"><input type="checkbox" data-mdlk="ok" data-i="' + i + '"' + (x.ok ? ' checked' : '') + '> <b>' + mdMD(x.it.date) + ' ' + esc(x.it.place) + ' ' + won(x.it.total) + '</b></label>' +
-    (x.k === 'match' ? '<div class="md-chk">도수치료 기록(' + x.r.cnt + '회 · 청구 ' + won(x.r.cost) + ')과 금액이 같아요.</div>' : x.k === 'maybe' ? '<div class="md-chk">같은 날 도수치료 기록이 있지만 금액이 달라요 (도수 ' + won(x.r.cost) + ' / 의료비 ' + won(x.it.total) + '). 연동하면 도수치료 청구금액이 의료비 기준으로 바뀌어요.</div>' :
+    (x.k === 'match' ? '<div class="md-chk">' + (x.g ? '✅ 실비 묶음 ' + x.g.n + '건 합계 ' + won(x.g.sum) + ' = 도수치료 기록(' + x.r.cnt + '회 · 청구 ' + won(x.r.cost) + ')' + (x.g.paid != null ? '<br>실비 입금 ' + won(x.g.paid) + (x.g.paid === x.r.paid ? ' = 도수치료 지급보험금 ✓' : ' (도수치료 지급 ' + won(x.r.paid) + ' → 입금액으로 맞춰요)') : '') : '도수치료 기록(' + x.r.cnt + '회 · 청구 ' + won(x.r.cost) + ')과 금액이 같아요.') + '</div>' + (x.pm ? '<div class="md-chk">⚠ 지급보험금이 달라요 — 도수치료 ' + won(x.pm.rec) + ' / 의료비 실비 입금 ' + won(x.pm.exp) + '. ' + (x.pm.ce === x.pm.rec ? '실비 <b>예상액 ' + won(x.pm.ce) + '이 도수치료 지급액과 같아요 → 의료비 입금액이 서로 바뀌어 입력됐을 수 있어요.</b> 의료비에서 입금액을 고친 뒤 연동하세요.' : '보험금 지급 설명서와 대조해 어느 쪽이 맞는지 확인하세요. 체크하면 도수치료 지급보험금이 의료비 입금액으로 바뀌어요.') + '</div>' : '') : x.k === 'maybe' ? '<div class="md-chk">같은 날 도수치료 기록이 있지만 금액이 달라요 (도수 ' + won(x.r.cost) + ' / 의료비 ' + won(x.it.total) + '). 연동하면 도수치료 청구금액이 의료비 기준으로 바뀌어요.</div>' :
       '<div class="md-chk">➕ 이 날짜의 도수치료 기록이 아직 없어서, 체크하면 기록 1건(' + mdMD(x.it.date) + ' · 청구 ' + won(x.it.total) + ')을 만들어요.<br><b>' + esc(mpNewInfo(x.cnt)) + '</b> <label class="pc-f" style="display:inline-block;margin:0 0 0 6px">횟수 <input type="number" min="1" step="1" value="' + x.cnt + '" data-mdlk="cnt" data-i="' + i + '" style="width:64px"></label></div>') + '</div>').join('') : '<p class="pc-hint">연동할 후보가 없어요. 🎉</p>';
+  { const el = MD.items.filter(i => i.extra > 0 && !i.mpn && mdMpElig(i.place)), dn = el.filter(i => i.mp || mdMpCovered(i)).length;
+    box.insertAdjacentHTML('afterbegin', '<p class="pc-hint" style="margin:0 0 8px"><b>연동 현황</b> · 도수치료 의료비 ' + el.length + '건 중 ' + dn + '건 연동 · 미연동 ' + (el.length - dn) + '건 (도수치료가 아닌 건은 수정 화면에서 “도수치료가 아니에요”를 체크하면 빠져요)</p>'); }
   const n = mdLk.filter(x => x.ok).length; $('md-lk-go').disabled = !n; $('md-lk-go').textContent = n ? n + '건 연동' : '연동';
 }
-function mdLkGo(){
+function mdLkApply(list, detId){   // 연동 후보 목록 반영 (detId: 새 도수 기록 id를 의료비 id에서 정해 기기 간 중복 방지)
   let n = 0, made = 0;
-  mdLk.filter(x => x.ok).forEach(x => {
+  list.forEach(x => {
     const it = mdItem(x.it.id); if (!it || it.mp) return;
-    let rec = x.r; if (x.k === 'new') { rec = mpCreateFor(it, x.cnt); made++; }
+    let rec = x.r; if (x.k === 'new') { rec = mpCreateFor(it, x.cnt); if (detId) rec.id = 'mp_for_' + it.id; made++; }
     if (!rec) return; it.mp = rec.id; it.u = nowIso(); mpFill(it, rec); n++;
   });
-  if (!n) { toast('연동할 건을 체크해 주세요.'); return; }
-  MP = mpNorm(MP); mpSave(); mpbSync(); MD = mdNorm(MD); mdSave(); changed(); $('md-lk-dlg').close(); toast(n + '건 연동했어요' + (made ? ' (도수치료 ' + made + '건 새로 등록)' : '') + '.'); renderAll();
+  if (n) { MP = mpNorm(MP); mpSave(); mpbSync(); MD = mdNorm(MD); mdSave(); changed(); }
+  return { n, made };
+}
+function mdLkGo(){
+  const r = mdLkApply(mdLk.filter(x => x.ok), false);
+  if (!r.n) { toast('연동할 건을 체크해 주세요.'); return; }
+  $('md-lk-dlg').close(); toast(r.n + '건 연동했어요' + (r.made ? ' (도수치료 ' + r.made + '건 새로 등록)' : '') + '.'); renderAll();
 }
 $('md-lk-dlg').addEventListener('click', e => { const b = e.target.closest('[data-mdlk]'); if (!b) return; const a = b.dataset.mdlk; if (a === 'cancel') $('md-lk-dlg').close(); else if (a === 'go') mdLkGo(); });
 $('md-lk-dlg').addEventListener('change', e => { const t = e.target.closest('[data-mdlk]'); if (!t) return; const x = mdLk[Number(t.dataset.i)]; if (!x) return; if (t.dataset.mdlk === 'ok') { x.ok = t.checked; mdLkRender(); } else if (t.dataset.mdlk === 'cnt') { x.cnt = Math.max(1, Math.round(Number(t.value)) || 1); mdLkRender(); } });
@@ -5540,7 +5569,7 @@ function mdBdHtml(){   // 진료 건 팝업의 '실비 묶음' 영역
   const g = Med.insGroup(MD.items, MD.claims, it, MD.cfg.ded);
   if (!g.members.length) { box.innerHTML = '<small>실비 대상이 아닌 건이에요 (' + esc(Med.whyNo(it, MD.items, MD.cfg.ded)) + '). 대상으로 바꾸려면 위의 “실비 대상”을 조정해 주세요.</small>'; return; }
   box.innerHTML = '<div class="md-calc"><b>' + (g.members.length > 1 ? '🔗 ' + g.members.length + '건 묶음' : '단독 계산') + '</b>' + (g.bundled ? '' : '<small> · 같은 날 자동 계산</small>') + mdBdMemberChips(g) +
-    '<small>합산 ' + won(g.sum) + (g.exc ? ' − 보험사 제외 ' + won(g.exc) : '') + ' − 공제 ' + won(g.ded) + ' = <b>' + won(g.ins) + '</b> 실비 예상</small></div>' +
+    '<small>합산 ' + won(g.sum) + (g.exc ? ' − 보험사 제외 ' + won(g.exc) : '') + ' − 공제 ' + won(g.ded) + ' = <b>' + won(g.ins) + '</b> ' + (g.claim && g.claim.st === 'paid' && g.claim.paid != null ? (g.claim.paid === g.ins ? '실비 · ✅ ' + (g.claim.pdate ? mdMD(g.claim.pdate) + ' ' : '') + '입금완료' : '실비 예상 · ✅ 실제 입금 <b>' + won(g.claim.paid) + '</b>' + (g.claim.pdate ? ' (' + mdMD(g.claim.pdate) + ')' : '')) : '실비 예상') + '</small></div>' +
     '<button type="button" class="pc-btn small" data-md="bd" data-id="' + esc(mdEditing) + '" style="margin-top:6px">묶음 고르기</button>';
 }
 function mdBdOpen(id){
@@ -6239,6 +6268,18 @@ function migrateAA(){
   });
   if (ch) { RM = rmNorm(RM); rmSave(); changed(); }
   try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
+function migrateAB(){   // 2026-10-29: 5/30·6/25 실비 입금액 바로잡기 + 도수치료 연동 마무리 + 도수치료 아님 표시 (1회, 정희님 요청)
+  const MK = 'mig_ab_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const t = nowIso(); let fix = 0, flag = 0;
+  const clOf = (date, tot) => { const it = MD.items.find(i => i.date === date && i.total === tot && /삼성H/.test(i.place)); return it ? { it, c: MD.claims.find(x => x.t === 'in' && x.ids.indexOf(it.id) >= 0) } : null; };
+  const a = clOf('2026-05-30', 154800), b = clOf('2026-06-25', 154000);   // 도수 지급액(설명서)=실비 예상액인데 입금액이 서로 바뀐 두 건
+  if (a && b && a.c && b.c && a.c.st === 'paid' && b.c.st === 'paid' && a.c.paid === 149000 && a.c.exp === 149800 && b.c.paid === 149800 && b.c.exp === 149000) { a.c.paid = 149800; a.c.u = t; b.c.paid = 149000; b.c.u = t; fix = 2; }
+  [['2025-09-23', 44700], ['2025-10-09', 40300], ['2026-08-07', 3000], ['2025-11-08', 4700]].forEach(k => { const it = MD.items.find(i => i.date === k[0] && i.total === k[1] && /삼성H/.test(i.place) && !i.mp); if (it && !it.mpn) { it.mpn = true; it.u = t; flag++; } });
+  if (fix || flag) { MD = mdNorm(MD); mdSave(); changed(); }
+  let r = { n: 0, made: 0 }; try { r = mdLkApply(mdLkProposals().filter(x => x.ok), true); } catch (e) { /* 무시 */ }
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+  if (fix || flag || r.n) setTimeout(() => { try { toast('도수치료 연동 마무리: ' + r.n + '건 연동' + (r.made ? '(새 기록 ' + r.made + '건)' : '') + (fix ? ' · 5/30·6/25 입금액 바로잡음' : '')); renderAll(); } catch (e) { /* 무시 */ } }, 700);
 }
 function migrateZ(){
   // 의료비 입금 예정일 폰 알림(구글캘린더)을 한 번만 켬 (2026-10-28 정희님 요청). 이후 설정에서 끄면 그대로 유지
@@ -7352,7 +7393,7 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); try { mpbSync(); } catch (e) { /* 무시 */ }
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); try { mpbSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
