@@ -714,6 +714,10 @@
   .md-sg{ display:flex; align-items:flex-end; }
   .md-rule{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 0; border-bottom:1px solid var(--line); font-size:13px; }
   .md-net{ margin:6px 0 12px; padding:12px; border:1px solid var(--ink); border-radius:12px; background:var(--pc-soft); }
+  .md-rpbar{ display:flex; align-items:center; gap:8px; margin:5px 0; font-size:12.5px; } .md-rpbar .n{ flex:0 0 96px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:700; }
+  .md-rpbar .b{ flex:1; height:10px; background:var(--line); border-radius:6px; overflow:hidden; } .md-rpbar .b i{ display:block; height:100%; background:var(--accent); } .md-rpbar .b i.neg{ background:var(--good); } .md-rpbar .v{ flex:0 0 auto; text-align:right; font-variant-numeric:tabular-nums; }
+  .md-rpg{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0; } .md-rpg > div{ border:1px solid var(--line); border-radius:10px; padding:8px 10px; } .md-rpg b{ display:block; font-size:15px; } .md-rpg small{ color:var(--ink2); font-size:11.5px; }
+  .md-rph{ font-weight:800; font-size:13.5px; margin:14px 0 4px; } .rm-grp > summary{ cursor:pointer; font-weight:800; padding:8px 2px; }
   .md-net-h{ font-weight:800; font-size:14px; margin-bottom:8px; } .md-net-h small{ font-weight:600; color:var(--ink2); margin-left:4px; }
   .md-net-eq{ display:flex; align-items:flex-end; flex-wrap:wrap; gap:4px 8px; font-size:11.5px; color:var(--ink2); }
   .md-net-eq span{ display:flex; flex-direction:column; } .md-net-eq b{ font-size:14px; color:var(--ink); } .md-net-eq i{ font-style:normal; padding-bottom:2px; }
@@ -1055,7 +1059,7 @@
  <div class="pc-wrap">
   <div class="strip" id="md-summary"></div>
   <div class="sectionhead"><h3>🏥 의료비 정산</h3></div>
-  <div class="md-acts"><button class="pc-btn primary" data-md="sms">📩 의료비 입력</button><button class="pc-btn" data-md="add">+ 직접 등록</button><button class="pc-btn" data-md="selmode" id="md-selmode">☑ 여러 건 선택</button><button class="pc-btn" data-md="wz" id="md-wz-btn" hidden>🧹 누락 정리</button><button class="pc-btn" data-md="bk">💳 입금 일괄 확인</button><button class="pc-btn" data-md="lk">🔗 도수치료 연동</button></div>
+  <div class="md-acts"><button class="pc-btn primary" data-md="sms">📩 의료비 입력</button><button class="pc-btn" data-md="add">+ 직접 등록</button><button class="pc-btn" data-md="selmode" id="md-selmode">☑ 여러 건 선택</button><button class="pc-btn" data-md="wz" id="md-wz-btn" hidden>🧹 누락 정리</button><button class="pc-btn" data-md="bk">💳 입금 일괄 확인</button><button class="pc-btn" data-md="lk">🔗 도수치료 연동</button><button class="pc-btn" data-md="rp">📊 연간 리포트</button><button class="pc-btn" data-md="undo" id="md-undo-btn" hidden>↩ 되돌리기</button></div>
   <div class="md-net" id="md-net"></div>
   <div class="md-flt" id="md-flt"></div>
   <div class="pc-row2 pc-filterrow"><label class="pc-f">기간<select id="md-flt-year"></select></label></div>
@@ -1223,6 +1227,13 @@
   <div id="qk-sk-list"></div>
   <button class="pc-btn wide" data-qk="cancel" style="margin-top:10px">닫기</button>
 </dialog>
+<dialog id="md-rp-dlg">
+  <h3>📊 의료비 연간 리포트</h3>
+  <label class="pc-f">연도<select id="md-rp-year"></select></label>
+  <div id="md-rp-body"></div>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-md="rp-close">닫기</button></div>
+</dialog>
+
 <dialog id="md-lk-dlg">
   <h3>🔗 도수치료 연동</h3>
   <p class="pc-hint" style="margin:0 0 6px">의료비 진료 건과 도수치료 기록을 이어 줘요. 이어지면 진료일·병원·청구금액·보험금이 의료비 기준으로 함께 바뀌어요. 체크한 건만 반영돼요.</p>
@@ -3268,7 +3279,7 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-29-f (도수치료 연동 마무리: 5/30·6/25 입금액 바로잡기, 전 건 자동 연동, 연동 현황·도수치료 아님 표시)';
+const APP_BUILD_VERSION = '2026-10-29-g (금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
@@ -4871,7 +4882,7 @@ function mpNorm(o){
 }
 let mpFilter = { dz: 'all', scope: 'all', part: 'all', claim: 'all' }, mpCur = {};
 let MP = loadK(MP_KEY, MP_SEED, mpNorm), mpEditing = null, skTab = (function () { try { return localStorage.getItem('sk_tab_v1') === 'manual' ? 'manual' : 'skin'; } catch (e) { return 'skin'; } })();
-function mpSave(){ saveK(MP_KEY, MP); }
+function mpSave(){ saveK(MP_KEY, MP); try { clearTimeout(mpSave._t); mpSave._t = setTimeout(() => { if (typeof mpAlertSync === 'function') mpAlertSync(); }, 50); } catch (e) { /* 무시 */ } }
 function skTabApply(){
   $('sk-skin').hidden = skTab !== 'skin'; $('mp-panel').hidden = skTab !== 'manual';
   document.querySelectorAll('#sk-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === skTab));
@@ -5080,7 +5091,7 @@ const Med = (function () {
     if (!c) return '';
     (known || []).forEach(k => {
       const kc = placeCore(k); if (!kc) return;
-      if (kc === c || (c.length >= 3 && kc.indexOf(c) === 0) || (kc.length >= 3 && c.indexOf(kc) === 0)) { if (k.length > best.length) best = k; }
+      if (kc === c || (c.length >= 3 && kc.indexOf(c) === 0) || (kc.length >= 3 && c.indexOf(kc) === 0) || (c.length >= 4 && kc.indexOf(c) >= 0) || (kc.length >= 4 && c.indexOf(kc) >= 0)) { if (k.length > best.length) best = k; }
     });
     return best;
   }
@@ -5089,7 +5100,7 @@ const Med = (function () {
     let parts = t.split(/\[Web발신\]/i).map(s => s.trim()).filter(Boolean);
     if (parts.length <= 1) {
       parts = [];
-      t.split(/\n+/).map(s => s.trim()).filter(Boolean).forEach(l => { if (parts.length && l.indexOf('원') < 0) parts[parts.length - 1] += ' ' + l; else parts.push(l); });
+      t.split(/\n+/).map(s => s.trim()).filter(Boolean).forEach(l => { if (parts.length && (l.indexOf('원') < 0 || /\d{1,2}:\d{2}\s*$/.test(parts[parts.length - 1]))) parts[parts.length - 1] += ' ' + l; else parts.push(l); });   // 시각 뒤에서 줄이 바뀐 가맹점명은 앞 줄과 합침
     }
     return parts;
   }
@@ -5124,7 +5135,8 @@ const Med = (function () {
     o = o || {}; const known = (o.known || []).slice(), out = [];
     splitSms(text).forEach(p => {
       const r = parseOne(p, o); if (!r || !r.amount) return;
-      const hit = matchPlace(r.place, known);
+      r.rawPlace = r.place; const al = o.alias || {}, ak = placeCore(r.place);
+      const hit = al[ak] && typeof al[ak] === 'string' ? al[ak] : matchPlace(r.place, known);   // 이전에 정희님이 고쳐 준 병원 이름이 있으면 그것을 우선
       if (hit) r.place = hit; else if (r.place) known.push(r.place);
       out.push(r);
     });
@@ -5187,7 +5199,7 @@ function mdNorm(o){
   const k = o.cfg && typeof o.cfg === 'object' ? o.cfg : {};
   const cards = (Array.isArray(k.cards) ? k.cards : []).filter(r => r && String(r.pat || '').trim() && String(r.name || '').trim()).map(r => ({ pat: String(r.pat).trim(), name: String(r.name).trim() }));
   const cfg = { ded: k.ded != null && isFinite(Number(k.ded)) ? Number(k.ded) : 5000, taxPct: k.taxPct != null && isFinite(Number(k.taxPct)) ? Number(k.taxPct) : 6.6, spouse: k.spouse != null && isFinite(Number(k.spouse)) ? Number(k.spouse) : 10000,
-    insDays: k.insDays != null && isFinite(Number(k.insDays)) ? Math.max(0, Math.round(Number(k.insDays))) : 3, cal: k.cal === true, cards: cards.length ? cards : MD_CARDS_DEF.map(r => Object.assign({}, r)), u: String(k.u || '') };
+    insDays: k.insDays != null && isFinite(Number(k.insDays)) ? Math.max(0, Math.round(Number(k.insDays))) : 3, cal: k.cal === true, cards: cards.length ? cards : MD_CARDS_DEF.map(r => Object.assign({}, r)), alias: (function () { const a = {}; if (k.alias && typeof k.alias === 'object') Object.keys(k.alias).slice(0, 60).forEach(x => { if (x && typeof k.alias[x] === 'string' && k.alias[x]) a[x] = k.alias[x]; }); return a; })(), u: String(k.u || '') };
   return { items, claims, cfg, del: cleanDel(o.del) };
 }
 let MD = loadK(MD_KEY, MD_SEED, mdNorm);
@@ -5287,6 +5299,7 @@ function renderMed(){
   const al = Med.alerts(MD.items, MD.claims, cfg, t), yr = t.slice(0, 4), net = Med.oop(MD.items, MD.claims, cfg);
   let paidY = 0, coY = 0, inY = 0;
   MD.claims.forEach(c => { if (c.st !== 'paid' || c.paid == null) return; const f = c.ids.map(id => byId[id]).filter(Boolean).map(i => i.date).sort()[0]; if (f && f.slice(0, 4) === yr) { paidY += c.paid; if (c.t === 'co') coY += c.paid; else inY += c.paid; } });
+  { const u = undoGet(), ub = $('md-undo-btn'); if (ub) { ub.hidden = !u; if (u) ub.textContent = '↩ 되돌리기 · ' + u.label; } }
   $('md-summary').innerHTML = card('진행중', open.length + '건', '회사 미신청 ' + al.coNone.length + ' · 실비 미신청 ' + al.insNone.length) +
     card('회사 입금 대기', won(coW.reduce((a, c) => a + c.exp, 0)), coW.length + '건' + (al.coLate.length ? ' · 지급예정일 지남 ' + al.coLate.length : '')) +
     card('실비 입금 대기', won(inW.reduce((a, c) => a + c.exp, 0)), inW.length + '건' + (al.insLate.length ? ' · ' + cfg.insDays + '일 넘게 대기 ' + al.insLate.length : '')) +
@@ -5541,6 +5554,57 @@ function mdLkRender(){
     box.insertAdjacentHTML('afterbegin', '<p class="pc-hint" style="margin:0 0 8px"><b>연동 현황</b> · 도수치료 의료비 ' + el.length + '건 중 ' + dn + '건 연동 · 미연동 ' + (el.length - dn) + '건 (도수치료가 아닌 건은 수정 화면에서 “도수치료가 아니에요”를 체크하면 빠져요)</p>'); }
   const n = mdLk.filter(x => x.ok).length; $('md-lk-go').disabled = !n; $('md-lk-go').textContent = n ? n + '건 연동' : '연동';
 }
+/* ---------- 의료비 연간 리포트 (2026-10-29) ---------- */
+let mdRpYear = '';
+function mdRpOpen(){
+  const years = MD.items.map(i => i.date.slice(0, 4)).filter((y, i, a) => a.indexOf(y) === i).sort().reverse(); if (!years.length) { toast('의료비 기록이 없어요.'); return; }
+  const cy = todayStr().slice(0, 4); if (!mdRpYear || years.indexOf(mdRpYear) < 0) mdRpYear = years.indexOf(cy) >= 0 ? cy : years[0];
+  fillSelect($('md-rp-year'), years.map(y => ({ v: y, t: y + '년' })), mdRpYear); $('md-rp-dlg').showModal(); mdRpRender();
+}
+function mdRpAgg(year, net){
+  const z = { total: 0, co: 0, ins: 0, oop: 0, n: 0, nEst: 0, estO: 0, byP: {}, byM: {}, byW: {} };
+  MD.items.forEach(i => {
+    if (i.date.slice(0, 4) !== year) return; const x = net[i.id]; if (!x) return;
+    z.total += x.total; z.co += x.co; z.ins += x.ins; z.oop += x.oop; z.n++; if (!x.sure) { z.nEst++; z.estO += x.oop; }
+    const pk = Med.placeCore(i.place) || '(미입력)', pp = z.byP[pk] || (z.byP[pk] = { name: i.place || '(미입력)', total: 0, oop: 0, n: 0 }); pp.total += x.total; pp.oop += x.oop; pp.n++;
+    const mk = i.date.slice(5, 7), mm = z.byM[mk] || (z.byM[mk] = { total: 0, oop: 0, n: 0 }); mm.total += x.total; mm.oop += x.oop; mm.n++;
+    const ww = z.byW[i.who] || (z.byW[i.who] = { total: 0, oop: 0, n: 0 }); ww.total += x.total; ww.oop += x.oop; ww.n++;
+  });
+  return z;
+}
+function mdRpRender(){
+  const net = Med.oop(MD.items, MD.claims, MD.cfg), y = mdRpYear, z = mdRpAgg(y, net), pz = mdRpAgg(String(Number(y) - 1), net);
+  if (!z.n) { $('md-rp-body').innerHTML = '<p class="pc-hint">이 해에는 기록이 없어요.</p>'; return; }
+  const rate = z.total > 0 ? Math.round((z.co + z.ins) / z.total * 1000) / 10 : 0, bar = (name, val, max, sub) => '<div class="md-rpbar"><span class="n">' + esc(name) + '</span><span class="b"><i class="' + (val < 0 ? 'neg' : '') + '" style="width:' + (max > 0 ? Math.max(2, Math.round(Math.abs(val) / max * 100)) : 0) + '%"></i></span><span class="v">' + sub + '</span></div>';
+  const ps = Object.keys(z.byP).map(k => z.byP[k]).sort((a, b) => b.total - a.total), pmax = ps.length ? ps[0].total : 0, top = ps.slice(0, 8), rest = ps.slice(8);
+  const mkeys = Object.keys(z.byM).sort(), mmax = mkeys.reduce((a, k) => Math.max(a, Math.abs(z.byM[k].oop)), 0);
+  let h = '<div class="md-rpg"><div><small>총 결제</small><b>' + won(z.total) + '</b><small>' + z.n + '건</small></div><div><small>실제 부담</small><b>' + won(z.oop) + '</b><small>' + (z.nEst ? '예상 포함 ' + z.nEst + '건' : '모두 입금 확인') + '</small></div>' +
+    '<div><small>회사 지원금</small><b>' + won(z.co) + '</b></div><div><small>실비 보험금</small><b>' + won(z.ins) + '</b></div></div>' +
+    '<p class="td-note">수령률 <b>' + rate + '%</b> (회사+실비 ÷ 총 결제)' + (pz.n ? ' · 전년(' + (Number(y) - 1) + ') 총 결제 ' + won(pz.total) + ' → ' + (z.total >= pz.total ? '+' : '-') + won(Math.abs(z.total - pz.total)) + ', 실부담 ' + won(pz.oop) + ' → ' + won(z.oop) : '') + '</p>' +
+    '<div class="md-rph">병원·약국별 (총 결제 기준 상위 ' + top.length + '곳)</div>' + top.map(p => bar(p.name, p.total, pmax, won(p.total) + ' <small>(' + p.n + '건 · 실부담 ' + won(p.oop) + ')</small>')).join('') + (rest.length ? '<p class="td-note">외 ' + rest.length + '곳 · ' + won(rest.reduce((a, p) => a + p.total, 0)) + '</p>' : '') +
+    '<div class="md-rph">월별 실부담 <small style="font-weight:600">(초록 = 받은 돈이 낸 돈보다 많음)</small></div>' + mkeys.map(k => bar(Number(k) + '월', z.byM[k].oop, mmax, won(z.byM[k].oop) + ' <small>(' + z.byM[k].n + '건)</small>')).join('') +
+    '<div class="md-rph">대상별</div>' + Object.keys(z.byW).map(w => '<p class="td-note" style="margin:3px 0"><b>' + esc(w) + '</b> · ' + z.byW[w].n + '건 · 총 결제 ' + won(z.byW[w].total) + ' · 실부담 ' + won(z.byW[w].oop) + '</p>').join('') +
+    '<p class="td-note">실부담 = 총 결제 − 회사 − 실비. 입금 전·금액 미상 건은 예상 지원금으로 계산하며, 의료비 화면의 “실제 낸 돈”과 같은 방식이에요.</p>';
+  $('md-rp-body').innerHTML = h;
+}
+/* ---------- 일괄 작업 되돌리기 (2026-10-29): 일괄 연동·입금 일괄 확인·문자 등록 직전 상태를 저장 ---------- */
+const UNDO_KEY = 'undo_snap_v1';
+function undoTake(label){ try { localStorage.setItem(UNDO_KEY, JSON.stringify({ t: nowIso(), label, md: { items: MD.items, claims: MD.claims }, mp: MP.items, rm: RM.items })); } catch (e) { /* 저장공간이 부족하면 건너뜀 */ } }
+function undoGet(){ try { const o = JSON.parse(localStorage.getItem(UNDO_KEY) || 'null'); if (!o || !o.t || Date.now() - Date.parse(o.t) > 14 * 86400000) return null; return o; } catch (e) { return null; } }
+function undoMerge(cur, snap, del, now){   // 스냅샷 이후 추가된 것은 삭제 표시, 바뀌거나 지워진 것은 스냅샷대로 되살림(수정시각을 지금으로 올려 동기화에서도 이기게)
+  const sm = {}; snap.forEach(x => { sm[x.id] = x; }); cur.forEach(x => { if (!sm[x.id]) del[x.id] = now; });
+  return snap.map(x => { const y = JSON.parse(JSON.stringify(x)); y.u = now; delete del[x.id]; return y; });
+}
+function undoRun(){
+  const o = undoGet(); if (!o) { toast('되돌릴 작업이 없어요.'); return; }
+  const d = new Date(o.t), lab = o.label + ' · ' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  if (!confirm('“' + lab + '” 작업 직전 상태로 되돌릴까요?\n(그 뒤에 한 의료비·도수치료·알림 변경도 함께 되돌아가요)')) return;
+  const now = nowIso();
+  MD.items = undoMerge(MD.items, o.md.items, MD.del, now); MD.claims = undoMerge(MD.claims, o.md.claims, MD.del, now);
+  MP.items = undoMerge(MP.items, o.mp, MP.del, now); RM.items = undoMerge(RM.items, o.rm, RM.del, now);
+  MD = mdNorm(MD); MP = mpNorm(MP); RM = rmNorm(RM); mdSave(); mpSave(); rmSave();
+  try { localStorage.removeItem(UNDO_KEY); } catch (e) { /* 무시 */ } changed(); toast('되돌렸어요: ' + o.label); renderAll();
+}
 function mdLkApply(list, detId){   // 연동 후보 목록 반영 (detId: 새 도수 기록 id를 의료비 id에서 정해 기기 간 중복 방지)
   let n = 0, made = 0;
   list.forEach(x => {
@@ -5552,6 +5616,7 @@ function mdLkApply(list, detId){   // 연동 후보 목록 반영 (detId: 새 �
   return { n, made };
 }
 function mdLkGo(){
+  if (mdLk.some(x => x.ok)) undoTake('도수치료 일괄 연동');
   const r = mdLkApply(mdLk.filter(x => x.ok), false);
   if (!r.n) { toast('연동할 건을 체크해 주세요.'); return; }
   $('md-lk-dlg').close(); toast(r.n + '건 연동했어요' + (r.made ? ' (도수치료 ' + r.made + '건 새로 등록)' : '') + '.'); renderAll();
@@ -5695,11 +5760,11 @@ function mdWzSave(){
 function mdSmsOpen(){ $('md-sms-in').value = ''; mdSmsRows = []; mdSmsRender(); $('md-sms-dlg').showModal(); setTimeout(() => $('md-sms-in').focus(), 60); }
 function mdSmsParse(){
   const txt = $('md-sms-in').value, known = MD.items.map(i => i.place).filter((p, i, a) => p && a.indexOf(p) === i);
-  const res = Med.parseSms(txt, { cards: MD.cfg.cards, known, today: todayStr() });
+  const res = Med.parseSms(txt, { cards: MD.cfg.cards, known, today: todayStr(), alias: MD.cfg.alias });
   mdSmsRows = res.map(r => {
     const dup = MD.items.some(i => i.date === r.date && i.total === r.amount && Med.placeCore(i.place) === Med.placeCore(r.place));
     const sg = Med.lastExtra(MD.items, r.place);
-    return { mpl: false, mpAuto: true, mpsel: '', mpcnt: 1, ok: !dup && !r.cancel, qco: '', qin: '', date: r.date || todayStr(), who: '본인', place: r.place, total: r.amount, extra: 0, incl: sg ? sg.incl : false, card: r.card, inst: r.inst, dup, cancel: r.cancel, sg };
+    return { raw: r.rawPlace || '', mpl: false, mpAuto: true, mpsel: '', mpcnt: 1, ok: !dup && !r.cancel, qco: '', qin: '', date: r.date || todayStr(), who: '본인', place: r.place, total: r.amount, extra: 0, incl: sg ? sg.incl : false, card: r.card, inst: r.inst, dup, cancel: r.cancel, sg };
   });
   mdSmsRender(txt.trim() && !res.length);
 }
@@ -5733,10 +5798,12 @@ function mdSmsRender(fail){
   const n = mdSmsRows.filter(r => r.ok).length; $('md-sms-go').disabled = !n; $('md-sms-go').textContent = n ? n + '건 등록' : '등록';
 }
 function mdSmsGo(){
+  if (mdSmsRows.some(r => r.ok)) undoTake('문자 등록');
   const t = nowIso(); let n = 0, mpLinked = 0, mkNew = 0; const quick = [];
   mdSmsRows.filter(r => r.ok).forEach(r => {
     if (!Calc.validDate(r.date) || !(r.total > 0) || !String(r.place).trim()) return;
     const nid = uid('md'); if (r.qco || r.qin) quick.push({ id: nid, co: r.qco || '', in: r.qin || '' });
+    { const rc = Med.placeCore(r.raw), pc = Med.placeCore(r.place); if (rc && pc && rc !== pc && String(r.place).trim()) { MD.cfg.alias = Object.assign({}, MD.cfg.alias || {}); if (Object.keys(MD.cfg.alias).length < 60) { MD.cfg.alias[rc] = String(r.place).trim(); MD.cfg.u = nowIso(); } } }   // 문자의 병원 이름을 고쳐서 등록하면 다음부터 자동 적용
     const nit = { id: nid, date: r.date, who: r.who, place: String(r.place).trim(), total: r.total, extra: Math.min(r.total, Number(r.extra) || 0), incl: !!r.incl, cOv: '', tg: 'auto', why: '', card: r.card || '', inst: r.inst || 0, chk: '', memo: '', u: t };
     MD.items.push(nit); n++;
     if (r.mpl && mdMpElig(nit.place)) { let rec = r.mpsel && r.mpsel !== '__new' ? MP.items.find(x => x.id === r.mpsel && !mdMpOwner(x.id)) : null; if (!rec) { rec = mpCreateFor(nit, r.mpcnt); mkNew++; } nit.mp = rec.id; mpLinked++; }
@@ -5784,10 +5851,12 @@ function mdBkRender(res){
 function mdBkGo(){
   const on = Array.prototype.filter.call(document.querySelectorAll('#md-bk-list input[data-bk]'), x => x.checked).map(x => mdBkRows[Number(x.dataset.bk)]).filter(Boolean);
   if (!on.length) { toast('처리할 건을 선택해 주세요.'); return; }
+  undoTake('입금 일괄 확인');
   const t = nowIso();
   on.forEach(r => { const c = MD.claims.find(x => x.id === r.c.id); if (c) { c.st = 'paid'; c.pdate = Calc.validDate(r.f.date) || todayStr(); c.paid = r.f.amt; c.u = t; } });
   MD = mdNorm(MD); mdSave(); changed(); $('md-bk-dlg').close(); toast(on.length + '건 입금 확인했어요.'); renderAll();
 }
+$('md-rp-year').addEventListener('change', () => { mdRpYear = $('md-rp-year').value; mdRpRender(); });
 $('md-bk-in').addEventListener('input', () => { mdBkRender(mdBkParse()); });
 $('md-bk-date').addEventListener('change', () => { mdBkRender(mdBkParse()); });
 $('md-bk-dlg').addEventListener('click', e => { const el = e.target.closest('[data-md]'); if (!el) return; const a = el.dataset.md; if (a === 'bk-cancel') $('md-bk-dlg').close(); else if (a === 'bk-go') mdBkGo(); });
@@ -5796,7 +5865,7 @@ function mdCfgSave(){ MD.cfg.u = nowIso(); MD = mdNorm(MD); mdSave(); changed();
 $('medView').addEventListener('click', e => {
   const el = e.target.closest('[data-md]'); if (!el) return;
   const a = el.dataset.md, id = el.dataset.id;
-  if (a === 'sms') mdSmsOpen(); else if (a === 'add') mdOpen(null); else if (a === 'lk') mdLkOpen(); else if (a === 'bk') mdBkOpen();
+  if (a === 'sms') mdSmsOpen(); else if (a === 'add') mdOpen(null); else if (a === 'lk') mdLkOpen(); else if (a === 'bk') mdBkOpen(); else if (a === 'rp') mdRpOpen(); else if (a === 'rp-close') $('md-rp-dlg').close(); else if (a === 'undo') undoRun();
   else if (a === 'wz') mdWzOpen();
   else if (a === 'flt') { mdFlt.st = el.dataset.k; renderMed(); }
   else if (a === 'sel') { mdSel[id] = el.checked; renderMed(); return; }
@@ -6087,13 +6156,22 @@ function rmNotifyCheck(due){
   due.forEach(r => { const k = r.id + ':' + r.date; if (seen[k] !== t) { seen[k] = t; ch = true; rmPush('🔔 ' + r.title, rmWhen(r) + (r.memo ? '\n' + r.memo : '')); } });
   if (ch) { if (Object.keys(seen).length > 200) seen = {}; try { localStorage.setItem(RM_SEEN_KEY, JSON.stringify(seen)); } catch (e) { /* 무시 */ } }
 }
+const RM_FAM = [['rm_mpb_', '도수치료 묶음 확인'], ['rm_mpl_', '도수치료 한도'], ['rm_cc_', '카드 변경'], ['rm_tr_', '중고 보상']];
+const rmFam = r => { const f = RM_FAM.find(x => r.id.indexOf(x[0]) === 0); return f || null; };
+function rmGroupHtml(list, row){   // 같은 종류 알림이 3건 이상이면 한 줄로 접어서 보여줌
+  const cnt = {}; list.forEach(r => { const f = rmFam(r); if (f) cnt[f[0]] = (cnt[f[0]] || 0) + 1; });
+  const done = {}; let h = '';
+  list.forEach(r => { const f = rmFam(r); if (!f || cnt[f[0]] < 3) { h += row(r); return; } if (done[f[0]]) return; done[f[0]] = 1;
+    h += '<details class="rm-grp"><summary>' + esc(f[1]) + ' · ' + cnt[f[0]] + '건 <small style="font-weight:600">(눌러서 펼치기)</small></summary>' + list.filter(x => { const g = rmFam(x); return g && g[0] === f[0]; }).map(row).join('') + '</details>'; });
+  return h;
+}
 function rmRender(){
   const due = rmDue(), dueIds = {}; due.forEach(r => { dueIds[r.id] = 1; });
   const rest = RM.items.filter(r => !r.done && !dueIds[r.id]).sort((a, b) => a.date < b.date ? -1 : 1), dn = RM.items.filter(r => r.done).sort((a, b) => a.date < b.date ? 1 : -1);
   const row = r => '<div class="rm-row' + (r.done ? ' done' : '') + '"><div class="rm-main" data-rm="edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="rm-t">' + esc(r.title) + '</div><div class="rm-d"><span class="rm-dd">' + esc(rmWhen(r)) + '</span>' + (r.lead ? ' · ' + r.lead + '일 전부터 알림' : '') + (r.memo ? '\n' + esc(r.memo) : '') + '</div></div>' +
     (r.link && r.link.indexOf('shop:') === 0 ? '<button type="button" class="pc-btn small" data-rm="go" data-id="' + esc(r.id) + '">품목</button>' : '') + (r.link && r.link.indexOf('mpb:') === 0 ? '<button type="button" class="pc-btn small" data-rm="go" data-id="' + esc(r.id) + '">도수치료</button>' : '') + (r.link && r.link.indexOf('sub:') === 0 ? '<button type="button" class="pc-btn small" data-rm="go" data-id="' + esc(r.id) + '">항목</button>' : '') +
     '<button type="button" class="pc-btn small' + (r.done ? '' : ' primary') + '" data-rm="done" data-id="' + esc(r.id) + '">' + (r.done ? '되돌리기' : '완료') + '</button></div>';
-  $('rm-list').innerHTML = (due.length ? '<div class="rm-sec">지금 확인할 알림</div>' + due.map(row).join('') : '') + (rest.length ? '<div class="rm-sec">예정</div>' + rest.map(row).join('') : '') + (dn.length ? '<details class="rm-done"><summary>완료 ' + dn.length + '건 (지난 일정은 30일 뒤 자동 정리돼요)</summary>' + dn.map(row).join('') + '</details>' : '') ||
+  $('rm-list').innerHTML = (due.length ? '<div class="rm-sec">지금 확인할 알림</div>' + rmGroupHtml(due, row) : '') + (rest.length ? '<div class="rm-sec">예정</div>' + rmGroupHtml(rest, row) : '') + (dn.length ? '<details class="rm-done"><summary>완료 ' + dn.length + '건 (지난 일정은 30일 뒤 자동 정리돼요)</summary>' + dn.map(row).join('') + '</details>' : '') ||
     '<div class="gd-empty">등록된 알림이 없어요. “+ 알림 추가”로 만들어 보세요.</div>';
   $('rm-notify-btn').textContent = rmNotifyOn && 'Notification' in window && Notification.permission === 'granted' ? '🔕 기기 알림 끄기' : '🔔 기기 알림 켜기';
 }
@@ -6253,6 +6331,31 @@ const MPB_NOTES = {
   mp_seed_a15: '도수 121,500원(2회) = 의료비 109,500원 + 약국 12,000원 합산',
   mp_seed_b5: '도수 165,550원(2회) = 의료비 154,150원 + 약국 11,400원 합산'
 };
+/* 도수치료 한도 알림 (2026-10-29): 잔여 5회·2회 이하 / 한도 기간 종료 60일 전 / 보상 불가기간 종료 → 알림 목록에 자동 생성 */
+function mpAlertSync(){
+  try {
+    const t = todayStr(), want = {}, hs = x => { let h = 0; for (let i = 0; i < x.length; i++) h = (h * 31 + x.charCodeAt(i)) >>> 0; return h.toString(36); };
+    const dzs = MP.items.map(r => r.dz || '').filter((d, i, a) => a.indexOf(d) === i);
+    dzs.forEach(dz => {
+      const cy = Manual.cycles(MP.items.filter(r => (r.dz || '') === dz), null, t), st = cy.status, last = cy.cycles[cy.cycles.length - 1], nm = dz || '미분류', k = hs(dz);
+      if (st.state === 'active' && last) {
+        const rem = st.remain, base = 'rm_mpl_' + k + '_' + st.start;
+        [[5, 'r5'], [2, 'r2']].forEach(x => { if (rem <= x[0]) want[base + '_' + x[1]] = { title: '도수치료 한도 잔여 ' + rem + '회 — ' + nm, date: t, lead: 0, memo: st.used + '/' + cy.limit.limitCnt + '회 사용 · 한도 기간 ' + st.start + ' ~ ' + st.end }; });
+        const ed = Manual.addDays(st.end, -60); want[base + '_end'] = { title: '도수치료 한도 기간 곧 종료 — ' + nm, date: ed, lead: 0, memo: '한도 기간 ' + st.end + ' 종료 · 남은 ' + rem + '회' };
+      } else if (st.state === 'locked') {
+        want['rm_mpl_' + k + '_lock_' + st.lockStart] = { title: '도수치료 보상 불가기간 종료 — ' + nm, date: st.nextEligible, lead: 7, memo: st.lockStart + ' ~ ' + st.lockEnd + ' 보상 불가 · ' + st.nextEligible + '부터 다시 청구 가능' };
+      }
+    });
+    let ch = false; const now = nowIso();
+    Object.keys(want).forEach(id => {
+      const w = want[id], ex = RM.items.find(r => r.id === id);
+      if (ex) { if (ex.title !== w.title || ex.memo !== w.memo || ex.date !== w.date) { if (ex.date !== w.date) ex.done = false; ex.title = w.title; ex.memo = w.memo; ex.date = w.date; ex.u = now; ch = true; } }
+      else if (!RM.del[id]) { RM.items.push({ id, title: w.title, date: w.date, lead: w.lead, memo: w.memo, link: 'mpb:', done: false, u: now }); ch = true; }
+    });
+    RM.items.forEach(r => { if (r.id.indexOf('rm_mpl_') === 0 && !r.done && !want[r.id]) { r.done = true; r.u = now; ch = true; } });
+    if (ch) { RM = rmNorm(RM); rmSave(); changed(); }
+  } catch (e) { /* 알림 오류가 앱을 막지 않게 */ }
+}
 function mpbHeld(mpId){ return RM.items.some(x => x.id === 'rm_mpb_' + mpId && !x.done); }
 function mpbSync(){   // 연동되었거나 기록이 없어진 묶음 확인 항목은 자동 완료
   let ch = false;
@@ -6432,6 +6535,18 @@ function dataChecks(){
   try { const miss = MD.claims.filter(c => c.st === 'paid' && c.paid == null).length; if (miss) add(3, '의료비', '입금액이 기록되지 않은 청구 ' + miss + '건(진료 ' + MD.items.filter(i => MD.claims.some(c => c.st === 'paid' && c.paid == null && c.ids.indexOf(i.id) >= 0)).length + '건) — 눌러서 목록 보기', ['med', 'noAmt']);
     const ck = MD.items.filter(i => i.chk).length; if (ck) add(2, '의료비', '“확인 필요”로 표시된 진료 건 ' + ck + '건 — 눌러서 목록 보기', ['med', 'chk']);
     const nd = MD.claims.filter(c => !c.cdate && c.ids.some(id => MD.items.some(x => x.id === id))).length; if (nd) add(1, '의료비', '신청일이 비어 있는 신청 기록 ' + nd + '건(진료 ' + MD.items.filter(i => MD.claims.some(c => !c.cdate && c.ids.indexOf(i.id) >= 0)).length + '건) — 눌러서 목록 보기', ['med', 'noCd']); } catch (e) { /* 무시 */ }
+  try {   // 도수치료·의료비 금액 불일치 (2026-10-29)
+    MD.items.forEach(it => {
+      if (!it.mp) return; const r = mdMpRec(it), nm = it.date.slice(5).replace('-', '/') + ' ' + it.place;
+      if (!r) { add(2, '도수치료·의료비', nm + ' — 연동된 도수치료 기록이 없어졌어요(🔗 도수치료 연동에서 다시 연결)', ['med']); return; }
+      const g = mdGrp(it), gm = !!(g && r.grp), expPaid = gm ? g.paid : mdMpClaim(it).paid, expCost = gm ? g.sum : it.total;
+      if (r.cost !== expCost) add(2, '도수치료·의료비', nm + ' — 도수치료 청구 ' + won(r.cost) + ' ≠ 의료비 ' + won(expCost), ['manual']);
+      if (expPaid != null && r.paid > 0 && r.paid !== expPaid) add(2, '도수치료·의료비', nm + ' — 도수치료 지급 ' + won(r.paid) + ' ≠ 실비 입금 ' + won(expPaid) + '(입금액을 잘못 넣었는지 확인)', ['manual']);
+    });
+    const pd = MD.claims.filter(c => c.t === 'in' && c.st === 'paid' && c.paid != null && c.exp > 0);
+    for (let a = 0; a < pd.length; a++) for (let b = a + 1; b < pd.length; b++) { const A = pd[a], B = pd[b]; if (A.paid !== A.exp && A.paid === B.exp && B.paid === A.exp) { const fa = MD.items.find(i => i.id === A.ids[0]), fb = MD.items.find(i => i.id === B.ids[0]); add(2, '의료비', '실비 입금액이 서로 바뀐 것 같아요 — ' + (fa ? fa.date.slice(5).replace('-', '/') : '?') + '(' + won(A.paid) + ') ↔ ' + (fb ? fb.date.slice(5).replace('-', '/') : '?') + '(' + won(B.paid) + ')', ['med']); } }
+    const z0 = MD.claims.filter(c => c.st === 'paid' && c.paid === 0).length; if (z0) add(2, '의료비', '입금 확인인데 입금액이 0원인 청구 ' + z0 + '건', ['med']);
+  } catch (e) { /* 무시 */ }
   { const nr = G.rounds.filter(r => !r.date).length; if (nr) add(2, '골프', '요금 기록 ' + nr + '건에 날짜가 없어요', ['golf']); }
   SB.items.filter(i => i.active).forEach(i => {
     if (i.amount == null && !(i.hist || []).length) add(1, '구독·보험', i.name + ' — 결제 금액이 없어요', ['sub', i.id]);
@@ -6847,7 +6962,9 @@ $('todayView').addEventListener('click', async e => {
 /* ---- 오늘 화면 ---- */
 function tdTasks(noCal){
   const t = todayStr(), L = [];
-  RM.items.filter(r => !r.done).forEach(r => { const d = rmDiff(r); if (d === null) return; if (d <= r.lead) L.push({ pri: 0, d, ic: '🔔', title: r.title, sub: r.memo || '', when: rmWhen(r), act: 'rm' }); else if (d <= 14) L.push({ pri: 1, d, ic: '🗓', title: r.title, sub: r.memo || '', when: 'D-' + d, act: 'rm' }); });
+  { const fc = {}; RM.items.filter(r => !r.done).forEach(r => { const f = rmFam(r), d = rmDiff(r); if (f && d !== null && d <= r.lead) fc[f[0]] = (fc[f[0]] || 0) + 1; });
+    Object.keys(fc).forEach(k => { if (fc[k] >= 3) { const f = RM_FAM.find(x => x[0] === k); L.push({ pri: 0, d: -1, ic: '🔔', title: f[1] + ' ' + fc[k] + '건', sub: '알림 목록에서 하나씩 확인하세요', when: '확인', act: 'rm' }); } }); }
+  RM.items.filter(r => !r.done).forEach(r => { const d = rmDiff(r); if (d === null) return; const fm = rmFam(r); if (fm && d <= r.lead) { let n = 0; RM.items.forEach(x => { const g = rmFam(x); if (!x.done && g && g[0] === fm[0] && rmDiff(x) !== null && rmDiff(x) <= x.lead) n++; }); if (n >= 3) return; } if (d <= r.lead) L.push({ pri: 0, d, ic: '🔔', title: r.title, sub: r.memo || '', when: rmWhen(r), act: 'rm' }); else if (d <= 14) L.push({ pri: 1, d, ic: '🗓', title: r.title, sub: r.memo || '', when: 'D-' + d, act: 'rm' }); });
   Shop.dueBenefits(SH.items, t).forEach(b => L.push({ pri: 0, d: Life.dd(t, b.date) || 0, ic: '🎁', title: b.item + ' — ' + b.name + ' ' + won(b.amount), sub: '소비 혜택 지급일이 됐어요', when: b.date.slice(5).replace('-', '/'), act: 'shop', id: b.id }));
   Life.upcoming(SB.items, Life.payMap(SB.pays), t, 7).forEach(u => L.push({ pri: u.diff <= 2 ? 0 : 1, d: u.diff, ic: '💳', title: u.name + ' ' + (u.amount == null ? '(금액 입력 필요)' : won(u.amount)), sub: '정기결제', when: u.diff === 0 ? '오늘' : 'D-' + u.diff, act: 'sub', id: u.id }));
   { const nm = window.AppSync && window.AppSync.newMonth ? window.AppSync.newMonth() : ''; if (nm) L.push({ pri: 0, d: -2, ic: '📅', title: '회의비: ' + nm, sub: '', when: '새 달', act: 'meeting' }); }
@@ -7068,7 +7185,7 @@ function renderGlobal(){
     if (due.length) list.push({ key: shopDueKey(due), act: 'shop', id: due.length === 1 ? due[0].id : '', html: '🔔 소비 혜택 지급일 도래 <b>' + due.length + '건</b> — ' + esc(due[0].name) + ' ' + won(due[0].amount) + '(' + esc(due[0].item) + ')' + (due.length > 1 ? ' 외' : '') });
   }
   { const rd = rmDue(), bn = $('gRemindN'); bn.hidden = !rd.length; bn.textContent = rd.length;
-    if (rd.length) list.push({ key: 'rm:' + rd.map(d => d.id + d.date).join(','), act: 'remind', html: '🔔 알림 <b>' + rd.length + '건</b> — ' + esc(rd[0].title) + ' (' + esc(rmWhen(rd[0])) + ')' + (rd.length > 1 ? ' 외' : '') });
+    if (rd.length) list.push({ key: 'rm:' + rd.map(d => d.id + d.date).join(','), act: 'remind', html: '🔔 알림 <b>' + rd.length + '건</b> — ' + (rd.length >= 3 && rd.every(x => rmFam(x) && rmFam(x)[0] === rmFam(rd[0])[0]) ? esc(rmFam(rd[0])[1]) : esc(rd[0].title) + ' (' + esc(rmWhen(rd[0])) + ')' + (rd.length > 1 ? ' 외' : '')) });
     rmNotifyCheck(rd); }
   if (A.hasUrl()) { if (age === null || age >= 7) list.push({ key: 'bk:' + (age === null ? 'never' : 'old'), act: 'backup', html: '☁ ' + (age === null ? '아직 백업한 적이 없어요' : '마지막 백업이 <b>' + age + '일 전</b>이에요') + ' — 눌러서 지금 백업' }); }
   else list.push({ key: 'nourl', act: 'settings', html: '☁ 시트 연결이 안 되어 있어요 — 눌러서 ⚙ 설정에서 Apps Script URL 입력' });
@@ -7393,7 +7510,7 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); try { mpbSync(); } catch (e) { /* 무시 */ }
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); try { mpAlertSync(); mpbSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
