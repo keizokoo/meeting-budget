@@ -3402,9 +3402,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-03-b (보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-03-c (문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['내 차 > 보험: 담보별 보험료 항목 등록 + ⚖ 담보 비교표(연도·보험사·차량 간)', '내 차: 현대해상 Hicar 보험 2건(깜둥이·흰둥이) 등록, 차량번호 추가', '설정 > 내 차에서 이름·번호·담보 항목·세차 종류 수정'];
+const APP_RECENT = ['의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내 + 합산할 질병·사고 선택', '내 차 > 보험: 담보별 보험료 등록 + ⚖ 담보 비교표', '내 차: 현대해상 Hicar 보험 2건(깜둥이·흰둥이) 등록'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5860,9 +5860,9 @@ function mpFill(it, r){
   if (ch) r.u = nowIso(); return ch;
 }
 function mdMpSyncAll(){ let ch = false; MD.items.forEach(it => { const r = mdMpRec(it); if (r && mpFill(it, r)) ch = true; }); if (ch) { MP = mpNorm(MP); mpSave(); } return ch; }
-function mpCreateFor(it, cnt){
+function mpCreateFor(it, cnt, dz){
   const last = MP.items.slice().sort((a, b) => b.date.localeCompare(a.date))[0] || {};
-  const r = { id: uid('mp'), date: it.date, dz: last.dz || '', part: last.part || '다리', cnt: Math.max(1, Math.round(Number(cnt)) || 1), clinic: it.place, cost: it.total, paid: 0, claimed: true, cdate: '', symptom: last.symptom || '', memo: '', u: nowIso() };
+  const r = { id: uid('mp'), date: it.date, dz: dz == null ? (last.dz || '') : dz, part: last.part || '다리', cnt: Math.max(1, Math.round(Number(cnt)) || 1), clinic: it.place, cost: it.total, paid: 0, claimed: true, cdate: '', symptom: last.symptom || '', memo: '', u: nowIso() };
   MP.items.push(r); return r;
 }
 let mdMpAuto = true;
@@ -5874,8 +5874,9 @@ function mdMpSuggest(){   // 입력한 병원이 도수치료 기록의 병원�
   const it0 = mdEditing ? mdItem(mdEditing) : null, g0 = it0 ? mdGrp(it0) : null, tot = Number($('md-f-total').value) || 0;   // 과거 건이라도 같은 날·같은 금액(또는 실비 묶음 합계)의 도수치료 기록이 있으면 연동 제안
   return mdMpCands(date, place, tot, mdEditing, [], g0 ? g0.sum : 0).some(r => r.date === date && mpCostOk(r, tot, g0 ? g0.sum : 0));
 }
-function mpNewInfo(cnt){   // 새로 만드는 도수치료 기록이 어느 질병·사고(한도 주기)에 합산되는지 설명
-  const last = MP.items.slice().sort((a, b) => b.date.localeCompare(a.date))[0] || {}, dz = last.dz || '', n = Math.max(1, Math.round(Number(cnt)) || 1);
+function mpLastDz(){ const last = MP.items.slice().sort((a, b) => b.date.localeCompare(a.date))[0] || {}; return last.dz || ''; }
+function mpNewInfo(cnt, dzArg){   // 새로 만드는 도수치료 기록이 어느 질병·사고(한도 주기)에 합산되는지 설명
+  const dz = dzArg == null ? mpLastDz() : dzArg, n = Math.max(1, Math.round(Number(cnt)) || 1);
   const cy = Manual.cycles(MP.items.filter(x => (x.dz || '') === dz), null, todayStr()), st = cy.status;
   const use = st.state === 'active' ? ' 현재 한도 ' + st.used + '/' + cy.limit.limitCnt + '회 → ' + (st.used + n) + '회 (한도 기간 ' + st.start + ' ~ ' + st.end + ')' : st.state === 'locked' ? ' ⚠ 지금은 보상 불가기간(' + st.lockStart + ' ~ ' + st.lockEnd + ')이에요.' : ' 새 한도 기간이 시작돼요.';
   return '기존 도수 실비 「' + (dz || '미분류') + '」에 ' + n + '회 합산돼요.' + use;
@@ -5901,7 +5902,7 @@ function mdMpRefresh(fromOpen){
   const sel = prev && opts.some(o => o.v === prev) ? prev : (linked ? linked.id : (cands[0] && cands[0].date === date && mpCostOk(cands[0], total, gsum) ? cands[0].id : '__new'));
   fillSelect($('md-f-mpsel'), opts, sel);
   $('md-f-mpcnt-wrap').hidden = sel !== '__new';
-  $('md-f-mpnote').textContent = sel === '__new' ? '저장하면 도수치료 기록이 새로 만들어져요 (청구 ' + won(total) + '). ' + mpNewInfo($('md-f-mpcnt').value) + ' 보험금은 실비 입금을 확인하면 자동으로 채워져요.' : (function () { const rc = MP.items.find(x => x.id === sel); let m = '선택한 기록과 연동돼요. 진료일·병원·청구금액·보험금은 의료비 기준으로 맞춰져요.'; if (rc && rc.date !== date) m += ' ⚠ 도수치료 기록의 진료일이 ' + rc.date + ' → ' + date + '(으)로 바뀌어요.'; if (rc && gsum && mpCostOk(rc, total, gsum) && rc.cost !== total) m = '✅ 실비 묶음 ' + gpE.n + '건 합계 ' + won(gsum) + '이 도수치료 청구 ' + won(rc.cost) + '과 같아요. 청구금액은 묶음 합계 기준으로, 지급 보험금은 ' + (gpE.paid != null ? '실비 입금액 ' + won(gpE.paid) : '실비 입금 확인 시') + '으로 맞춰져요.' + (rc.date !== date ? ' ⚠ 도수치료 진료일이 ' + rc.date + ' → ' + date + '(으)로 바뀌어요.' : ''); else if (rc && rc.cost !== total) m += ' ⚠ 청구금액이 ' + won(rc.cost) + ' → ' + won(total) + '(으)로 바뀌어요.'; return m; })();
+  $('md-f-mpnote').textContent = sel === '__new' ? (cands.length ? '' : '🆕 같은 병원의 아직 연동 안 된 도수치료 기록이 없어서 새로 만들어요. ') + '저장하면 도수치료 기록이 새로 만들어져요 (청구 ' + won(total) + '). ' + mpNewInfo($('md-f-mpcnt').value) + ' 보험금은 실비 입금을 확인하면 자동으로 채워져요.' : (function () { const rc = MP.items.find(x => x.id === sel); let m = '선택한 기록과 연동돼요. 진료일·병원·청구금액·보험금은 의료비 기준으로 맞춰져요.'; if (rc && rc.date !== date) m += ' ⚠ 도수치료 기록의 진료일이 ' + rc.date + ' → ' + date + '(으)로 바뀌어요.'; if (rc && gsum && mpCostOk(rc, total, gsum) && rc.cost !== total) m = '✅ 실비 묶음 ' + gpE.n + '건 합계 ' + won(gsum) + '이 도수치료 청구 ' + won(rc.cost) + '과 같아요. 청구금액은 묶음 합계 기준으로, 지급 보험금은 ' + (gpE.paid != null ? '실비 입금액 ' + won(gpE.paid) : '실비 입금 확인 시') + '으로 맞춰져요.' + (rc.date !== date ? ' ⚠ 도수치료 진료일이 ' + rc.date + ' → ' + date + '(으)로 바뀌어요.' : ''); else if (rc && rc.cost !== total) m += ' ⚠ 청구금액이 ' + won(rc.cost) + ' → ' + won(total) + '(으)로 바뀌어요.'; return m; })();
 }
 function mdMpApply(id){   // 진료 건 저장 때 연동 체크 상태를 반영 (반환: 토스트에 붙일 말)
   const it = mdItem(id); if (!it) return '';
@@ -6160,14 +6161,25 @@ function mdSmsMpHtml(r, i){   // 문자 등록 줄의 🦴 도수치료 연동 (
   if (!r.mpl) return '<div>' + h + '</div>';
   const used = mdSmsRows.filter((x, j) => j !== i && x.mpl && x.mpsel && x.mpsel !== '__new').map(x => x.mpsel);
   const cands = mdMpCands(r.date, r.place, r.total, null, used);
+  if (r.mpdz === undefined) r.mpdz = mpLastDz();
+  const dzSel = () => { const gn = mpGroups().map(g => g.name); if (gn.indexOf(r.mpdz || '미분류') < 0) gn.push(r.mpdz || '미분류'); return '<label class="pc-f">합산할 질병·사고 (한도 계산 그룹)<select data-mds="mpdz" data-i="' + i + '">' + gn.map(n => '<option value="' + esc(n) + '"' + (n === (r.mpdz || '미분류') ? ' selected' : '') + '>' + esc(n) + '</option>').join('') + '</select></label>'; };
+  const newBox = () => '<label class="pc-f">횟수(새로 만들 때)<input type="number" inputmode="numeric" min="1" step="1" value="' + (r.mpcnt || 1) + '" data-mds="mpcnt" data-i="' + i + '"></label>' + dzSel() + '<small class="pc-hint">' + esc(mpNewInfo(r.mpcnt || 1, r.mpdz || '')) + ' (청구 ' + won(r.total) + ')</small>';
+  if (!cands.length) {   // 연동할 기존 기록이 없으면 선택창 대신 “자동으로 새로 만들어요” 안내
+    r.mpsel = '__new';
+    return '<div>' + h + '<div class="md-mp">🆕 같은 병원의 <b>아직 연동 안 된 도수치료 기록이 없어요</b>. 그래서 등록하면 <b>' + mdMD(r.date) + ' 도수치료 기록이 자동으로 새로 만들어져요.</b></div>' + newBox() + '</div>';
+  }
   const opts = [{ v: '__new', t: '＋ 새로 도수치료 기록 만들기' }].concat(cands.map(c => ({ v: c.id, t: mdMpOptLabel(c, r.date, r.total) })));
   if (!opts.some(o => o.v === r.mpsel)) r.mpsel = cands[0] && cands[0].date === r.date && cands[0].cost === r.total ? cands[0].id : '__new';
   h += '<label class="pc-f">연동할 도수치료 기록<select data-mds="mpsel" data-i="' + i + '">' + opts.map(o => '<option value="' + esc(o.v) + '"' + (o.v === r.mpsel ? ' selected' : '') + '>' + esc(o.t) + '</option>').join('') + '</select></label>';
-  if (r.mpsel === '__new') h += '<label class="pc-f">횟수(새로 만들 때)<input type="number" inputmode="numeric" min="1" step="1" value="' + (r.mpcnt || 1) + '" data-mds="mpcnt" data-i="' + i + '"></label><small class="pc-hint">' + esc(mpNewInfo(r.mpcnt || 1)) + ' (청구 ' + won(r.total) + ')</small>';
+  if (r.mpsel === '__new') h += newBox();
   else { const rc = MP.items.find(x => x.id === r.mpsel); if (rc && (rc.date !== r.date || rc.cost !== r.total)) h += '<small class="pc-hint">⚠ 연동하면 도수치료 기록이 의료비 기준(' + mdMD(r.date) + ' · ' + won(r.total) + ')으로 바뀌어요.</small>'; }
   return '<div>' + h + '</div>';
 }
+let mdSmsBusy = false;
 function mdSmsRender(fail){
+  if (mdSmsBusy) return; mdSmsBusy = true; try { mdSmsRender0(fail); } finally { mdSmsBusy = false; }
+}
+function mdSmsRender0(fail){
   const box = $('md-sms-list'), cards = mdCardNames();
   if (!mdSmsRows.length) { box.innerHTML = fail ? '<p class="td-note td-warn">문자에서 금액·병원을 못 찾았어요. 카드 승인 문자 전체를 붙여넣어 주세요.</p>' : ''; $('md-sms-go').disabled = true; $('md-sms-go').textContent = '등록'; return; }
   box.innerHTML = mdSmsRows.map((r, i) => '<div class="md-sms-card' + (r.ok ? '' : ' off') + '"><label class="md-ck2"><input type="checkbox" data-mds="ok" data-i="' + i + '"' + (r.ok ? ' checked' : '') + '> <b>' + mdMD(r.date) + ' ' + esc(r.place || '(병원 미인식)') + '</b> ' + won(r.total) + (r.inst ? ' · ' + r.inst + '개월 할부' : '') + '</label>' +
@@ -6191,7 +6203,7 @@ function mdSmsGo(){
     { const rc = Med.placeCore(r.raw), pc = Med.placeCore(r.place); if (rc && pc && rc !== pc && String(r.place).trim()) { MD.cfg.alias = Object.assign({}, MD.cfg.alias || {}); if (Object.keys(MD.cfg.alias).length < 60) { MD.cfg.alias[rc] = String(r.place).trim(); MD.cfg.u = nowIso(); } } }   // 문자의 병원 이름을 고쳐서 등록하면 다음부터 자동 적용
     const nit = { id: nid, date: r.date, who: r.who, place: String(r.place).trim(), total: r.total, extra: Math.min(r.total, Number(r.extra) || 0), incl: !!r.incl, cOv: '', tg: 'auto', why: '', card: r.card || '', inst: r.inst || 0, chk: '', memo: '', u: t };
     MD.items.push(nit); n++;
-    if (r.mpl && mdMpElig(nit.place)) { let rec = r.mpsel && r.mpsel !== '__new' ? MP.items.find(x => x.id === r.mpsel && !mdMpOwner(x.id)) : null; if (!rec) { rec = mpCreateFor(nit, r.mpcnt); mkNew++; } nit.mp = rec.id; mpLinked++; }
+    if (r.mpl && mdMpElig(nit.place)) { let rec = r.mpsel && r.mpsel !== '__new' ? MP.items.find(x => x.id === r.mpsel && !mdMpOwner(x.id)) : null; if (!rec) { rec = mpCreateFor(nit, r.mpcnt, r.mpdz === undefined ? null : r.mpdz); mkNew++; } nit.mp = rec.id; mpLinked++; }
   });
   if (!n) { toast('등록할 건이 없어요. 병원 이름·금액을 확인해 주세요.'); return; }
   if (quick.length) mdQuickClaims(quick);
@@ -6305,7 +6317,7 @@ $('md-sms-dlg').addEventListener('click', e => {
 $('md-sms-dlg').addEventListener('change', e => {
   const el = e.target.closest('[data-mds]'); if (!el) return; const r = mdSmsRows[Number(el.dataset.i)]; if (!r) return; const f = el.dataset.mds;
   if (f === 'ok') { r.ok = el.checked; mdSmsRender(); return; }
-  if (f === 'mpl') { r.mpl = el.checked; r.mpAuto = false; mdSmsRender(); return; } if (f === 'mpsel') { r.mpsel = el.value; mdSmsRender(); return; } if (f === 'mpcnt') { r.mpcnt = Math.max(1, Math.round(Number(el.value)) || 1); mdSmsRender(); return; }
+  if (f === 'mpl') { r.mpl = el.checked; r.mpAuto = false; mdSmsRender(); return; } if (f === 'mpsel') { r.mpsel = el.value; mdSmsRender(); return; } if (f === 'mpdz') { r.mpdz = el.value === '미분류' ? '' : el.value; mdSmsRender(); return; } if (f === 'mpcnt') { r.mpcnt = Math.max(1, Math.round(Number(el.value)) || 1); mdSmsRender(); return; }
   if (f === 'date') { r.date = el.value; mdSmsRender(); return; } else if (f === 'place') { r.place = el.value; const sg = Med.lastExtra(MD.items, r.place); r.sg = sg; if (sg && !r.extra) r.incl = sg.incl; mdSmsRender(); return; }
   else if (f === 'qco') { r.qco = Calc.validDate(el.value) || ''; mdSmsRender(); return; } else if (f === 'qin') { r.qin = Calc.validDate(el.value) || ''; return; }
   else if (f === 'who') r.who = el.value; else if (f === 'card') r.card = el.value; else if (f === 'extra') { r.extra = Math.max(0, Number(el.value) || 0); mdSmsRender(); }
