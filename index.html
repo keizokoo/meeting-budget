@@ -568,6 +568,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .cr-good{ color:var(--good); font-size:12px; font-weight:700; margin-top:2px; } .cr-bad{ color:var(--warn); font-size:12px; font-weight:700; margin-top:2px; }
   .cr-bar{ padding:6px 0; } .cr-track{ height:10px; background:var(--line); border-radius:6px; overflow:hidden; margin-top:4px; } .cr-track i{ display:block; height:100%; background:var(--accent); }
   .cr-months{ display:flex; gap:4px; align-items:flex-end; height:90px; padding-top:6px; } .cr-months>div{ flex:1; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; } .cr-months i{ display:block; width:100%; background:var(--accent); border-radius:3px 3px 0 0; min-height:1px; } .cr-months small{ font-size:10px; color:var(--ink2); margin-top:3px; }
+  .ci-cov{ display:grid; grid-template-columns:1fr 100px 30px; gap:6px; margin-bottom:8px; } .ci-cov input{ min-width:0; } .ci-cov .ci-cov-d{ grid-column:1/-1; font-size:12px; } .ci-cov button{ border:1px solid var(--ink); background:var(--surface); color:var(--ink); border-radius:8px; cursor:pointer; }
+  .cc-t{ width:100%; border-collapse:collapse; font-size:12.5px; } .cc-t th, .cc-t td{ padding:7px 6px; border-top:1px dashed var(--line2); text-align:right; white-space:nowrap; vertical-align:top; } .cc-t th:first-child, .cc-t td:first-child{ text-align:left; position:sticky; left:0; background:var(--surface); } .cc-t thead th{ border-top:0; font-size:11px; } .cc-t small{ display:block; color:var(--ink2); font-size:10.5px; white-space:normal; max-width:110px; margin-left:auto; } .cc-t .lo{ color:var(--good); font-weight:800; } .cc-t .hi{ color:var(--warn); font-weight:800; } .cc-t tfoot td{ border-top:1px solid var(--ink); font-weight:800; }
   .cr-tbl{ display:grid; grid-template-columns:.7fr 1fr 1fr 1.1fr; gap:6px; padding:7px 0; border-top:1px dashed var(--line2); font-size:12.5px; text-align:right; } .cr-tbl>*:first-child{ text-align:left; } .cr-tbl-h{ border-top:0; color:var(--ink2); font-size:11px; font-weight:700; }
   /* ---------- 구독·결제 ---------- */
   .sb-monthbar{ display:flex; align-items:center; gap:8px; margin-bottom:12px; } .sb-monthbar b{ flex:1; text-align:center; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:14px; }
@@ -1493,10 +1495,22 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   </div>
   <label class="pc-f">특약 · 조건<input id="ci-sp" type="text" placeholder="예: 마일리지 특약, 자기부담금 20만"></label>
   <label class="pc-f">할인<input id="ci-dc" type="text" placeholder="예: 블랙박스 -2%, 온라인 -5%"></label>
+  <div class="grp" style="margin-top:12px;font-size:11.5px;font-weight:700;color:var(--ink2)">담보별 보험료 (선택 · 비교용)</div>
+  <div id="ci-cov"></div><datalist id="ci-cov-list"></datalist>
+  <div class="pc-row2"><button type="button" class="pc-btn small" data-car="cov-add">+ 담보 추가</button><button type="button" class="pc-btn small" data-car="cov-tot">합계를 보험료로</button></div>
+  <p class="pc-hint" id="ci-cov-sum"></p>
   <label class="pc-f">메모(선택)<textarea id="ci-memo" class="ml" rows="2"></textarea></label>
   <label class="sh-donechk"><input type="checkbox" id="ci-join"> 이 견적으로 가입함 (체크하면 그 해 보험료·갱신 알림에 반영돼요)</label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-car="ci-cancel">취소</button><button class="pc-btn primary" data-car="ci-save">저장</button></div>
   <button id="ci-delete" class="pc-btn danger wide" data-car="ci-delete">이 보험 기록 삭제</button>
+</dialog>
+
+<dialog id="cc-dlg">
+  <h3>⚖ 담보 비교</h3>
+  <p class="pc-hint" style="margin-top:0">비교할 보험 건을 고르세요. 초록은 가장 낮은 금액, 빨강은 가장 높은 금액이에요.</p>
+  <div id="cc-pick" class="cr-chips"></div>
+  <div id="cc-table" style="overflow-x:auto"></div>
+  <button class="pc-btn wide" data-car="cc-close" style="margin-top:12px">닫기</button>
 </dialog>
 
 <dialog id="cw-dlg">
@@ -3388,9 +3402,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-02-a (내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-03-b (보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['돈 > 내 차: 자동차 보험료(연도·보험사별)와 세차 이력·비용 관리', '설정 > 내 차에서 차량 이름·세차 종류 수정', '앱 스타일 7종 · 자산 카드 주말·휴장일 처리'];
+const APP_RECENT = ['내 차 > 보험: 담보별 보험료 항목 등록 + ⚖ 담보 비교표(연도·보험사·차량 간)', '내 차: 현대해상 Hicar 보험 2건(깜둥이·흰둥이) 등록, 차량번호 추가', '설정 > 내 차에서 이름·번호·담보 항목·세차 종류 수정'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4068,15 +4082,18 @@ function delRound(){
 
 /* ---------- 내 차 (자동차 보험료 · 세차) — 신규, 다른 기능과 저장소 분리 ---------- */
 const CAR_KEY = 'car_mgmt_v1', CAR_UI_KEY = 'car_ui_v1', CAR_IDS = ['k1', 'k2'];
+const CAR_COVS_BASE = ['대인Ⅰ', '대물', '대인Ⅱ', '자동차상해', '무보험차상해', '자기차량손해', '긴급출동', '특약'];
+const carCovNorm = a => (Array.isArray(a) ? a : []).map(c => ({ n: String((c && c.n) || '').trim(), v: numB(c && c.v), d: String((c && c.d) || '').trim() })).filter(c => c.n);
 const CAR_KINDS_BASE = ['셀프', '손세차', '자동세차', '코팅'], CAR_PAYS = ['일시납', '12개월 분납', '기타'];
-const CAR_SEED = { ins: [], wash: [], cfg: { names: { k1: '깜둥이', k2: '흰둥이' }, kinds: CAR_KINDS_BASE.slice(), u: SEED_U }, del: {} };
+const CAR_SEED = { ins: [], wash: [], cfg: { names: { k1: '깜둥이', k2: '흰둥이' }, plates: { k1: '', k2: '' }, covs: CAR_COVS_BASE.slice(), kinds: CAR_KINDS_BASE.slice(), u: SEED_U }, del: {} };
 function carNorm(o){
   o = o && typeof o === 'object' ? o : {};
   const c = o.cfg && typeof o.cfg === 'object' ? o.cfg : {}, nm = c.names && typeof c.names === 'object' ? c.names : {};
   const kinds = (Array.isArray(c.kinds) ? c.kinds : CAR_KINDS_BASE).map(x => String(x || '').trim()).filter((x, i, a) => x && a.indexOf(x) === i);
-  const cfg = { names: { k1: String(nm.k1 || '').trim() || '깜둥이', k2: String(nm.k2 || '').trim() || '흰둥이' }, kinds: kinds.length ? kinds : CAR_KINDS_BASE.slice(), u: String(c.u || '') };
+  const pl = c.plates && typeof c.plates === 'object' ? c.plates : {};
+  const cfg = { names: { k1: String(nm.k1 || '').trim() || '깜둥이', k2: String(nm.k2 || '').trim() || '흰둥이' }, plates: { k1: String(pl.k1 || '').trim(), k2: String(pl.k2 || '').trim() }, covs: (Array.isArray(c.covs) ? c.covs : CAR_COVS_BASE).map(x => String(x || '').trim()).filter((x, i, a) => x && a.indexOf(x) === i), kinds: kinds.length ? kinds : CAR_KINDS_BASE.slice(), u: String(c.u || '') };
   const okCar = x => CAR_IDS.indexOf(x) >= 0;
-  const ins = (Array.isArray(o.ins) ? o.ins : []).filter(r => r && r.id && okCar(r.car)).map(r => ({ id: String(r.id), car: r.car, start: String(r.start || ''), ins: String(r.ins || ''), prem: numB(r.prem), pay: String(r.pay || ''), sp: String(r.sp || ''), dc: String(r.dc || ''), memo: String(r.memo || ''), join: r.join === true, u: String(r.u || '') }));
+  const ins = (Array.isArray(o.ins) ? o.ins : []).filter(r => r && r.id && okCar(r.car)).map(r => ({ id: String(r.id), car: r.car, start: String(r.start || ''), ins: String(r.ins || ''), prem: numB(r.prem), pay: String(r.pay || ''), sp: String(r.sp || ''), dc: String(r.dc || ''), memo: String(r.memo || ''), join: r.join === true, cov: carCovNorm(r.cov), u: String(r.u || '') }));
   const wash = (Array.isArray(o.wash) ? o.wash : []).filter(r => r && r.id && okCar(r.car)).map(r => ({ id: String(r.id), car: r.car, date: String(r.date || ''), kind: String(r.kind || ''), place: String(r.place || ''), cost: numB(r.cost), memo: String(r.memo || ''), u: String(r.u || '') }));
   return { ins, wash, cfg, del: cleanDel(o.del) };
 }
@@ -4102,7 +4119,7 @@ function carYoY(rows, cur, prev){
 }
 function carInsHtml(){
   const rows = carPick(CAR.ins), years = rows.map(r => carYr(r.start)).filter((y, i, a) => y && a.indexOf(y) === i).sort().reverse();
-  let h = '<div class="sectionhead"><b>연도별 보험 이력</b><span style="display:flex;gap:6px">' + (carSel !== 'all' && rows.length ? '<button class="pc-btn small" data-car="ins-copy">↻ 갱신 견적</button>' : '') + '<button class="pc-btn small primary" data-car="ins-add">+ 보험 추가</button></span></div>';
+  let h = '<div class="sectionhead"><b>연도별 보험 이력</b><span style="display:flex;gap:6px">' + (rows.some(r => r.cov.length) ? '<button class="pc-btn small" data-car="cov-cmp">⚖ 담보 비교</button>' : '') + (carSel !== 'all' && rows.length ? '<button class="pc-btn small" data-car="ins-copy">↻ 갱신 견적</button>' : '') + '<button class="pc-btn small primary" data-car="ins-add">+ 보험 추가</button></span></div>';
   if (!years.length) return h + '<div class="empty">아직 보험 기록이 없어요. “+ 보험 추가”로 올해 가입 내역이나 견적을 넣어 보세요.</div>';
   const cur = years[0], prev = years[1], sum = Object.values(carJoinedByCar(rows, cur)).reduce((a, b) => a + b, 0), yy = prev ? carYoY(rows, cur, prev) : null;
   const hero = '<div class="scard cr-hero"><div class="l">' + cur + '년 가입 보험료 · ' + (carSel === 'all' ? '전체' : esc(carName(carSel))) + '</div><div class="v tabular">' + (sum ? won(sum) : '가입 표시 없음') + '</div><div class="sub">' +
@@ -4116,7 +4133,7 @@ function carInsHtml(){
       const peers = q.filter(x => x.car === r.car && x.prem !== ''), min = peers.length ? Math.min.apply(null, peers.map(x => carNum(x.prem))) : 0, p = carNum(r.prem);
       const note = peers.length > 1 && r.prem !== '' ? (p === min ? '<div class="cr-good">이 해 최저가</div>' : (r.join ? '<div class="cr-bad">최저 견적보다 ' + won(p - min) + ' 비쌈</div>' : '')) : '';
       const det = [r.pay, r.start ? '시작 ' + r.start : '', r.sp, r.dc].filter(Boolean).join(' · ');
-      return '<div class="cr-row' + (r.join ? ' join' : '') + '" data-car="ins-edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="cr-top"><div><b>' + esc(r.ins || '보험사 미입력') + '</b> <span class="cr-tag' + (r.join ? ' ok' : '') + '">' + (r.join ? '가입' : '견적') + '</span>' + (carSel === 'all' ? '<span class="cr-car">' + esc(carName(r.car)) + '</span>' : '') + '</div><b class="cr-amt">' + (r.prem === '' ? '-' : won(r.prem)) + '</b></div><small>' + esc(det) + '</small>' + (r.memo ? '<small>' + esc(r.memo) + '</small>' : '') + note + '</div>';
+      return '<div class="cr-row' + (r.join ? ' join' : '') + '" data-car="ins-edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="cr-top"><div><b>' + esc(r.ins || '보험사 미입력') + '</b> <span class="cr-tag' + (r.join ? ' ok' : '') + '">' + (r.join ? '가입' : '견적') + '</span>' + (r.cov.length ? '<span class="cr-tag">담보 ' + r.cov.length + '</span>' : '') + (carSel === 'all' ? '<span class="cr-car">' + esc(carName(r.car)) + '</span>' : '') + '</div><b class="cr-amt">' + (r.prem === '' ? '-' : won(r.prem)) + '</b></div><small>' + esc(det) + '</small>' + (r.memo ? '<small>' + esc(r.memo) + '</small>' : '') + note + '</div>';
     }).join('') + '</div>';
   });
   return h;
@@ -4178,10 +4195,14 @@ function carRenewals(){   // 차량별 가장 최근 가입 건의 1년 뒤 = �
 function renderCar(){
   $('car-chips').innerHTML = [['all', '전체']].concat(CAR_IDS.map(id => [id, carName(id)])).map(x => '<button type="button" class="cr-chip' + (carSel === x[0] ? ' on' : '') + '" data-car="sel" data-id="' + x[0] + '">' + esc(x[1]) + '</button>').join('');
   document.querySelectorAll('#car-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === carTab));
-  $('car-body').innerHTML = carTab === 'ins' ? carInsHtml() : carTab === 'wash' ? carWashHtml() : carSumHtml();
+  const plate = carSel !== 'all' && CAR.cfg.plates[carSel] ? '<p class="pc-hint" style="margin:-2px 0 10px">🚗 ' + esc(carName(carSel)) + ' · 차량번호 ' + esc(CAR.cfg.plates[carSel]) + '</p>' : '';
+  $('car-body').innerHTML = plate + (carTab === 'ins' ? carInsHtml() : carTab === 'wash' ? carWashHtml() : carSumHtml());
 }
 function carFillCars(id, cur){ fillSelect($(id), CAR_IDS.map(k => ({ v: k, t: carName(k) })), cur); }
 function carAfter(){ carSave(); changed(); carAlertSync(); renderAll(); }
+function ciCovRow(c){ c = c || {}; return '<div class="ci-cov"><input type="text" list="ci-cov-list" data-cv="n" placeholder="담보명" value="' + esc(c.n || '') + '"><input type="number" data-cv="v" min="0" step="10" inputmode="numeric" placeholder="보험료" value="' + (c.v === '' || c.v == null ? '' : c.v) + '"><button type="button" data-car="cov-del" aria-label="삭제">✕</button><input type="text" data-cv="d" class="ci-cov-d" placeholder="가입금액·조건 (예: 10억원, 자기부담 20~50만원)" value="' + esc(c.d || '') + '"></div>'; }
+function ciCovRead(){ return carCovNorm([...document.querySelectorAll('#ci-cov .ci-cov')].map(r => ({ n: r.querySelector('[data-cv=n]').value, v: r.querySelector('[data-cv=v]').value, d: r.querySelector('[data-cv=d]').value }))); }
+function ciCovSum(){ const cv = ciCovRead(), sum = cv.reduce((a, c) => a + carNum(c.v), 0), p = numB($('ci-prem').value); $('ci-cov-sum').textContent = cv.length ? '담보 합계 ' + won(sum) + (p !== '' ? (p === sum ? ' · 보험료와 일치 ✓' : ' · 입력한 보험료(' + won(p) + ')와 ' + won(Math.abs(p - sum)) + ' 차이') : '') : ''; }
 function openCarIns(id, pre){
   const r = id ? CAR.ins.find(x => x.id === id) : null; if (id && !r) return;
   carEditing = id || null; const v = r || pre || {};
@@ -4190,6 +4211,8 @@ function openCarIns(id, pre){
   $('ci-start').value = v.start || todayStr(); $('ci-ins').value = v.ins || ''; $('ci-prem').value = v.prem === '' || v.prem == null ? '' : v.prem;
   fillSelect($('ci-pay'), CAR_PAYS.map(x => ({ v: x, t: x })), v.pay || CAR_PAYS[0]);
   $('ci-sp').value = v.sp || ''; $('ci-dc').value = v.dc || ''; $('ci-memo').value = v.memo || ''; $('ci-join').checked = !!v.join;
+  $('ci-cov').innerHTML = (v.cov && v.cov.length ? v.cov : []).map(ciCovRow).join(''); ciCovSum();
+  $('ci-cov-list').innerHTML = CAR.cfg.covs.concat(CAR.ins.reduce((a, x) => a.concat(x.cov.map(c => c.n)), [])).filter((x, i, a) => a.indexOf(x) === i).map(n => '<option value="' + esc(n) + '">').join('');
   const names = CAR.ins.map(x => x.ins).filter((x, i, a) => x && a.indexOf(x) === i); $('ci-ins-list').innerHTML = names.map(n => '<option value="' + esc(n) + '">').join('');
   $('ci-delete').hidden = !r; $('ci-dlg').showModal();
 }
@@ -4197,7 +4220,9 @@ function saveCarIns(){
   const prem = numB($('ci-prem').value), start = $('ci-start').value;
   if (!start) { toast('시작일(갱신일)을 입력해 주세요.'); return; }
   if (prem === '' || prem < 0) { toast('보험료를 입력해 주세요.'); return; }
-  const d = { car: $('ci-car').value, start, ins: $('ci-ins').value.trim(), prem, pay: $('ci-pay').value, sp: $('ci-sp').value.trim(), dc: $('ci-dc').value.trim(), memo: $('ci-memo').value.trim(), join: $('ci-join').checked, u: nowIso() };
+  const cov = ciCovRead(), csum = cov.reduce((a, c) => a + carNum(c.v), 0);
+  if (cov.some(c => c.v !== '') && csum !== prem && !confirm('담보 합계(' + won(csum) + ')와 보험료(' + won(prem) + ')가 달라요. 그대로 저장할까요?')) return;
+  const d = { car: $('ci-car').value, start, ins: $('ci-ins').value.trim(), prem, pay: $('ci-pay').value, sp: $('ci-sp').value.trim(), dc: $('ci-dc').value.trim(), memo: $('ci-memo').value.trim(), join: $('ci-join').checked, cov, u: nowIso() };
   if (carEditing) Object.assign(CAR.ins.find(x => x.id === carEditing), d); else CAR.ins.push(Object.assign({ id: uid('ci') }, d));
   $('ci-dlg').close(); toast('저장했어요.'); carAfter();
 }
@@ -4231,17 +4256,75 @@ function delCarWash(){
 function carCopyPrev(){   // 선택한 차의 가장 최근 가입 건(없으면 최근 건)을 1년 뒤 견적으로 복사
   const rs = CAR.ins.filter(r => r.car === carSel && r.start), js = rs.filter(r => r.join).sort((a, b) => b.start.localeCompare(a.start)), base = js[0] || rs.sort((a, b) => b.start.localeCompare(a.start))[0];
   if (!base) { toast('복사할 보험 기록이 없어요.'); return; }
-  openCarIns(null, { car: base.car, start: carAddYears(base.start, 1), ins: base.ins, prem: '', pay: base.pay, sp: base.sp, dc: base.dc, join: false });
+  openCarIns(null, { car: base.car, start: carAddYears(base.start, 1), ins: base.ins, prem: '', pay: base.pay, sp: base.sp, dc: base.dc, join: false, cov: base.cov.map(c => ({ n: c.n, v: '', d: c.d })) });
+}
+/* 담보 비교: 고른 보험 건들의 담보별 보험료를 표로 */
+let ccSel = [];
+function carCmpRows(){ return carPick(CAR.ins).filter(r => r.cov.length).sort((a, b) => b.start.localeCompare(a.start) || (b.join - a.join)); }
+function openCarCmp(){
+  const rows = carCmpRows(); if (rows.length < 2) { toast('담보를 입력한 보험 건이 2개 이상 있어야 비교할 수 있어요.'); return; }
+  const ys = rows.map(r => carYr(r.start)).filter((y, i, a) => a.indexOf(y) === i);
+  ccSel = rows.filter(r => carYr(r.start) === ys[0] || (ys[1] && carYr(r.start) === ys[1] && r.join)).slice(0, 4).map(r => r.id);
+  if (ccSel.length < 2) ccSel = rows.slice(0, 2).map(r => r.id);
+  renderCarCmp(); $('cc-dlg').showModal();
+}
+function carCmpLabel(r){ return carYr(r.start) + (carSel === 'all' ? ' ' + carName(r.car) : '') + ' ' + (r.ins || '').split(' ')[0] + (r.join ? '' : ' (견적)'); }
+function renderCarCmp(){
+  const rows = carCmpRows();
+  $('cc-pick').innerHTML = rows.map(r => '<button type="button" class="cr-chip' + (ccSel.indexOf(r.id) >= 0 ? ' on' : '') + '" data-car="cc-tog" data-id="' + esc(r.id) + '">' + esc(carCmpLabel(r)) + '</button>').join('');
+  const cols = ccSel.map(id => rows.find(r => r.id === id)).filter(Boolean);
+  if (cols.length < 2) { $('cc-table').innerHTML = '<div class="empty" style="padding:16px">비교할 건을 2개 이상 골라 주세요.</div>'; return; }
+  const names = CAR.cfg.covs.slice(); cols.forEach(r => r.cov.forEach(c => { if (names.indexOf(c.n) < 0) names.push(c.n); }));
+  const val = (r, n) => { const c = r.cov.find(x => x.n === n); return c || null; };
+  const used = names.filter(n => cols.some(r => val(r, n)));
+  let h = '<table class="cc-t"><thead><tr><th>담보</th>' + cols.map(r => '<th>' + esc(carCmpLabel(r)) + '</th>').join('') + (cols.length === 2 ? '<th>차이</th>' : '') + '</tr></thead><tbody>';
+  used.forEach(n => {
+    const nums = cols.map(r => { const c = val(r, n); return c && c.v !== '' ? Number(c.v) : null; }), ok = nums.filter(x => x != null), mn = Math.min.apply(null, ok), mx = Math.max.apply(null, ok);
+    h += '<tr><td>' + esc(n) + '</td>' + cols.map((r, i) => { const c = val(r, n), x = nums[i]; return '<td' + (x != null && mn !== mx ? ' class="' + (x === mn ? 'lo' : x === mx ? 'hi' : '') + '"' : '') + '>' + (x == null ? '-' : won(x)) + (c && c.d ? '<small>' + esc(c.d) + '</small>' : '') + '</td>'; }).join('') +
+      (cols.length === 2 ? '<td>' + (nums[0] != null && nums[1] != null ? (nums[0] - nums[1] === 0 ? '-' : (nums[0] - nums[1] > 0 ? '+' : '−') + won(Math.abs(nums[0] - nums[1]))) : '-') + '</td>' : '') + '</tr>';
+  });
+  const tot = cols.map(r => r.cov.reduce((a, c) => a + carNum(c.v), 0)), tmin = Math.min.apply(null, tot);
+  h += '</tbody><tfoot><tr><td>담보 합계</td>' + tot.map(x => '<td>' + won(x) + '</td>').join('') + (cols.length === 2 ? '<td>' + (tot[0] === tot[1] ? '-' : (tot[0] > tot[1] ? '+' : '−') + won(Math.abs(tot[0] - tot[1]))) + '</td>' : '') + '</tr><tr><td>최저 대비</td>' + tot.map(x => '<td>' + (x === tmin ? '최저' : '+' + won(x - tmin)) + '</td>').join('') + (cols.length === 2 ? '<td></td>' : '') + '</tr></tfoot></table>' + (cols.length === 2 ? '<p class="pc-hint">차이 = 왼쪽 − 오른쪽</p>' : '');
+  $('cc-table').innerHTML = h;
 }
 /* 설정 > 내 차: 차량 이름 · 세차 종류 */
 function renderCarCfg(){
   const box = $('car-cfg'); if (!box) return;
-  box.innerHTML = '<h4 style="margin:0 0 6px">차량 이름</h4><div class="pc-row2">' + CAR_IDS.map((id, i) => '<label class="pc-f">차량 ' + (i + 1) + '<input type="text" maxlength="12" data-carcfg="name" data-id="' + id + '" value="' + esc(carName(id)) + '"></label>').join('') + '</div>' +
+  box.innerHTML = '<h4 style="margin:0 0 6px">차량 이름</h4><div class="pc-row2">' + CAR_IDS.map((id, i) => '<label class="pc-f">차량 ' + (i + 1) + '<input type="text" maxlength="12" data-carcfg="name" data-id="' + id + '" value="' + esc(carName(id)) + '"></label>').join('') + '</div><div class="pc-row2">' + CAR_IDS.map((id, i) => '<label class="pc-f">차량번호 ' + (i + 1) + '<input type="text" maxlength="12" data-carcfg="plate" data-id="' + id + '" value="' + esc(CAR.cfg.plates[id]) + '" placeholder="예: 123가4567"></label>').join('') + '</div>' +
+    '<h4 style="margin:12px 0 6px">보험 담보 항목</h4><div class="chiprow">' + CAR.cfg.covs.map(k => '<span class="chip"><i class="chipdot" style="background:var(--accent)"></i>' + esc(k) + ' <button type="button" data-carcfg="cdel" data-k="' + esc(k) + '" title="삭제">✕</button></span>').join('') + '</div><div class="addchip"><input type="text" maxlength="14" id="car-cov-new" placeholder="예: 법률비용지원"><button type="button" data-carcfg="cadd">추가</button></div>' +
     '<h4 style="margin:12px 0 6px">세차 종류</h4><div class="chiprow">' + CAR.cfg.kinds.map(k => '<span class="chip"><i class="chipdot" style="background:var(--accent)"></i>' + esc(k) + ' <button type="button" data-carcfg="kdel" data-k="' + esc(k) + '" title="삭제">✕</button></span>').join('') + '</div>' +
     '<div class="addchip"><input type="text" maxlength="12" id="car-kind-new" placeholder="예: 광택"><button type="button" data-carcfg="kadd">추가</button></div>' +
     '<p class="note" style="margin:8px 0 0">종류를 지워도 이미 기록한 세차 내역의 종류는 그대로 남아요.</p>';
 }
 function carCfgSave(){ CAR.cfg.u = nowIso(); carSave(); changed(); carAlertSync(); renderAll(); }
+/* 1회 마이그레이션(mig_ac_v1): 2026-01-24 가입한 현대해상 Hicar 개인용(CM) 두 대(깜둥이=207보5334, 흰둥이=353더2338) 보험 + 차량번호 등록 */
+function migrateAC(){
+  const MK = 'mig_ac_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const U = '2026-11-03T00:00:00.000Z', pl = CAR.cfg.plates; let ch = false;
+  if (!pl.k1 && !pl.k2) { pl.k1 = '207보5334'; pl.k2 = '353더2338'; if (String(CAR.cfg.u || '') < U) CAR.cfg.u = U; ch = true; }
+  const base = { start: '2026-01-24', ins: '현대해상 Hicar 개인용(CM)', pay: '일시납', sp: '부부한정 · 만43세이상 · 최저연령자 · 자기차량손해보장확대특약 · 대물배상가입금액확장담보특약', dc: '', join: true, cov: [], u: U };
+  [{ id: 'ci_seed_k1_2026', car: 'k1', prem: 593300, memo: '담보별 보험료: 대인Ⅰ 41,700 · 대물 175,750(10억) · 대인Ⅱ 95,200(무한) · 자동차상해 17,710(10억/5억) · 자기차량손해 249,300(20~50만원·손해액20%) · 긴급출동 13,100(하이카서비스 10KM) · 특약 540(3개). 차량가액 5,380만원. 토스 연동 화면 기준' },
+   { id: 'ci_seed_k2_2026', car: 'k2', prem: 533160, memo: '담보별 보험료: 대인Ⅰ 40,930 · 대물 166,960(10억) · 대인Ⅱ 93,480(무한) · 자동차상해 17,390(10억/5억) · 무보험차상해 2,640(2억) · 자기차량손해 193,150(20~50만원·손해액20%) · 긴급출동 18,610(하이카서비스 10KM) · 특약 0(2개). 차량가액 3,847만원. 토스 연동 화면 기준' }].forEach(sd => {
+    if (CAR.del[sd.id] || CAR.ins.some(x => x.id === sd.id)) return;
+    CAR.ins.push(Object.assign({}, base, sd)); ch = true;
+  });
+  if (ch) { carSave(); changed(); }
+  carAlertSync(); try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
+/* 1회 마이그레이션(mig_ad_v1): 등록해 둔 두 대 보험 건의 담보별 보험료를 항목으로 분리(메모의 담보 문구는 정리) */
+function migrateAD(){
+  const MK = 'mig_ad_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const D = {
+    ci_seed_k1_2026: { cov: [['대인Ⅰ', 41700, '가입'], ['대물', 175750, '10억원 (의무담보 포함)'], ['대인Ⅱ', 95200, '무한 (의무담보 포함)'], ['자동차상해', 17710, '10억원/5억원'], ['자기차량손해', 249300, '20만원~50만원 · 손해액의 20% (보장확대 특약)'], ['긴급출동', 13100, '하이카서비스 (10KM)'], ['특약', 540, '3개 특약']], memo: '차량가액 5,380만원. 토스·현대해상 화면 기준' },
+    ci_seed_k2_2026: { cov: [['대인Ⅰ', 40930, '가입'], ['대물', 166960, '10억원 (의무담보 포함)'], ['대인Ⅱ', 93480, '무한 (의무담보 포함)'], ['자동차상해', 17390, '10억원/5억원'], ['무보험차상해', 2640, '2억원'], ['자기차량손해', 193150, '20만원~50만원 · 손해액의 20% (보장확대 특약)'], ['긴급출동', 18610, '하이카서비스 (10KM)'], ['특약', 0, '2개 특약']], memo: '차량가액 3,847만원. 토스·현대해상 화면 기준' } };
+  const U = '2026-11-03T12:00:00.000Z'; let ch = false;
+  Object.keys(D).forEach(id => {
+    const r = CAR.ins.find(x => x.id === id); if (!r || (r.cov && r.cov.length)) return;
+    r.cov = D[id].cov.map(c => ({ n: c[0], v: c[1], d: c[2] })); if (String(r.memo || '').indexOf('담보별 보험료:') === 0) r.memo = D[id].memo; if (String(r.u || '') < U) r.u = U; ch = true;
+  });
+  if (ch) { carSave(); changed(); }
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
 /* 보험 갱신 알림: 갱신일 30일 전부터 알림 표시. 갱신(새 가입 건)이 생기면 자동 완료 */
 function carAlertSync(){
   try {
@@ -7702,11 +7785,14 @@ $('carView').addEventListener('click', e => {
   else if (a === 'tab') { carTab = el.dataset.t; carSaveUi(); renderCar(); }
   else if (a === 'ins-add') openCarIns(null); else if (a === 'ins-copy') carCopyPrev(); else if (a === 'ins-edit') openCarIns(el.dataset.id);
   else if (a === 'wash-add') openCarWash(null); else if (a === 'wash-edit') openCarWash(el.dataset.id);
-  else if (a === 'backup') doBackup();
+  else if (a === 'backup') doBackup(); else if (a === 'cov-cmp') openCarCmp();
 });
-$('ci-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car; if (a === 'ci-cancel') $('ci-dlg').close(); else if (a === 'ci-save') saveCarIns(); else if (a === 'ci-delete') delCarIns(); });
+$('cc-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; if (el.dataset.car === 'cc-close') $('cc-dlg').close(); else if (el.dataset.car === 'cc-tog') { const i = ccSel.indexOf(el.dataset.id); if (i >= 0) ccSel.splice(i, 1); else { if (ccSel.length >= 4) { toast('한 번에 4개까지 비교할 수 있어요.'); return; } ccSel.push(el.dataset.id); } renderCarCmp(); } });
+$('ci-dlg').addEventListener('input', e => { if (e.target.closest('#ci-cov') || e.target.id === 'ci-prem') ciCovSum(); });
+$('ci-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car; if (a === 'cov-add') { $('ci-cov').insertAdjacentHTML('beforeend', ciCovRow()); ciCovSum(); return; } if (a === 'cov-del') { el.closest('.ci-cov').remove(); ciCovSum(); return; } if (a === 'cov-tot') { const cv = ciCovRead(); if (!cv.length) { toast('먼저 담보별 금액을 입력해 주세요.'); return; } $('ci-prem').value = cv.reduce((x, c) => x + carNum(c.v), 0); ciCovSum(); return; } if (a === 'ci-cancel') $('ci-dlg').close(); else if (a === 'ci-save') saveCarIns(); else if (a === 'ci-delete') delCarIns(); });
 $('cw-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car; if (a === 'cw-cancel') $('cw-dlg').close(); else if (a === 'cw-save') saveCarWash(); else if (a === 'cw-delete') delCarWash(); });
 $('car-cfg').addEventListener('change', e => {
+  const pe = e.target.closest('[data-carcfg="plate"]'); if (pe) { CAR.cfg.plates[pe.dataset.id] = pe.value.trim(); carCfgSave(); toast('차량번호를 저장했어요.'); return; }
   const el = e.target.closest('[data-carcfg="name"]'); if (!el) return;
   const v = el.value.trim(); if (!v) { toast('차량 이름을 입력해 주세요.'); renderCarCfg(); return; }
   CAR.cfg.names[el.dataset.id] = v; carCfgSave(); toast('차량 이름을 바꿨어요.');
@@ -7714,6 +7800,8 @@ $('car-cfg').addEventListener('change', e => {
 $('car-cfg').addEventListener('click', e => {
   const el = e.target.closest('[data-carcfg]'); if (!el) return; const a = el.dataset.carcfg;
   if (a === 'kadd') { const inp = $('car-kind-new'), v = inp.value.trim(); if (!v) { toast('종류 이름을 입력해 주세요.'); return; } if (CAR.cfg.kinds.indexOf(v) >= 0) { toast('이미 있는 종류예요.'); return; } CAR.cfg.kinds.push(v); carCfgSave(); renderCarCfg(); }
+  else if (a === 'cadd') { const v = $('car-cov-new').value.trim(); if (!v) { toast('담보 이름을 입력해 주세요.'); return; } if (CAR.cfg.covs.indexOf(v) >= 0) { toast('이미 있는 항목이에요.'); return; } CAR.cfg.covs.push(v); carCfgSave(); renderCarCfg(); }
+  else if (a === 'cdel') { CAR.cfg.covs = CAR.cfg.covs.filter(k => k !== el.dataset.k); carCfgSave(); renderCarCfg(); }
   else if (a === 'kdel') { if (CAR.cfg.kinds.length <= 1) { toast('세차 종류는 하나 이상 있어야 해요.'); return; } CAR.cfg.kinds = CAR.cfg.kinds.filter(k => k !== el.dataset.k); carCfgSave(); renderCarCfg(); }
 });
 $('subView').addEventListener('click', e => {
@@ -7866,7 +7954,7 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); try { mpAlertSync(); mpbSync(); carAlertSync(); } catch (e) { /* 무시 */ }
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); try { mpAlertSync(); mpbSync(); carAlertSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
