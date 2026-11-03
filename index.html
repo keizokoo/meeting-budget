@@ -546,6 +546,29 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .gf-p small{ display:block; font-size:10.5px; color:var(--ink2); min-height:13px; }
   .gf-rev{ margin-top:8px; font-size:12.5px; color:var(--ink2); }
   .gd-round{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px; }
+  /* ---------- 내 차 ---------- */
+  .cr-chips{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .cr-chip{ padding:7px 14px; border-radius:99px; border:1px solid var(--ink); background:var(--surface); color:var(--ink); font:700 13px inherit; cursor:pointer; }
+  .cr-chip.on{ background:var(--ink); color:var(--bg); }
+  .cr-seg{ display:flex; border:1px solid var(--ink); border-radius:12px; overflow:hidden; margin-bottom:14px; background:var(--surface); }
+  .cr-seg button{ flex:1; border:0; background:none; padding:10px 4px; font:700 14px inherit; color:var(--ink); cursor:pointer; }
+  .cr-seg button.on{ background:var(--accent); color:var(--on-accent); }
+  .cr-hero{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); margin-bottom:14px; }
+  .cr-hero .l, .cr-hero .sub{ color:var(--on-accent); opacity:.85; } .cr-hero .v{ font-size:24px; }
+  .cr-strip{ margin-bottom:14px; } .cr-strip .cr-hero{ margin-bottom:0; } .cr-strip .scard .v{ font-size:15px; }
+  .cr-year{ display:flex; justify-content:space-between; align-items:baseline; margin:16px 0 8px; font-size:13px; } .cr-year b{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; } .cr-year span{ color:var(--ink2); font-size:12px; }
+  .cr-card{ background:var(--surface); border:1px solid var(--ink); border-radius:12px; padding:6px 12px; }
+  .cr-row{ padding:10px 0; border-top:1px dashed var(--line2); cursor:pointer; display:block; } .cr-row:first-child{ border-top:0; }
+  .cr-row.join{ background:var(--soft); margin:0 -8px; padding:10px 8px; border-radius:10px; border-top:0; }
+  .cr-row small{ display:block; color:var(--ink2); font-size:12px; margin-top:2px; }
+  .cr-top b:first-child{ white-space:nowrap; }
+  .cr-top{ display:flex; justify-content:space-between; align-items:center; gap:8px; } .cr-amt{ font-size:15px; white-space:nowrap; }
+  .cr-tag{ display:inline-block; font-size:11px; font-weight:800; padding:1px 8px; border-radius:99px; background:var(--soft); color:var(--accent-ink); margin-left:4px; } .cr-tag.ok{ background:var(--ink); color:var(--bg); }
+  .cr-car{ font-size:11px; color:var(--ink2); margin-left:6px; }
+  .cr-good{ color:var(--good); font-size:12px; font-weight:700; margin-top:2px; } .cr-bad{ color:var(--warn); font-size:12px; font-weight:700; margin-top:2px; }
+  .cr-bar{ padding:6px 0; } .cr-track{ height:10px; background:var(--line); border-radius:6px; overflow:hidden; margin-top:4px; } .cr-track i{ display:block; height:100%; background:var(--accent); }
+  .cr-months{ display:flex; gap:4px; align-items:flex-end; height:90px; padding-top:6px; } .cr-months>div{ flex:1; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; } .cr-months i{ display:block; width:100%; background:var(--accent); border-radius:3px 3px 0 0; min-height:1px; } .cr-months small{ font-size:10px; color:var(--ink2); margin-top:3px; }
+  .cr-tbl{ display:grid; grid-template-columns:.7fr 1fr 1fr 1.1fr; gap:6px; padding:7px 0; border-top:1px dashed var(--line2); font-size:12.5px; text-align:right; } .cr-tbl>*:first-child{ text-align:left; } .cr-tbl-h{ border-top:0; color:var(--ink2); font-size:11px; font-weight:700; }
   /* ---------- 구독·결제 ---------- */
   .sb-monthbar{ display:flex; align-items:center; gap:8px; margin-bottom:12px; } .sb-monthbar b{ flex:1; text-align:center; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:14px; }
   #sb-summary{ margin-bottom:12px; } #sb-summary .scard .v{ font-size:14px; }
@@ -1001,6 +1024,17 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
  </div>
 </div>
 
+<!-- ===== [신규] 내 차 영역 ===== -->
+<div id="carView" hidden>
+ <div class="pc-wrap">
+  <div class="cr-chips" id="car-chips"></div>
+  <div class="cr-seg" id="car-tabs"><button type="button" data-car="tab" data-t="ins">🛡 보험</button><button type="button" data-car="tab" data-t="wash">🧽 세차</button><button type="button" data-car="tab" data-t="sum">📊 요약</button></div>
+  <div id="car-body"></div>
+  <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-car="backup">☁ 지금 백업</button></div>
+  <p class="pc-hint">차량 이름과 세차 종류는 ⚙ 설정 > 내 차에서 바꿀 수 있어요.</p>
+ </div>
+</div>
+
 <!-- ===== [신규] 인맥 영역 ===== -->
 <div id="peopleView" hidden>
  <div class="pc-wrap">
@@ -1446,6 +1480,41 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <button id="gr-d-delete" class="pc-btn danger wide" data-gf="r-delete">이 요금 기록 삭제</button>
 </dialog>
 
+<dialog id="ci-dlg">
+  <h3 id="ci-title">보험 추가</h3>
+  <div class="pc-row2">
+    <label class="pc-f">차량<select id="ci-car"></select></label>
+    <label class="pc-f">시작일(갱신일)<input id="ci-start" type="date"></label>
+  </div>
+  <label class="pc-f">보험사<input id="ci-ins" type="text" list="ci-ins-list" placeholder="예: 삼성화재"><datalist id="ci-ins-list"></datalist></label>
+  <div class="pc-row2">
+    <label class="pc-f">보험료(원)<input id="ci-prem" type="number" min="0" step="1000" inputmode="numeric"></label>
+    <label class="pc-f">납입 방식<select id="ci-pay"></select></label>
+  </div>
+  <label class="pc-f">특약 · 조건<input id="ci-sp" type="text" placeholder="예: 마일리지 특약, 자기부담금 20만"></label>
+  <label class="pc-f">할인<input id="ci-dc" type="text" placeholder="예: 블랙박스 -2%, 온라인 -5%"></label>
+  <label class="pc-f">메모(선택)<textarea id="ci-memo" class="ml" rows="2"></textarea></label>
+  <label class="sh-donechk"><input type="checkbox" id="ci-join"> 이 견적으로 가입함 (체크하면 그 해 보험료·갱신 알림에 반영돼요)</label>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-car="ci-cancel">취소</button><button class="pc-btn primary" data-car="ci-save">저장</button></div>
+  <button id="ci-delete" class="pc-btn danger wide" data-car="ci-delete">이 보험 기록 삭제</button>
+</dialog>
+
+<dialog id="cw-dlg">
+  <h3 id="cw-title">세차 추가</h3>
+  <div class="pc-row2">
+    <label class="pc-f">차량<select id="cw-car"></select></label>
+    <label class="pc-f">날짜<input id="cw-date" type="date"></label>
+  </div>
+  <div class="pc-row2">
+    <label class="pc-f">종류<select id="cw-kind"></select></label>
+    <label class="pc-f">비용(원)<input id="cw-cost" type="number" min="0" step="500" inputmode="numeric"></label>
+  </div>
+  <label class="pc-f">장소(선택)<input id="cw-place" type="text"></label>
+  <label class="pc-f">메모(선택)<textarea id="cw-memo" class="ml" rows="2"></textarea></label>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-car="cw-cancel">취소</button><button class="pc-btn primary" data-car="cw-save">저장</button></div>
+  <button id="cw-delete" class="pc-btn danger wide" data-car="cw-delete">이 세차 기록 삭제</button>
+</dialog>
+
 <dialog id="sb-dlg">
   <h3 id="sb-d-title">정기결제 항목</h3>
   <div class="pc-row2">
@@ -1764,6 +1833,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       <div class="syncbtns"><button class="primary" id="set-rm-open" type="button">🔔 알림 목록 · 추가</button><button id="set-rm-notify" type="button">기기 알림 켜기</button></div>
       <p class="note" style="margin-top:8px;">날짜를 정해 두면 N일 전부터 앱 맨 위에 표시돼요. 기기 알림은 앱을 열었을 때 울려요.</p>
     </div>
+    <div class="dsec">내 차</div>
+    <div class="block"><div id="car-cfg"></div></div>
     <div class="dsec">분류 관리</div>
     <div class="block">
       <p class="note" style="margin:0 0 8px">앱 안의 선택지를 직접 추가해요. 기본 분류는 고정이고, 직접 추가한 분류만 ✕로 지울 수 있어요(쓰고 있는 분류는 지울 수 없어요). 회의비 카드 구분은 위 “회의비”에서, 인맥 그룹은 인맥 → 사람 탭의 “그룹 관리”에서 바꿔요.</p>
@@ -3317,9 +3388,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-10-30-a (앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-02-a (내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['설정 > 화면에서 앱 스타일(색상 7종) 선택', '자산 카드: 주말·휴장일엔 직전 마감 값으로 표시', '금액 불일치 점검 · 도수 한도 알림 · 의료비 연간 리포트'];
+const APP_RECENT = ['돈 > 내 차: 자동차 보험료(연도·보험사별)와 세차 이력·비용 관리', '설정 > 내 차에서 차량 이름·세차 종류 수정', '앱 스타일 7종 · 자산 카드 주말·휴장일 처리'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -3993,6 +4064,198 @@ function delRound(){
   if (!grEditing || !confirm('이 요금 기록을 삭제할까요?')) return;
   G.rounds = G.rounds.filter(r => r.id !== grEditing); G.del[grEditing] = nowIso();
   gSave(); changed(); $('gr-dlg').close(); if ($('gf-dlg').open) renderCourseRounds(); renderAll();
+}
+
+/* ---------- 내 차 (자동차 보험료 · 세차) — 신규, 다른 기능과 저장소 분리 ---------- */
+const CAR_KEY = 'car_mgmt_v1', CAR_UI_KEY = 'car_ui_v1', CAR_IDS = ['k1', 'k2'];
+const CAR_KINDS_BASE = ['셀프', '손세차', '자동세차', '코팅'], CAR_PAYS = ['일시납', '12개월 분납', '기타'];
+const CAR_SEED = { ins: [], wash: [], cfg: { names: { k1: '깜둥이', k2: '흰둥이' }, kinds: CAR_KINDS_BASE.slice(), u: SEED_U }, del: {} };
+function carNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const c = o.cfg && typeof o.cfg === 'object' ? o.cfg : {}, nm = c.names && typeof c.names === 'object' ? c.names : {};
+  const kinds = (Array.isArray(c.kinds) ? c.kinds : CAR_KINDS_BASE).map(x => String(x || '').trim()).filter((x, i, a) => x && a.indexOf(x) === i);
+  const cfg = { names: { k1: String(nm.k1 || '').trim() || '깜둥이', k2: String(nm.k2 || '').trim() || '흰둥이' }, kinds: kinds.length ? kinds : CAR_KINDS_BASE.slice(), u: String(c.u || '') };
+  const okCar = x => CAR_IDS.indexOf(x) >= 0;
+  const ins = (Array.isArray(o.ins) ? o.ins : []).filter(r => r && r.id && okCar(r.car)).map(r => ({ id: String(r.id), car: r.car, start: String(r.start || ''), ins: String(r.ins || ''), prem: numB(r.prem), pay: String(r.pay || ''), sp: String(r.sp || ''), dc: String(r.dc || ''), memo: String(r.memo || ''), join: r.join === true, u: String(r.u || '') }));
+  const wash = (Array.isArray(o.wash) ? o.wash : []).filter(r => r && r.id && okCar(r.car)).map(r => ({ id: String(r.id), car: r.car, date: String(r.date || ''), kind: String(r.kind || ''), place: String(r.place || ''), cost: numB(r.cost), memo: String(r.memo || ''), u: String(r.u || '') }));
+  return { ins, wash, cfg, del: cleanDel(o.del) };
+}
+let CAR = loadK(CAR_KEY, CAR_SEED, carNorm), carSel = 'all', carTab = 'ins', carEditing = null, carWEditing = null;
+try { const u = JSON.parse(localStorage.getItem(CAR_UI_KEY) || 'null'); if (u && (u.sel === 'all' || CAR_IDS.indexOf(u.sel) >= 0)) carSel = u.sel; if (u && ['ins', 'wash', 'sum'].indexOf(u.tab) >= 0) carTab = u.tab; } catch (e) { /* 기본값 */ }
+function carSave(){ saveK(CAR_KEY, CAR); }
+function carSaveUi(){ try { localStorage.setItem(CAR_UI_KEY, JSON.stringify({ sel: carSel, tab: carTab })); } catch (e) { /* 무시 */ } }
+const carName = id => CAR.cfg.names[id] || id;
+const carPick = arr => carSel === 'all' ? arr : arr.filter(r => r.car === carSel);
+const carNum = v => (v === '' || v == null || !isFinite(Number(v))) ? 0 : Number(v);
+const carYr = s => String(s || '').slice(0, 4);
+function carAddYears(s, n){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); if (!m) return '';
+  const y = Number(m[1]) + n, last = new Date(y, Number(m[2]), 0).getDate();
+  return y + '-' + m[2] + '-' + String(Math.min(Number(m[3]), last)).padStart(2, '0');
+}
+/* 연도별 가입 보험료(차량별) — 전년 대비는 두 해 모두 가입 기록이 있는 차량끼리만 비교해요 */
+function carJoinedByCar(rows, y){ const o = {}; rows.forEach(r => { if (r.join && carYr(r.start) === y) o[r.car] = (o[r.car] || 0) + carNum(r.prem); }); return o; }
+function carYoY(rows, cur, prev){
+  const a = carJoinedByCar(rows, cur), b = carJoinedByCar(rows, prev); let d = 0, base = 0, n = 0;
+  Object.keys(a).forEach(k => { if (b[k] != null) { d += a[k] - b[k]; base += b[k]; n++; } });
+  return n ? { diff: d, pct: base ? d / base * 100 : 0, n } : null;
+}
+function carInsHtml(){
+  const rows = carPick(CAR.ins), years = rows.map(r => carYr(r.start)).filter((y, i, a) => y && a.indexOf(y) === i).sort().reverse();
+  let h = '<div class="sectionhead"><b>연도별 보험 이력</b><span style="display:flex;gap:6px">' + (carSel !== 'all' && rows.length ? '<button class="pc-btn small" data-car="ins-copy">↻ 갱신 견적</button>' : '') + '<button class="pc-btn small primary" data-car="ins-add">+ 보험 추가</button></span></div>';
+  if (!years.length) return h + '<div class="empty">아직 보험 기록이 없어요. “+ 보험 추가”로 올해 가입 내역이나 견적을 넣어 보세요.</div>';
+  const cur = years[0], prev = years[1], sum = Object.values(carJoinedByCar(rows, cur)).reduce((a, b) => a + b, 0), yy = prev ? carYoY(rows, cur, prev) : null;
+  const hero = '<div class="scard cr-hero"><div class="l">' + cur + '년 가입 보험료 · ' + (carSel === 'all' ? '전체' : esc(carName(carSel))) + '</div><div class="v tabular">' + (sum ? won(sum) : '가입 표시 없음') + '</div><div class="sub">' +
+    (yy ? '전년 대비 <b>' + (yy.diff >= 0 ? '+' : '−') + won(Math.abs(yy.diff)) + '</b> (' + (yy.diff >= 0 ? '+' : '−') + Math.abs(yy.pct).toFixed(1) + '%)' + (carSel === 'all' ? ' · 두 해 모두 가입한 차량 기준' : '') : '비교할 전년 가입 기록이 없어요') + '</div></div>';
+  h = hero + h;
+  years.forEach(y => {
+    const q = rows.filter(r => carYr(r.start) === y).sort((a, b) => (b.join - a.join) || (a.car < b.car ? -1 : a.car > b.car ? 1 : 0) || carNum(a.prem) - carNum(b.prem));
+    const tot = Object.values(carJoinedByCar(rows, y)).reduce((a, b) => a + b, 0);
+    h += '<div class="cr-year"><b>' + y + '년</b><span>' + (tot ? '가입 ' + won(tot) : '가입 표시 없음') + '</span></div><div class="cr-card">';
+    h += q.map(r => {
+      const peers = q.filter(x => x.car === r.car && x.prem !== ''), min = peers.length ? Math.min.apply(null, peers.map(x => carNum(x.prem))) : 0, p = carNum(r.prem);
+      const note = peers.length > 1 && r.prem !== '' ? (p === min ? '<div class="cr-good">이 해 최저가</div>' : (r.join ? '<div class="cr-bad">최저 견적보다 ' + won(p - min) + ' 비쌈</div>' : '')) : '';
+      const det = [r.pay, r.start ? '시작 ' + r.start : '', r.sp, r.dc].filter(Boolean).join(' · ');
+      return '<div class="cr-row' + (r.join ? ' join' : '') + '" data-car="ins-edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="cr-top"><div><b>' + esc(r.ins || '보험사 미입력') + '</b> <span class="cr-tag' + (r.join ? ' ok' : '') + '">' + (r.join ? '가입' : '견적') + '</span>' + (carSel === 'all' ? '<span class="cr-car">' + esc(carName(r.car)) + '</span>' : '') + '</div><b class="cr-amt">' + (r.prem === '' ? '-' : won(r.prem)) + '</b></div><small>' + esc(det) + '</small>' + (r.memo ? '<small>' + esc(r.memo) + '</small>' : '') + note + '</div>';
+    }).join('') + '</div>';
+  });
+  return h;
+}
+function carWashHtml(){
+  const rows = carPick(CAR.wash).slice().sort((a, b) => b.date.localeCompare(a.date)), t = todayStr(), ym = t.slice(0, 7), yr = t.slice(0, 4);
+  const mon = rows.filter(r => r.date.slice(0, 7) === ym), yrs = rows.filter(r => r.date.slice(0, 4) === yr);
+  const monSum = mon.reduce((a, r) => a + carNum(r.cost), 0), yrSum = yrs.reduce((a, r) => a + carNum(r.cost), 0);
+  let last = '';
+  if (rows.length && rows[0].date) { const d = Math.round((new Date(t) - new Date(rows[0].date)) / 86400000); last = d >= 0 ? '마지막 세차 ' + (d === 0 ? '오늘' : d + '일 전') : ''; }
+  let h = '<div class="strip cr-strip"><div class="scard cr-hero"><div class="l">' + Number(ym.slice(5)) + '월 세차비</div><div class="v tabular">' + won(monSum) + '</div><div class="sub">' + mon.length + '회</div></div>' +
+    '<div class="scard"><div class="l">' + yr + '년 누계</div><div class="v tabular">' + won(yrSum) + '</div><div class="sub">' + yrs.length + '회' + (yrs.length ? ' · 평균 ' + won(Math.round(yrSum / yrs.length)) : '') + '</div></div></div>';
+  h += '<div class="sectionhead"><b>세차 이력</b><button class="pc-btn small primary" data-car="wash-add">+ 세차 추가</button></div>' + (last ? '<p class="pc-hint" style="margin-top:-6px">' + last + '</p>' : '');
+  if (!rows.length) return h + '<div class="empty">아직 세차 기록이 없어요. “+ 세차 추가”로 시작해 보세요.</div>';
+  let curM = '', opened = false;
+  rows.forEach(r => {
+    const m = r.date.slice(0, 7);
+    if (m !== curM) { curM = m; const g = rows.filter(x => x.date.slice(0, 7) === m); h += (opened ? '</div>' : '') + '<div class="cr-year"><b>' + (m ? m.slice(0, 4) + '년 ' + Number(m.slice(5)) + '월' : '날짜 없음') + '</b><span>' + g.length + '회 · ' + won(g.reduce((a, x) => a + carNum(x.cost), 0)) + '</span></div><div class="cr-card">'; opened = true; }
+    h += '<div class="cr-row" data-car="wash-edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="cr-top"><div><b>' + esc(r.date.slice(5).replace('-', '/')) + '</b> <span class="cr-tag">' + esc(r.kind || '종류 없음') + '</span>' + (carSel === 'all' ? '<span class="cr-car">' + esc(carName(r.car)) + '</span>' : '') + '</div><b class="cr-amt">' + (r.cost === '' ? '-' : won(r.cost)) + '</b></div>' + ((r.place || r.memo) ? '<small>' + esc([r.place, r.memo].filter(Boolean).join(' · ')) + '</small>' : '') + '</div>';
+  });
+  return h + '</div>';
+}
+function carYearTable(){
+  const ins = carPick(CAR.ins), wash = carPick(CAR.wash), ys = {};
+  ins.forEach(r => { const y = carYr(r.start); if (y) ys[y] = 1; }); wash.forEach(r => { const y = carYr(r.date); if (y) ys[y] = 1; });
+  return Object.keys(ys).sort().reverse().map(y => {
+    const a = Object.values(carJoinedByCar(ins, y)).reduce((s, v) => s + v, 0), b = wash.filter(r => carYr(r.date) === y).reduce((s, r) => s + carNum(r.cost), 0);
+    return { y, ins: a, wash: b, tot: a + b };
+  });
+}
+function carSumHtml(){
+  const t = todayStr(), yr = t.slice(0, 4), tbl = carYearTable(), cur = tbl.find(x => x.y === yr) || { y: yr, ins: 0, wash: 0, tot: 0 };
+  let h = '<div class="scard cr-hero"><div class="l">' + yr + '년 차량 관련 비용 · ' + (carSel === 'all' ? '전체' : esc(carName(carSel))) + '</div><div class="v tabular">' + won(cur.tot) + '</div><div class="sub">월 평균 ' + won(Math.round(cur.tot / Number(t.slice(5, 7)))) + ' (' + Number(t.slice(5, 7)) + '개월 기준)</div></div>';
+  const bar = (n, v) => '<div class="cr-bar"><div class="cr-top"><b>' + n + '</b><span>' + won(v) + ' · ' + (cur.tot ? Math.round(v / cur.tot * 100) : 0) + '%</span></div><div class="cr-track"><i style="width:' + (cur.tot ? v / cur.tot * 100 : 0) + '%"></i></div></div>';
+  h += '<div class="cr-card">' + bar('🛡 보험료(가입)', cur.ins) + bar('🧽 세차비', cur.wash) + '</div>';
+  if (carSel === 'all') {
+    h += '<div class="cr-year"><b>차량별 ' + yr + '년</b><span></span></div><div class="cr-card">' + CAR_IDS.map(id => {
+      const a = carJoinedByCar(CAR.ins, yr)[id] || 0, b = CAR.wash.filter(r => r.car === id && carYr(r.date) === yr).reduce((s, r) => s + carNum(r.cost), 0);
+      return '<div class="cr-top" style="padding:6px 0"><b>' + esc(carName(id)) + '</b><span>보험 ' + won(a) + ' · 세차 ' + won(b) + ' = <b>' + won(a + b) + '</b></span></div>';
+    }).join('') + '</div>';
+  }
+  const mo = []; for (let m = 1; m <= 12; m++) mo.push(carPick(CAR.wash).filter(r => r.date.slice(0, 7) === yr + '-' + String(m).padStart(2, '0')).reduce((s, r) => s + carNum(r.cost), 0));
+  const mx = Math.max.apply(null, mo.concat([1]));
+  h += '<div class="cr-year"><b>' + yr + '년 월별 세차비</b><span></span></div><div class="cr-card"><div class="cr-months">' + mo.map((v, i) => '<div title="' + (i + 1) + '월 ' + won(v) + '"><i style="height:' + Math.round(v / mx * 100) + '%"></i><small>' + (i + 1) + '</small></div>').join('') + '</div></div>';
+  h += '<div class="cr-year"><b>연도별 이력</b><span></span></div><div class="cr-card">' + (tbl.length ? '<div class="cr-tbl cr-tbl-h"><span>연도</span><span>보험</span><span>세차</span><span>합계</span></div>' + tbl.map(x => '<div class="cr-tbl"><b>' + x.y + '</b><span>' + won(x.ins) + '</span><span>' + won(x.wash) + '</span><b>' + won(x.tot) + '</b></div>').join('') : '<div class="empty" style="padding:14px">기록이 쌓이면 연도별로 정리돼요.</div>') + '</div>';
+  /* 갱신 예정 */
+  const rn = carRenewals(); if (rn.length) h += '<div class="cr-year"><b>보험 갱신 예정</b><span></span></div><div class="cr-card">' + rn.map(x => '<div class="cr-top" style="padding:6px 0"><b>' + esc(carName(x.car)) + '</b><span>' + x.date + ' (' + (x.d >= 0 ? x.d + '일 후' : -x.d + '일 지남') + ') · ' + esc(x.ins || '') + '</span></div>').join('') + '</div><p class="pc-hint">갱신 14일 전부터 알림이 앱 맨 위에 표시돼요.</p>';
+  return h;
+}
+function carRenewals(){   // 차량별 가장 최근 가입 건의 1년 뒤 = 갱신일. 그 날짜 이후 시작하는 가입 건이 이미 있으면 제외
+  const t = todayStr(), out = [];
+  CAR_IDS.forEach(id => {
+    const js = CAR.ins.filter(r => r.car === id && r.join && r.start).sort((a, b) => b.start.localeCompare(a.start)); if (!js.length) return;
+    const last = js[0], ren = carAddYears(last.start, 1); if (!ren) return;
+    out.push({ car: id, date: ren, ins: last.ins, prem: last.prem, start: last.start, d: Math.round((new Date(ren) - new Date(t)) / 86400000) });
+  });
+  return out;
+}
+function renderCar(){
+  $('car-chips').innerHTML = [['all', '전체']].concat(CAR_IDS.map(id => [id, carName(id)])).map(x => '<button type="button" class="cr-chip' + (carSel === x[0] ? ' on' : '') + '" data-car="sel" data-id="' + x[0] + '">' + esc(x[1]) + '</button>').join('');
+  document.querySelectorAll('#car-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === carTab));
+  $('car-body').innerHTML = carTab === 'ins' ? carInsHtml() : carTab === 'wash' ? carWashHtml() : carSumHtml();
+}
+function carFillCars(id, cur){ fillSelect($(id), CAR_IDS.map(k => ({ v: k, t: carName(k) })), cur); }
+function carAfter(){ carSave(); changed(); carAlertSync(); renderAll(); }
+function openCarIns(id, pre){
+  const r = id ? CAR.ins.find(x => x.id === id) : null; if (id && !r) return;
+  carEditing = id || null; const v = r || pre || {};
+  $('ci-title').textContent = r ? '보험 수정' : (pre ? '갱신 견적 추가' : '보험 추가');
+  carFillCars('ci-car', v.car || (carSel !== 'all' ? carSel : 'k1'));
+  $('ci-start').value = v.start || todayStr(); $('ci-ins').value = v.ins || ''; $('ci-prem').value = v.prem === '' || v.prem == null ? '' : v.prem;
+  fillSelect($('ci-pay'), CAR_PAYS.map(x => ({ v: x, t: x })), v.pay || CAR_PAYS[0]);
+  $('ci-sp').value = v.sp || ''; $('ci-dc').value = v.dc || ''; $('ci-memo').value = v.memo || ''; $('ci-join').checked = !!v.join;
+  const names = CAR.ins.map(x => x.ins).filter((x, i, a) => x && a.indexOf(x) === i); $('ci-ins-list').innerHTML = names.map(n => '<option value="' + esc(n) + '">').join('');
+  $('ci-delete').hidden = !r; $('ci-dlg').showModal();
+}
+function saveCarIns(){
+  const prem = numB($('ci-prem').value), start = $('ci-start').value;
+  if (!start) { toast('시작일(갱신일)을 입력해 주세요.'); return; }
+  if (prem === '' || prem < 0) { toast('보험료를 입력해 주세요.'); return; }
+  const d = { car: $('ci-car').value, start, ins: $('ci-ins').value.trim(), prem, pay: $('ci-pay').value, sp: $('ci-sp').value.trim(), dc: $('ci-dc').value.trim(), memo: $('ci-memo').value.trim(), join: $('ci-join').checked, u: nowIso() };
+  if (carEditing) Object.assign(CAR.ins.find(x => x.id === carEditing), d); else CAR.ins.push(Object.assign({ id: uid('ci') }, d));
+  $('ci-dlg').close(); toast('저장했어요.'); carAfter();
+}
+function delCarIns(){
+  const r = CAR.ins.find(x => x.id === carEditing); if (!r || !confirm('이 보험 기록을 삭제할까요?')) return;
+  CAR.ins = CAR.ins.filter(x => x.id !== r.id); CAR.del[r.id] = nowIso(); $('ci-dlg').close(); carAfter();
+}
+function openCarWash(id){
+  const r = id ? CAR.wash.find(x => x.id === id) : null; if (id && !r) return;
+  carWEditing = id || null;
+  $('cw-title').textContent = r ? '세차 수정' : '세차 추가';
+  carFillCars('cw-car', r ? r.car : (carSel !== 'all' ? carSel : 'k1'));
+  $('cw-date').value = r ? r.date : todayStr();
+  const ks = CAR.cfg.kinds.slice(); if (r && r.kind && ks.indexOf(r.kind) < 0) ks.push(r.kind);
+  fillSelect($('cw-kind'), ks.map(x => ({ v: x, t: x })), r ? r.kind : ks[0]);
+  $('cw-place').value = r ? r.place : ''; $('cw-cost').value = r && r.cost !== '' ? r.cost : ''; $('cw-memo').value = r ? r.memo : '';
+  $('cw-delete').hidden = !r; $('cw-dlg').showModal();
+}
+function saveCarWash(){
+  const cost = numB($('cw-cost').value), date = $('cw-date').value;
+  if (!date) { toast('날짜를 입력해 주세요.'); return; }
+  if (cost === '' || cost < 0) { toast('비용을 입력해 주세요.'); return; }
+  const d = { car: $('cw-car').value, date, kind: $('cw-kind').value, place: $('cw-place').value.trim(), cost, memo: $('cw-memo').value.trim(), u: nowIso() };
+  if (carWEditing) Object.assign(CAR.wash.find(x => x.id === carWEditing), d); else CAR.wash.push(Object.assign({ id: uid('cw') }, d));
+  $('cw-dlg').close(); toast('저장했어요.'); carAfter();
+}
+function delCarWash(){
+  const r = CAR.wash.find(x => x.id === carWEditing); if (!r || !confirm('이 세차 기록을 삭제할까요?')) return;
+  CAR.wash = CAR.wash.filter(x => x.id !== r.id); CAR.del[r.id] = nowIso(); $('cw-dlg').close(); carAfter();
+}
+function carCopyPrev(){   // 선택한 차의 가장 최근 가입 건(없으면 최근 건)을 1년 뒤 견적으로 복사
+  const rs = CAR.ins.filter(r => r.car === carSel && r.start), js = rs.filter(r => r.join).sort((a, b) => b.start.localeCompare(a.start)), base = js[0] || rs.sort((a, b) => b.start.localeCompare(a.start))[0];
+  if (!base) { toast('복사할 보험 기록이 없어요.'); return; }
+  openCarIns(null, { car: base.car, start: carAddYears(base.start, 1), ins: base.ins, prem: '', pay: base.pay, sp: base.sp, dc: base.dc, join: false });
+}
+/* 설정 > 내 차: 차량 이름 · 세차 종류 */
+function renderCarCfg(){
+  const box = $('car-cfg'); if (!box) return;
+  box.innerHTML = '<h4 style="margin:0 0 6px">차량 이름</h4><div class="pc-row2">' + CAR_IDS.map((id, i) => '<label class="pc-f">차량 ' + (i + 1) + '<input type="text" maxlength="12" data-carcfg="name" data-id="' + id + '" value="' + esc(carName(id)) + '"></label>').join('') + '</div>' +
+    '<h4 style="margin:12px 0 6px">세차 종류</h4><div class="chiprow">' + CAR.cfg.kinds.map(k => '<span class="chip"><i class="chipdot" style="background:var(--accent)"></i>' + esc(k) + ' <button type="button" data-carcfg="kdel" data-k="' + esc(k) + '" title="삭제">✕</button></span>').join('') + '</div>' +
+    '<div class="addchip"><input type="text" maxlength="12" id="car-kind-new" placeholder="예: 광택"><button type="button" data-carcfg="kadd">추가</button></div>' +
+    '<p class="note" style="margin:8px 0 0">종류를 지워도 이미 기록한 세차 내역의 종류는 그대로 남아요.</p>';
+}
+function carCfgSave(){ CAR.cfg.u = nowIso(); carSave(); changed(); carAlertSync(); renderAll(); }
+/* 보험 갱신 알림: 갱신일 30일 전부터 알림 표시. 갱신(새 가입 건)이 생기면 자동 완료 */
+function carAlertSync(){
+  try {
+    const want = {}, now = nowIso();
+    carRenewals().forEach(x => { want['rm_car_' + x.car + '_' + x.start] = { title: '자동차보험 갱신 — ' + carName(x.car), date: x.date, lead: 14, memo: '현재 ' + (x.ins || '보험사 미입력') + (x.prem !== '' ? ' ' + won(x.prem) : '') + ' (시작 ' + x.start + '). 갱신 전에 견적을 비교해 보세요. 내 차 > 보험 > ↻ 갱신 견적' }; });
+    let ch = false;
+    Object.keys(want).forEach(id => {
+      const w = want[id], ex = RM.items.find(r => r.id === id);
+      if (ex) { if (ex.title !== w.title || ex.memo !== w.memo || ex.date !== w.date) { if (ex.date !== w.date) ex.done = false; ex.title = w.title; ex.memo = w.memo; ex.date = w.date; ex.u = now; ch = true; } }
+      else if (!RM.del[id]) { RM.items.push({ id, title: w.title, date: w.date, lead: w.lead, memo: w.memo, link: '', done: false, u: now }); ch = true; }
+    });
+    RM.items.forEach(r => { if (r.id.indexOf('rm_car_') === 0 && !r.done && !want[r.id]) { r.done = true; r.u = now; ch = true; } });
+    if (ch) { RM = rmNorm(RM); rmSave(); changed(); }
+  } catch (e) { /* 알림 오류가 앱을 막지 않게 */ }
 }
 
 /* ---------- 구독·결제 ---------- */
@@ -4755,10 +5018,10 @@ function delSize(){
    ===================================================================== */
 const FEATURES = [
   { k: 'today', label: '오늘', ic: '🏠', id: 'modeToday' }, { k: 'meeting', label: '회의비', ic: '💰', id: 'modeMeeting' }, { k: 'shop', label: '보유품목', ic: '🛍', id: 'modeShop' }, { k: 'price', label: '구매가격분석', ic: '📈', id: 'modePrice' },
-  { k: 'sub', label: '구독·보험', ic: '🔁', id: 'modeSub' }, { k: 'people', label: '인맥', ic: '👥', id: 'modePeople' }, { k: 'med', label: '의료비', ic: '🏥', id: 'modeMed' }, { k: 'manual', label: '도수치료', ic: '🦵', id: 'modeManual' }, { k: 'skin', label: '피부관리', ic: '🧴', id: 'modeSkin' },
+  { k: 'sub', label: '구독·보험', ic: '🔁', id: 'modeSub' }, { k: 'car', label: '내 차', ic: '🚗', id: 'modeCar' }, { k: 'people', label: '인맥', ic: '👥', id: 'modePeople' }, { k: 'med', label: '의료비', ic: '🏥', id: 'modeMed' }, { k: 'manual', label: '도수치료', ic: '🦵', id: 'modeManual' }, { k: 'skin', label: '피부관리', ic: '🧴', id: 'modeSkin' },
   { k: 'pay', label: '연봉', ic: '💼', id: 'modePay' }, { k: 'guide', label: '가이드', ic: '📌', id: 'modeGuide' }];
 const NAV_KEY = 'nav_cfg_v1';
-const GROUPS = [{ g: 'home', label: '🏠 오늘', ks: ['today'] }, { g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'pay'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'med', 'manual', 'skin', 'guide'] }];
+const GROUPS = [{ g: 'home', label: '🏠 오늘', ks: ['today'] }, { g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'car', 'pay'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'med', 'manual', 'skin', 'guide'] }];
 const groupOf = k => GROUPS.find(x => x.ks.indexOf(k) >= 0), lastIn = {};
 function navNorm(o){
   o = o && typeof o === 'object' ? o : {};
@@ -4813,7 +5076,7 @@ function renderSetCfg(){
     sel.innerHTML = '<option value="last">마지막으로 보던 화면</option>' + GROUPS.map(g => g.ks.map(k => { const f = FEATURES.find(x => x.k === k); return '<option value="' + f.k + '">' + g.label + ' › ' + f.label + '</option>'; }).join('')).join(''); sel.value = MODE_VIEWS[cur] ? cur : 'last'; }
   const fb = $('nav-fab'); if (fb) fb.checked = !!NAV.fab;
   const nb = $('set-rm-notify'); if (nb) nb.textContent = rmNotifyOn && 'Notification' in window && Notification.permission === 'granted' ? '🔕 기기 알림 끄기' : '🔔 기기 알림 켜기';
-  renderOptCfg();
+  renderOptCfg(); renderCarCfg();
 }
 function firstVisibleMode(){ const f = FEATURES.find(x => navVisible(x.k)); return f ? f.k : 'meeting'; }
 
@@ -6041,10 +6304,10 @@ window.AppSettings = { refresh: function () {
   renderSetCfg(); const pc = $('py-sync-chk'); if (pc) pc.checked = !pyNoSync();
 } };
 window.AppExtras = {
-  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'medical', 'guide', 'pay', 'reminders', 'opts'],
+  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'medical', 'guide', 'pay', 'reminders', 'opts', 'car'],
   exportSync(){
     return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
-      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, medical: { items: MD.items, claims: MD.claims, cfg: MD.cfg, del: MD.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
+      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, car: { ins: CAR.ins, wash: CAR.wash, cfg: CAR.cfg, del: CAR.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, medical: { items: MD.items, claims: MD.claims, cfg: MD.cfg, del: MD.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
   },
   strip(obj){ this.keys.forEach(k => { delete obj[k]; }); delete obj.inbox; },
   importSync(json){
@@ -6098,6 +6361,11 @@ window.AppExtras = {
       const r = json.subs, mi = Shop.mergeById(SB.items, r.items, SB.del, cleanDel(r.del)), mp = Shop.mergeById(SB.pays, r.pays, SB.del, cleanDel(r.del));
       const cfg = r.cfg && String(r.cfg.u || '') > String(SB.cfg.u || '') ? r.cfg : SB.cfg;
       SB = bNorm({ items: mi.items, pays: mp.items, cfg, del: mi.del }); bSave(); ch = true;
+    }
+    if (ok('car')) {
+      const r = json.car, mi = Shop.mergeById(CAR.ins, r.ins, CAR.del, cleanDel(r.del)), mw = Shop.mergeById(CAR.wash, r.wash, CAR.del, cleanDel(r.del));
+      const cfg = r.cfg && String(r.cfg.u || '') > String(CAR.cfg.u || '') ? r.cfg : CAR.cfg;
+      CAR = carNorm({ ins: mi.items, wash: mw.items, cfg, del: mi.del }); carSave(); ch = true;
     }
     if (ok('people')) {
       const r = json.people, mp = Shop.mergeById(Q.people, r.people, Q.del, cleanDel(r.del)), mm = Shop.mergeById(Q.meets, r.meets, Q.del, cleanDel(r.del));
@@ -6524,7 +6792,7 @@ window.AppLife = {
 
 if (window.AppMeeting) window.AppMeeting.refresh();   // 회의비 목록에 인맥 연결 이름 반영
 /* ---- 저장공간 · 백업 ---- */
-const STORE_NAMES = { shopping_history_app_v1: '소비(사진 포함)', meeting_budget_app_v1: '회의비', price_check_app_v2: '가격체크', people_v1: '인맥', skin_care_v1: '피부관리', manual_care_v1: '도수치료', medical_exp_v1: '의료비', subscriptions_v1: '구독·보험', golf_history_v1: '골프', size_chart_v1: '치수표', guide_v1: '가이드', salary_hist_v1: '연봉', reminders_v1: '알림', meeting_snap_v1: '회의비 동기화용 사본' };
+const STORE_NAMES = { shopping_history_app_v1: '소비(사진 포함)', meeting_budget_app_v1: '회의비', price_check_app_v2: '가격체크', people_v1: '인맥', skin_care_v1: '피부관리', manual_care_v1: '도수치료', medical_exp_v1: '의료비', subscriptions_v1: '구독·보험', car_mgmt_v1: '내 차', golf_history_v1: '골프', size_chart_v1: '치수표', guide_v1: '가이드', salary_hist_v1: '연봉', reminders_v1: '알림', meeting_snap_v1: '회의비 동기화용 사본' };
 const OTHER_APPS = { brc_backuphistory_v1: '바디리컴포지션 백업이력(다른 앱)', travel_budget_app_v1: '여행경비(다른 앱)' };
 const otherApp = k => !STORE_NAMES[k] && (OTHER_APPS[k] || /^(brc_|travel_|moneytrail|mt_|codebox)/.test(k));
 function storageInfo(){
@@ -6706,6 +6974,8 @@ function gsItems(){
   tr(() => SH.items.forEach(i => add('소비', '🛍', i.item, [Shop.CATS[i.cat], i.brand, i.store].filter(Boolean).join(' · '), [i.memo, i.size, i.b1name, i.b2name].join(' '), 'shop', i.id)));
   tr(() => S.items.forEach(i => add('가격', '🧴', i.name, '가격 체크', '', 'price', i.id)));
   tr(() => SB.items.filter(i => i.active !== false).forEach(i => add('구독·보험', '💳', i.name, [i.cat, i.card, i.day + '일'].filter(Boolean).join(' · '), i.memo, 'sub', i.id)));
+  tr(() => CAR.ins.forEach(r => add('내 차', '🚗', carName(r.car) + ' 보험 ' + (r.ins || ''), [r.start, r.prem === '' ? '' : won(r.prem), r.join ? '가입' : '견적'].filter(Boolean).join(' · '), [r.sp, r.dc, r.memo].join(' '), 'car', r.id)));
+  tr(() => CAR.wash.forEach(r => add('내 차', '🧽', carName(r.car) + ' 세차 ' + (r.kind || ''), [r.date, r.cost === '' ? '' : won(r.cost)].filter(Boolean).join(' · '), [r.place, r.memo].join(' '), 'car', r.id)));
   tr(() => Q.people.forEach(p => add('인맥', '🙂', p.name, p.group, p.memo, 'people-list', p.id)));
   tr(() => Q.meets.forEach(m => add('만남', '👥', meetNames(m), m.date + (m.place ? ' · ' + m.place : ''), [m.memo, mtTypeLabel(m), m.place].join(' '), 'people-log', m.id)));
   tr(() => GD.items.forEach(g => add('가이드', '📌', g.title, '', (g.lines || []).join(' '), 'guide', g.id)));
@@ -7275,7 +7545,7 @@ $('gBar').addEventListener('keydown', e => { if (e.key === 'Enter') { const el =
 
 /* ---------- 모드 / 화면 ---------- */
 let mode = 'meeting';
-const MODE_VIEWS = { today: 'todayView', meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', people: 'peopleView', skin: 'skinView', manual: 'skinView', med: 'medView', pay: 'payView', guide: 'guideView' };
+const MODE_VIEWS = { today: 'todayView', meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', car: 'carView', people: 'peopleView', skin: 'skinView', manual: 'skinView', med: 'medView', pay: 'payView', guide: 'guideView' };
 function setMode(m){
   if (!MODE_VIEWS[m] || !navVisible(m)) m = firstVisibleMode();
   mode = m; { const g = groupOf(m); if (g) lastIn[g.g] = m; }
@@ -7296,6 +7566,7 @@ function renderAll(){
   if (mode === 'price') { if (ptab === 'analyze') renderAnalyze(); else if (ptab === 'history') { renderHistory(); } else renderTrend(); }
   else if (mode === 'shop') renderShop();
   else if (mode === 'sub') renderSub();
+  else if (mode === 'car') renderCar();
   else if (mode === 'people') renderPeople();
   else if (mode === 'skin' || mode === 'manual') renderSkin();
   else if (mode === 'med') renderMed();
@@ -7425,6 +7696,26 @@ $('gr-dlg').addEventListener('click', e => {
   if (el.dataset.gf === 'r-cancel') $('gr-dlg').close(); else if (el.dataset.gf === 'r-save') saveRound(); else if (el.dataset.gf === 'r-delete') delRound();
 });
 ['gr-f-tee', 'gr-f-part', 'gr-f-price'].forEach(id => { $(id).addEventListener('input', grPreview); $(id).addEventListener('change', grPreview); });
+$('carView').addEventListener('click', e => {
+  const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car;
+  if (a === 'sel') { carSel = el.dataset.id; carSaveUi(); renderCar(); }
+  else if (a === 'tab') { carTab = el.dataset.t; carSaveUi(); renderCar(); }
+  else if (a === 'ins-add') openCarIns(null); else if (a === 'ins-copy') carCopyPrev(); else if (a === 'ins-edit') openCarIns(el.dataset.id);
+  else if (a === 'wash-add') openCarWash(null); else if (a === 'wash-edit') openCarWash(el.dataset.id);
+  else if (a === 'backup') doBackup();
+});
+$('ci-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car; if (a === 'ci-cancel') $('ci-dlg').close(); else if (a === 'ci-save') saveCarIns(); else if (a === 'ci-delete') delCarIns(); });
+$('cw-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car; if (a === 'cw-cancel') $('cw-dlg').close(); else if (a === 'cw-save') saveCarWash(); else if (a === 'cw-delete') delCarWash(); });
+$('car-cfg').addEventListener('change', e => {
+  const el = e.target.closest('[data-carcfg="name"]'); if (!el) return;
+  const v = el.value.trim(); if (!v) { toast('차량 이름을 입력해 주세요.'); renderCarCfg(); return; }
+  CAR.cfg.names[el.dataset.id] = v; carCfgSave(); toast('차량 이름을 바꿨어요.');
+});
+$('car-cfg').addEventListener('click', e => {
+  const el = e.target.closest('[data-carcfg]'); if (!el) return; const a = el.dataset.carcfg;
+  if (a === 'kadd') { const inp = $('car-kind-new'), v = inp.value.trim(); if (!v) { toast('종류 이름을 입력해 주세요.'); return; } if (CAR.cfg.kinds.indexOf(v) >= 0) { toast('이미 있는 종류예요.'); return; } CAR.cfg.kinds.push(v); carCfgSave(); renderCarCfg(); }
+  else if (a === 'kdel') { if (CAR.cfg.kinds.length <= 1) { toast('세차 종류는 하나 이상 있어야 해요.'); return; } CAR.cfg.kinds = CAR.cfg.kinds.filter(k => k !== el.dataset.k); carCfgSave(); renderCarCfg(); }
+});
 $('subView').addEventListener('click', e => {
   const el = e.target.closest('[data-sb]'); if (!el) return;
   const a = el.dataset.sb;
@@ -7575,7 +7866,7 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); try { mpAlertSync(); mpbSync(); } catch (e) { /* 무시 */ }
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); try { mpAlertSync(); mpbSync(); carAlertSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
