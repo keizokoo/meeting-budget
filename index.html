@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>마이라이프</title>
-<link rel="manifest" href="mylife.webmanifest?v=20261018">
+<link rel="manifest" href="mylife.webmanifest?v=20261104">
 <meta name="theme-color" content="#FF4D00">
 <meta name="application-name" content="마이라이프">
 <meta name="apple-mobile-web-app-title" content="마이라이프">
@@ -550,6 +550,27 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .cr-chips{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
   .cr-chip{ padding:7px 14px; border-radius:99px; border:1px solid var(--ink); background:var(--surface); color:var(--ink); font:700 13px inherit; cursor:pointer; }
   .cr-chip.on{ background:var(--ink); color:var(--bg); }
+
+  /* 2026-11-04-a 신규 기능 */
+  #fe-dlg, #lv-dlg, #rc-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
+  #fe-dlg::backdrop, #lv-dlg::backdrop, #rc-dlg::backdrop{ background:rgba(0,0,0,.45); }
+  #fe-dlg h3, #lv-dlg h3, #rc-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #fe-dlg .pc-f input, #fe-dlg .pc-f select, #lv-dlg .pc-f input, #lv-dlg .pc-f select, #rc-dlg .pc-f input, #rc-dlg .pc-f select, #rc-dlg textarea{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
+  #rc-dlg textarea{ min-height:84px; resize:vertical; }
+  .nf-sum, .nf-two{ display:flex; gap:10px; justify-content:space-between; } .nf-sum > div, .nf-two > div{ flex:1; } .nf-sum small, .nf-two small{ display:block; color:var(--ink2); font-size:11.5px; font-weight:700; } .nf-sum b, .nf-two b{ font:800 16px Manrope,sans-serif; font-variant-numeric:tabular-nums; }
+  .nf-big{ font:900 30px Unbounded,sans-serif !important; letter-spacing:-.02em; } .nf-big.neg{ color:var(--warn); }
+  .nf-head{ display:flex; align-items:center; gap:8px; width:100%; border:0; background:none; color:var(--ink); font:inherit; padding:0 0 8px; cursor:pointer; text-align:left; } .nf-head b{ font-size:16px; } .nf-arw{ margin-left:auto; color:var(--ink2); }
+  .nf-tag{ display:inline-block; border-radius:99px; padding:2px 9px; font-size:11px; font-weight:800; background:var(--soft); color:var(--ink); } .nf-tag.warn{ background:var(--warn); color:#fff; } .nf-tag.ok{ background:var(--good); color:#fff; }
+  .nf-row{ display:flex; justify-content:space-between; gap:8px; width:100%; border:0; border-top:1px solid var(--line); background:none; color:var(--ink); font:inherit; font-size:13.5px; padding:10px 2px; text-align:left; cursor:pointer; } .nf-row b.give{ color:var(--warn); } .nf-row b.recv{ color:var(--good); }
+  .nf-ybar{ display:flex; align-items:center; justify-content:center; gap:14px; margin:4px 0 10px; } .nf-ybar b{ font:800 16px Manrope,sans-serif; }
+  .nf-bar{ height:10px; background:var(--line); border-radius:6px; overflow:hidden; display:flex; margin-top:8px; } .nf-bar i{ display:block; height:100%; background:var(--accent); } .nf-bar i.p{ background:var(--ink); } .nf-bar.warn i{ background:var(--warn); }
+  .nf-cal{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; } .nf-cal .hd{ font-size:11.5px; font-weight:800; color:var(--ink2); padding:4px 0; }
+  .nf-cal .dd{ position:relative; min-height:40px; border:1px solid var(--line); border-radius:10px; background:var(--surface); color:var(--ink); font:700 13px Manrope,sans-serif; cursor:pointer; padding:0; } .nf-cal .dd.red{ color:var(--warn); } .nf-cal .dd.blue{ color:#2F6BFF; } .nf-cal .dd:disabled{ background:transparent; border-color:transparent; cursor:default; }
+  .nf-cal .dd.today{ outline:2px solid var(--accent); } .nf-cal .dd.used{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); } .nf-cal .dd.plan{ background:var(--ink); border-color:var(--ink); color:var(--bg); } .nf-cal .dd small{ position:absolute; right:3px; bottom:1px; font-size:9px; }
+  .nf-tip{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-top:1px solid var(--line); font-size:13.5px; } .nf-tip small{ display:block; color:var(--ink2); font-size:11.5px; }
+  .nf-dd{ display:flex; align-items:center; gap:10px; width:100%; border:0; border-top:1px solid var(--line); background:none; color:var(--ink); font:inherit; padding:10px 2px; text-align:left; cursor:pointer; } .nf-dd .dn{ font:800 15px Unbounded,sans-serif; min-width:64px; } .nf-dd .dn.soon{ color:var(--warn); } .nf-dd .tx{ flex:1; font-size:13.5px; } .nf-dd .tx small{ display:block; color:var(--ink2); font-size:11.5px; }
+  .tl{ border-left:3px solid var(--line2); margin-left:4px; padding-left:10px; } .tl-r{ display:flex; gap:10px; padding:7px 0; position:relative; font-size:13.5px; } .tl-r:before{ content:""; position:absolute; left:-17px; top:12px; width:9px; height:9px; border-radius:50%; background:var(--ink); } .tl-r.past{ opacity:.45; } .tl-r.now:before{ background:var(--good); box-shadow:0 0 0 4px rgba(31,138,76,.25); } .tl-r.now{ color:var(--good); }
+  .tl-r .tm{ min-width:58px; color:var(--ink2); font-weight:800; font-size:12px; padding-top:1px; } .tl-r .tb{ flex:1; } .tl-r small, .tl-u small{ display:block; color:var(--ink2); font-size:11.5px; } .tl-u{ display:block; padding:2px 0; }
   .cr-seg{ display:flex; border:1px solid var(--ink); border-radius:12px; overflow:hidden; margin-bottom:14px; background:var(--surface); }
   .cr-seg button{ flex:1; border:0; background:none; padding:10px 4px; font:700 14px inherit; color:var(--ink); cursor:pointer; }
   .cr-seg button.on{ background:var(--accent); color:var(--on-accent); }
@@ -929,7 +950,10 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     <button class="on" data-pc="tab" data-t="analyze">구매 분석</button>
     <button data-pc="tab" data-t="history">구매 이력</button>
     <button data-pc="tab" data-t="trend">가격 추이</button>
+    <button data-pc="tab" data-t="restock">재구매</button>
   </div>
+
+  <section class="pc-sec" id="pc-restock"><div id="rs-body"></div></section>
 
   <section class="pc-sec on" id="pc-analyze">
     <div class="pc-card">
@@ -1030,6 +1054,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
  <div class="pc-wrap">
   <div class="sb-monthbar"><button class="toolbtn" data-sb="prev" aria-label="이전 달">‹</button><b id="sb-month-label"></b><button class="toolbtn" data-sb="next" aria-label="다음 달">›</button><button class="toolbtn" data-sb="today">이번 달</button></div>
   <div class="strip" id="sb-summary"></div>
+  <div id="sb-dday"></div>
   <div class="sectionhead"><select id="sb-filter" class="sb-filter" aria-label="분류 필터"></select><button class="pc-btn small primary" data-sb="add">+ 항목 추가</button></div>
   <div class="sb-subtotal" id="sb-subtotal"></div>
   <div class="sb-head"><span>날짜</span><span>내용</span><span>카드</span><span style="text-align:right">비용</span><span>할인정보</span><span></span></div>
@@ -1050,6 +1075,11 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
  </div>
 </div>
 
+<!-- ===== [신규] 연차 ===== -->
+<div id="leaveView" hidden>
+ <div class="pc-wrap"><div id="lv-body"></div></div>
+</div>
+
 <!-- ===== [신규] 인맥 영역 ===== -->
 <div id="peopleView" hidden>
  <div class="pc-wrap">
@@ -1058,6 +1088,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     <button data-pp="tab" data-t="list">사람</button>
     <button data-pp="tab" data-t="clubs">모임</button>
     <button data-pp="tab" data-t="log">이력</button>
+    <button data-pp="tab" data-t="gift">경조사</button>
   </div>
   <section class="pc-sec on" id="pp-today"><div id="pp-today-body"></div></section>
   <section class="pc-sec" id="pp-list">
@@ -1074,6 +1105,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       <div id="pp-clubs-body"></div>
     </div>
   </section>
+  <section class="pc-sec" id="pp-gift"><div id="pp-gift-body"></div></section>
   <section class="pc-sec" id="pp-log">
     <div class="pc-card">
       <div class="pc-headrow"><h3>만남 이력</h3><span class="sh-hbtns"><button class="pc-btn small" data-pp="add-plan">+ 예약</button><button class="pc-btn small primary" data-pp="add-meet">+ 만남 기록</button></span></div>
@@ -1552,6 +1584,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <label class="pc-f">내용<input id="sb-f-name" type="text"></label>
   <label class="pc-f">메모(선택)<textarea id="sb-f-memo" class="ml" rows="3" placeholder="예: 건강보험"></textarea></label>
   <label class="pc-f">카드 (회의비 카드 구분과 같은 목록)<select id="sb-f-card" data-cb="1"></select><input id="sb-f-card-new" type="text" hidden placeholder="새 카드 이름 (회의비에도 함께 추가돼요)"></label>
+  <div class="grp" style="margin-top:12px;font-size:11.5px;font-weight:700;color:var(--ink2)">⏰ 끝나는 날·갱신일 (선택)</div>
+  <div class="pc-row2"><label class="pc-f">종류<select id="sb-f-endkind"></select></label><label class="pc-f">날짜<input id="sb-f-enddate" type="date"></label></div>
+  <p class="pc-hint" style="margin:0 0 6px">약정 만료·무료체험 종료·갱신일을 넣으면 14일 전부터 알려 드려요.</p>
   <div class="grp" style="margin-top:12px;font-size:11.5px;font-weight:700;color:var(--ink2)">💳 카드를 바꿔야 하나요?</div>
   <div class="pc-row2">
     <label class="pc-f">변경할 카드<select id="sb-f-cc" data-cb="1"></select><input id="sb-f-cc-new" type="text" hidden placeholder="새 카드 이름"></label>
@@ -1574,6 +1609,32 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <p class="pc-hint">현재 금액을 바꾸고 적용 월을 적으면 그 달부터 새 금액으로 계산하고 이전 금액은 이력으로 남아요. 적용 월을 비우면 단순 수정으로 처리해요.</p>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-sb="d-cancel">취소</button><button class="pc-btn primary" data-sb="d-save">저장</button></div>
   <button id="sb-d-delete" class="pc-btn danger wide" data-sb="d-delete">이 항목 삭제 (구독 종료)</button>
+</dialog>
+
+<dialog id="fe-dlg">
+  <h3 id="fe-d-title">경조사 기록</h3>
+  <label class="pc-f">누구<select id="fe-who"></select></label>
+  <label class="pc-f" id="fe-name-wrap">이름(직접 입력)<input id="fe-name" type="text" placeholder="예: 이○○"></label>
+  <div class="pc-row2"><label class="pc-f">종류<select id="fe-kind"></select></label><label class="pc-f">구분<select id="fe-dir"><option value="give">낸 돈</option><option value="recv">받은 돈</option></select></label></div>
+  <div class="pc-row2"><label class="pc-f">금액(원)<input id="fe-amt" type="number" min="0" step="10000" inputmode="numeric"></label><label class="pc-f">날짜<input id="fe-date" type="date"></label></div>
+  <label class="pc-f">메모(선택)<input id="fe-memo" type="text" placeholder="예: 신랑 측"></label>
+  <div class="pc-row2" style="margin-top:14px"><button type="button" class="pc-btn" data-fe="cancel">취소</button><button type="button" class="pc-btn primary" data-fe="save">저장</button></div>
+  <button type="button" id="fe-del" class="pc-btn danger wide" data-fe="del" hidden>이 기록 삭제</button>
+</dialog>
+<dialog id="lv-dlg">
+  <h3 id="lv-d-title">연차 기록</h3>
+  <div class="pc-row2"><label class="pc-f">날짜<input id="lv-date" type="date"></label><label class="pc-f">종류<select id="lv-days"><option value="1">종일 (1일)</option><option value="0.5">반차 (0.5일)</option></select></label></div>
+  <label class="pc-f">메모(선택)<input id="lv-memo" type="text" placeholder="예: 가족 여행"></label>
+  <div class="pc-row2" style="margin-top:14px"><button type="button" class="pc-btn" data-lv="cancel">취소</button><button type="button" class="pc-btn primary" data-lv="save">저장</button></div>
+  <button type="button" id="lv-del" class="pc-btn danger wide" data-lv="del" hidden>이 기록 삭제</button>
+</dialog>
+<dialog id="rc-dlg">
+  <h3>공유 받은 내용</h3>
+  <label class="pc-f">내용<textarea id="rc-raw" class="ml" rows="4"></textarea></label>
+  <div class="pc-f"><span>어디에 넣을까요?</span><div class="cr-chips" id="rc-cats" style="margin-top:6px"></div></div>
+  <div id="rc-price"><label class="pc-f">상품 이름<input id="rc-name" type="text"></label><div class="pc-row2"><label class="pc-f">결제금(원)<input id="rc-amt" type="number" inputmode="numeric"></label><label class="pc-f">구매일<input id="rc-date" type="date"></label></div></div>
+  <p class="pc-hint" id="rc-hint"></p>
+  <div class="pc-row2" style="margin-top:12px"><button type="button" class="pc-btn" data-rc="cancel">닫기</button><button type="button" class="pc-btn primary" data-rc="go">열기</button></div>
 </dialog>
 
 <dialog id="snz-dlg">
@@ -3416,9 +3477,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-03-d (내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-04-a (경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
+const APP_RECENT = ['신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4378,6 +4439,335 @@ function carAlertSync(){
   } catch (e) { /* 알림 오류가 앱을 막지 않게 */ }
 }
 
+/* ===== 2026-11-04-a 신규: 경조사 장부 · 연차 · 재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기 ===== */
+const nfDiff = (a, b) => Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 86400000);
+const nfAdd = (s, n) => new Date(Date.parse(s + 'T00:00:00Z') + n * 86400000).toISOString().slice(0, 10);
+const nfWd = s => new Date(s + 'T00:00:00Z').getUTCDay();
+const nfMd = s => Number(s.slice(5, 7)) + '/' + Number(s.slice(8, 10));
+const nfNum = v => (v === '' || v == null || !isFinite(Number(v))) ? 0 : Number(v);
+const nfDate = s => /^\d{4}-\d{2}-\d{2}$/.test(String(s || '')) ? String(s) : '';
+const nfWdK = s => ['일', '월', '화', '수', '목', '금', '토'][nfWd(s)];
+const nfDday = d => d < 0 ? 'D+' + (-d) : d === 0 ? 'D-DAY' : 'D-' + d;
+
+/* ---------- 경조사 장부 (인맥 > 경조사) ---------- */
+const FE_KEY = 'gift_ledger_v1', FE_KINDS = ['결혼', '장례', '돌잔치', '기타'];
+function feNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const items = (Array.isArray(o.items) ? o.items : []).filter(r => r && r.id).map(r => ({ id: String(r.id), pid: String(r.pid || ''), name: String(r.name || '').trim(), kind: FE_KINDS.indexOf(r.kind) >= 0 ? r.kind : '기타', dir: r.dir === 'recv' ? 'recv' : 'give', amount: numB(r.amount), date: nfDate(r.date), memo: String(r.memo || ''), u: String(r.u || '') }));
+  return { items, del: cleanDel(o.del) };
+}
+let FE = loadK(FE_KEY, { items: [], del: {} }, feNorm), feEditing = null; const feOpenK = {};
+function feSave(){ saveK(FE_KEY, FE); }
+function feWho(r){ if (r.pid) { const p = Q.people.find(x => x.id === r.pid); if (p) return p.name; } return r.name || '(이름 없음)'; }
+function feKey(r){ return r.pid ? 'p:' + r.pid : 'n:' + (r.name || '').trim(); }
+function feRender(){
+  const box = $('pp-gift-body'); if (!box) return;
+  const yr = todayStr().slice(0, 4), G = {};
+  let give = 0, recv = 0, gYr = 0;
+  FE.items.forEach(r => {
+    const k = feKey(r), g = G[k] || (G[k] = { k, who: '', give: 0, recv: 0, rows: [], last: '' }), a = nfNum(r.amount);
+    g.who = feWho(r); g.rows.push(r); if (r.date > g.last) g.last = r.date;
+    if (r.dir === 'give') { g.give += a; give += a; if (r.date.slice(0, 4) === yr) gYr += a; } else { g.recv += a; recv += a; }
+  });
+  const list = Object.keys(G).map(k => G[k]).sort((a, b) => b.last.localeCompare(a.last));
+  let h = '<div class="pc-card"><div class="pc-headrow"><h3>경조사 장부</h3><button type="button" class="pc-btn small primary" data-fe="add">+ 기록</button></div>' +
+    '<div class="nf-sum"><div><small>올해 낸 돈</small><b>' + won(gYr) + '</b></div><div><small>전체 낸 돈</small><b>' + won(give) + '</b></div><div><small>전체 받은 돈</small><b>' + won(recv) + '</b></div></div>' +
+    '<p class="pc-hint" style="margin:8px 0 0">“갚을 차례”는 받은 돈이 낸 돈보다 많은 사람이에요(참고용 표시).</p></div>';
+  if (!list.length) h += '<div class="pc-card"><p class="pc-hint" style="margin:0">아직 기록이 없어요. “+ 기록”으로 낸 돈·받은 돈을 입력해 보세요.</p></div>';
+  list.forEach(g => {
+    const diff = g.recv - g.give, open = !!feOpenK[g.k];
+    const tag = diff > 0 ? '<span class="nf-tag warn">갚을 차례 ' + won(diff) + '</span>' : diff < 0 ? '<span class="nf-tag ok">받을 차례 ' + won(-diff) + '</span>' : '<span class="nf-tag">균형</span>';
+    h += '<div class="pc-card"><button type="button" class="nf-head" data-fe="tg" data-k="' + esc(g.k) + '"><b>' + esc(g.who) + '</b>' + tag + '<span class="nf-arw">' + (open ? '▴' : '▾') + '</span></button>' +
+      '<div class="nf-two"><div><small>낸 돈</small><b>' + won(g.give) + '</b></div><div><small>받은 돈</small><b>' + won(g.recv) + '</b></div></div>';
+    if (open) {
+      h += g.rows.slice().sort((a, b) => b.date.localeCompare(a.date)).map(r => '<button type="button" class="nf-row" data-fe="edit" data-id="' + esc(r.id) + '"><span>' + esc(r.date) + ' · ' + esc(r.kind) + (r.memo ? ' · ' + esc(r.memo) : '') + '</span><b class="' + (r.dir === 'give' ? 'give' : 'recv') + '">' + (r.dir === 'give' ? '낸 ' : '받은 ') + won(r.amount) + '</b></button>').join('') +
+        '<button type="button" class="pc-btn small" style="margin-top:8px" data-fe="add" data-k="' + esc(g.k) + '">+ ' + esc(g.who) + ' 기록 추가</button>';
+    }
+    h += '</div>';
+  });
+  box.innerHTML = h;
+}
+function feWhoUI(){ $('fe-name-wrap').hidden = !!$('fe-who').value; }
+function feOpen(id, k){
+  const r = id ? FE.items.find(x => x.id === id) : null; if (id && !r) return; feEditing = id || null;
+  const ppl = Q.people.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+  fillSelect($('fe-who'), [{ v: '', t: '(직접 입력)' }].concat(ppl.map(p => ({ v: p.id, t: p.name }))), r ? r.pid : (k && k.indexOf('p:') === 0 ? k.slice(2) : ''));
+  $('fe-name').value = r ? r.name : (k && k.indexOf('n:') === 0 ? k.slice(2) : '');
+  $('fe-kind').innerHTML = FE_KINDS.map(x => '<option>' + x + '</option>').join(''); $('fe-kind').value = r ? r.kind : '결혼';
+  $('fe-dir').value = r ? r.dir : 'give'; $('fe-amt').value = r && r.amount !== '' ? r.amount : ''; $('fe-date').value = r ? r.date : todayStr(); $('fe-memo').value = r ? r.memo : '';
+  feWhoUI(); $('fe-del').hidden = !r; $('fe-d-title').textContent = r ? '경조사 기록 수정' : '경조사 기록'; $('fe-dlg').showModal();
+}
+function feSaveRec(){
+  const pid = $('fe-who').value, p = pid ? Q.people.find(x => x.id === pid) : null, name = p ? p.name : $('fe-name').value.trim();
+  if (!name) { toast('누구인지 선택하거나 이름을 입력해 주세요.'); return; }
+  const amt = $('fe-amt').value === '' ? NaN : Number($('fe-amt').value); if (!(amt >= 0)) { toast('금액을 입력해 주세요.'); return; }
+  const date = $('fe-date').value; if (!date) { toast('날짜를 입력해 주세요.'); return; }
+  const rec = { pid, name, kind: $('fe-kind').value, dir: $('fe-dir').value, amount: amt, date, memo: $('fe-memo').value.trim(), u: nowIso() };
+  const ex = feEditing ? FE.items.find(x => x.id === feEditing) : null;
+  if (ex) Object.assign(ex, rec); else FE.items.push(Object.assign({ id: uid('fe') }, rec));
+  feSave(); changed(); $('fe-dlg').close(); toast('저장했어요.'); ppTab = 'gift'; renderAll();
+}
+function feDelRec(){
+  const r = FE.items.find(x => x.id === feEditing); if (!r || !confirm('이 기록을 삭제할까요?')) return;
+  FE.items = FE.items.filter(x => x.id !== r.id); FE.del[r.id] = nowIso(); feSave(); changed(); $('fe-dlg').close(); renderAll();
+}
+$('pp-gift-body').addEventListener('click', e => {
+  const el = e.target.closest('[data-fe]'); if (!el) return; const a = el.dataset.fe;
+  if (a === 'tg') { feOpenK[el.dataset.k] = !feOpenK[el.dataset.k]; feRender(); }
+  else if (a === 'add') feOpen(null, el.dataset.k || '');
+  else if (a === 'edit') feOpen(el.dataset.id);
+});
+$('fe-who').addEventListener('change', feWhoUI);
+$('fe-dlg').addEventListener('click', e => { const el = e.target.closest('[data-fe]'); if (!el) return; const a = el.dataset.fe; if (a === 'cancel') $('fe-dlg').close(); else if (a === 'save') feSaveRec(); else if (a === 'del') feDelRec(); });
+
+/* ---------- 연차 (돈 > 연차) ---------- */
+const LV_KEY = 'leave_v1';
+const LV_HOL = ['2026-01-01','2026-02-16','2026-02-17','2026-02-18','2026-03-01','2026-03-02','2026-05-05','2026-05-24','2026-05-25','2026-06-03','2026-06-06','2026-08-15','2026-08-17','2026-09-24','2026-09-25','2026-09-26','2026-10-03','2026-10-05','2026-10-09','2026-12-25','2027-01-01','2027-02-06','2027-02-07','2027-02-08','2027-02-09','2027-03-01','2027-05-05','2027-05-13','2027-06-06','2027-08-15','2027-08-16','2027-09-14','2027-09-15','2027-09-16','2027-10-03','2027-10-04','2027-10-09','2027-10-11','2027-12-25','2027-12-27'];
+const LV_DEFAULT_TOTAL = 25;
+function lvNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const c = o.cfg && typeof o.cfg === 'object' ? o.cfg : {}, tot = {};
+  if (c.tot && typeof c.tot === 'object') Object.keys(c.tot).forEach(y => { const n = Number(c.tot[y]); if (/^\d{4}$/.test(y) && isFinite(n) && n >= 0) tot[y] = n; });
+  const items = (Array.isArray(o.items) ? o.items : []).filter(r => r && r.id && nfDate(r.date)).map(r => ({ id: String(r.id), date: String(r.date), days: Number(r.days) === 0.5 ? 0.5 : 1, memo: String(r.memo || ''), u: String(r.u || '') }));
+  return { items, cfg: { tot, u: String(c.u || '') }, del: cleanDel(o.del) };
+}
+let LV = loadK(LV_KEY, { items: [], cfg: { tot: {}, u: '' }, del: {} }, lvNorm), lvY = Number(todayStr().slice(0, 4)), lvM = Number(todayStr().slice(5, 7)), lvEditing = null;
+const lvPlan = [];
+function lvSave(){ saveK(LV_KEY, LV); }
+const lvTotal = y => LV.cfg.tot[String(y)] != null ? LV.cfg.tot[String(y)] : LV_DEFAULT_TOTAL;
+const lvIsOff = s => { const w = nfWd(s); return w === 0 || w === 6 || LV_HOL.indexOf(s) >= 0; };
+const lvUsedOn = s => LV.items.filter(r => r.date === s).reduce((a, r) => a + r.days, 0);
+const lvDayOff = (s, extra) => lvIsOff(s) || lvUsedOn(s) >= 1 || (extra && extra.indexOf(s) >= 0);
+function lvBlock(s, extra){   // s 하루를 연차로 쉴 때 이어지는 쉬는 날(주말·공휴일·연차) 구간
+  const ex = (extra || []).concat([s]); let a = s, b = s;
+  while (lvDayOff(nfAdd(a, -1), ex)) a = nfAdd(a, -1);
+  while (lvDayOff(nfAdd(b, 1), ex)) b = nfAdd(b, 1);
+  return { from: a, to: b, len: nfDiff(a, b) + 1 };
+}
+function lvTips(){
+  const t = todayStr(), out = {}, ok = s => !lvIsOff(s) && lvUsedOn(s) === 0;
+  for (let i = 1; i <= 180; i++) {
+    const d = nfAdd(t, i); if (!ok(d)) continue;
+    const b1 = lvBlock(d); if (b1.len >= 4) { const k = b1.from + '|' + b1.to; if (!out[k] || out[k].need > 1) out[k] = { from: b1.from, to: b1.to, len: b1.len, need: 1, ds: [d] }; }
+    const d2 = nfAdd(d, 1); if (ok(d2)) { const b2 = lvBlock(d, [d2]); if (b2.len >= 6) { const k = b2.from + '|' + b2.to; if (!out[k]) out[k] = { from: b2.from, to: b2.to, len: b2.len, need: 2, ds: [d, d2] }; } }
+  }
+  return Object.keys(out).map(k => out[k]).sort((a, b) => a.from.localeCompare(b.from)).slice(0, 5);
+}
+function lvUsedYear(y){ return LV.items.filter(r => r.date.slice(0, 4) === String(y)).reduce((a, r) => a + r.days, 0); }
+function lvRender(){
+  const box = $('lv-body'); if (!box) return;
+  const t = todayStr(), tot = lvTotal(lvY), used = lvUsedYear(lvY), plan = lvPlan.filter(d => d.slice(0, 4) === String(lvY)).length, remain = tot - used - plan;
+  const isSet = LV.cfg.tot[String(lvY)] != null;
+  let h = '<div class="nf-ybar"><button type="button" class="toolbtn" data-lv="yprev" aria-label="이전 해">‹</button><b>' + lvY + '년</b><button type="button" class="toolbtn" data-lv="ynext" aria-label="다음 해">›</button></div>';
+  h += '<div class="pc-card"><div class="nf-two"><div><small>' + (plan ? '계획 반영 후 잔여' : '잔여 연차') + '</small><b class="nf-big' + (remain < 0 ? ' neg' : '') + '">' + remain + '일</b></div><div style="text-align:right"><small>총 ' + tot + '일 · 사용 ' + used + '일' + (plan ? ' · 계획 ' + plan + '일' : '') + '</small></div></div>' +
+    '<div class="nf-bar"><i style="width:' + Math.min(100, tot > 0 ? used / tot * 100 : 0) + '%"></i><i class="p" style="width:' + Math.min(100 - Math.min(100, tot > 0 ? used / tot * 100 : 0), tot > 0 ? plan / tot * 100 : 0) + '%"></i></div>' +
+    (remain < 0 ? '<p class="pc-hint" style="color:var(--warn)">총 연차보다 ' + (-remain) + '일 많아요.</p>' : '') +
+    '<label class="pc-f" style="margin-top:10px">' + lvY + '년 총 연차 일수 (이월·추가 포함)<input id="lv-total" type="number" min="0" step="0.5" inputmode="decimal" value="' + tot + '"></label>' +
+    (isSet ? '' : '<p class="pc-hint" style="margin:4px 0 0">아직 정하지 않아 임시값 ' + LV_DEFAULT_TOTAL + '일로 계산 중이에요. 회사 기준 일수를 입력해 주세요.</p>') + '</div>';
+  // 달력
+  const first = lvY + '-' + String(lvM).padStart(2, '0') + '-01', n = new Date(lvY, lvM, 0).getDate(), w0 = nfWd(first);
+  let cal = ['일', '월', '화', '수', '목', '금', '토'].map(x => '<div class="hd">' + x + '</div>').join('') + '<div></div>'.repeat(w0);
+  for (let d = 1; d <= n; d++) {
+    const s = lvY + '-' + String(lvM).padStart(2, '0') + '-' + String(d).padStart(2, '0'), w = nfWd(s), u = lvUsedOn(s), hol = LV_HOL.indexOf(s) >= 0, pl = lvPlan.indexOf(s) >= 0, off = lvIsOff(s);
+    cal += '<button type="button" class="dd' + (u ? ' used' : '') + (pl ? ' plan' : '') + (hol || w === 0 ? ' red' : w === 6 ? ' blue' : '') + (s === t ? ' today' : '') + '" data-lv="cell" data-d="' + s + '"' + (off && !u ? ' disabled' : '') + '>' + d + (u && u < 1 ? '<small>반</small>' : '') + '</button>';
+  }
+  h += '<div class="pc-card"><div class="nf-ybar" style="margin-top:0"><button type="button" class="toolbtn" data-lv="mprev" aria-label="이전 달">‹</button><b>' + lvY + '년 ' + lvM + '월</b><button type="button" class="toolbtn" data-lv="mnext" aria-label="다음 달">›</button></div><div class="nf-cal">' + cal + '</div>' +
+    '<p class="pc-hint" style="margin:8px 0 0">쓸 날을 눌러 계획해 보세요(검정). 주황은 이미 쓴 연차, 빨강은 공휴일이에요. 공휴일 표는 2027년까지 들어 있어요.</p></div>';
+  // 계획
+  if (lvPlan.length) {
+    const ps = lvPlan.slice().sort(), seen = {};
+    const blocks = ps.map(d => lvBlock(d, ps)).filter(b => { const k = b.from; if (seen[k]) return false; seen[k] = 1; return true; });
+    h += '<div class="pc-card"><b>📝 계획한 날 ' + ps.length + '일</b>' + blocks.map(b => '<p class="pc-hint" style="margin:6px 0 0">' + nfMd(b.from) + '(' + nfWdK(b.from) + ')~' + nfMd(b.to) + '(' + nfWdK(b.to) + ') · 쉬는 날 ' + b.len + '일 이어져요</p>').join('') +
+      '<div class="pc-row2" style="margin-top:10px"><button type="button" class="pc-btn" data-lv="plan-clear">계획 비우기</button><button type="button" class="pc-btn primary" data-lv="plan-rec">연차로 기록하기</button></div></div>';
+  }
+  // 연휴 추천
+  const tips = lvTips();
+  h += '<div class="pc-card"><b>💡 연휴 만들기 추천 <small style="font-weight:500;color:var(--ink2)">(앞으로 6개월)</small></b>' + (tips.length ? tips.map(x => '<div class="nf-tip"><span>' + nfMd(x.from) + '(' + nfWdK(x.from) + ')~' + nfMd(x.to) + '(' + nfWdK(x.to) + ') <b>' + x.len + '일 연휴</b><small>연차 ' + x.need + '일 · ' + x.ds.map(nfMd).join(', ') + '</small></span><button type="button" class="pc-btn small" data-lv="tip" data-ds="' + x.ds.join(',') + '">계획에 추가</button></div>').join('') : '<p class="pc-hint" style="margin:6px 0 0">연차 1~2일로 4일 이상 쉴 수 있는 날이 아직 없어요.</p>') + '</div>';
+  // 내역
+  const rows = LV.items.filter(r => r.date.slice(0, 4) === String(lvY)).sort((a, b) => b.date.localeCompare(a.date));
+  h += '<div class="pc-card"><div class="pc-headrow"><h3>사용 내역</h3><button type="button" class="pc-btn small primary" data-lv="add">+ 연차 기록</button></div>' +
+    (rows.length ? rows.map(r => '<button type="button" class="nf-row" data-lv="edit" data-id="' + esc(r.id) + '"><span>' + esc(r.date) + ' (' + nfWdK(r.date) + ')' + (r.memo ? ' · ' + esc(r.memo) : '') + '</span><b>' + (r.days < 1 ? '반차' : '1일') + '</b></button>').join('') : '<p class="pc-hint" style="margin:0">' + lvY + '년 기록이 없어요.</p>') + '</div>';
+  h += '<div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-lv="backup">☁ 지금 백업</button></div>';
+  box.innerHTML = h;
+}
+function renderLeave(){ lvRender(); }
+function lvOpen(id, date){
+  const r = id ? LV.items.find(x => x.id === id) : null; if (id && !r) return; lvEditing = id || null;
+  $('lv-date').value = r ? r.date : (date || todayStr()); $('lv-days').value = r ? String(r.days) : '1'; $('lv-memo').value = r ? r.memo : '';
+  $('lv-del').hidden = !r; $('lv-d-title').textContent = r ? '연차 기록 수정' : '연차 기록'; $('lv-dlg').showModal();
+}
+function lvSaveRec(){
+  const date = $('lv-date').value; if (!date) { toast('날짜를 입력해 주세요.'); return; }
+  const days = Number($('lv-days').value) === 0.5 ? 0.5 : 1, ex = lvEditing ? LV.items.find(x => x.id === lvEditing) : null;
+  const others = LV.items.filter(x => x.date === date && (!ex || x.id !== ex.id)).reduce((a, x) => a + x.days, 0);
+  if (others + days > 1) { toast('그 날짜에는 이미 연차가 기록돼 있어요.'); return; }
+  const rec = { date, days, memo: $('lv-memo').value.trim(), u: nowIso() };
+  if (ex) Object.assign(ex, rec); else LV.items.push(Object.assign({ id: uid('lv') }, rec));
+  lvY = Number(date.slice(0, 4)); lvM = Number(date.slice(5, 7));
+  lvSave(); changed(); $('lv-dlg').close(); toast('저장했어요.'); renderAll();
+}
+function lvDelRec(){
+  const r = LV.items.find(x => x.id === lvEditing); if (!r || !confirm('이 연차 기록을 삭제할까요?')) return;
+  LV.items = LV.items.filter(x => x.id !== r.id); LV.del[r.id] = nowIso(); lvSave(); changed(); $('lv-dlg').close(); renderAll();
+}
+$('leaveView').addEventListener('click', e => {
+  const el = e.target.closest('[data-lv]'); if (!el) return; const a = el.dataset.lv;
+  if (a === 'yprev') { lvY--; lvRender(); } else if (a === 'ynext') { lvY++; lvRender(); }
+  else if (a === 'mprev') { lvM--; if (lvM < 1) { lvM = 12; lvY--; } lvRender(); }
+  else if (a === 'mnext') { lvM++; if (lvM > 12) { lvM = 1; lvY++; } lvRender(); }
+  else if (a === 'cell') { const s = el.dataset.d, u = LV.items.find(r => r.date === s); if (u) { lvOpen(u.id); return; } const i = lvPlan.indexOf(s); if (i >= 0) lvPlan.splice(i, 1); else lvPlan.push(s); lvRender(); }
+  else if (a === 'tip') { el.dataset.ds.split(',').forEach(s => { if (lvPlan.indexOf(s) < 0) lvPlan.push(s); }); const f = el.dataset.ds.split(',')[0]; lvY = Number(f.slice(0, 4)); lvM = Number(f.slice(5, 7)); lvRender(); }
+  else if (a === 'plan-clear') { lvPlan.length = 0; lvRender(); }
+  else if (a === 'plan-rec') {
+    if (!lvPlan.length || !confirm('계획한 ' + lvPlan.length + '일을 연차(1일씩)로 기록할까요?')) return;
+    const t = nowIso(); lvPlan.slice().sort().forEach(s => { if (lvUsedOn(s) === 0) LV.items.push({ id: uid('lv'), date: s, days: 1, memo: '', u: t }); }); lvPlan.length = 0; lvSave(); changed(); toast('기록했어요.'); renderAll();
+  }
+  else if (a === 'add') lvOpen(null); else if (a === 'edit') lvOpen(el.dataset.id); else if (a === 'backup') doBackup();
+});
+$('leaveView').addEventListener('change', e => {
+  if (e.target.id !== 'lv-total') return; const n = Number(e.target.value);
+  if (!(n >= 0)) { toast('0 이상의 숫자를 입력해 주세요.'); lvRender(); return; }
+  LV.cfg.tot[String(lvY)] = n; LV.cfg.u = nowIso(); lvSave(); changed(); lvRender();
+});
+$('lv-dlg').addEventListener('click', e => { const el = e.target.closest('[data-lv]'); if (!el) return; const a = el.dataset.lv; if (a === 'cancel') $('lv-dlg').close(); else if (a === 'save') lvSaveRec(); else if (a === 'del') lvDelRec(); });
+
+/* ---------- 재구매 예상 (가격 > 재구매) ---------- */
+const RS_KEY = 'restock_cfg_v1';
+function rsCfg(){ try { const o = JSON.parse(localStorage.getItem(RS_KEY) || 'null'); return { off: o && o.off && typeof o.off === 'object' ? o.off : {} }; } catch (e) { return { off: {} }; } }
+function rsCfgSave(c){ try { localStorage.setItem(RS_KEY, JSON.stringify(c)); } catch (e) { /* 무시 */ } }
+function rsCalc(){
+  const t = todayStr(), cfg = rsCfg(), out = [], few = [];
+  S.items.forEach(it => {
+    const ds = Array.from(new Set(S.records.filter(r => r.itemId === it.id && r.date && r.date <= t).map(r => r.date))).sort(), off = !!cfg.off[it.id];
+    if (ds.length < 2) { few.push({ it, n: ds.length, last: ds[ds.length - 1] || '', off }); return; }
+    const iv = []; for (let i = 1; i < ds.length; i++) iv.push(nfDiff(ds[i - 1], ds[i]));
+    const rec = iv.slice(-4), cycle = Math.max(1, Math.round(rec.reduce((a, b) => a + b, 0) / rec.length)), last = ds[ds.length - 1], exp = nfAdd(last, cycle);
+    out.push({ it, cycle, last, exp, left: nfDiff(t, exp), pct: Math.max(0, Math.min(100, Math.round(nfDiff(last, t) / cycle * 100))), n: ds.length, off });
+  });
+  out.sort((a, b) => a.left - b.left); return { out, few };
+}
+function rsRender(){
+  const box = $('rs-body'); if (!box) return; const c = rsCalc(), act = c.out.filter(x => !x.off), hid = c.out.filter(x => x.off).concat(c.few.filter(x => x.off)), few = c.few.filter(x => !x.off);
+  let h = '<div class="pc-card"><h3>재구매 예상</h3><p class="pc-hint" style="margin:0">구매 이력의 최근 평균 구매 간격으로 다음 소진 시기를 예상해요. 2번 이상 산 제품만 계산하고, 곧 떨어질 제품은 알림에도 떠요.</p></div>';
+  if (!act.length) h += '<div class="pc-card"><p class="pc-hint" style="margin:0">예상할 제품이 아직 없어요. 같은 제품을 두 번 이상 등록하면 나타나요.</p></div>';
+  act.forEach(x => {
+    const w = x.left <= 3;
+    h += '<div class="pc-card"><div class="pc-headrow"><b>' + esc(x.it.name) + '</b><span class="nf-tag ' + (w ? 'warn' : x.left <= 10 ? '' : 'ok') + '">' + (x.left < 0 ? (-x.left) + '일 지났어요' : x.left === 0 ? '오늘 소진 예상' : x.left + '일 남음') + '</span></div>' +
+      '<div class="nf-bar' + (w ? ' warn' : '') + '"><i style="width:' + x.pct + '%"></i></div><p class="pc-hint" style="margin:6px 0 8px">평균 ' + x.cycle + '일마다 구매 · 마지막 ' + esc(x.last) + ' · 예상 소진 ' + nfMd(x.exp) + '</p>' +
+      '<div class="pc-row2"><button type="button" class="pc-btn small" data-rs="buy" data-id="' + esc(x.it.id) + '">🛒 구매 기록하기</button><button type="button" class="pc-btn small" data-rs="off" data-id="' + esc(x.it.id) + '">예상에서 빼기</button></div></div>';
+  });
+  if (few.length) h += '<div class="pc-card"><b>기록이 부족한 제품 ' + few.length + '개</b><p class="pc-hint" style="margin:6px 0 0">' + few.map(x => esc(x.it.name) + '(' + x.n + '회)').join(' · ') + ' — 한 번 더 구매 기록을 남기면 예상해 드려요.</p></div>';
+  if (hid.length) h += '<div class="pc-card"><b>뺀 제품 ' + hid.length + '개</b><p class="pc-hint" style="margin:6px 0 8px">' + hid.map(x => esc(x.it.name)).join(' · ') + '</p><button type="button" class="pc-btn small" data-rs="restore">모두 다시 넣기</button></div>';
+  box.innerHTML = h;
+}
+$('rs-body').addEventListener('click', e => {
+  const el = e.target.closest('[data-rs]'); if (!el) return; const a = el.dataset.rs, cfg = rsCfg();
+  if (a === 'off') { cfg.off[el.dataset.id] = true; rsCfgSave(cfg); rsAlertSync(); rsRender(); }
+  else if (a === 'restore') { rsCfgSave({ off: {} }); rsAlertSync(); rsRender(); }
+  else if (a === 'buy') { setMode('price'); setTab('analyze'); const s = $('pc-item'); s.value = el.dataset.id; s.dispatchEvent(new Event('change', { bubbles: true })); window.scrollTo(0, 0); }
+});
+function rsAlertSync(){
+  try {
+    const want = {}, now = nowIso();
+    rsCalc().out.filter(x => !x.off && x.left <= 14 && x.left >= -14).forEach(x => { want['rm_rs_' + x.it.id + '_' + x.exp] = { title: '재구매 — ' + x.it.name, date: x.exp, lead: 7, memo: '평균 ' + x.cycle + '일마다 구매 · 마지막 ' + x.last + ' · 가격 > 재구매에서 확인' }; });
+    let ch = false;
+    Object.keys(want).forEach(id => { const w = want[id], ex = RM.items.find(r => r.id === id);
+      if (ex) { if (ex.title !== w.title || ex.memo !== w.memo || ex.date !== w.date) { if (ex.date !== w.date) ex.done = false; ex.title = w.title; ex.memo = w.memo; ex.date = w.date; ex.u = now; ch = true; } }
+      else if (!RM.del[id]) { RM.items.push({ id, title: w.title, date: w.date, lead: w.lead, memo: w.memo, link: '', done: false, u: now }); ch = true; } });
+    RM.items.forEach(r => { if (r.id.indexOf('rm_rs_') === 0 && !r.done && !want[r.id]) { r.done = true; r.u = now; ch = true; } });
+    if (ch) { RM = rmNorm(RM); rmSave(); changed(); }
+  } catch (e) { /* 알림 오류가 앱을 막지 않게 */ }
+}
+
+/* ---------- 구독·보험: 끝나는 날·갱신일 D-day ---------- */
+const SB_END_KINDS = ['약정 만료', '무료체험 종료', '갱신일', '해지 예정', '기타'];
+const sbEndIc = k => k === '무료체험 종료' ? '🎟' : k === '갱신일' ? '🔄' : k === '해지 예정' ? '✂' : '📑';
+function sbDdayRender(){
+  const box = $('sb-dday'); if (!box) return; const t = todayStr(), L = [];
+  SB.items.filter(i => i.active !== false && i.endDate && i.endKind).forEach(i => L.push({ d: nfDiff(t, i.endDate), ic: sbEndIc(i.endKind), title: i.name, sub: i.endKind + ' · ' + i.endDate + (i.amount != null ? ' · ' + won(i.amount) + (i.endKind === '무료체험 종료' ? '로 자동 전환' : '') : ''), id: i.id }));
+  try { carRenewals().forEach(x => L.push({ d: x.d, ic: '🚗', title: carName(x.car) + ' 자동차보험 갱신', sub: '갱신일 ' + x.date + (x.prem !== '' ? ' · 작년 ' + won(x.prem) : ''), car: 1 })); } catch (e) { /* 내 차 오류가 구독 화면을 막지 않게 */ }
+  const list = L.filter(x => x.d >= -7 && x.d <= 365).sort((a, b) => a.d - b.d);
+  if (!list.length) { box.innerHTML = '<p class="pc-hint" style="margin:0 0 10px">⏰ 항목을 열어 “끝나는 날·갱신일”을 넣으면 D-day로 모아 보여 드려요.</p>'; return; }
+  box.innerHTML = '<div class="pc-card"><b>⏰ 끝나는 날·갱신일</b>' + list.slice(0, 8).map(x => '<button type="button" class="nf-dd" data-dd="' + (x.car ? 'car' : 'edit') + '" data-id="' + esc(x.id || '') + '"><span class="dn' + (x.d <= 14 ? ' soon' : '') + '">' + nfDday(x.d) + '</span><span class="tx"><b>' + x.ic + ' ' + esc(x.title) + '</b><small>' + esc(x.sub) + '</small></span>' + (x.d <= 14 && x.d >= 0 ? '<span class="nf-tag warn">곧</span>' : x.d < 0 ? '<span class="nf-tag">지남</span>' : '') + '</button>').join('') + '</div>';
+}
+$('sb-dday').addEventListener('click', e => { const el = e.target.closest('[data-dd]'); if (!el) return; if (el.dataset.dd === 'car') setMode('car'); else openSub(el.dataset.id); });
+function sbEndSync(){
+  try {
+    const want = {}, now = nowIso(), t = todayStr();
+    SB.items.filter(i => i.active !== false && i.endDate && i.endKind).forEach(i => { if (nfDiff(t, i.endDate) < -7) return; want['rm_sbe_' + i.id + '_' + i.endDate] = { title: i.name + ' — ' + i.endKind, date: i.endDate, lead: 14, memo: (i.amount != null ? won(i.amount) + ' · ' : '') + '구독·보험에서 “' + i.name + '” 항목을 눌러 확인하세요.' }; });
+    let ch = false;
+    Object.keys(want).forEach(id => { const w = want[id], ex = RM.items.find(r => r.id === id);
+      if (ex) { if (ex.title !== w.title || ex.memo !== w.memo || ex.date !== w.date) { if (ex.date !== w.date) ex.done = false; ex.title = w.title; ex.memo = w.memo; ex.date = w.date; ex.u = now; ch = true; } }
+      else if (!RM.del[id]) { RM.items.push({ id, title: w.title, date: w.date, lead: w.lead, memo: w.memo, link: '', done: false, u: now }); ch = true; } });
+    RM.items.forEach(r => { if (r.id.indexOf('rm_sbe_') === 0 && !r.done && !want[r.id]) { r.done = true; r.u = now; ch = true; } });
+    if (ch) { RM = rmNorm(RM); rmSave(); changed(); }
+  } catch (e) { /* 알림 오류가 앱을 막지 않게 */ }
+}
+
+/* ---------- 오늘 시간표 ---------- */
+const tlHides = x => x.act === 'cal' && x.d === 0 && tdPrefs().timeline !== false;
+function tlCardHtml(){
+  try {
+    const t = todayStr(), now = new Date(), nowMin = now.getHours() * 60 + now.getMinutes(), timed = [], untimed = [];
+    agEvents().filter(e => e.date === t).forEach(e => { const m = /(\d{1,2}):(\d{2})/.exec(String(e.time || '')); if (m) timed.push({ min: Number(m[1]) * 60 + Number(m[2]), tm: m[1].padStart(2, '0') + ':' + m[2], title: e.title, sub: e.cal || '' }); else untimed.push({ title: e.title, sub: (e.time ? e.time + ' · ' : '') + (e.cal || ''), ic: '📅' }); });
+    tdTasks(true).filter(x => x.d === 0 && x.act !== 'cal').slice(0, 5).forEach(x => untimed.push({ title: x.title, sub: x.sub || '', ic: x.ic }));
+    if (!timed.length && !untimed.length) return '';
+    timed.sort((a, b) => a.min - b.min);
+    let rows = '', placed = false; const nowRow = '<div class="tl-r now"><span class="tm">지금</span><span class="tb"><b>' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + '</b></span></div>';
+    timed.forEach(e => { if (!placed && e.min > nowMin) { rows += nowRow; placed = true; } rows += '<div class="tl-r' + (e.min < nowMin ? ' past' : '') + '"><span class="tm">' + e.tm + '</span><span class="tb"><b>' + esc(e.title) + '</b>' + (e.sub ? '<small>' + esc(e.sub) + '</small>' : '') + '</span></div>'; });
+    if (!placed && timed.length) rows += nowRow;
+    if (untimed.length) rows += '<div class="tl-r"><span class="tm">시간 없음</span><span class="tb">' + untimed.map(x => '<span class="tl-u">' + x.ic + ' <b>' + esc(x.title) + '</b>' + (x.sub ? '<small>' + esc(x.sub) + '</small>' : '') + '</span>').join('') + '</span></div>';
+    return '<!--c:timeline--><div class="td-card"><h3>🕘 오늘 시간표</h3><div class="tl">' + rows + '</div></div>';
+  } catch (e) { return ''; }
+}
+
+/* ---------- 공유 받기 (다른 앱에서 공유 → 마이라이프) ---------- */
+let rcCat = 'price';
+function rcParse(raw){
+  const txt = String(raw || ''), am = /(\d{1,3}(?:,\d{3})+|\d{4,})\s*원/.exec(txt) || /(\d{1,3}(?:,\d{3})+)/.exec(txt);
+  const dm = /(20\d{2})[.\-\/\s]\s?(\d{1,2})[.\-\/\s]\s?(\d{1,2})/.exec(txt);
+  const date = dm ? dm[1] + '-' + String(dm[2]).padStart(2, '0') + '-' + String(dm[3]).padStart(2, '0') : todayStr();
+  let name = txt.split(/\n/).map(s => s.trim()).filter(s => s && !/^https?:\/\//i.test(s))[0] || '';
+  name = name.replace(/https?:\/\/\S+/g, '').replace(/^\[[^\]]*\]\s*/, '').replace(/\d{1,3}(?:,\d{3})+\s*원?/g, '').replace(/\(?\s*20\d{2}[.\-\/]\s?\d{1,2}[.\-\/]\s?\d{1,2}\s*\)?/g, '').replace(/\s+/g, ' ').trim().slice(0, 40);
+  const hospital = /(병원|의원|약국|정형|한의|치과|클리닉|H정형)/.test(txt), card = /(승인|일시불|할부|누적|Web발신)/.test(txt);
+  return { amount: am ? Number(am[1].replace(/,/g, '')) : '', date: nfDate(date) || todayStr(), name, cat: card && hospital ? 'med' : card ? 'meeting' : 'price' };
+}
+function rcUI(){
+  document.querySelectorAll('#rc-cats .cr-chip').forEach(b => b.classList.toggle('on', b.dataset.c === rcCat));
+  $('rc-price').hidden = rcCat !== 'price';
+  $('rc-hint').textContent = rcCat === 'price' ? '구매 분석 화면을 열고 상품·금액·날짜를 미리 채워 드려요. 용량 등을 확인한 뒤 등록하세요.' : rcCat === 'meeting' ? '카드 승인 문자라면 빠른 입력 창에서 확인 후 회의비로 추가할 수 있어요.' : '의료비 문자 등록 창에 내용을 넣어 드려요.';
+}
+function rcOpen(raw){
+  const p = rcParse(raw); rcCat = p.cat; $('rc-raw').value = raw; $('rc-name').value = p.name; $('rc-amt').value = p.amount; $('rc-date').value = p.date;
+  $('rc-cats').innerHTML = [['price', '가격'], ['meeting', '회의비'], ['med', '의료비']].map(x => '<button type="button" class="cr-chip" data-rc="cat" data-c="' + x[0] + '">' + x[1] + '</button>').join('');
+  rcUI(); $('rc-dlg').showModal();
+}
+function rcGo(){
+  const raw = $('rc-raw').value; $('rc-dlg').close();
+  if (rcCat === 'meeting') { if (window.AppQuick) window.AppQuick.open(raw); }
+  else if (rcCat === 'med') { setMode('med'); mdSmsOpen(); $('md-sms-in').value = raw; $('md-sms-in').dispatchEvent(new Event('input', { bubbles: true })); }
+  else {
+    const name = $('rc-name').value.trim(), amt = $('rc-amt').value, date = $('rc-date').value, key = name.replace(/\s/g, '').toLowerCase();
+    const hit = key ? S.items.find(i => { const n = i.name.replace(/\s/g, '').toLowerCase(); return n === key || (key.length >= 3 && (n.indexOf(key) >= 0 || key.indexOf(n) >= 0)); }) : null;
+    setMode('price'); setTab('analyze');
+    const sel = $('pc-item'); sel.value = hit ? hit.id : '__new__'; sel.dispatchEvent(new Event('change', { bubbles: true }));
+    if (!hit) { $('pc-name').value = name; $('pc-name').dispatchEvent(new Event('input', { bubbles: true })); }
+    if (date) { $('pc-date').value = date; $('pc-date').dispatchEvent(new Event('input', { bubbles: true })); }
+    if (amt !== '') { $('pc-paid').value = amt; $('pc-paid').dispatchEvent(new Event('input', { bubbles: true })); }
+    toast(hit ? '“' + hit.name + '” 구매 분석에 채웠어요. 용량을 확인해 주세요.' : '새 상품으로 채웠어요. 단위와 용량을 확인해 주세요.'); window.scrollTo(0, 0);
+  }
+}
+$('rc-dlg').addEventListener('click', e => { const el = e.target.closest('[data-rc]'); if (!el) return; const a = el.dataset.rc; if (a === 'cat') { rcCat = el.dataset.c; rcUI(); } else if (a === 'go') rcGo(); else if (a === 'cancel') $('rc-dlg').close(); });
+$('rc-raw').addEventListener('change', () => { const p = rcParse($('rc-raw').value); $('rc-name').value = p.name; $('rc-amt').value = p.amount; $('rc-date').value = p.date; });
+function rcInit(){
+  let q; try { q = new URLSearchParams(location.search); } catch (e) { return; }
+  const raw = [q.get('sh_title'), q.get('sh_text'), q.get('sh_url')].filter(Boolean).join('\n').trim(); if (!raw) return;
+  try { history.replaceState(null, '', location.pathname); } catch (e) { /* 무시 */ }
+  rcOpen(raw);
+}
+function sbEndRead(){ const k = $('sb-f-endkind').value, d = nfDate($('sb-f-enddate').value); return k && d ? { k, d } : { k: '', d: '' }; }
+
+
 /* ---------- 구독·결제 ---------- */
 const SUBS_ITEMS_SEED = [{"id": "b1", "day": 2, "name": "삼케플곤쥬", "memo": "", "card": "MG", "amount": 7500, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b2", "day": 4, "name": "티빙구독", "memo": "", "card": "원더", "amount": 4000, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b3", "day": 5, "name": "쿠팡", "memo": "", "card": "MG", "amount": 7890, "disc": {"kind": "pct", "value": 50, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b4", "day": 5, "name": "토스", "memo": "", "card": "MG", "amount": 5900, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b5", "day": 10, "name": "정수기", "memo": "", "card": "KB비즈티타늄", "amount": 41900, "disc": {"kind": "point", "value": 4190, "text": ""}, "cat": "생활", "hist": [], "active": true}, {"id": "b6", "day": 10, "name": "휴대폰", "memo": "", "card": "KB비즈티타늄", "amount": 7690, "disc": {"kind": "point", "value": 769, "text": ""}, "cat": "통신", "hist": [], "active": true}, {"id": "b7", "day": 11, "name": "인터넷", "memo": "", "card": "원더", "amount": 16500, "disc": {"kind": "pct", "value": 10, "text": ""}, "cat": "통신", "hist": [], "active": true}, {"id": "b8", "day": 11, "name": "휴대폰", "memo": "", "card": "원더", "amount": 44590, "disc": {"kind": "pct", "value": 10, "text": ""}, "cat": "통신", "hist": [], "active": true}, {"id": "b9", "day": 13, "name": "넷플릭스(네이버멤버스)", "memo": "", "card": "MG", "amount": 8000, "disc": {"kind": "pct", "value": 50, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b10", "day": 15, "name": "민팃_New 갤럭시AI구독클럽", "memo": "", "card": "MG", "amount": 8900, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b11", "day": 18, "name": "T우주패스 쇼핑 11번가(WAVVE)", "memo": "", "card": "원더", "amount": 1000, "disc": {"kind": "pct", "value": 10, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b12", "day": 20, "name": "유튜브", "memo": "", "card": "원더", "amount": 21603, "disc": {"kind": "", "value": null, "text": ""}, "cat": "구독", "hist": [], "active": true}, {"id": "b13", "day": 20, "name": "비데", "memo": "", "card": "KB비즈티타늄", "amount": 9900, "disc": {"kind": "point", "value": 990, "text": ""}, "cat": "생활", "hist": [], "active": true}, {"id": "b14", "day": 21, "name": "BTV", "memo": "", "card": "KB비즈티타늄", "amount": 12100, "disc": {"kind": "point", "value": 1210, "text": ""}, "cat": "통신", "hist": [], "active": true}, {"id": "b15", "day": 29, "name": "관리비", "memo": "", "card": "원더", "amount": null, "disc": {"kind": "", "value": null, "text": ""}, "cat": "생활", "hist": [], "active": true}, {"id": "b16", "day": 5, "name": "메리츠", "memo": "", "card": "MG", "amount": 61200, "disc": {"kind": "", "value": null, "text": ""}, "cat": "보험", "hist": [{"from": "0000-01", "amount": 46480}, {"from": "2024-07", "amount": 61200}], "active": true}, {"id": "b17", "day": 5, "name": "메리츠", "memo": "건강보험", "card": "MG", "amount": 87220, "disc": {"kind": "", "value": null, "text": ""}, "cat": "보험", "hist": [], "active": true}, {"id": "b18", "day": 5, "name": "메리츠", "memo": "운전자보험", "card": "MG", "amount": 11350, "disc": {"kind": "", "value": null, "text": ""}, "cat": "보험", "hist": [], "active": true}, {"id": "b19", "day": 11, "name": "한화", "memo": "", "card": "MG", "amount": 62600, "disc": {"kind": "", "value": null, "text": ""}, "cat": "보험", "hist": [], "active": true}];
 const SUBS_SEED = { items: SUBS_ITEMS_SEED.map(i => Object.assign({ u: SEED_U }, i)), pays: [], cfg: { costIsNet: false, u: SEED_U }, del: {} };
@@ -4390,6 +4780,7 @@ function bNorm(o){
     cat: SB_CATS.indexOf(i.cat) >= 0 ? i.cat : '구독', amount: numB(i.amount) === '' ? null : numB(i.amount),
     disc: { kind: ['pct', 'point', 'text'].indexOf(d.kind) >= 0 ? d.kind : '', value: numB(d.value) === '' ? null : numB(d.value), text: String(d.text || '') },
     hist: (Array.isArray(i.hist) ? i.hist : []).filter(h => h && h.from && isFinite(Number(h.amount))).map(h => ({ from: String(h.from), amount: Number(h.amount) })),
+    endKind: SB_END_KINDS.indexOf(i.endKind) >= 0 && nfDate(i.endDate) ? i.endKind : '', endDate: SB_END_KINDS.indexOf(i.endKind) >= 0 ? nfDate(i.endDate) : '',
     active: i.active !== false, u: String(i.u || '') }; });
   const ids = {}; items.forEach(i => { ids[i.id] = 1; });
   const pays = (Array.isArray(o.pays) ? o.pays : []).filter(p => p && p.itemId && p.month && ids[p.itemId]).map(p => ({ id: pk(p.itemId, p.month), itemId: String(p.itemId), month: String(p.month), amount: numB(p.amount), done: !!p.done, u: String(p.u || '') }));
@@ -4400,6 +4791,7 @@ function bSave(){ saveK(SUBS_KEY, SB); }
 const discText = it => { const d = it.disc || {}; return d.kind === 'pct' ? d.value + '% 할인' : (d.kind === 'point' ? fmt(d.value) + '원 적립' : (d.kind === 'text' ? d.text : '')); };
 let sbFilter = (function () { try { return localStorage.getItem('sb_filter_v1') || 'all'; } catch (e) { return 'all'; } })();
 function renderSub(){
+  sbDdayRender();
   const pm = Life.payMap(SB.pays), net = SB.cfg.costIsNet, M = sbMonth, t = Life.monthTotals(SB.items, pm, M, net);
   $('sb-month-label').textContent = M.slice(0, 4) + '년 ' + Number(M.slice(5)) + '월';
   const done = SB.items.filter(i => i.active !== false && pm[pk(i.id, M)] && pm[pk(i.id, M)].done).length;
@@ -4478,6 +4870,7 @@ function openSub(id){
   sbEditing = id || null;
   const cl = sbCardList(); cbFill('sb-f-card', cl, it ? it.card : ''); cbFill('sb-f-cc', cl, it ? it.newCard : '');
   $('sb-f-ccdate').value = it ? it.ccDate : ''; $('sb-f-ccdone').checked = false; sbCcUI();
+  $('sb-f-endkind').innerHTML = '<option value="">없음</option>' + SB_END_KINDS.map(k => '<option>' + k + '</option>').join(''); $('sb-f-endkind').value = it && it.endKind ? it.endKind : ''; $('sb-f-enddate').value = it && it.endDate ? it.endDate : '';
   $('sb-cc-note').textContent = it && it.ccLast ? '최근 카드 변경: ' + it.ccLast : '';
   $('sb-f-cat').innerHTML = SB_CATS.concat(it && SB_CATS.indexOf(it.cat) < 0 ? [it.cat] : []).map(c => '<option>' + esc(c) + '</option>').join('');
   $('sb-d-title').textContent = it ? '항목 수정' : '항목 추가';
@@ -4502,7 +4895,7 @@ function saveSub(){
   if (ccTo && ccTo === cardNow) { toast('변경할 카드가 현재 카드와 같아요.'); return; }
   sbCardShare(cardNow); sbCardShare(ccTo);
   const base = { day: Math.min(31, Math.max(1, Number($('sb-f-day').value) || 1)), cat: $('sb-f-cat').value, name, memo: $('sb-f-memo').value.trim(), card: cardNow,
-    disc: { kind: $('sb-f-dkind').value, value: $('sb-f-dvalue').value === '' ? null : Number($('sb-f-dvalue').value), text: $('sb-f-dtext').value.trim() }, u: t };
+    disc: { kind: $('sb-f-dkind').value, value: $('sb-f-dvalue').value === '' ? null : Number($('sb-f-dvalue').value), text: $('sb-f-dtext').value.trim() }, endKind: sbEndRead().k, endDate: sbEndRead().d, u: t };
   let cur = it;
   if (it) {
     if (amt !== null && it.amount !== null && amt !== it.amount) {
@@ -4520,14 +4913,14 @@ function saveSub(){
     else if (ccTo) { cur.newCard = ccTo; cur.ccDate = $('sb-f-ccdate').value || ''; cur.u = t; sbCcSync(cur, null); }
     else if (prev) { cur.newCard = ''; cur.ccDate = ''; cur.u = t; sbCcSync(cur, null); }
   }
-  bSave(); changed(); $('sb-dlg').close(); toast(ccTo && !ccDone ? '저장했어요. 카드 변경 알림에 추가했어요.' : '저장했어요.'); renderAll(); renderGlobal();
+  sbEndSync(); bSave(); changed(); $('sb-dlg').close(); toast(ccTo && !ccDone ? '저장했어요. 카드 변경 알림에 추가했어요.' : '저장했어요.'); renderAll(); renderGlobal();
 }
 function delSub(){
   const it = SB.items.find(x => x.id === sbEditing); if (!it || !confirm('“' + it.name + '” 항목을 삭제할까요? (구독 종료)')) return;
   const t = nowIso(); SB.pays.filter(p => p.itemId === it.id).forEach(p => { SB.del[p.id] = t; });
   SB.pays = SB.pays.filter(p => p.itemId !== it.id); SB.items = SB.items.filter(x => x.id !== it.id); SB.del[it.id] = t;
   { const rid = 'rm_cc_' + it.id; if (RM.items.some(r => r.id === rid)) { RM.items = RM.items.filter(r => r.id !== rid); RM.del[rid] = t; rmSave(); } }
-  bSave(); changed(); $('sb-dlg').close(); renderAll();
+  sbEndSync(); bSave(); changed(); $('sb-dlg').close(); renderAll();
 }
 function togglePay(id){
   const key = pk(id, sbMonth), p = SB.pays.find(x => x.id === key), t = nowIso();
@@ -4572,6 +4965,7 @@ function selOpts(el, opts, cur){ fillSelect(el, opts, opts.some(o => o.v === cur
 function renderPeople(){
   document.querySelectorAll('#peopleView .pc-tabs button[data-pp="tab"]').forEach(b => b.classList.toggle('on', b.dataset.t === ppTab));
   document.querySelectorAll('#peopleView .pc-sec').forEach(s => s.classList.toggle('on', s.id === 'pp-' + ppTab));
+  if (ppTab === 'gift') { feRender(); return; }
   const t = todayStr(), cfg = Q.cfg;
   const nameOpts = Q.people.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko'));
   if (ppTab === 'today') {
@@ -5139,9 +5533,9 @@ function delSize(){
 const FEATURES = [
   { k: 'today', label: '오늘', ic: '🏠', id: 'modeToday' }, { k: 'meeting', label: '회의비', ic: '💰', id: 'modeMeeting' }, { k: 'shop', label: '보유품목', ic: '🛍', id: 'modeShop' }, { k: 'price', label: '구매가격분석', ic: '📈', id: 'modePrice' },
   { k: 'sub', label: '구독·보험', ic: '🔁', id: 'modeSub' }, { k: 'car', label: '내 차', ic: '🚗', id: 'modeCar' }, { k: 'people', label: '인맥', ic: '👥', id: 'modePeople' }, { k: 'med', label: '의료비', ic: '🏥', id: 'modeMed' }, { k: 'manual', label: '도수치료', ic: '🦵', id: 'modeManual' }, { k: 'skin', label: '피부관리', ic: '🧴', id: 'modeSkin' },
-  { k: 'pay', label: '연봉', ic: '💼', id: 'modePay' }, { k: 'guide', label: '가이드', ic: '📌', id: 'modeGuide' }];
+  { k: 'pay', label: '연봉', ic: '💼', id: 'modePay' }, { k: 'leave', label: '연차', ic: '🏖', id: 'modeLeave' }, { k: 'guide', label: '가이드', ic: '📌', id: 'modeGuide' }];
 const NAV_KEY = 'nav_cfg_v1';
-const GROUPS = [{ g: 'home', label: '🏠 오늘', ks: ['today'] }, { g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'car', 'pay'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'med', 'manual', 'skin', 'guide'] }];
+const GROUPS = [{ g: 'home', label: '🏠 오늘', ks: ['today'] }, { g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'car', 'pay', 'leave'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'med', 'manual', 'skin', 'guide'] }];
 const groupOf = k => GROUPS.find(x => x.ks.indexOf(k) >= 0), lastIn = {};
 function navNorm(o){
   o = o && typeof o === 'object' ? o : {};
@@ -6436,10 +6830,10 @@ window.AppSettings = { refresh: function () {
   renderSetCfg(); const pc = $('py-sync-chk'); if (pc) pc.checked = !pyNoSync();
 } };
 window.AppExtras = {
-  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'medical', 'guide', 'pay', 'reminders', 'opts', 'car'],
+  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'medical', 'guide', 'pay', 'reminders', 'opts', 'car', 'gift', 'leave'],
   exportSync(){
     return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
-      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, car: { ins: CAR.ins, wash: CAR.wash, cfg: CAR.cfg, del: CAR.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, medical: { items: MD.items, claims: MD.claims, cfg: MD.cfg, del: MD.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
+      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, car: { ins: CAR.ins, wash: CAR.wash, cfg: CAR.cfg, del: CAR.del }, gift: { items: FE.items, del: FE.del }, leave: { items: LV.items, cfg: LV.cfg, del: LV.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, medical: { items: MD.items, claims: MD.claims, cfg: MD.cfg, del: MD.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
   },
   strip(obj){ this.keys.forEach(k => { delete obj[k]; }); delete obj.inbox; },
   importSync(json){
@@ -6494,6 +6888,8 @@ window.AppExtras = {
       const cfg = r.cfg && String(r.cfg.u || '') > String(SB.cfg.u || '') ? r.cfg : SB.cfg;
       SB = bNorm({ items: mi.items, pays: mp.items, cfg, del: mi.del }); bSave(); ch = true;
     }
+    if (ok('gift')) { const r = json.gift, m = Shop.mergeById(FE.items, r.items, FE.del, cleanDel(r.del)); FE = feNorm({ items: m.items, del: m.del }); feSave(); ch = true; }
+    if (ok('leave')) { const r = json.leave, m = Shop.mergeById(LV.items, r.items, LV.del, cleanDel(r.del)), cfg = r.cfg && String(r.cfg.u || '') > String(LV.cfg.u || '') ? r.cfg : LV.cfg; LV = lvNorm({ items: m.items, cfg, del: m.del }); lvSave(); ch = true; }
     if (ok('car')) {
       const r = json.car, mi = Shop.mergeById(CAR.ins, r.ins, CAR.del, cleanDel(r.del)), mw = Shop.mergeById(CAR.wash, r.wash, CAR.del, cleanDel(r.del));
       const cfg = r.cfg && String(r.cfg.u || '') > String(CAR.cfg.u || '') ? r.cfg : CAR.cfg;
@@ -6924,7 +7320,7 @@ window.AppLife = {
 
 if (window.AppMeeting) window.AppMeeting.refresh();   // 회의비 목록에 인맥 연결 이름 반영
 /* ---- 저장공간 · 백업 ---- */
-const STORE_NAMES = { shopping_history_app_v1: '소비(사진 포함)', meeting_budget_app_v1: '회의비', price_check_app_v2: '가격체크', people_v1: '인맥', skin_care_v1: '피부관리', manual_care_v1: '도수치료', medical_exp_v1: '의료비', subscriptions_v1: '구독·보험', car_mgmt_v1: '내 차', golf_history_v1: '골프', size_chart_v1: '치수표', guide_v1: '가이드', salary_hist_v1: '연봉', reminders_v1: '알림', meeting_snap_v1: '회의비 동기화용 사본' };
+const STORE_NAMES = { shopping_history_app_v1: '소비(사진 포함)', meeting_budget_app_v1: '회의비', price_check_app_v2: '가격체크', people_v1: '인맥', skin_care_v1: '피부관리', manual_care_v1: '도수치료', gift_ledger_v1: '경조사', leave_v1: '연차', medical_exp_v1: '의료비', subscriptions_v1: '구독·보험', car_mgmt_v1: '내 차', golf_history_v1: '골프', size_chart_v1: '치수표', guide_v1: '가이드', salary_hist_v1: '연봉', reminders_v1: '알림', meeting_snap_v1: '회의비 동기화용 사본' };
 const OTHER_APPS = { brc_backuphistory_v1: '바디리컴포지션 백업이력(다른 앱)', travel_budget_app_v1: '여행경비(다른 앱)' };
 const otherApp = k => !STORE_NAMES[k] && (OTHER_APPS[k] || /^(brc_|travel_|moneytrail|mt_|codebox)/.test(k));
 function storageInfo(){
@@ -7109,6 +7505,8 @@ function gsItems(){
   tr(() => CAR.ins.forEach(r => add('내 차', '🚗', carName(r.car) + ' 보험 ' + (r.ins || ''), [r.start, r.prem === '' ? '' : won(r.prem), r.join ? '가입' : '견적'].filter(Boolean).join(' · '), [r.sp, r.dc, r.memo].join(' '), 'car', r.id)));
   tr(() => CAR.wash.forEach(r => add('내 차', '🧽', carName(r.car) + ' 세차 ' + (r.kind || ''), [r.date, r.cost === '' ? '' : won(r.cost)].filter(Boolean).join(' · '), [r.place, r.memo].join(' '), 'car', r.id)));
   tr(() => Q.people.forEach(p => add('인맥', '🙂', p.name, p.group, p.memo, 'people-list', p.id)));
+  tr(() => FE.items.forEach(r => add('경조사', '💐', feWho(r) + ' ' + r.kind, [r.date, (r.dir === 'give' ? '낸 ' : '받은 ') + won(r.amount)].join(' · '), r.memo, 'people-gift', r.id)));
+  tr(() => LV.items.forEach(r => add('연차', '🏖', '연차 ' + r.date, r.days < 1 ? '반차' : '1일', r.memo, 'leave', r.id)));
   tr(() => Q.meets.forEach(m => add('만남', '👥', meetNames(m), m.date + (m.place ? ' · ' + m.place : ''), [m.memo, mtTypeLabel(m), m.place].join(' '), 'people-log', m.id)));
   tr(() => GD.items.forEach(g => add('가이드', '📌', g.title, '', (g.lines || []).join(' '), 'guide', g.id)));
   tr(() => SK.items.forEach(i => add('피부', '✨', i.name, [i.clinic, i.func].filter(Boolean).join(' · '), i.memo, 'skin', i.id)));
@@ -7131,7 +7529,7 @@ function gsGo(h){
   $('gs-dlg').close();
   const a = h.act, id = h.id;
   if (a === 'shop') gotoShop(id); else if (a === 'sub') sbGoto([id], {});
-  else if (a === 'people-list') { ppTab = 'list'; setMode('people'); } else if (a === 'people-log') { ppTab = 'log'; setMode('people'); }
+  else if (a === 'people-list') { ppTab = 'list'; setMode('people'); } else if (a === 'people-log') { ppTab = 'log'; setMode('people'); } else if (a === 'people-gift') { ppTab = 'gift'; setMode('people'); }
   else if (a === 'rm') rmOpen(); else if (a === 'golf') tdGo('golf');
   else { setMode(a); if (a === 'med' && id) setTimeout(() => mdOpen(id), 60); }
 }
@@ -7140,7 +7538,7 @@ $('gSearch').addEventListener('click', () => { $('gs-dlg').showModal(); $('gs-q'
 $('gs-res').addEventListener('click', e => { const b = e.target.closest('[data-gs]'); if (!b) return; const h = $('gs-res')._hits && $('gs-res')._hits[Number(b.dataset.gs)]; if (h) gsGo(h); });
 
 /* A9 오늘 화면 카드 켜기/끄기 (이 기기에만 저장) */
-const TD_CARDS = [['tasks', '할 일 · 일정'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['assets', '자산 합계'], ['body', '오늘 체중·식단'], ['conn', '캘린더·요약 연결 설정'], ['quick', '빠른 입력'], ['review', '이번 달 돌아보기'], ['backup', '백업'], ['check', '데이터 점검']];
+const TD_CARDS = [['timeline', '오늘 시간표'], ['tasks', '할 일 · 일정'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['assets', '자산 합계'], ['body', '오늘 체중·식단'], ['conn', '캘린더·요약 연결 설정'], ['quick', '빠른 입력'], ['review', '이번 달 돌아보기'], ['backup', '백업'], ['check', '데이터 점검']];
 function tdPrefs(){ try { const o = JSON.parse(localStorage.getItem('td_cards_v1') || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
 function tdFilter(h){
   const pr = tdPrefs(), parts = h.split(/<!--c:(\w+)-->/); let out = parts[0];
@@ -7436,7 +7834,8 @@ function renderToday(quiet){
   const wd = ['일', '월', '화', '수', '목', '금', '토'][new Date().getDay()];
   let h = '<div class="td-head"><div class="td-date">' + Number(t.slice(5, 7)) + '월 ' + Number(t.slice(8)) + '일 (' + wd + ')</div><div class="td-sub">' + (tasks.length ? '지금 확인할 일 ' + urgent + '건 · 곧 다가오는 일 ' + soon + '건' : '확인할 일이 없어요. 편안한 하루 보내세요.') + '</div></div>';
   const row = x => x.act === 'cal' ? agRow(x) : x.pid ? '<div class="td-ckrow"><button type="button" class="td-row soon" data-td="go" data-act="' + x.act + '" data-id=""><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span></button><button type="button" class="pc-btn small" data-td="snz" data-id="' + esc(x.pid) + '">미루기</button></div>' : '<button type="button" class="td-row' + (x.pri ? ' soon' : '') + '" data-td="go" data-act="' + x.act + '" data-id="' + esc(x.id || '') + '"><span class="ic">' + x.ic + '</span><span class="tx"><b>' + esc(x.title) + '</b>' + (x.sub ? '<i>' + esc(x.sub) + '</i>' : '') + '</span><span class="dd">' + esc(x.when) + '</span></button>';
-  { const hid = agHiddenN(), shown = tasks.slice(0, 12); let lastPri = -1;
+  h += tlCardHtml();
+  { const hid = agHiddenN(), shown = tasks.filter(x => !tlHides(x)).slice(0, 12); let lastPri = -1;
     const calOn = !!agCfg().calOn;
     if (tasks.length || hid || calOn) h += '<!--c:tasks--><div class="td-card"><h3>할 일 · 일정</h3>' + shown.map(x => { const sec = x.pri !== lastPri ? '<div class="td-sec">' + (x.pri === 0 ? '🔔 지금 확인할 일' : '🗓 곧 다가오는 일') + '</div>' : ''; lastPri = x.pri; return sec + row(x); }).join('') + (tasks.length > 12 ? '<p class="td-note">외 ' + (tasks.length - 12) + '건</p>' : '') +
       (tasks.length ? '<p class="td-note">🔔 지금 확인할 일은 다른 탭 위쪽 알림에도 떠요(구글 캘린더 일정은 오늘 화면에만). 🗓 곧 다가오는 일은 오늘 화면에만 보여요.' + (tasks.some(x => x.act === 'cal') ? ' “숨기기”는 이 앱에서만 가려요.' : '') + '</p>' : '') +
@@ -7677,7 +8076,7 @@ $('gBar').addEventListener('keydown', e => { if (e.key === 'Enter') { const el =
 
 /* ---------- 모드 / 화면 ---------- */
 let mode = 'meeting';
-const MODE_VIEWS = { today: 'todayView', meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', car: 'carView', people: 'peopleView', skin: 'skinView', manual: 'skinView', med: 'medView', pay: 'payView', guide: 'guideView' };
+const MODE_VIEWS = { today: 'todayView', meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', car: 'carView', leave: 'leaveView', people: 'peopleView', skin: 'skinView', manual: 'skinView', med: 'medView', pay: 'payView', guide: 'guideView' };
 function setMode(m){
   if (!MODE_VIEWS[m] || !navVisible(m)) m = firstVisibleMode();
   mode = m; { const g = groupOf(m); if (g) lastIn[g.g] = m; }
@@ -7695,10 +8094,11 @@ function setTab(t){
 }
 function renderAll(){
   unifyAllCards();
-  if (mode === 'price') { if (ptab === 'analyze') renderAnalyze(); else if (ptab === 'history') { renderHistory(); } else renderTrend(); }
+  if (mode === 'price') { rsAlertSync(); if (ptab === 'analyze') renderAnalyze(); else if (ptab === 'history') { renderHistory(); } else if (ptab === 'restock') rsRender(); else renderTrend(); }
   else if (mode === 'shop') renderShop();
   else if (mode === 'sub') renderSub();
   else if (mode === 'car') renderCar();
+  else if (mode === 'leave') renderLeave();
   else if (mode === 'people') renderPeople();
   else if (mode === 'skin' || mode === 'manual') renderSkin();
   else if (mode === 'med') renderMed();
@@ -8004,11 +8404,12 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); try { mpAlertSync(); mpbSync(); carAlertSync(); } catch (e) { /* 무시 */ }
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
 setMode(startMode);
+try { rcInit(); } catch (e) { /* 공유 받기 오류가 앱을 막지 않게 */ }
 })();
 </script>
 </body>
