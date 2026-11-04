@@ -1648,10 +1648,11 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <h3 id="pp-d-title">사람</h3>
   <label class="pc-f">이름(별칭도 좋아요)<input id="pp-f-name" type="text"></label>
   <div class="pc-row2">
-    <label class="pc-f">그룹<select id="pp-f-group"></select></label>
+    <label class="pc-f">그룹<select id="pp-f-group" data-cb="1"></select><input id="pp-f-group-new" type="text" hidden maxlength="20" placeholder="새 그룹 이름 (예: CS센터)" autocomplete="off"></label>
     <label class="pc-f" id="pp-f-clubs-wrap">소속 모임 추가<select id="pp-f-clubsel"></select></label>
   </div>
   <div id="pp-f-clubs" class="pk-tags"></div>
+  <div id="pp-f-clubnew-wrap" class="pc-row2" hidden style="align-items:end"><label class="pc-f">새 모임 이름<input id="pp-f-clubnew" type="text" maxlength="20" placeholder="예: CS센터" autocomplete="off"></label><button type="button" class="pc-btn" data-pk="cnew">추가</button></div>
   <label class="pc-f">만나는 주기(일) — 이 사람만 따로 정하기<input id="pp-f-cycle" type="number" min="1" max="365" inputmode="numeric" placeholder="비우면 그룹 기본"><small id="pp-f-cycle-h" class="pc-hint" style="display:block;margin:3px 0 0"></small></label>
   <label class="pc-f">메모(선택)<textarea id="pp-f-memo" class="ml" rows="3"></textarea></label>
   <label class="pc-f">등록일(만난 적 없을 때 기준)<input id="pp-f-since" type="date"></label>
@@ -3477,9 +3478,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-04-a (경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-05-b (사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
+const APP_RECENT = ['인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5116,24 +5117,38 @@ function openPerson(id){
   const p = id ? personById(id) : null; if (id && !p) return;
   ppEditing = id || null;
   $('pp-d-title').textContent = p ? '사람 수정' : '사람 추가';
-  fillSelect($('pp-f-group'), Q.cfg.groups.map(g => ({ v: g, t: g })), p ? p.group : (ppFilter !== 'all' ? ppFilter : Q.cfg.groups[0]));
-  ppClubDraft = Q.clubs.filter(c => (p && c.pids.indexOf(p.id) >= 0) || (!p && ppClub === c.id)).map(c => c.id); ppClubRender(); $('pp-f-clubs-wrap').hidden = !Q.clubs.length;
+  fillSelect($('pp-f-group'), Q.cfg.groups.map(g => ({ v: g, t: g })).concat([{ v: '__new', t: '＋ 새 그룹 추가' }]), p ? p.group : (ppFilter !== 'all' ? ppFilter : Q.cfg.groups[0])); $('pp-f-group-new').hidden = true; $('pp-f-group-new').value = '';
+  ppClubDraft = Q.clubs.filter(c => (p && c.pids.indexOf(p.id) >= 0) || (!p && ppClub === c.id)).map(c => c.id); ppClubRender(); $('pp-f-clubs-wrap').hidden = false; $('pp-f-clubnew-wrap').hidden = true; $('pp-f-clubnew').value = '';
   $('pp-f-cycle').value = p && p.cycle ? p.cycle : ''; ppCycleHint();
   $('pp-f-nodue').checked = !!(p && p.nodue); $('pp-f-name').value = p ? p.name : ''; $('pp-f-memo').value = p ? p.memo : ''; $('pp-f-since').value = p && p.since ? p.since : todayStr();
   $('pp-d-delete').hidden = !p; $('pp-dlg').showModal();
 }
 let ppClubDraft = [];
-function ppCycleHint(){ const g = $('pp-f-group').value, d = Q.cfg.cycles[g] || 30; $('pp-f-cycle-h').textContent = '비우면 “' + g + '” 그룹 기본 ' + d + '일마다예요.'; }
+function ppCycleHint(){ const g = $('pp-f-group').value === '__new' ? ($('pp-f-group-new').value.trim() || '새 그룹') : $('pp-f-group').value, d = Q.cfg.cycles[g] || 30; $('pp-f-cycle-h').textContent = '비우면 “' + g + '” 그룹 기본 ' + d + '일마다예요.'; }
 function ppClubRender(){
   const left = Q.clubs.filter(c => ppClubDraft.indexOf(c.id) < 0).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
-  $('pp-f-clubsel').innerHTML = '<option value="">＋ 모임 선택 (' + left.length + '개)</option>' + left.map(c => '<option value="' + esc(c.id) + '">' + esc(c.name) + '</option>').join('');
-  $('pp-f-clubs').innerHTML = ppClubDraft.length ? ppClubDraft.map(id => { const c = Q.clubs.find(x => x.id === id); return c ? '<span class="pk-tag">👥 ' + esc(c.name) + '<button type="button" data-pk="cx" data-id="' + esc(id) + '" aria-label="빼기">✕</button></span>' : ''; }).join('') : '';
+  $('pp-f-clubsel').innerHTML = '<option value="">＋ 모임 선택 (' + left.length + '개)</option>' + left.map(c => '<option value="' + esc(c.id) + '">' + esc(c.name) + '</option>').join('') + '<option value="__newclub">＋ 새 모임 만들기</option>';
+  $('pp-f-clubs').innerHTML = ppClubDraft.length ? ppClubDraft.map(id => { const c = id.indexOf('new:') === 0 ? { name: id.slice(4) + ' (새 모임)' } : Q.clubs.find(x => x.id === id); return c ? '<span class="pk-tag">👥 ' + esc(c.name) + '<button type="button" data-pk="cx" data-id="' + esc(id) + '" aria-label="빼기">✕</button></span>' : ''; }).join('') : '';
+}
+function ppClubAddNew(){
+  const nm = $('pp-f-clubnew').value.trim(); if (!nm) return false;
+  const ex = Q.clubs.find(c => c.name.toLowerCase() === nm.toLowerCase()), id = ex ? ex.id : 'new:' + nm;
+  if (ppClubDraft.indexOf(id) < 0 && !ppClubDraft.some(x => x.toLowerCase() === id.toLowerCase())) ppClubDraft.push(id);
+  $('pp-f-clubnew').value = ''; $('pp-f-clubnew-wrap').hidden = true; ppClubRender(); return true;
 }
 function savePerson(){
+  if (!$('pp-f-clubnew-wrap').hidden) ppClubAddNew();
   const name = $('pp-f-name').value.trim(); if (!name) { toast('이름을 입력해 주세요.'); return; }
   const old = ppEditing ? personById(ppEditing) : null;
-  const d = { name, group: $('pp-f-group').value, cycle: (() => { const v = Math.round(Number($('pp-f-cycle').value)); return v > 0 ? Math.min(365, v) : ''; })(), prefs: old ? old.prefs : [], memo: $('pp-f-memo').value.trim(), since: Calc.validDate($('pp-f-since').value) || todayStr(), nodue: $('pp-f-nodue').checked, u: nowIso() };
+  let grp = $('pp-f-group').value;
+  if (grp === '__new') {
+    grp = $('pp-f-group-new').value.trim(); if (!grp) { toast('새 그룹 이름을 입력해 주세요.'); return; }
+    const same = Q.cfg.groups.find(g => g.toLowerCase() === grp.toLowerCase());
+    if (same) grp = same; else { Q.cfg.groups.push(grp); Q.cfg.cycles[grp] = 30; Q.cfg.u = nowIso(); }
+  }
+  const d = { name, group: grp, cycle: (() => { const v = Math.round(Number($('pp-f-cycle').value)); return v > 0 ? Math.min(365, v) : ''; })(), prefs: old ? old.prefs : [], memo: $('pp-f-memo').value.trim(), since: Calc.validDate($('pp-f-since').value) || todayStr(), nodue: $('pp-f-nodue').checked, u: nowIso() };
   let pid = ppEditing; if (ppEditing) Object.assign(personById(ppEditing), d); else { pid = uid('pp'); Q.people.push(Object.assign({ id: pid }, d)); }
+  { const t0 = nowIso(); ppClubDraft = ppClubDraft.map(id => { if (id.indexOf('new:') !== 0) return id; const nm = id.slice(4), ex = Q.clubs.find(c => c.name === nm); if (ex) return ex.id; const nc = { id: uid('cl'), name: nm, pids: [], u: t0 }; Q.clubs.push(nc); return nc.id; }); }
   { const pick = ppClubDraft.slice(), tt = nowIso();
     Q.clubs.forEach(c => { const has = c.pids.indexOf(pid) >= 0, want = pick.indexOf(c.id) >= 0; if (has && !want) { c.pids = c.pids.filter(x => x !== pid); c.u = tt; } else if (!has && want) { c.pids.push(pid); c.u = tt; } }); }
   qSave(); changed(); $('pp-dlg').close(); toast('저장했어요.'); renderAll();
@@ -8302,7 +8317,7 @@ $('cl-flt-club').addEventListener('change', e => { clFilter.club = e.target.valu
 $('cl-flt-sort').addEventListener('change', e => { clFilter.sort = e.target.value; renderPeople(); });
 pkBind('mt-dlg', 'mt'); pkBind('cl-dlg', 'cl');
 $('mt-f-type').addEventListener('change', mtMoreRender);
-$('pp-f-group').addEventListener('change', ppCycleHint);
+$('pp-f-group').addEventListener('change', ppCycleHint); $('pp-f-group-new').addEventListener('input', ppCycleHint);
 $('mt-dlg').addEventListener('click', e => { const b = e.target.closest('[data-pk="more"]'); if (b) { const t = b.dataset.t, i = mtMore.indexOf(t); if (i >= 0) mtMore.splice(i, 1); else mtMore.push(t); mtMoreRender(); return; } if (e.target.closest('[data-pp="bd-open"]') && mtEditing) mtBdOpen(mtEditing); });
 $('mt-bd-dlg').addEventListener('click', e => { const el = e.target.closest('[data-pp]'); if (!el) return; const a = el.dataset.pp; if (a === 'bd-cancel') $('mt-bd-dlg').close(); else if (a === 'bd-save') mtBdSave(); else if (a === 'bd-solo') mtBdSolo(); });
 $('mt-bd-dlg').addEventListener('change', mtBdCalc);
@@ -8310,7 +8325,9 @@ $('pp-bd-sug').addEventListener('click', e => { const el = e.target.closest('[da
   if (a === 'bd-yes') { const ids = el.dataset.ids.split(','); mtBdApply(ids[0], ids.slice(1)); toast('한 번의 만남으로 묶었어요.'); renderAll(); }
   else if (a === 'bd-no') { const no = mtNoBd(); no.push(el.dataset.ids.split(',').sort().join(',')); try { localStorage.setItem(MT_NOBD, JSON.stringify(no)); } catch (er) { /* 무시 */ } renderAll(); }
   else if (a === 'bd-all') { const sg = mtBdSuggest().slice(0, 6); sg.forEach(l => mtBdApply(l[0].id, l.slice(1).map(x => x.id))); toast(sg.length + '건을 묶었어요.'); renderAll(); } });
-$('pp-dlg').addEventListener('change', e => { if (e.target.id !== 'pp-f-clubsel') return; const v = e.target.value; if (v && ppClubDraft.indexOf(v) < 0) ppClubDraft.push(v); ppClubRender(); });
+$('pp-dlg').addEventListener('change', e => { if (e.target.id !== 'pp-f-clubsel') return; const v = e.target.value; if (v === '__newclub') { ppClubRender(); $('pp-f-clubnew-wrap').hidden = false; $('pp-f-clubnew').focus(); return; } if (v && ppClubDraft.indexOf(v) < 0) ppClubDraft.push(v); ppClubRender(); });
+$('pp-dlg').addEventListener('click', e => { if (e.target.closest('[data-pk="cnew"]')) { if (!ppClubAddNew()) toast('새 모임 이름을 입력해 주세요.'); } });
+$('pp-f-clubnew').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); ppClubAddNew(); } });
 $('pp-dlg').addEventListener('click', e => { const x = e.target.closest('[data-pk="cx"]'); if (!x) return; ppClubDraft = ppClubDraft.filter(id => id !== x.dataset.id); ppClubRender(); });
 $('mt-f-st').addEventListener('change', mtStUI);
 $('mt-f-date').addEventListener('change', () => { const d = Calc.validDate($('mt-f-date').value); if (d && d > todayStr() && $('mt-f-st').value === 'done') { $('mt-f-st').value = 'plan'; mtStUI(); } });
