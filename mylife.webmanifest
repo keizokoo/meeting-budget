@@ -31,5 +31,55 @@
       "text": "sh_text",
       "url": "sh_url"
     }
-  }
+  },
+  "shortcuts": [
+    {
+      "name": "회의비 입력",
+      "short_name": "회의비",
+      "url": "./?go=exp",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "가격 체크",
+      "short_name": "가격",
+      "url": "./?go=price",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "구매 기록",
+      "short_name": "구매",
+      "url": "./?go=buy",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "만남 기록",
+      "short_name": "만남",
+      "url": "./?go=meet",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
 }
