@@ -673,6 +673,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   #qk-dlg, #qk-sk-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,440px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); } #qk-dlg::backdrop, #qk-sk-dlg::backdrop{ background:rgba(0,0,0,.45); } #qk-dlg h3, #qk-sk-dlg h3{ margin:0 0 8px; font-size:16px; }
   #qk-dlg .pc-f input, #qk-dlg .pc-f select{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:9px 10px; width:100%; box-sizing:border-box; }
   .td-qk{ display:grid; grid-template-columns:1fr 1fr; gap:8px; } .td-qk .pc-btn{ padding:12px 8px; }
+  .pk-newp{ display:flex; gap:6px; margin:6px 0 2px; align-items:center; } .pk-newp input{ flex:1 1 0; min-width:0; } .pk-newp select{ flex:0 0 auto; max-width:34%; }
   .td-rvnav{ display:flex; gap:6px; flex-wrap:wrap; margin:2px 0 6px; }
   .td-rv-h, .td-rv-r{ display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:6px; align-items:baseline; padding:7px 0; font-size:13px; } .td-rv-r{ border-top:1px solid var(--line); } .td-rv-r span small{ display:block; font-size:11px; color:var(--ink2); } .td-rv-r b{ text-align:right; } .td-rv-h b{ text-align:right; font-size:11px; color:var(--ink2); } .td-rv-r b.mute{ color:var(--ink2); font-weight:500; }
   .td-more{ margin-top:8px; } .td-more summary{ font-size:12px; color:var(--muted,#888); cursor:pointer; }
@@ -1110,7 +1111,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <section class="pc-sec" id="pp-log">
     <div class="pc-card">
       <div class="pc-headrow"><h3>만남 이력</h3><span class="sh-hbtns"><button class="pc-btn small" data-pp="add-plan">+ 예약</button><button class="pc-btn small primary" data-pp="add-meet">+ 만남 기록</button></span></div>
-      <div class="pc-row2 pc-filterrow"><label class="pc-f">상태<select id="lg-flt-st"><option value="all">전체</option><option value="plan">예약(앞으로)</option><option value="done">만남 완료</option></select></label><label class="pc-f">모임<select id="lg-flt-club"></select></label></div>
+      <div class="pc-row2 pc-filterrow"><label class="pc-f">상태<select id="lg-flt-st"><option value="all">전체</option><option value="plan">예약(앞으로)</option><option value="done">만남 완료</option><option value="cancel">취소</option></select></label><label class="pc-f">모임<select id="lg-flt-club"></select></label></div>
       <div class="pc-row2 pc-filterrow"><label class="pc-f">사람<select id="lg-flt-person"></select></label><label class="pc-f">방식<select id="lg-flt-type"></select></label></div>
       <div id="pp-bd-sug"></div>
       <div id="pp-meets"></div>
@@ -1615,7 +1616,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
 <dialog id="fe-dlg">
   <h3 id="fe-d-title">경조사 기록</h3>
   <label class="pc-f">누구<select id="fe-who"></select></label>
-  <label class="pc-f" id="fe-name-wrap">이름(직접 입력)<input id="fe-name" type="text" placeholder="예: 이○○"></label>
+  <label class="pc-f" id="fe-name-wrap"><span id="fe-name-lb">이름(직접 입력)</span><input id="fe-name" type="text" placeholder="예: 이○○"></label>
+  <label class="pc-f" id="fe-grp-wrap" hidden>인맥 그룹<select id="fe-newgrp"></select></label>
   <div class="pc-row2"><label class="pc-f">종류<select id="fe-kind"></select></label><label class="pc-f">구분<select id="fe-dir"><option value="give">낸 돈</option><option value="recv">받은 돈</option></select></label></div>
   <div class="pc-row2"><label class="pc-f">금액(원)<input id="fe-amt" type="number" min="0" step="10000" inputmode="numeric"></label><label class="pc-f">날짜<input id="fe-date" type="date"></label></div>
   <label class="pc-f">메모(선택)<input id="fe-memo" type="text" placeholder="예: 신랑 측"></label>
@@ -1675,6 +1677,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <label class="pc-f">모임 이름<input id="cl-f-name" type="text" placeholder="예: 79모임"></label>
   <div class="pc-f">인원 선택
     <div class="pc-row2"><select id="cl-f-gsel" aria-label="그룹 선택"></select><select id="cl-f-psel" aria-label="사람 선택"></select></div>
+    <div class="pk-newp"><input id="cl-f-newname" type="text" maxlength="20" placeholder="＋ 새 사람 이름 (목록에 없을 때)" autocomplete="off" aria-label="새 사람 이름"><select id="cl-f-newgrp" aria-label="새 사람 그룹"></select><button type="button" class="pc-btn small" data-pk="newp">추가</button></div>
     <div id="cl-f-people" class="pk-tags"></div>
   </div>
   <label class="pc-f">새 사람 바로 추가(이름을 쉼표로 구분, 이미 있는 이름은 그대로 연결)<input id="cl-f-new" type="text" placeholder="예: 이종학, 이정훈"></label>
@@ -1690,13 +1693,14 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     <label class="pc-f">시간(선택)<input id="mt-f-time" type="time"></label>
   </div>
   <div class="pc-row2">
-    <label class="pc-f">상태<select id="mt-f-st"><option value="done">만남 완료</option><option value="plan">예약(예정)</option></select></label>
+    <label class="pc-f">상태<select id="mt-f-st"><option value="done">만남 완료</option><option value="plan">예약(예정)</option><option value="cancel">약속 취소됨</option></select></label>
     <label class="pc-f">방식<select id="mt-f-type"></select></label>
   </div>
   <div class="pc-f" id="mt-f-more-wrap">같은 날 함께한 방식 추가(선택) — 밥+커피처럼 한 번에 만났다면 여기서 고르세요<div id="mt-f-more" class="pk-tags" style="margin-top:6px"></div></div>
   <div class="pc-f">함께할 사람
     <div id="mt-f-clubchips" class="pk-tags" style="margin-bottom:6px" aria-label="모임으로 한 번에 추가"></div>
     <div class="pc-row2" style="margin-top:6px"><select id="mt-f-gsel" aria-label="그룹 선택"></select><select id="mt-f-psel" aria-label="사람 선택"></select></div>
+    <div class="pk-newp"><input id="mt-f-newname" type="text" maxlength="20" placeholder="＋ 새 사람 이름 (목록에 없을 때)" autocomplete="off" aria-label="새 사람 이름"><select id="mt-f-newgrp" aria-label="새 사람 그룹"></select><button type="button" class="pc-btn small" data-pk="newp">추가</button></div>
     <div id="mt-f-people" class="pk-tags"></div>
   </div>
   <label class="pc-f">장소(선택)<input id="mt-f-place" type="text"></label>
@@ -3420,7 +3424,9 @@ const Life = (() => {
   function normType(t){ t = String(t == null ? '' : t).trim(); return TYPE_MAP[t] || (t || '커피'); }
   function cycleOf(p, cfg){ const c = Number(p.cycle); if (c > 0) return c; const g = cfg && cfg.cycles && Number(cfg.cycles[p.group]); return g > 0 ? g : 30; }
   const isPlan = m => !!m && m.st === 'plan';
-  function lastMeet(p, meets){ let l = ''; meets.forEach(m => { if (!isPlan(m) && (m.pids || []).indexOf(p.id) >= 0 && m.date > l) l = m.date; }); return l; }
+  const isCancel = m => !!m && m.st === 'cancel';
+  const isMet = m => !!m && m.st !== 'plan' && m.st !== 'cancel';   // 실제로 만난 기록만 (예약·취소 제외)
+  function lastMeet(p, meets){ let l = ''; meets.forEach(m => { if (isMet(m) && (m.pids || []).indexOf(p.id) >= 0 && m.date > l) l = m.date; }); return l; }
   const cmpPlan = (a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : ((a.time || '') < (b.time || '') ? -1 : (a.time || '') > (b.time || '') ? 1 : 0));
   function upcomingPlans(meets, today){ return meets.filter(m => isPlan(m) && m.date >= today).sort(cmpPlan); }
   function overduePlans(meets, today){ return meets.filter(m => isPlan(m) && m.date < today).sort(cmpPlan); }
@@ -3440,7 +3446,7 @@ const Life = (() => {
   const typesOf = m => { const a = [m.type].concat(Array.isArray(m.more) ? m.more : []).filter(Boolean); return a.filter((x, i) => a.indexOf(x) === i); };
   function visits(meets, from, to){
     const g = {}, out = [];
-    meets.filter(m => !isPlan(m) && (!from || m.date >= from) && (!to || m.date <= to)).forEach(m => {
+    meets.filter(m => isMet(m) && (!from || m.date >= from) && (!to || m.date <= to)).forEach(m => {
       const k = m.vg || m.id; let v = g[k];
       if (!v) { v = g[k] = { key: k, ids: [], date: m.date, pids: [], types: [], energy: '', mem: [] }; out.push(v); }
       v.ids.push(m.id); v.mem.push(m); if (m.date < v.date) v.date = m.date;
@@ -3462,12 +3468,12 @@ const Life = (() => {
   function typeShares(meets, from, to){ const c = {}, vs = visits(meets, from, to); vs.forEach(v => v.types.forEach(t => { c[t] = (c[t] || 0) + 1; })); return { counts: c, total: vs.length }; }
   function energyShares(meets, from, to){ const c = { charge: 0, normal: 0, drain: 0 }; visits(meets, from, to).forEach(v => { if (c[v.energy] !== undefined) c[v.energy]++; }); return c; }
   function avgInterval(p, meets){
-    const ds = meets.filter(m => !isPlan(m) && (m.pids || []).indexOf(p.id) >= 0).map(m => m.date).sort().filter((d, i, a) => !i || d !== a[i - 1]);
+    const ds = meets.filter(m => isMet(m) && (m.pids || []).indexOf(p.id) >= 0).map(m => m.date).sort().filter((d, i, a) => !i || d !== a[i - 1]);
     if (ds.length < 2) return null;
     let s = 0; for (let i = 1; i < ds.length; i++) s += dd(ds[i - 1], ds[i]);
     return s / (ds.length - 1);
   }
-  return { dd, partOf, fmtMan, teeLabel, partPrices, lastDay, amountAt, payMap, effAmount, discountOf, netOf, monthTotals, dueDate, upcoming, TYPES, GROUPS, DEFAULT_CFG, normType, cycleOf, lastMeet, isPlan, upcomingPlans, overduePlans, status, dueList, monthCount, typeShares, energyShares, energyBy, visits, typesOf, avgInterval };
+  return { dd, partOf, fmtMan, teeLabel, partPrices, lastDay, amountAt, payMap, effAmount, discountOf, netOf, monthTotals, dueDate, upcoming, TYPES, GROUPS, DEFAULT_CFG, normType, cycleOf, lastMeet, isPlan, isCancel, isMet, upcomingPlans, overduePlans, status, dueList, monthCount, typeShares, energyShares, energyBy, visits, typesOf, avgInterval };
 })();
 // </LIFECALC>
 const LIFE_BASE = ['커피', '점심식사', '저녁식사', '골프'];
@@ -3479,9 +3485,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-05-c (홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-06-a (만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
+const APP_RECENT = ['만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4489,18 +4495,21 @@ function feRender(){
   });
   box.innerHTML = h;
 }
-function feWhoUI(){ $('fe-name-wrap').hidden = !!$('fe-who').value; }
+function feWhoUI(){ const v = $('fe-who').value, np = v === '__newp'; $('fe-name-wrap').hidden = !!v && !np; $('fe-grp-wrap').hidden = !np; $('fe-name-lb').textContent = np ? '새 사람 이름 (인맥에도 등록돼요)' : '이름(직접 입력)'; }
 function feOpen(id, k){
   const r = id ? FE.items.find(x => x.id === id) : null; if (id && !r) return; feEditing = id || null;
   const ppl = Q.people.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko'));
-  fillSelect($('fe-who'), [{ v: '', t: '(직접 입력)' }].concat(ppl.map(p => ({ v: p.id, t: p.name }))), r ? r.pid : (k && k.indexOf('p:') === 0 ? k.slice(2) : ''));
+  fillSelect($('fe-newgrp'), Q.cfg.groups.map(g => ({ v: g, t: g })), Q.cfg.groups[0]);
+  fillSelect($('fe-who'), [{ v: '', t: '(직접 입력)' }].concat(ppl.map(p => ({ v: p.id, t: p.name }))).concat([{ v: '__newp', t: '＋ 새 사람 등록 (인맥에 추가)' }]), r ? r.pid : (k && k.indexOf('p:') === 0 ? k.slice(2) : ''));
   $('fe-name').value = r ? r.name : (k && k.indexOf('n:') === 0 ? k.slice(2) : '');
   $('fe-kind').innerHTML = FE_KINDS.map(x => '<option>' + x + '</option>').join(''); $('fe-kind').value = r ? r.kind : '결혼';
   $('fe-dir').value = r ? r.dir : 'give'; $('fe-amt').value = r && r.amount !== '' ? r.amount : ''; $('fe-date').value = r ? r.date : todayStr(); $('fe-memo').value = r ? r.memo : '';
   feWhoUI(); $('fe-del').hidden = !r; $('fe-d-title').textContent = r ? '경조사 기록 수정' : '경조사 기록'; $('fe-dlg').showModal();
 }
 function feSaveRec(){
-  const pid = $('fe-who').value, p = pid ? Q.people.find(x => x.id === pid) : null, name = p ? p.name : $('fe-name').value.trim();
+  let pid = $('fe-who').value;
+  if (pid === '__newp') { const r = ppQuickAdd($('fe-name').value, $('fe-newgrp').value); if (!r) { toast('새 사람 이름을 입력해 주세요.'); return; } pid = r.p.id; }
+  const p = pid ? Q.people.find(x => x.id === pid) : null, name = p ? p.name : $('fe-name').value.trim();
   if (!name) { toast('누구인지 선택하거나 이름을 입력해 주세요.'); return; }
   const amt = $('fe-amt').value === '' ? NaN : Number($('fe-amt').value); if (!(amt >= 0)) { toast('금액을 입력해 주세요.'); return; }
   const date = $('fe-date').value; if (!date) { toast('날짜를 입력해 주세요.'); return; }
@@ -4948,7 +4957,7 @@ function qNorm(o){
   if (!groups.length) groups = Life.GROUPS.slice();
   const people = (Array.isArray(o.people) ? o.people : []).filter(p => p && p.id && p.name).map(p => { const g = String(p.group == null ? '' : p.group).trim() || groups[0]; if (groups.indexOf(g) < 0) groups.push(g);
     return { id: String(p.id), name: String(p.name), group: g, cycle: Number(p.cycle) > 0 ? Number(p.cycle) : '', prefs: (Array.isArray(p.prefs) ? p.prefs : []).filter(x => Life.TYPES.indexOf(x) >= 0), memo: String(p.memo || ''), since: Calc.validDate(p.since) || '', snz: Calc.validDate(p.snz) || '', nodue: p.nodue === true, u: String(p.u || '') }; });
-  const meets = (Array.isArray(o.meets) ? o.meets : []).filter(m => m && m.id && Calc.validDate(m.date)).map(m => ({ id: String(m.id), date: m.date, pids: (Array.isArray(m.pids) ? m.pids : []).map(String), type: Life.normType(m.type), cid: String(m.cid || ''), xid: String(m.xid || ''), vg: String(m.vg || ''), more: (Array.isArray(m.more) ? m.more : []).map(x => Life.normType(x)).filter((x, i, a) => x && x !== Life.normType(m.type) && a.indexOf(x) === i), memo: String(m.memo || ''), energy: ENERGY[m.energy] ? m.energy : '', st: (m.st === 'plan' || m.st === 'done') ? m.st : (m.date > todayStr() ? 'plan' : 'done'), time: /^\d{2}:\d{2}$/.test(String(m.time || '')) ? String(m.time) : '', place: String(m.place || ''), u: String(m.u || '') }));
+  const meets = (Array.isArray(o.meets) ? o.meets : []).filter(m => m && m.id && Calc.validDate(m.date)).map(m => ({ id: String(m.id), date: m.date, pids: (Array.isArray(m.pids) ? m.pids : []).map(String), type: Life.normType(m.type), cid: String(m.cid || ''), xid: String(m.xid || ''), vg: String(m.vg || ''), more: (Array.isArray(m.more) ? m.more : []).map(x => Life.normType(x)).filter((x, i, a) => x && x !== Life.normType(m.type) && a.indexOf(x) === i), memo: String(m.memo || ''), energy: ENERGY[m.energy] ? m.energy : '', st: (m.st === 'plan' || m.st === 'done' || m.st === 'cancel') ? m.st : (m.date > todayStr() ? 'plan' : 'done'), time: /^\d{2}:\d{2}$/.test(String(m.time || '')) ? String(m.time) : '', place: String(m.place || ''), u: String(m.u || '') }));
   const clubs = (Array.isArray(o.clubs) ? o.clubs : []).filter(x => x && x.id && String(x.name || '').trim()).map(x => { const ps = (Array.isArray(x.pids) ? x.pids : []).map(String); return { id: String(x.id), name: String(x.name).trim(), pids: ps.filter((v, i) => ps.indexOf(v) === i), u: String(x.u || '') }; });
   const cy = {}; groups.forEach(g => { cy[g] = Number(c.cycles && c.cycles[g]) > 0 ? Number(c.cycles[g]) : (Life.DEFAULT_CFG.cycles[g] || 30); });
   return { people, meets, clubs, cfg: { target: Number(c.target) >= 0 && c.target !== '' && c.target != null ? Math.round(Number(c.target)) : 4, groups, cycles: cy, cal: c.cal === true, u: String(c.u || '') }, del: cleanDel(o.del) };
@@ -4966,7 +4975,7 @@ const clubSummary = id => { const ns = Q.clubs.filter(c => c.pids.indexOf(id) >=
 function planRow(m, t, overdue){
   const diff = Life.dd(t, m.date), dl = overdue ? Math.abs(diff) + '일 지남' : (diff === 0 ? '오늘' : 'D-' + diff);
   return '<div class="pp-row" data-pp="edit-meet" data-id="' + esc(m.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(mdLabel(m.date)) + (m.time ? ' ' + esc(m.time) : '') + ' · ' + esc(m.type) + '<span class="pp-st ' + (overdue ? 'over' : 'soon') + '" style="margin-left:6px">' + dl + '</span></div>' +
-    '<div class="pp-meta">' + (clubLabel(m) ? esc(clubLabel(m)) + ' · ' : '') + esc(meetNames(m)) + (m.place ? ' · 📍' + esc(m.place) : '') + (m.memo ? ' · ' + esc(m.memo) : '') + '</div></div><button class="pc-btn small" data-pp="plan-done" data-id="' + esc(m.id) + '">만났어요</button></div>';
+    '<div class="pp-meta">' + (clubLabel(m) ? esc(clubLabel(m)) + ' · ' : '') + esc(meetNames(m)) + (m.place ? ' · 📍' + esc(m.place) : '') + (m.memo ? ' · ' + esc(m.memo) : '') + '</div></div><button class="pc-btn small" data-pp="plan-done" data-id="' + esc(m.id) + '">만났어요</button><button class="pc-btn small" data-pp="plan-cancel" data-id="' + esc(m.id) + '">취소됐어요</button></div>';
 }
 let lgFilter = { st: 'all', club: 'all', person: 'all', type: 'all' }, clFilter = { club: 'all', sort: 'name' }, mtCid = '', mtXid = '';
 const clubLabel = m => { const c = m.cid && Q.clubs.find(x => x.id === m.cid); return c ? '👥 ' + c.name : ''; };
@@ -5011,7 +5020,7 @@ function renderPeople(){
     clFilter.club = selOpts($('cl-flt-club'), [{ v: 'all', t: '모임 전체 (' + Q.clubs.length + '개)' }].concat(Q.clubs.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko')).map(c => ({ v: c.id, t: c.name + ' (' + c.pids.filter(personById).length + '명)' }))), clFilter.club); $('cl-flt-sort').value = clFilter.sort;
     const yr = t.slice(0, 4);
     const rows = Q.clubs.filter(c => clFilter.club === 'all' || c.id === clFilter.club).map(c => {
-      const mem = c.pids.map(personById).filter(Boolean), need = Math.min(2, mem.length), ms = Q.meets.filter(m => !Life.isPlan(m) && need > 0 && m.pids.filter(id => c.pids.indexOf(id) >= 0).length >= need), last = ms.reduce((a, m) => m.date > a ? m.date : a, '');
+      const mem = c.pids.map(personById).filter(Boolean), need = Math.min(2, mem.length), ms = Q.meets.filter(m => Life.isMet(m) && need > 0 && m.pids.filter(id => c.pids.indexOf(id) >= 0).length >= need), last = ms.reduce((a, m) => m.date > a ? m.date : a, '');
       const nextP = Q.meets.filter(m => Life.isPlan(m) && m.date >= t && need > 0 && m.pids.filter(id => c.pids.indexOf(id) >= 0).length >= need).map(m => m.date).sort()[0] || '';
       return { c, mem, ms, last, nextP };
     });
@@ -5028,22 +5037,36 @@ function renderPeople(){
     lgFilter.type = selOpts($('lg-flt-type'), [{ v: 'all', t: '방식 전체' }].concat(mtAllTypes().map(k => ({ v: k, t: k }))), lgFilter.type);
     $('lg-flt-st').value = lgFilter.st;
     const cmem = lgFilter.club === 'all' ? null : (Q.clubs.find(c => c.id === lgFilter.club) || { pids: [] }).pids;
-    const ms = Q.meets.filter(m => (lgFilter.st === 'all' || (lgFilter.st === 'plan') === Life.isPlan(m)) && (!cmem || m.pids.some(id => cmem.indexOf(id) >= 0)) && (lgFilter.person === 'all' || m.pids.indexOf(lgFilter.person) >= 0) && (lgFilter.type === 'all' || Life.typesOf(m).indexOf(lgFilter.type) >= 0))
+    const ms = Q.meets.filter(m => (lgFilter.st === 'all' || (lgFilter.st === 'plan' ? Life.isPlan(m) : lgFilter.st === 'cancel' ? Life.isCancel(m) : Life.isMet(m))) && (!cmem || m.pids.some(id => cmem.indexOf(id) >= 0)) && (lgFilter.person === 'all' || m.pids.indexOf(lgFilter.person) >= 0) && (lgFilter.type === 'all' || Life.typesOf(m).indexOf(lgFilter.type) >= 0))
       .sort((a, b) => a.date < b.date ? 1 : (a.date > b.date ? -1 : (String(a.vg || a.id) < String(b.vg || b.id) ? -1 : 1)));
     const vgN = {}; Q.meets.forEach(m => { if (m.vg) vgN[m.vg] = (vgN[m.vg] || 0) + 1; });
     $('pp-bd-sug').innerHTML = mtBdSugHtml();
-    const dn = Q.meets.filter(m => !Life.isPlan(m)).length, vn = Life.visits(Q.meets).length;
+    const dn = Q.meets.filter(m => Life.isMet(m)).length, vn = Life.visits(Q.meets).length;
     $('pp-meets').innerHTML = (dn !== vn ? '<p class="pc-hint" style="margin:4px 0">만남 완료 기록 ' + dn + '건 = <b>' + vn + '번</b>으로 세요 (묶은 기록 반영)</p>' : '') + (ms.length ? ms.map(m => { const plan = Life.isPlan(m), over = plan && m.date < t;
-      return '<div class="pp-row' + (m.vg ? ' bd' : '') + '" data-pp="edit-meet" data-id="' + esc(m.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(m.date.slice(5).replace('-', '/')) + (m.time ? ' ' + esc(m.time) : '') + ' · ' + (m.vg ? '🔗 ' : '') + esc(mtTypeLabel(m)) + (plan ? '<span class="pp-st ' + (over ? 'over' : 'soon') + '" style="margin-left:6px">' + (over ? '확인 필요' : '예약') + '</span>' : '') + (m.vg ? '<span class="pp-st soon" style="margin-left:6px">한 번의 만남 ' + vgN[m.vg] + '건</span>' : '') + '<span class="pp-tag">' + (clubLabel(m) ? esc(clubLabel(m)) + ' · ' : '') + esc(meetNames(m)) + '</span></div>' +
+      return '<div class="pp-row' + (m.vg ? ' bd' : '') + '" data-pp="edit-meet" data-id="' + esc(m.id) + '" tabindex="0"><div class="pp-info"><div class="pp-name">' + esc(m.date.slice(5).replace('-', '/')) + (m.time ? ' ' + esc(m.time) : '') + ' · ' + (m.vg ? '🔗 ' : '') + esc(mtTypeLabel(m)) + (plan ? '<span class="pp-st ' + (over ? 'over' : 'soon') + '" style="margin-left:6px">' + (over ? '확인 필요' : '예약') + '</span>' : Life.isCancel(m) ? '<span class="pp-st" style="margin-left:6px">취소</span>' : '') + (m.vg ? '<span class="pp-st soon" style="margin-left:6px">한 번의 만남 ' + vgN[m.vg] + '건</span>' : '') + '<span class="pp-tag">' + (clubLabel(m) ? esc(clubLabel(m)) + ' · ' : '') + esc(meetNames(m)) + '</span></div>' +
         (m.memo || m.energy || m.place ? '<div class="pp-meta">' + [m.place ? '📍' + esc(m.place) : '', esc(m.memo), m.energy ? '에너지 ' + ENERGY[m.energy] : ''].filter(Boolean).join(' · ') + '</div>' : '') + '</div>' +
-        (plan ? '<button class="pc-btn small" data-pp="plan-done" data-id="' + esc(m.id) + '">만났어요</button>' : '') + '</div>'; }).join('') : '<p class="pc-hint">' + (Q.meets.length ? '조건에 맞는 기록이 없어요.' : '아직 만남 기록이 없어요. “+ 만남 기록”이나 사람 카드의 “만났어요”를 눌러 보세요.') + '</p>');
+        (plan ? '<button class="pc-btn small" data-pp="plan-done" data-id="' + esc(m.id) + '">만났어요</button><button class="pc-btn small" data-pp="plan-cancel" data-id="' + esc(m.id) + '">취소됐어요</button>' : '') + '</div>'; }).join('') : '<p class="pc-hint">' + (Q.meets.length ? '조건에 맞는 기록이 없어요.' : '아직 만남 기록이 없어요. “+ 만남 기록”이나 사람 카드의 “만났어요”를 눌러 보세요.') + '</p>');
   }
 }
 /* ---- 사람·모임 선택 풀다운(만남/예약 · 모임 팝업 공용) ---- */
 const pkDraft = { mt: [], cl: [] };
+function ppQuickAdd(name, group){   // 이름·그룹으로 사람을 바로 만들어요 (같은 이름이 있으면 그 사람을 돌려줘요)
+  name = String(name || '').trim(); if (!name) return null;
+  const ex = Q.people.find(p => p.name.replace(/\s/g, '').toLowerCase() === name.replace(/\s/g, '').toLowerCase()); if (ex) return { p: ex, made: false };
+  const g = Q.cfg.groups.indexOf(group) >= 0 ? group : Q.cfg.groups[0], t = nowIso();
+  const p = { id: uid('pp'), name, group: g, cycle: '', prefs: [], memo: '', since: todayStr(), nodue: false, u: t };
+  Q.people.push(p); qSave(); changed(); return { p, made: true };
+}
+function pkAddNew(k){
+  const inp = $(k + '-f-newname'), r = ppQuickAdd(inp.value, $(k + '-f-newgrp').value);
+  if (!r) { toast('새 사람 이름을 입력해 주세요.'); return; }
+  if (pkDraft[k].indexOf(r.p.id) < 0) pkDraft[k].push(r.p.id);
+  inp.value = ''; pkRender(k); try { renderPeople(); } catch (e) { /* 무시 */ }
+  toast(r.made ? '“' + r.p.name + '”을(를) ' + r.p.group + ' 그룹에 새로 등록하고 선택했어요.' : '“' + r.p.name + '”은(는) 이미 있는 사람이라 선택만 했어요.');
+}
 function pkInit(k, ids){
   pkDraft[k] = (ids || []).filter(personById).filter((v, i, a) => a.indexOf(v) === i);
-  fillSelect($(k + '-f-gsel'), [{ v: 'all', t: '그룹 전체' }].concat(Q.cfg.groups.map(g => ({ v: g, t: g }))), 'all'); pkRender(k);
+  fillSelect($(k + '-f-gsel'), [{ v: 'all', t: '그룹 전체' }].concat(Q.cfg.groups.map(g => ({ v: g, t: g }))), 'all'); fillSelect($(k + '-f-newgrp'), Q.cfg.groups.map(g => ({ v: g, t: g })), Q.cfg.groups[0]); $(k + '-f-newname').value = ''; pkRender(k);
 }
 function pkRender(k){
   const d = pkDraft[k], g = $(k + '-f-gsel').value || 'all';
@@ -5054,10 +5077,12 @@ function pkRender(k){
 function pkBind(dlgId, k){
   const dlg = $(dlgId);
   const onSel = e => {
-    if (e.target.id === k + '-f-gsel') pkRender(k);
+    if (e.target.id === k + '-f-gsel') { pkRender(k); if (e.target.value !== 'all') $(k + '-f-newgrp').value = e.target.value; }
     else if (e.target.id === k + '-f-psel') { const v = e.target.value; if (v && personById(v) && pkDraft[k].indexOf(v) < 0) pkDraft[k].push(v); pkRender(k); }
   };
   dlg.addEventListener('change', onSel); dlg.addEventListener('input', onSel);
+  dlg.addEventListener('click', e => { if (e.target.closest('[data-pk="newp"]')) pkAddNew(k); });
+  dlg.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === k + '-f-newname') { e.preventDefault(); pkAddNew(k); } });
   dlg.addEventListener('click', e => { const x = e.target.closest('[data-pk="x"]'); if (!x) return; pkDraft[k] = pkDraft[k].filter(id => id !== x.dataset.id); pkRender(k); });
 }
 function mtClubChips(cl){
@@ -5071,7 +5096,7 @@ function mtMoreRender(){
   $('mt-f-more').innerHTML = mtAllTypes().filter(t => t !== pr).map(t => '<button type="button" class="mt-chip' + (mtMore.indexOf(t) >= 0 ? ' on' : '') + '" data-pk="more" data-t="' + esc(t) + '">' + (mtMore.indexOf(t) >= 0 ? '✓ ' : '+ ') + esc(t) + '</button>').join('');
 }
 function mtBdNote(m){
-  const box = $('mt-f-bd'); if (!m || Life.isPlan(m)) { box.hidden = true; return; }
+  const box = $('mt-f-bd'); if (!m || !Life.isMet(m)) { box.hidden = true; return; }
   box.hidden = false;
   const mem = m.vg ? Q.meets.filter(x => x.vg === m.vg) : [];
   $('mt-f-bd-txt').innerHTML = mem.length > 1 ? '🔗 <b>한 번의 만남</b>으로 묶인 기록 ' + mem.length + '건 (' + esc(Life.visits(mem)[0].types.join(' + ')) + ') — 횟수와 기분은 1번으로 세요' : '같은 날 밥·커피를 따로 적었다면 하나로 묶어 1번으로 셀 수 있어요.';
@@ -5079,9 +5104,9 @@ function mtBdNote(m){
 function mtTypeLabel(m){ return Life.typesOf(m).join(' + '); }
 let mtBdBase = '';
 function mtBdOpen(id){
-  const m = Q.meets.find(x => x.id === id); if (!m || Life.isPlan(m)) return;
+  const m = Q.meets.find(x => x.id === id); if (!m || !Life.isMet(m)) return;
   mtBdBase = id; $('mt-dlg').close();
-  const cand = Q.meets.filter(x => x.id !== id && !Life.isPlan(x) && x.date === m.date).sort((a, b) => String(a.time || '').localeCompare(String(b.time || '')));
+  const cand = Q.meets.filter(x => x.id !== id && Life.isMet(x) && x.date === m.date).sort((a, b) => String(a.time || '').localeCompare(String(b.time || '')));
   $('mt-bd-info').textContent = mdLabel(m.date) + ' · ' + mtTypeLabel(m) + ' · ' + meetNames(m) + ' 와(과) 한 번으로 묶을 기록을 고르세요.';
   $('mt-bd-list').innerHTML = cand.length ? cand.map(x => { const same = m.vg && x.vg === m.vg, ov = x.pids.some(p => m.pids.indexOf(p) >= 0);
     return '<label class="pk-opt" style="display:flex;gap:8px;align-items:flex-start;padding:6px 0"><input type="checkbox" data-bd="' + esc(x.id) + '"' + (same || (!m.vg && ov && !x.vg) ? ' checked' : '') + '><span><b>' + esc(mtTypeLabel(x)) + '</b>' + (x.time ? ' ' + esc(x.time) : '') + ' · ' + esc(meetNames(x)) + (x.place ? ' · 📍' + esc(x.place) : '') + (x.energy ? ' · ' + ENERGY[x.energy] : '') + (x.vg && !same ? ' <i>(다른 묶음에 들어 있어요)</i>' : '') + '</span></label>'; }).join('') : '<p class="pc-hint">같은 날 다른 기록이 없어요. 먼저 같은 날 기록을 하나 더 추가해 주세요.</p>';
@@ -5107,7 +5132,7 @@ const MT_NOBD = 'mt_nobd_v1';
 function mtNoBd(){ try { const a = JSON.parse(localStorage.getItem(MT_NOBD) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
 function mtBdSuggest(){
   const no = mtNoBd(), g = {};
-  Q.meets.filter(m => !Life.isPlan(m) && !m.vg).forEach(m => { const k = m.date + '|' + m.pids.slice().sort().join(','); (g[k] = g[k] || []).push(m); });
+  Q.meets.filter(m => Life.isMet(m) && !m.vg).forEach(m => { const k = m.date + '|' + m.pids.slice().sort().join(','); (g[k] = g[k] || []).push(m); });
   return Object.keys(g).filter(k => g[k].length > 1 && no.indexOf(g[k].map(x => x.id).sort().join(',')) < 0).map(k => g[k]).sort((a, b) => a[0].date < b[0].date ? 1 : -1);
 }
 function mtBdSugHtml(){
@@ -5117,9 +5142,9 @@ function mtBdSugHtml(){
     (sg.length > 1 ? '<button type="button" class="pc-btn small" data-pp="bd-all" style="margin-top:6px">보이는 ' + Math.min(6, sg.length) + '건 모두 묶기</button>' : '') + (sg.length > 6 ? '<p class="pc-hint">외 ' + (sg.length - 6) + '건 — 위를 처리하면 다음이 보여요.</p>' : '') + '</div>';
 }
 function mtStUI(){
-  const plan = $('mt-f-st').value === 'plan';
-  $('mt-f-energy-wrap').hidden = plan;
-  $('mt-d-title').textContent = mtEditing ? (plan ? '예약 수정' : '만남 기록 수정') : (plan ? '예약 추가' : '만남 기록');
+  const sv = $('mt-f-st').value, plan = sv === 'plan', cn = sv === 'cancel';
+  $('mt-f-energy-wrap').hidden = plan || cn;
+  $('mt-d-title').textContent = mtEditing ? (cn ? '취소된 약속' : plan ? '예약 수정' : '만남 기록 수정') : (plan ? '예약 추가' : '만남 기록');
 }
 function openPerson(id){
   const p = id ? personById(id) : null; if (id && !p) return;
@@ -5173,10 +5198,10 @@ function openMeet(id, presetPid, presetPids, opts){
   if (!Q.people.length) { toast('먼저 “사람” 탭에서 사람을 등록해 주세요.'); return; }
   const m = id ? Q.meets.find(x => x.id === id) : null; if (id && !m) return;
   mtEditing = id || null; mtCid = m ? (m.cid || '') : ((opts && opts.cid) || ''); mtXid = m ? (m.xid || '') : ((opts && opts.xid) || '');
-  const plan = m ? Life.isPlan(m) : !!(opts && opts.plan), t = todayStr();
+  const plan = m ? Life.isPlan(m) : !!(opts && opts.plan), t = todayStr(), cnl = !!m && Life.isCancel(m);
   let defDate = t; if (!m && plan) { const d = new Date(); d.setDate(d.getDate() + 1); defDate = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
   $('mt-f-date').value = m ? m.date : defDate; $('mt-f-time').value = m ? m.time : '';
-  $('mt-f-st').value = plan ? 'plan' : 'done';
+  $('mt-f-st').value = cnl ? 'cancel' : plan ? 'plan' : 'done';
   const sel = m ? m.pids : (presetPids ? presetPids : (presetPid ? [presetPid] : []));
   const cl = Q.clubs.filter(c => c.pids.some(x => personById(x))).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
   mtClubChips(cl);
@@ -5190,15 +5215,19 @@ function saveMeet(){
   const pids = pkDraft.mt.slice(), date = Calc.validDate($('mt-f-date').value);
   if (!pids.length) { toast('함께한 사람을 한 명 이상 선택해 주세요.'); return; }
   if (!date) { toast('날짜를 확인해 주세요.'); return; }
-  let st = $('mt-f-st').value === 'plan' ? 'plan' : 'done', note = '저장했어요.';
+  let st = $('mt-f-st').value === 'plan' ? 'plan' : $('mt-f-st').value === 'cancel' ? 'cancel' : 'done', note = '저장했어요.';
   if (st === 'done' && date > todayStr()) { st = 'plan'; note = '앞으로의 날짜라서 “예약”으로 저장했어요. 만난 뒤 “만났어요”를 눌러 주세요.'; }
-  const d = { date, pids, type: $('mt-f-type').value, more: mtMore.filter(x => x !== $('mt-f-type').value), memo: $('mt-f-memo').value.trim(), energy: st === 'plan' ? '' : $('mt-f-energy').value, st, time: $('mt-f-time').value || '', place: $('mt-f-place').value.trim(), cid: Q.clubs.some(c => c.id === mtCid) ? mtCid : '', xid: mtXid, u: nowIso() };
+  const d = { date, pids, type: $('mt-f-type').value, more: mtMore.filter(x => x !== $('mt-f-type').value), memo: $('mt-f-memo').value.trim(), energy: st !== 'done' ? '' : $('mt-f-energy').value, st, time: $('mt-f-time').value || '', place: $('mt-f-place').value.trim(), cid: Q.clubs.some(c => c.id === mtCid) ? mtCid : '', xid: mtXid, u: nowIso() };
   if (mtEditing) Object.assign(Q.meets.find(x => x.id === mtEditing), d); else Q.meets.push(Object.assign({ id: uid('mt') }, d));
   qSave(); changed(); $('mt-dlg').close(); toast(note); renderAll(); if (window.AppMeeting) window.AppMeeting.refresh();
 }
 function planDone(id){
   const m = Q.meets.find(x => x.id === id); if (!m || !Life.isPlan(m)) return;
   m.st = 'done'; m.u = nowIso(); qSave(); changed(); toast('만남 이력으로 옮겼어요.'); renderAll();
+}
+function planCancel(id){
+  const m = Q.meets.find(x => x.id === id); if (!m || !Life.isPlan(m)) return;
+  m.st = 'cancel'; m.u = nowIso(); qSave(); changed(); toast('약속을 취소로 정리했어요. (만남 횟수·알림에서 빠져요)'); renderAll();
 }
 function delMeet(){ if (!mtEditing || !confirm('이 만남 기록을 삭제할까요?')) return; Q.meets = Q.meets.filter(m => m.id !== mtEditing); Q.del[mtEditing] = nowIso(); qSave(); changed(); $('mt-dlg').close(); renderAll(); if (window.AppMeeting) window.AppMeeting.refresh(); }
 /* ---- 그룹 관리 ---- */
@@ -7598,7 +7627,7 @@ function bulkOpen(){
   if (!Q.people.length) { toast('먼저 사람을 등록해 주세요.'); return; }
   fillSelect($('bulk-type'), Life.TYPES.map(k => ({ v: k, t: k })), '커피');
   const t = todayStr(), last = {};
-  Q.meets.forEach(m => { if (Life.isPlan(m)) return; (m.pids || []).forEach(id => { if (!last[id] || m.date > last[id]) last[id] = m.date; }); });
+  Q.meets.forEach(m => { if (!Life.isMet(m)) return; (m.pids || []).forEach(id => { if (!last[id] || m.date > last[id]) last[id] = m.date; }); });
   $('bulk-list').innerHTML = Q.people.slice().sort((a, b) => a.name.localeCompare(b.name, 'ko')).map(p => '<label class="bulk-row"><span>' + esc(p.name) + '<small>' + esc(p.group) + ' · ' + (last[p.id] ? '마지막 ' + last[p.id] : '기록 없음') + '</small></span><input type="date" max="' + t + '" data-bpid="' + esc(p.id) + '"></label>').join('');
   $('bulk-dlg').showModal();
 }
@@ -8304,7 +8333,7 @@ $('peopleView').addEventListener('click', e => {
   const a = el.dataset.pp;
   if (a === 'tab') { ppTab = el.dataset.t; renderPeople(); }
   else if (a === 'add-person') openPerson(null); else if (a === 'edit-person') openPerson(el.dataset.id);
-  else if (a === 'add-meet') openMeet(null, null); else if (a === 'add-plan') openMeet(null, null, null, { plan: true }); else if (a === 'plan-done') planDone(el.dataset.id); else if (a === 'edit-meet') openMeet(el.dataset.id, null);
+  else if (a === 'add-meet') openMeet(null, null); else if (a === 'add-plan') openMeet(null, null, null, { plan: true }); else if (a === 'plan-done') planDone(el.dataset.id); else if (a === 'plan-cancel') planCancel(el.dataset.id); else if (a === 'edit-meet') openMeet(el.dataset.id, null);
   else if (a === 'quick') { e.stopPropagation(); openMeet(null, el.dataset.id); }
   else if (a === 'filter') { ppFilter = el.dataset.g; renderPeople(); } else if (a === 'cfilter') { ppClub = el.dataset.id; renderPeople(); } else if (a === 'backup') doBackup();
   else if (a === 'groups') openGroups(); else if (a === 'add-club') openClub(null); else if (a === 'edit-club') openClub(el.dataset.id);
