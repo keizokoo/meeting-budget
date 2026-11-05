@@ -1694,7 +1694,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   </div>
   <div class="pc-row2">
     <label class="pc-f">상태<select id="mt-f-st"><option value="done">만남 완료</option><option value="plan">예약(예정)</option><option value="cancel">약속 취소됨</option></select></label>
-    <label class="pc-f">방식<select id="mt-f-type"></select></label>
+    <label class="pc-f">방식<select id="mt-f-type"></select></label><p class="pc-hint" id="mt-f-typehint" hidden style="margin:-4px 0 6px"></p>
   </div>
   <div class="pc-f" id="mt-f-more-wrap">같은 날 함께한 방식 추가(선택) — 밥+커피처럼 한 번에 만났다면 여기서 고르세요<div id="mt-f-more" class="pk-tags" style="margin-top:6px"></div></div>
   <div class="pc-f">함께할 사람
@@ -2342,6 +2342,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   // "[Web발신]\nMG+ 하나8*9*승인 고*희 81,800원 일시불 09/02 21:27 누나홀닭 누적2,743,887원" 같은
   // 카드사 승인 문자를 붙여넣으면 날짜/금액/가맹점명/카드구분을 뽑아 입력창에 채워준다.
   // 문자 형식은 카드사마다 조금씩 달라서, 잘못 인식될 수 있으니 항상 사람이 확인 후 "+추가"를 눌러야 실제로 등록된다.
+  let lastSmsTime = null;   // 가장 최근에 인식한 문자의 시간 (지출을 추가할 때 같이 저장)
   function parseSmsExpense(text){
     const t = (text || '').replace(/\s+/g, ' ').trim();
     if(!t) return null;
@@ -2398,8 +2399,10 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     }
     if(!cardType && /MG\+?/i.test(t) && data.cardTypes.includes('MG')) cardType = 'MG';
 
+    let time = ''; { const tm = t.match(/(?:^|[^\d])(\d{1,2}):(\d{2})(?!\d)/); if(tm && +tm[1] < 24 && +tm[2] < 60) time = String(tm[1]).padStart(2,'0') + ':' + tm[2]; }
     if(!amount && !item && !date) return null;
-    return { date, amount, item, cardType };
+    lastSmsTime = { date, item, time };
+    return { date, amount, item, cardType, time };
   }
 
   function applySmsParse(){
@@ -2452,7 +2455,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       const last = months[months.length-1];
       data.budgets[mk] = last ? monthBudget(last) : 550000;
     }
-    data.expenses.push({ id: uid(), date, cardType, item, amount, memo });
+    const rec = { id: uid(), date, cardType, item, amount, memo };
+    if(lastSmsTime && lastSmsTime.time && lastSmsTime.item === item && (!lastSmsTime.date || lastSmsTime.date === date)) rec.time = lastSmsTime.time;
+    lastSmsTime = null; data.expenses.push(rec);
     saveData(data);
     currentMonth = mk;
     el('newItem').value=''; el('newAmount').value=''; el('newMemo').value='';
@@ -2466,7 +2471,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     const editId = e.target.dataset.edit;
     const delId = e.target.dataset.del;
     const meetId = e.target.dataset.meet;
-    if(meetId){ const ex = data.expenses.find(x => x.id === meetId); if(ex && window.AppLife) window.AppLife.fromExpense({ id: ex.id, date: ex.date, item: ex.item, amount: Number(ex.amount) || 0 }); return; }
+    if(meetId){ const ex = data.expenses.find(x => x.id === meetId); if(ex && window.AppLife) window.AppLife.fromExpense({ id: ex.id, date: ex.date, item: ex.item, amount: Number(ex.amount) || 0, time: ex.time || '' }); return; }
     if(editId) enterEditMode(editId);
     if(delId){
       if(confirm('이 지출 내역을 삭제할까요?')){
@@ -2975,7 +2980,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   // ---------- init ----------
   window.AppMeeting = {   // 오늘 화면 · 인맥 연결에서 쓰는 회의비 정보 (읽기 전용 + 새로고침)
     summary: () => { const mk = todayMonth(); return { mk, budget: monthBudget(mk), spent: monthSpent(mk), count: monthExpenses(mk).length }; },
-    list: () => (data.expenses || []).map(e => ({ id: e.id, date: e.date, item: e.item, amount: Number(e.amount) || 0, cardType: e.cardType })),
+    list: () => (data.expenses || []).map(e => ({ id: e.id, date: e.date, item: e.item, amount: Number(e.amount) || 0, cardType: e.cardType, time: e.time || '' })),
     series: n => { const out = []; let [y, m] = todayMonth().split('-').map(Number); for(let i = 0; i < n; i++){ const mk = y + '-' + String(m).padStart(2, '0'); out.unshift({ mk, spent: monthSpent(mk), budget: monthBudget(mk) || 0 }); m--; if(m < 1){ m = 12; y--; } } return out; },
     byCard: mk => { const o = {}; monthExpenses(mk).forEach(e => { const c = e.cardType || '기타'; o[c] = (o[c] || 0) + (Number(e.amount) || 0); }); return o; },
     parseSms: t => parseSmsExpense(t),
@@ -3000,7 +3005,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
         let ct = r.cardType || ''; if(ct){ ct = CARD_ALIAS[ct] || ct; if(!data.cardTypes.includes(ct)) data.cardTypes.push(ct); }
         const mk = monthKey(date);
         if(!data.budgets[mk]){ const months = allMonthsSorted(), last = months[months.length - 1]; data.budgets[mk] = last ? monthBudget(last) : 550000; }
-        const nid = uid(); data.expenses.push({ id: nid, date, cardType: ct || (data.cardTypes[0] || ''), item, amount, memo: '' });
+        const nid = uid(); const nrec = { id: nid, date, cardType: ct || (data.cardTypes[0] || ''), item, amount, memo: '' }; if(/^\d{2}:\d{2}$/.test(r.time || '')) nrec.time = r.time; data.expenses.push(nrec);
         ids.push(nid); lastMk = mk; n++;
       });
       if(n){ saveData(data); if(lastMk) currentMonth = lastMk; try{ render(); }catch(e){ /* 무시 */ } }
@@ -3023,7 +3028,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       return gone.map(e => ({ date: e.date, cardType: e.cardType, item: e.item, amount: e.amount }));
     },
     hasDup: (date, item, amount) => (data.expenses || []).some(e => e.date === date && Number(e.amount) === Number(amount) && String(e.item || '').trim() === String(item || '').trim()),
-    expense: id => { const e = data.expenses.find(x => x.id === id); return e ? { id: e.id, date: e.date, item: e.item, amount: Number(e.amount) || 0, cardType: e.cardType } : null; },
+    expense: id => { const e = data.expenses.find(x => x.id === id); return e ? { id: e.id, date: e.date, item: e.item, amount: Number(e.amount) || 0, cardType: e.cardType, time: e.time || '' } : null; },
     missingMonths: () => { const ms = allMonthsSorted(), out = []; if(!ms.length) return out; const tm = todayMonth(); let [y, m] = ms[0].split('-').map(Number);
       for(let i = 0; i < 120; i++){ const k = y + '-' + String(m).padStart(2, '0'); if(k >= tm) break; if(!data.budgets[k] && !monthExpenses(k).length) out.push(k); m++; if(m > 12){ m = 1; y++; } }
       return out; },
@@ -3485,9 +3490,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-06-a (만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-06-b (회의비↔인맥 방식 자동 구분: 문자 시간·가맹점 이름 분석(커피/점심/저녁) · 이전: 2026-11-06-a: 만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
+const APP_RECENT = ['회의비 → 만남 기록: 카드 문자의 결제 시간과 가맹점 이름으로 커피·점심식사·저녁식사를 자동 선택(근거 표시)', '만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5197,7 +5202,7 @@ function delPerson(){
 function openMeet(id, presetPid, presetPids, opts){
   if (!Q.people.length) { toast('먼저 “사람” 탭에서 사람을 등록해 주세요.'); return; }
   const m = id ? Q.meets.find(x => x.id === id) : null; if (id && !m) return;
-  mtEditing = id || null; mtCid = m ? (m.cid || '') : ((opts && opts.cid) || ''); mtXid = m ? (m.xid || '') : ((opts && opts.xid) || '');
+  $('mt-f-typehint').hidden = true; mtEditing = id || null; mtCid = m ? (m.cid || '') : ((opts && opts.cid) || ''); mtXid = m ? (m.xid || '') : ((opts && opts.xid) || '');
   const plan = m ? Life.isPlan(m) : !!(opts && opts.plan), t = todayStr(), cnl = !!m && Life.isCancel(m);
   let defDate = t; if (!m && plan) { const d = new Date(); d.setDate(d.getDate() + 1); defDate = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
   $('mt-f-date').value = m ? m.date : defDate; $('mt-f-time').value = m ? m.time : '';
@@ -5208,7 +5213,7 @@ function openMeet(id, presetPid, presetPids, opts){
   pkInit('mt', sel); mtMore = m && Array.isArray(m.more) ? m.more.slice() : [];
   fillSelect($('mt-f-type'), Life.TYPES.concat(m && Life.TYPES.indexOf(m.type) < 0 ? [m.type] : []).map(k => ({ v: k, t: k })), m ? m.type : ((presetPid && personById(presetPid) && personById(presetPid).prefs[0]) || '커피'));
   $('mt-f-energy').value = m ? m.energy : ''; $('mt-f-memo').value = m ? m.memo : ''; $('mt-f-place').value = m ? m.place : ''; $('mt-d-delete').hidden = !m;
-  if (!m && opts && opts.xid) { $('mt-f-date').value = opts.date || t; $('mt-f-memo').value = opts.memo || ''; if (opts.type) $('mt-f-type').value = opts.type; }
+  if (!m && opts && opts.xid) { $('mt-f-date').value = opts.date || t; $('mt-f-memo').value = opts.memo || ''; if (opts.type) $('mt-f-type').value = opts.type; if (opts.time) $('mt-f-time').value = opts.time; if (opts.why) { $('mt-f-typehint').textContent = '💡 ' + opts.type + '(으)로 골랐어요 — ' + opts.why + '. 다르면 바꿔 주세요.'; $('mt-f-typehint').hidden = false; } }
   mtMoreRender(); mtBdNote(m); mtStUI(); $('mt-dlg').showModal();
 }
 function saveMeet(){
@@ -7362,11 +7367,29 @@ function fzHint(){
 ['sh-f-item', 'sh-f-brand', 'sh-f-memo'].forEach(id => $(id).addEventListener('input', fzHint)); $('sh-f-cat').addEventListener('change', fzHint);
 
 /* ---- 회의비 ↔ 인맥 연결 ---- */
+/* 방식(커피·점심식사·저녁식사) 추정: 가맹점 이름 → 문자 시간 → 금액 순서로 판단하고, 근거도 같이 돌려줘요 */
+const MG_CAFE = /카페|커피|coffee|cafe|스타벅스|이디야|투썸|메가mgc|메가커피|빽다방|컴포즈|할리스|폴바셋|엔제리너스|탐앤탐스|드립|더치|로스터|베이커리|제과|디저트|빵집|파리바게|뚜레쥬르|공차|설빙|배스킨|라떼|티하우스/i;
+const MG_EVE = /주점|포차|호프|맥주|소주|막걸리|이자카야|오마카세|와인|bar\b|노가리|곱창|막창|삼겹|갈비|횟집|생선회|모듬회|고깃|구이|족발|보쌈|치킨|닭갈비|술/i;
+function mealGuess(item, time, amount){
+  const nm = String(item || ''), mt = /^(\d{2}):(\d{2})$/.exec(String(time || '')), min = mt ? +mt[1] * 60 + +mt[2] : null, amt = Number(amount) || 0;
+  if (MG_CAFE.test(nm) && !(amt >= 80000 && min !== null && min >= 17 * 60)) return { t: '커피', why: '가맹점 이름이 카페·베이커리 계열이에요' };
+  if (min !== null) {
+    const hm = mt[1] + ':' + mt[2];
+    if (min >= 17 * 60 + 30 || min < 5 * 60) return { t: '저녁식사', why: '결제 시간 ' + hm + ' (저녁 시간대)' };
+    if (MG_EVE.test(nm) && min >= 16 * 60 + 30) return { t: '저녁식사', why: '결제 시간 ' + hm + ' · 가맹점 이름이 술자리·고기집 계열이에요' };
+    if (min >= 11 * 60 && min < 15 * 60) return { t: '점심식사', why: '결제 시간 ' + hm + ' (점심 시간대)' };
+    if (min >= 15 * 60 && min < 17 * 60 + 30) return amt >= 40000 ? { t: '저녁식사', why: '결제 시간 ' + hm + ' · 금액이 커서 이른 저녁으로 봤어요' } : { t: '커피', why: '결제 시간 ' + hm + ' (오후 간식·커피 시간대)' };
+    return amt >= 25000 ? { t: '점심식사', why: '결제 시간 ' + hm + ' (오전) · 금액이 커서 식사로 봤어요' } : { t: '커피', why: '결제 시간 ' + hm + ' (오전)' };
+  }
+  if (MG_EVE.test(nm)) return { t: '저녁식사', why: '문자 시간이 없어 가맹점 이름(술자리·고기집 계열)으로 봤어요' };
+  return { t: amt >= 50000 ? '저녁식사' : (amt >= 15000 ? '점심식사' : '커피'), why: '문자 시간이 없어 금액으로만 추정했어요' };
+}
 window.AppLife = {
   names(xid){ const m = Q.meets.find(x => x.xid === xid); if (!m) return ''; return meetNames(m); },
   fromExpense(ex){
     const m = Q.meets.find(x => x.xid === ex.id); if (m) { openMeet(m.id); return; }
-    openMeet(null, null, null, { xid: ex.id, date: ex.date, memo: ex.item + ' ' + won(ex.amount) + ' (회의비)', type: ex.amount >= 50000 ? '저녁식사' : (ex.amount >= 15000 ? '점심식사' : '커피') });
+    const g = mealGuess(ex.item, ex.time, ex.amount);
+    openMeet(null, null, null, { xid: ex.id, date: ex.date, time: ex.time || '', memo: ex.item + ' ' + won(ex.amount) + ' (회의비)', type: g.t, why: g.why });
   }
 };
 
@@ -7418,6 +7441,9 @@ function dataChecks(){
     if (LV.cfg.tot[String(y)] == null) add(2, '연차', y + '년 연차 총 일수를 아직 입력하지 않았어요 (임시 ' + LV_DEFAULT_TOTAL + '일로 계산 중)', ['leave']);
     if (y > lastHol) add(1, '연차', '공휴일 표가 ' + lastHol + '년까지라 ' + y + '년 휴일이 반영되지 않아요 — 업데이트가 필요해요', ['leave']);
     else if (y === lastHol && Number(t.slice(5, 7)) >= 10) add(3, '연차', '공휴일 표가 올해(' + lastHol + '년)까지예요 — 내년 휴일 추가가 필요해요', ['leave']); }
+  { const ex = window.AppMeeting ? window.AppMeeting.list() : [], byId = {}; ex.forEach(e => { byId[e.id] = e; });
+    const bad = Q.meets.filter(m => m.xid && Life.isMet(m) && byId[m.xid] && !m.vg).filter(m => { const e = byId[m.xid], g = mealGuess(e.item, e.time, e.amount); return (e.time || MG_CAFE.test(e.item)) && g.t !== m.type && (Life.typesOf(m).indexOf(g.t) < 0); });
+    if (bad.length) add(3, '인맥', '회의비와 연결된 만남 ' + bad.length + '건의 방식이 결제 시간·가맹점과 달라 보여요 (예: ' + bad.slice(0, 2).map(m => { const e = byId[m.xid]; return e.item + ' ' + (e.time ? e.time + ' ' : '') + mealGuess(e.item, e.time, e.amount).t + '?'; }).join(', ') + ') — 눌러서 이력 확인', ['people-log']); }
   const seen = {};
   SH.items.forEach(i => { if (!i.purchaseDate) return; const k = [i.cat, normNm(i.item), i.purchaseDate, Number(i.purchasePrice)].join('|'); (seen[k] = seen[k] || []).push(i); });
   Object.keys(seen).forEach(k => { const l = seen[k]; if (l.length > 1) add(1, '소비', l[0].item + ' — 같은 날 같은 금액으로 ' + l.length + '줄 등록돼 있어요 (같은 물건이면 한 줄로 합치는 것을 검토해 보세요)', ['shop', l[0].id]); });
