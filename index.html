@@ -604,7 +604,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .cr-ct{ width:100%; border-collapse:collapse; font-size:12.5px; margin-top:6px; } .cr-ct td{ padding:7px 2px; border-top:1px dashed var(--line2); vertical-align:top; text-align:right; } .cr-ct td:first-child{ text-align:left; white-space:nowrap; } .cr-ct small{ display:block; color:var(--ink2); font-size:11.5px; } .cr-ct tfoot td{ border-top:1px solid var(--ink); font-weight:800; }
   .cr-ct .cr-track{ height:6px; margin-top:3px; }
   .cc-t{ width:100%; border-collapse:collapse; font-size:12.5px; } .cc-t th, .cc-t td{ padding:7px 6px; border-top:1px dashed var(--line2); text-align:right; white-space:nowrap; vertical-align:top; } .cc-t th:first-child, .cc-t td:first-child{ text-align:left; position:sticky; left:0; background:var(--surface); } .cc-t thead th{ border-top:0; font-size:11px; } .cc-t small{ display:block; color:var(--ink2); font-size:10.5px; white-space:normal; max-width:110px; margin-left:auto; } .cc-t .lo{ color:var(--good); font-weight:800; } .cc-t .hi{ color:var(--warn); font-weight:800; } .cc-t tfoot td{ border-top:1px solid var(--ink); font-weight:800; }
-  .cr-tbl{ display:grid; grid-template-columns:.7fr 1fr 1fr 1.1fr; gap:6px; padding:7px 0; border-top:1px dashed var(--line2); font-size:12.5px; text-align:right; } .cr-tbl>*:first-child{ text-align:left; } .cr-tbl-h{ border-top:0; color:var(--ink2); font-size:11px; font-weight:700; }
+  .cr-tbl{ display:grid; grid-template-columns:.6fr 1fr 1fr 1fr 1.1fr; gap:6px; padding:7px 0; border-top:1px dashed var(--line2); font-size:12.5px; text-align:right; } .cr-tbl>*:first-child{ text-align:left; } .cr-tbl-h{ border-top:0; color:var(--ink2); font-size:11px; font-weight:700; }
   /* ---------- 구독·결제 ---------- */
   .sb-monthbar{ display:flex; align-items:center; gap:8px; margin-bottom:12px; } .sb-monthbar b{ flex:1; text-align:center; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:14px; }
   #sb-summary{ margin-bottom:12px; } #sb-summary .scard .v{ font-size:14px; }
@@ -674,6 +674,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   #qk-dlg .pc-f input, #qk-dlg .pc-f select{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:9px 10px; width:100%; box-sizing:border-box; }
   .td-qk{ display:grid; grid-template-columns:1fr 1fr; gap:8px; } .td-qk .pc-btn{ padding:12px 8px; }
   .pk-newp{ display:flex; gap:6px; margin:6px 0 2px; align-items:center; } .pk-newp input{ flex:1 1 0; min-width:0; } .pk-newp select{ flex:0 0 auto; max-width:34%; }
+  .cmk-row{ display:grid; grid-template-columns:1.4fr 1fr 1fr 34px; gap:6px; margin-top:6px; } .cmk-row input{ min-width:0; }
+  .td-cfgrow{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:3px 0; } .td-cfgrow label{ display:flex; gap:6px; align-items:center; } .td-cfgrow span{ display:flex; gap:4px; } .td-cfgrow .pc-btn{ padding:2px 9px; min-width:34px; } .td-pre{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--line2); } .td-pbtn{ border:0; background:none; font:inherit; color:inherit; padding:0 4px 0 0; cursor:pointer; }
+  .rp-pt{ border-top:1px solid var(--line); padding:8px 0; }
   .td-rvnav{ display:flex; gap:6px; flex-wrap:wrap; margin:2px 0 6px; }
   .td-rv-h, .td-rv-r{ display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:6px; align-items:baseline; padding:7px 0; font-size:13px; } .td-rv-r{ border-top:1px solid var(--line); } .td-rv-r span small{ display:block; font-size:11px; color:var(--ink2); } .td-rv-r b{ text-align:right; } .td-rv-h b{ text-align:right; font-size:11px; color:var(--ink2); } .td-rv-r b.mute{ color:var(--ink2); font-weight:500; }
   .td-more{ margin-top:8px; } .td-more summary{ font-size:12px; color:var(--muted,#888); cursor:pointer; }
@@ -1070,7 +1073,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
 <div id="carView" hidden>
  <div class="pc-wrap">
   <div class="cr-chips" id="car-chips"></div>
-  <div class="cr-seg" id="car-tabs"><button type="button" data-car="tab" data-t="ins">🛡 보험</button><button type="button" data-car="tab" data-t="wash">🧽 세차</button><button type="button" data-car="tab" data-t="sum">📊 요약</button></div>
+  <div class="cr-seg" id="car-tabs"><button type="button" data-car="tab" data-t="ins">🛡 보험</button><button type="button" data-car="tab" data-t="wash">🧽 세차</button><button type="button" data-car="tab" data-t="maint">🔧 정비</button><button type="button" data-car="tab" data-t="sum">📊 요약</button></div>
   <div id="car-body"></div>
   <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-car="backup">☁ 지금 백업</button></div>
   <p class="pc-hint">차량 이름과 세차 종류는 ⚙ 설정 > 내 차에서 바꿀 수 있어요.</p>
@@ -1577,6 +1580,30 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <button id="cw-delete" class="pc-btn danger wide" data-car="cw-delete">이 세차 기록 삭제</button>
 </dialog>
 
+<dialog id="cm-dlg">
+  <h3 id="cm-title">정비 추가</h3>
+  <div class="pc-row2"><label class="pc-f">차량<select id="cm-car"></select></label><label class="pc-f">날짜<input id="cm-date" type="date"></label></div>
+  <label class="pc-f">항목<select id="cm-kind"></select></label>
+  <div class="pc-row2"><label class="pc-f">주행거리(km)<input id="cm-km" type="number" min="0" step="1" inputmode="numeric" placeholder="계기판"></label><label class="pc-f">비용(원, 선택)<input id="cm-cost" type="number" min="0" step="1000" inputmode="numeric"></label></div>
+  <label class="pc-f">정비소(선택)<input id="cm-place" type="text"></label>
+  <label class="pc-f">메모(선택)<textarea id="cm-memo" class="ml" rows="2"></textarea></label>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-car="cm-cancel">취소</button><button class="pc-btn primary" data-car="cm-save">저장</button></div>
+  <button id="cm-delete" class="pc-btn danger wide" data-car="cm-delete">이 정비 기록 삭제</button>
+</dialog>
+<dialog id="cmk-dlg">
+  <h3>정비 교체 주기</h3>
+  <p class="pc-hint" style="margin:0 0 8px">항목마다 “몇 개월마다 / 몇 km마다” 바꾸는지 정해요. 0이거나 비워 두면 그 기준은 계산하지 않아요. 기본값은 일반적인 권장 주기라서 차량 설명서에 맞게 고쳐 주세요.</p>
+  <div class="pp-meta" style="display:grid;grid-template-columns:1.4fr 1fr 1fr 34px;gap:6px;font-size:11px"><span>항목</span><span>개월</span><span>km</span><span></span></div>
+  <div id="cmk-rows"></div>
+  <button type="button" class="pc-btn small" data-car="mk-add" style="margin-top:6px">+ 항목 추가</button>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-car="mk-cancel">취소</button><button class="pc-btn primary" data-car="mk-save">저장</button></div>
+</dialog>
+<dialog id="rp-dlg">
+  <h3>🕘 이 기기 복원 지점</h3>
+  <p class="pc-hint" style="margin:0 0 8px">하루에 한 번, 그리고 파일 가져오기·시트 이전 버전 합치기 직전에 자동으로 저장돼요(최대 3개, 사진 제외). 시트의 “이전 버전”은 현재와 합치는 방식이라 지운 건 못 살리지만, 여기서는 항목별로 정확히 되돌려요. 회의비는 시트 이전 버전(⚙ 설정)에서 복원해 주세요.</p>
+  <div id="rp-list"></div>
+  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-rp="now">지금 만들기</button><button class="pc-btn primary" data-rp="close">닫기</button></div>
+</dialog>
 <dialog id="sb-dlg">
   <h3 id="sb-d-title">정기결제 항목</h3>
   <div class="pc-row2">
@@ -2579,6 +2606,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
         const parsed = JSON.parse(reader.result);
         if(!parsed.budgets || !parsed.expenses){ throw new Error('invalid'); }
         if(!confirm('현재 데이터를 가져온 파일로 덮어씁니다. 계속할까요?')) return;
+        try{ window.AppRestore && window.AppRestore.take('파일 가져오기 직전'); }catch(e){ /* 무시 */ }
         if(window.AppExtras){ window.AppExtras.importSync(parsed); window.AppExtras.strip(parsed); }
         data = normalizeSettings(parsed);
         saveData(data);
@@ -2802,6 +2830,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       if(json && json.error) throw new Error(json.error);
       if(!json || !json.budgets || !json.expenses) throw new Error('데이터 형식이 달라요');
       if(!confirm('이 시점의 백업과 현재 데이터를 합칩니다.\n(같은 항목은 최근에 수정한 쪽이 우선이에요. 현재 데이터는 사라지지 않아요) 계속할까요?')) return;
+      try{ window.AppRestore && window.AppRestore.take('시트 이전 버전 합치기 직전'); }catch(e){ /* 무시 */ }
       if(window.AppExtras){ window.AppExtras.importSync(json); window.AppExtras.strip(json); }
       data = normalizeSettings(window.AppMerge ? window.AppMerge.merge(data, json) : json);
       data.settings.sheetUrl = url;
@@ -3490,9 +3519,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-06-b (회의비↔인맥 방식 자동 구분: 문자 시간·가맹점 이름 분석(커피/점심/저녁) · 이전: 2026-11-06-a: 만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-06-c (내 차 정비·소모품 주기 · 오늘 카드 순서 바꾸기·프리셋 · 이 기기 복원 지점 · 이전: 2026-11-06-b: 회의비↔인맥 방식 자동 구분: 문자 시간·가맹점 이름 분석(커피/점심/저녁) · 이전: 2026-11-06-a: 만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['회의비 → 만남 기록: 카드 문자의 결제 시간과 가맹점 이름으로 커피·점심식사·저녁식사를 자동 선택(근거 표시)', '만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
+const APP_RECENT = ['내 차 > 정비: 엔진오일·타이어 등 마지막 정비 기준 다음 교체 시기(개월·km), 알림·요약 연동', '오늘 화면: 카드 ▲▼ 순서 바꾸기 + 구성 프리셋(출근/퇴근 후 등) 저장', '이 기기 복원 지점: 하루 1회·가져오기 직전 자동 저장, 항목별 정확히 되돌리기', '회의비 → 만남 기록: 카드 문자의 결제 시간과 가맹점 이름으로 커피·점심식사·저녁식사를 자동 선택(근거 표시)', '만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4173,20 +4202,24 @@ const CAR_KEY = 'car_mgmt_v1', CAR_UI_KEY = 'car_ui_v1', CAR_IDS = ['k1', 'k2'];
 const CAR_COVS_BASE = ['대인Ⅰ', '대물', '대인Ⅱ', '자동차상해', '무보험차상해', '자기차량손해', '긴급출동', '특약'];
 const carCovNorm = a => (Array.isArray(a) ? a : []).map(c => ({ n: String((c && c.n) || '').trim(), v: numB(c && c.v), d: String((c && c.d) || '').trim() })).filter(c => c.n);
 const CAR_KINDS_BASE = ['셀프', '손세차', '자동세차', '코팅'], CAR_PAYS = ['일시납', '12개월 분납', '기타'];
+const CAR_MK_BASE = [{ n: '엔진오일', m: 6, k: 10000 }, { n: '타이어 교체', m: 60, k: 50000 }, { n: '타이어 위치교환', m: 6, k: 10000 }, { n: '브레이크패드', m: 24, k: 30000 }, { n: '에어컨필터', m: 12, k: 15000 }, { n: '와이퍼', m: 12, k: 0 }, { n: '배터리', m: 48, k: 0 }, { n: '정기점검', m: 12, k: 0 }];   // 일반적인 권장 주기 기준 임시값 (내 차 > 정비 > ⚙ 주기에서 차량 설명서대로 수정)
+const carMkNorm = a => { const r = (Array.isArray(a) ? a : []).map(x => ({ n: String((x && x.n) || '').trim(), m: Math.max(0, Math.round(Number(x && x.m)) || 0), k: Math.max(0, Math.round(Number(x && x.k)) || 0) })).filter((x, i, ar) => x.n && ar.findIndex(y => y.n === x.n) === i); return r.length ? r : CAR_MK_BASE.map(x => Object.assign({}, x)); };
+const carOdoNorm = o => { const r = {}; CAR_IDS.forEach(id => { const v = o && o[id], km = v ? Math.round(Number(v.km)) : 0; r[id] = km > 0 ? { km, date: String(v.date || '') } : { km: '', date: '' }; }); return r; };
 const CAR_SEED = { ins: [], wash: [], cfg: { names: { k1: '깜둥이', k2: '흰둥이' }, plates: { k1: '', k2: '' }, covs: CAR_COVS_BASE.slice(), kinds: CAR_KINDS_BASE.slice(), u: SEED_U }, del: {} };
 function carNorm(o){
   o = o && typeof o === 'object' ? o : {};
   const c = o.cfg && typeof o.cfg === 'object' ? o.cfg : {}, nm = c.names && typeof c.names === 'object' ? c.names : {};
   const kinds = (Array.isArray(c.kinds) ? c.kinds : CAR_KINDS_BASE).map(x => String(x || '').trim()).filter((x, i, a) => x && a.indexOf(x) === i);
   const pl = c.plates && typeof c.plates === 'object' ? c.plates : {};
-  const cfg = { names: { k1: String(nm.k1 || '').trim() || '깜둥이', k2: String(nm.k2 || '').trim() || '흰둥이' }, plates: { k1: String(pl.k1 || '').trim(), k2: String(pl.k2 || '').trim() }, covs: (Array.isArray(c.covs) ? c.covs : CAR_COVS_BASE).map(x => String(x || '').trim()).filter((x, i, a) => x && a.indexOf(x) === i), kinds: kinds.length ? kinds : CAR_KINDS_BASE.slice(), u: String(c.u || '') };
+  const cfg = { names: { k1: String(nm.k1 || '').trim() || '깜둥이', k2: String(nm.k2 || '').trim() || '흰둥이' }, plates: { k1: String(pl.k1 || '').trim(), k2: String(pl.k2 || '').trim() }, covs: (Array.isArray(c.covs) ? c.covs : CAR_COVS_BASE).map(x => String(x || '').trim()).filter((x, i, a) => x && a.indexOf(x) === i), kinds: kinds.length ? kinds : CAR_KINDS_BASE.slice(), mk: carMkNorm(c.mk), odo: carOdoNorm(c.odo), u: String(c.u || '') };
   const okCar = x => CAR_IDS.indexOf(x) >= 0;
   const ins = (Array.isArray(o.ins) ? o.ins : []).filter(r => r && r.id && okCar(r.car)).map(r => ({ id: String(r.id), car: r.car, start: String(r.start || ''), ins: String(r.ins || ''), prem: numB(r.prem), pay: String(r.pay || ''), sp: String(r.sp || ''), dc: String(r.dc || ''), memo: String(r.memo || ''), join: r.join === true, cov: carCovNorm(r.cov), u: String(r.u || '') }));
   const wash = (Array.isArray(o.wash) ? o.wash : []).filter(r => r && r.id && okCar(r.car)).map(r => ({ id: String(r.id), car: r.car, date: String(r.date || ''), kind: String(r.kind || ''), place: String(r.place || ''), cost: numB(r.cost), memo: String(r.memo || ''), u: String(r.u || '') }));
-  return { ins, wash, cfg, del: cleanDel(o.del) };
+  const maint = (Array.isArray(o.maint) ? o.maint : []).filter(r => r && r.id && okCar(r.car)).map(r => ({ id: String(r.id), car: r.car, date: String(r.date || ''), kind: String(r.kind || ''), km: numB(r.km), cost: numB(r.cost), place: String(r.place || ''), memo: String(r.memo || ''), u: String(r.u || '') }));
+  return { ins, wash, maint, cfg, del: cleanDel(o.del) };
 }
 let CAR = loadK(CAR_KEY, CAR_SEED, carNorm), carSel = 'all', carTab = 'ins', carEditing = null, carWEditing = null;
-try { const u = JSON.parse(localStorage.getItem(CAR_UI_KEY) || 'null'); if (u && (u.sel === 'all' || CAR_IDS.indexOf(u.sel) >= 0)) carSel = u.sel; if (u && ['ins', 'wash', 'sum'].indexOf(u.tab) >= 0) carTab = u.tab; } catch (e) { /* 기본값 */ }
+try { const u = JSON.parse(localStorage.getItem(CAR_UI_KEY) || 'null'); if (u && (u.sel === 'all' || CAR_IDS.indexOf(u.sel) >= 0)) carSel = u.sel; if (u && ['ins', 'wash', 'maint', 'sum'].indexOf(u.tab) >= 0) carTab = u.tab; } catch (e) { /* 기본값 */ }
 function carSave(){ saveK(CAR_KEY, CAR); }
 function carSaveUi(){ try { localStorage.setItem(CAR_UI_KEY, JSON.stringify({ sel: carSel, tab: carTab })); } catch (e) { /* 무시 */ } }
 const carName = id => CAR.cfg.names[id] || id;
@@ -4252,29 +4285,102 @@ function carWashHtml(){
   });
   return h + '</div>';
 }
+/* ---------- 내 차 > 정비·소모품 ---------- */
+function carAddMonths(s, n){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ''); if (!m) return '';
+  const d = new Date(Number(m[1]), Number(m[2]) - 1 + n, 1), y = d.getFullYear(), mo = d.getMonth(), last = new Date(y, mo + 1, 0).getDate();
+  return y + '-' + String(mo + 1).padStart(2, '0') + '-' + String(Math.min(Number(m[3]), last)).padStart(2, '0');
+}
+function carOdo(id){ const o = CAR.cfg.odo[id]; let km = o && o.km !== '' ? Number(o.km) : 0; CAR.maint.forEach(r => { if (r.car === id && r.km !== '' && Number(r.km) > km) km = Number(r.km); }); return km; }
+function carMaintStatus(){   // 차량·항목별로 가장 최근 기록 기준 다음 교체 시기 (개월 + 주행거리)
+  const t = todayStr(), out = [];
+  CAR_IDS.forEach(id => { const odo = carOdo(id); CAR.cfg.mk.forEach(k => {
+    const rs = CAR.maint.filter(r => r.car === id && r.kind === k.n && r.date).sort((a, b) => b.date.localeCompare(a.date)); if (!rs.length) return;
+    const last = rs[0], due = k.m > 0 ? carAddMonths(last.date, k.m) : '', dueKm = (k.k > 0 && last.km !== '') ? Number(last.km) + k.k : 0;
+    const days = due ? Math.round((new Date(due) - new Date(t)) / 86400000) : null, kmLeft = dueKm && odo ? dueKm - odo : null;
+    const over = (days !== null && days < 0) || (kmLeft !== null && kmLeft < 0), soon = !over && ((days !== null && days <= 30) || (kmLeft !== null && kmLeft <= 1000));
+    out.push({ car: id, kind: k.n, last, due, days, dueKm, kmLeft, st: over ? 'over' : soon ? 'soon' : 'ok' });
+  }); });
+  return out;
+}
+const carKm = n => Number(n).toLocaleString('ko-KR') + 'km';
+function carMaintHtml(){
+  const cars = carSel === 'all' ? CAR_IDS : [carSel], st = carMaintStatus().filter(x => cars.indexOf(x.car) >= 0), ord = { over: 0, soon: 1, ok: 2 };
+  let h = '<div class="strip cr-strip">' + cars.map(id => { const o = CAR.cfg.odo[id], km = carOdo(id); return '<div class="scard"><div class="l">' + esc(carName(id)) + ' 주행거리</div><div class="v tabular">' + (km ? carKm(km) : '-') + '</div><div class="sub"><button type="button" class="pc-btn small" data-car="odo" data-id="' + id + '">수정</button>' + (o && o.date ? ' ' + esc(o.date.slice(5).replace('-', '/')) + ' 입력' : '') + '</div></div>'; }).join('') + '</div>';
+  h += '<div class="sectionhead"><b>다음 교체 시기</b><span class="sh-hbtns"><button class="pc-btn small" data-car="mk-cfg">⚙ 주기</button><button class="pc-btn small primary" data-car="maint-add">+ 정비 추가</button></span></div>';
+  if (!st.length) h += '<div class="empty">정비 기록을 추가하면 다음 교체 시기를 계산해 드려요. 예: 엔진오일을 갈았다면 “+ 정비 추가”.</div>';
+  else h += '<div class="cr-card">' + st.sort((a, b) => ord[a.st] - ord[b.st] || (a.days === null ? 99999 : a.days) - (b.days === null ? 99999 : b.days)).map(x => {
+    const tag = x.st === 'over' ? '교체 시기 지남' : x.st === 'soon' ? '곧 교체' : '여유';
+    const nx = [x.due ? x.due + (x.days >= 0 ? ' (D-' + x.days + ')' : ' (' + (-x.days) + '일 지남)') : '', x.dueKm ? carKm(x.dueKm) + (x.kmLeft !== null ? ' (' + carKm(Math.abs(x.kmLeft)) + (x.kmLeft >= 0 ? ' 남음)' : ' 초과)') : '') : ''].filter(Boolean).join(' · ');
+    return '<div class="cr-row" data-car="maint-edit" data-id="' + esc(x.last.id) + '" tabindex="0"><div class="cr-top"><div><b>' + esc(x.kind) + '</b>' + (carSel === 'all' ? '<span class="cr-car">' + esc(carName(x.car)) + '</span>' : '') + ' <span class="pp-st ' + (x.st === 'ok' ? '' : x.st) + '">' + tag + '</span></div></div><small>마지막 ' + esc(x.last.date.slice(5).replace('-', '/')) + (x.last.km !== '' ? ' · ' + carKm(x.last.km) : '') + ' → 다음 ' + esc(nx || '주기 미설정') + '</small></div>';
+  }).join('') + '</div>';
+  const none = CAR.cfg.mk.filter(k => cars.every(id => !CAR.maint.some(r => r.car === id && r.kind === k.n)));
+  if (none.length) h += '<p class="pc-hint" style="margin:8px 0 4px">아직 기록이 없는 항목 — 눌러서 바로 추가</p><div class="pk-tags">' + none.map(k => '<button type="button" class="mt-chip" data-car="maint-add" data-kind="' + esc(k.n) + '">' + esc(k.n) + '</button>').join('') + '</div>';
+  const rows = carPick(CAR.maint).slice().sort((a, b) => b.date.localeCompare(a.date));
+  h += '<div class="sectionhead" style="margin-top:14px"><b>정비 이력</b><span class="pc-hint" style="margin:0">' + rows.length + '건' + (rows.length ? ' · ' + won(rows.reduce((a, r) => a + carNum(r.cost), 0)) : '') + '</span></div>';
+  if (!rows.length) return h + '<div class="empty">아직 정비 기록이 없어요.</div>';
+  h += '<div class="cr-card">' + rows.map(r => '<div class="cr-row" data-car="maint-edit" data-id="' + esc(r.id) + '" tabindex="0"><div class="cr-top"><div><b>' + esc(r.date.slice(2).replace(/-/g, '.')) + '</b> <span class="cr-tag">' + esc(r.kind || '정비') + '</span>' + (carSel === 'all' ? '<span class="cr-car">' + esc(carName(r.car)) + '</span>' : '') + '</div><b class="cr-amt">' + (r.cost === '' ? '-' : won(r.cost)) + '</b></div>' + ((r.km !== '' || r.place || r.memo) ? '<small>' + esc([r.km !== '' ? carKm(r.km) : '', r.place, r.memo].filter(Boolean).join(' · ')) + '</small>' : '') + '</div>').join('') + '</div>';
+  return h + '<p class="pc-hint">교체 주기는 일반적인 권장값이 들어 있어요. 차량 설명서에 맞게 ⚙ 주기에서 바꿔 주세요. 개월 알림은 14일 전부터 앱 맨 위에 표시돼요.</p>';
+}
+let carMEditing = null;
+function openCarMaint(id, kind){
+  const r = id ? CAR.maint.find(x => x.id === id) : null; if (id && !r) return;
+  carMEditing = id || null; $('cm-title').textContent = r ? '정비 수정' : '정비 추가';
+  carFillCars('cm-car', r ? r.car : (carSel !== 'all' ? carSel : 'k1'));
+  $('cm-date').value = r ? r.date : todayStr();
+  const ks = CAR.cfg.mk.map(x => x.n); if (r && r.kind && ks.indexOf(r.kind) < 0) ks.push(r.kind);
+  fillSelect($('cm-kind'), ks.map(x => ({ v: x, t: x })), r ? r.kind : (kind && ks.indexOf(kind) >= 0 ? kind : ks[0]));
+  $('cm-km').value = r && r.km !== '' ? r.km : ''; $('cm-cost').value = r && r.cost !== '' ? r.cost : ''; $('cm-place').value = r ? r.place : ''; $('cm-memo').value = r ? r.memo : '';
+  $('cm-delete').hidden = !r; $('cm-dlg').showModal();
+}
+function saveCarMaint(){
+  const date = $('cm-date').value, km = numB($('cm-km').value), cost = numB($('cm-cost').value), car = $('cm-car').value;
+  if (!date) { toast('날짜를 입력해 주세요.'); return; }
+  if (!$('cm-kind').value) { toast('정비 항목을 골라 주세요.'); return; }
+  const d = { car, date, kind: $('cm-kind').value, km, cost, place: $('cm-place').value.trim(), memo: $('cm-memo').value.trim(), u: nowIso() };
+  if (carMEditing) Object.assign(CAR.maint.find(x => x.id === carMEditing), d); else CAR.maint.push(Object.assign({ id: uid('cm') }, d));
+  if (km !== '' && km > carOdo(car)) { CAR.cfg.odo[car] = { km, date }; CAR.cfg.u = nowIso(); }
+  $('cm-dlg').close(); toast('저장했어요.'); carAfter();
+}
+function delCarMaint(){
+  const r = CAR.maint.find(x => x.id === carMEditing); if (!r || !confirm('이 정비 기록을 삭제할까요?')) return;
+  CAR.maint = CAR.maint.filter(x => x.id !== r.id); CAR.del[r.id] = nowIso(); $('cm-dlg').close(); carAfter();
+}
+function carOdoSet(id){
+  const v = prompt(carName(id) + ' 현재 주행거리(km)를 입력하세요', carOdo(id) || ''); if (v === null) return;
+  const km = Math.round(Number(String(v).replace(/[,\s]/g, ''))); if (!(km > 0)) { toast('숫자로 입력해 주세요.'); return; }
+  CAR.cfg.odo[id] = { km, date: todayStr() }; CAR.cfg.u = nowIso(); carCfgSave(); toast('주행거리를 저장했어요.');
+}
+function cmkRow(x){ x = x || {}; return '<div class="cmk-row"><input type="text" data-mk="n" maxlength="14" placeholder="항목" value="' + esc(x.n || '') + '"><input type="number" data-mk="m" min="0" inputmode="numeric" placeholder="개월" value="' + (x.m || '') + '"><input type="number" data-mk="k" min="0" step="1000" inputmode="numeric" placeholder="km" value="' + (x.k || '') + '"><button type="button" class="pc-btn small" data-car="mk-del" aria-label="삭제">✕</button></div>'; }
+function cmkOpen(){ $('cmk-rows').innerHTML = CAR.cfg.mk.map(cmkRow).join(''); $('cmk-dlg').showModal(); }
+function cmkSave(){
+  const rows = [...document.querySelectorAll('#cmk-rows .cmk-row')].map(r => ({ n: r.querySelector('[data-mk=n]').value, m: r.querySelector('[data-mk=m]').value, k: r.querySelector('[data-mk=k]').value }));
+  CAR.cfg.mk = carMkNorm(rows); CAR.cfg.u = nowIso(); $('cmk-dlg').close(); toast('정비 주기를 저장했어요.'); carCfgSave();
+}
 function carYearTable(){
-  const ins = carPick(CAR.ins), wash = carPick(CAR.wash), ys = {};
-  ins.forEach(r => { const y = carYr(r.start); if (y) ys[y] = 1; }); wash.forEach(r => { const y = carYr(r.date); if (y) ys[y] = 1; });
+  const ins = carPick(CAR.ins), wash = carPick(CAR.wash), mt = carPick(CAR.maint), ys = {};
+  ins.forEach(r => { const y = carYr(r.start); if (y) ys[y] = 1; }); wash.forEach(r => { const y = carYr(r.date); if (y) ys[y] = 1; }); mt.forEach(r => { const y = carYr(r.date); if (y) ys[y] = 1; });
   return Object.keys(ys).sort().reverse().map(y => {
     const a = Object.values(carJoinedByCar(ins, y)).reduce((s, v) => s + v, 0), b = wash.filter(r => carYr(r.date) === y).reduce((s, r) => s + carNum(r.cost), 0);
-    return { y, ins: a, wash: b, tot: a + b };
+    const c = mt.filter(r => carYr(r.date) === y).reduce((s, r) => s + carNum(r.cost), 0);
+    return { y, ins: a, wash: b, mt: c, tot: a + b + c };
   });
 }
 function carSumHtml(){
-  const t = todayStr(), yr = t.slice(0, 4), tbl = carYearTable(), cur = tbl.find(x => x.y === yr) || { y: yr, ins: 0, wash: 0, tot: 0 };
+  const t = todayStr(), yr = t.slice(0, 4), tbl = carYearTable(), cur = tbl.find(x => x.y === yr) || { y: yr, ins: 0, wash: 0, mt: 0, tot: 0 };
   let h = '<div class="scard cr-hero"><div class="l">' + yr + '년 차량 관련 비용 · ' + (carSel === 'all' ? '전체' : esc(carName(carSel))) + '</div><div class="v tabular">' + won(cur.tot) + '</div><div class="sub">월 평균 ' + won(Math.round(cur.tot / Number(t.slice(5, 7)))) + ' (' + Number(t.slice(5, 7)) + '개월 기준)</div></div>';
   const bar = (n, v) => '<div class="cr-bar"><div class="cr-top"><b>' + n + '</b><span>' + won(v) + ' · ' + (cur.tot ? Math.round(v / cur.tot * 100) : 0) + '%</span></div><div class="cr-track"><i style="width:' + (cur.tot ? v / cur.tot * 100 : 0) + '%"></i></div></div>';
-  h += '<div class="cr-card">' + bar('🛡 보험료(가입)', cur.ins) + bar('🧽 세차비', cur.wash) + '</div>';
+  h += '<div class="cr-card">' + bar('🛡 보험료(가입)', cur.ins) + bar('🧽 세차비', cur.wash) + bar('🔧 정비비', cur.mt || 0) + '</div>';
   if (carSel === 'all') {
     h += '<div class="cr-year"><b>차량별 ' + yr + '년</b><span></span></div><div class="cr-card">' + CAR_IDS.map(id => {
-      const a = carJoinedByCar(CAR.ins, yr)[id] || 0, b = CAR.wash.filter(r => r.car === id && carYr(r.date) === yr).reduce((s, r) => s + carNum(r.cost), 0);
-      return '<div class="cr-top" style="padding:6px 0"><b>' + esc(carName(id)) + '</b><span>보험 ' + won(a) + ' · 세차 ' + won(b) + ' = <b>' + won(a + b) + '</b></span></div>';
+      const a = carJoinedByCar(CAR.ins, yr)[id] || 0, b = CAR.wash.filter(r => r.car === id && carYr(r.date) === yr).reduce((s, r) => s + carNum(r.cost), 0), c = CAR.maint.filter(r => r.car === id && carYr(r.date) === yr).reduce((s, r) => s + carNum(r.cost), 0);
+      return '<div class="cr-top" style="padding:6px 0"><b>' + esc(carName(id)) + '</b><span>보험 ' + won(a) + ' · 세차 ' + won(b) + ' · 정비 ' + won(c) + ' = <b>' + won(a + b + c) + '</b></span></div>';
     }).join('') + '</div>';
   }
   const mo = []; for (let m = 1; m <= 12; m++) mo.push(carPick(CAR.wash).filter(r => r.date.slice(0, 7) === yr + '-' + String(m).padStart(2, '0')).reduce((s, r) => s + carNum(r.cost), 0));
   const mx = Math.max.apply(null, mo.concat([1]));
   h += '<div class="cr-year"><b>' + yr + '년 월별 세차비</b><span></span></div><div class="cr-card"><div class="cr-months">' + mo.map((v, i) => '<div title="' + (i + 1) + '월 ' + won(v) + '"><i style="height:' + Math.round(v / mx * 100) + '%"></i><small>' + (i + 1) + '</small></div>').join('') + '</div></div>';
-  h += '<div class="cr-year"><b>연도별 이력</b><span></span></div><div class="cr-card">' + (tbl.length ? '<div class="cr-tbl cr-tbl-h"><span>연도</span><span>보험</span><span>세차</span><span>합계</span></div>' + tbl.map(x => '<div class="cr-tbl"><b>' + x.y + '</b><span>' + won(x.ins) + '</span><span>' + won(x.wash) + '</span><b>' + won(x.tot) + '</b></div>').join('') : '<div class="empty" style="padding:14px">기록이 쌓이면 연도별로 정리돼요.</div>') + '</div>';
+  h += '<div class="cr-year"><b>연도별 이력</b><span></span></div><div class="cr-card">' + (tbl.length ? '<div class="cr-tbl cr-tbl-h"><span>연도</span><span>보험</span><span>세차</span><span>정비</span><span>합계</span></div>' + tbl.map(x => '<div class="cr-tbl"><b>' + x.y + '</b><span>' + won(x.ins) + '</span><span>' + won(x.wash) + '</span><span>' + won(x.mt || 0) + '</span><b>' + won(x.tot) + '</b></div>').join('') : '<div class="empty" style="padding:14px">기록이 쌓이면 연도별로 정리돼요.</div>') + '</div>';
   /* 갱신 예정 */
   const rn = carRenewals(); if (rn.length) h += '<div class="cr-year"><b>보험 갱신 예정</b><span></span></div><div class="cr-card">' + rn.map(x => '<div class="cr-top" style="padding:6px 0"><b>' + esc(carName(x.car)) + '</b><span>' + x.date + ' (' + (x.d >= 0 ? x.d + '일 후' : -x.d + '일 지남') + ') · ' + esc(x.ins || '') + '</span></div>').join('') + '</div><p class="pc-hint">갱신 14일 전부터 알림이 앱 맨 위에 표시돼요.</p>';
   return h;
@@ -4292,7 +4398,7 @@ function renderCar(){
   $('car-chips').innerHTML = [['all', '전체']].concat(CAR_IDS.map(id => [id, carName(id)])).map(x => '<button type="button" class="cr-chip' + (carSel === x[0] ? ' on' : '') + '" data-car="sel" data-id="' + x[0] + '">' + esc(x[1]) + '</button>').join('');
   document.querySelectorAll('#car-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === carTab));
   const plate = carSel !== 'all' && CAR.cfg.plates[carSel] ? '<p class="pc-hint" style="margin:-2px 0 10px">🚗 ' + esc(carName(carSel)) + ' · 차량번호 ' + esc(CAR.cfg.plates[carSel]) + '</p>' : '';
-  $('car-body').innerHTML = plate + (carTab === 'ins' ? carInsHtml() : carTab === 'wash' ? carWashHtml() : carSumHtml());
+  $('car-body').innerHTML = plate + (carTab === 'ins' ? carInsHtml() : carTab === 'wash' ? carWashHtml() : carTab === 'maint' ? carMaintHtml() : carSumHtml());
 }
 function carFillCars(id, cur){ fillSelect($(id), CAR_IDS.map(k => ({ v: k, t: carName(k) })), cur); }
 function carAfter(){ carSave(); changed(); carAlertSync(); renderAll(); }
@@ -4441,13 +4547,14 @@ function carAlertSync(){
   try {
     const want = {}, now = nowIso();
     carRenewals().forEach(x => { want['rm_car_' + x.car + '_' + x.start] = { title: '자동차보험 갱신 — ' + carName(x.car), date: x.date, lead: 14, memo: '현재 ' + (x.ins || '보험사 미입력') + (x.prem !== '' ? ' ' + won(x.prem) : '') + ' (시작 ' + x.start + '). 갱신 전에 견적을 비교해 보세요. 내 차 > 보험 > ↻ 갱신 견적' }; });
+    carMaintStatus().forEach(x => { if (!x.due) return; const kh = x.kind.split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7).toString(36); want['rm_cm_' + x.car + '_' + kh + '_' + x.last.date] = { title: '정비 — ' + carName(x.car) + ' ' + x.kind, date: x.due, lead: 14, memo: '마지막 ' + x.last.date + (x.last.km !== '' ? ' · ' + carKm(x.last.km) : '') + (x.dueKm ? '. 다음 교체 주행거리 ' + carKm(x.dueKm) : '') + '. 내 차 > 정비' }; });
     let ch = false;
     Object.keys(want).forEach(id => {
       const w = want[id], ex = RM.items.find(r => r.id === id);
       if (ex) { if (ex.title !== w.title || ex.memo !== w.memo || ex.date !== w.date) { if (ex.date !== w.date) ex.done = false; ex.title = w.title; ex.memo = w.memo; ex.date = w.date; ex.u = now; ch = true; } }
       else if (!RM.del[id]) { RM.items.push({ id, title: w.title, date: w.date, lead: w.lead, memo: w.memo, link: '', done: false, u: now }); ch = true; }
     });
-    RM.items.forEach(r => { if (r.id.indexOf('rm_car_') === 0 && !r.done && !want[r.id]) { r.done = true; r.u = now; ch = true; } });
+    RM.items.forEach(r => { if ((r.id.indexOf('rm_car_') === 0 || r.id.indexOf('rm_cm_') === 0) && !r.done && !want[r.id]) { r.done = true; r.u = now; ch = true; } });
     if (ch) { RM = rmNorm(RM); rmSave(); changed(); }
   } catch (e) { /* 알림 오류가 앱을 막지 않게 */ }
 }
@@ -6890,7 +6997,7 @@ window.AppExtras = {
   keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'medical', 'guide', 'pay', 'reminders', 'opts', 'car', 'gift', 'leave'],
   exportSync(){
     return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
-      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, car: { ins: CAR.ins, wash: CAR.wash, cfg: CAR.cfg, del: CAR.del }, gift: { items: FE.items, del: FE.del }, leave: { items: LV.items, cfg: LV.cfg, del: LV.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, medical: { items: MD.items, claims: MD.claims, cfg: MD.cfg, del: MD.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
+      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, car: { ins: CAR.ins, wash: CAR.wash, maint: CAR.maint, cfg: CAR.cfg, del: CAR.del }, gift: { items: FE.items, del: FE.del }, leave: { items: LV.items, cfg: LV.cfg, del: LV.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, medical: { items: MD.items, claims: MD.claims, cfg: MD.cfg, del: MD.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
   },
   strip(obj){ this.keys.forEach(k => { delete obj[k]; }); delete obj.inbox; },
   importSync(json){
@@ -6948,9 +7055,9 @@ window.AppExtras = {
     if (ok('gift')) { const r = json.gift, m = Shop.mergeById(FE.items, r.items, FE.del, cleanDel(r.del)); FE = feNorm({ items: m.items, del: m.del }); feSave(); ch = true; }
     if (ok('leave')) { const r = json.leave, m = Shop.mergeById(LV.items, r.items, LV.del, cleanDel(r.del)), cfg = r.cfg && String(r.cfg.u || '') > String(LV.cfg.u || '') ? r.cfg : LV.cfg; LV = lvNorm({ items: m.items, cfg, del: m.del }); lvSave(); ch = true; }
     if (ok('car')) {
-      const r = json.car, mi = Shop.mergeById(CAR.ins, r.ins, CAR.del, cleanDel(r.del)), mw = Shop.mergeById(CAR.wash, r.wash, CAR.del, cleanDel(r.del));
+      const r = json.car, mi = Shop.mergeById(CAR.ins, r.ins, CAR.del, cleanDel(r.del)), mw = Shop.mergeById(CAR.wash, r.wash, CAR.del, cleanDel(r.del)), mm = Shop.mergeById(CAR.maint, r.maint, CAR.del, cleanDel(r.del));
       const cfg = r.cfg && String(r.cfg.u || '') > String(CAR.cfg.u || '') ? r.cfg : CAR.cfg;
-      CAR = carNorm({ ins: mi.items, wash: mw.items, cfg, del: mi.del }); carSave(); ch = true;
+      CAR = carNorm({ ins: mi.items, wash: mw.items, maint: mm.items, cfg, del: Object.assign({}, mi.del, mw.del, mm.del) }); carSave(); ch = true;
     }
     if (ok('people')) {
       const r = json.people, mp = Shop.mergeById(Q.people, r.people, Q.del, cleanDel(r.del)), mm = Shop.mergeById(Q.meets, r.meets, Q.del, cleanDel(r.del));
@@ -7048,7 +7155,7 @@ function rmNotifyCheck(due){
   due.forEach(r => { const k = r.id + ':' + r.date; if (seen[k] !== t) { seen[k] = t; ch = true; rmPush('🔔 ' + r.title, rmWhen(r) + (r.memo ? '\n' + r.memo : '')); } });
   if (ch) { if (Object.keys(seen).length > 200) seen = {}; try { localStorage.setItem(RM_SEEN_KEY, JSON.stringify(seen)); } catch (e) { /* 무시 */ } }
 }
-const RM_FAM = [['rm_mpb_', '도수치료 묶음 확인'], ['rm_mpl_', '도수치료 한도'], ['rm_cc_', '카드 변경'], ['rm_tr_', '중고 보상']];
+const RM_FAM = [['rm_cm_', '내 차 정비'], ['rm_mpb_', '도수치료 묶음 확인'], ['rm_mpl_', '도수치료 한도'], ['rm_cc_', '카드 변경'], ['rm_tr_', '중고 보상']];
 const rmFam = r => { const f = RM_FAM.find(x => r.id.indexOf(x[0]) === 0); return f || null; };
 function rmGroupHtml(list, row){   // 같은 종류 알림이 3건 이상이면 한 줄로 접어서 보여줌
   const cnt = {}; list.forEach(r => { const f = rmFam(r); if (f) cnt[f[0]] = (cnt[f[0]] || 0) + 1; });
@@ -7409,6 +7516,66 @@ function storageInfo(){
 }
 const fmtKB = n => n >= 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.round(n / 1024) + 'KB';
 
+/* ---- 이 기기 복원 지점 (시트 이전 버전은 '합치기'라서, 삭제까지 정확히 되돌리는 용도) ---- */
+const RP_KEY = 'restore_pts_v1', RP_MAX = 3, RP_SKIP = { meeting_budget_app_v1: 1, meeting_snap_v1: 1 };
+STORE_NAMES[RP_KEY] = '복원 지점(이 기기)';
+function rpLoad(){ try { const a = JSON.parse(localStorage.getItem(RP_KEY) || '[]'); return Array.isArray(a) ? a.filter(x => x && x.id && x.keys) : []; } catch (e) { return []; } }
+const rpHash = str => { let h = 5381; for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) >>> 0; return h.toString(36) + ':' + str.length; };
+function rpCollect(){
+  const o = {}; Object.keys(STORE_NAMES).forEach(k => { if (k === RP_KEY || RP_SKIP[k]) return; const raw = localStorage.getItem(k); if (raw != null) o[k] = raw; });
+  if (o[SHOP_KEY]) { try { const j = JSON.parse(o[SHOP_KEY]); (j.items || []).forEach(i => { if (i && i.photo) i.photo = ''; }); o[SHOP_KEY] = JSON.stringify(j); } catch (e) { /* 그대로 */ } }   // 사진은 용량이 커서 제외 (되돌릴 때 현재 사진을 다시 붙여요)
+  return o;
+}
+function rpTake(why, force){
+  try {
+    const keys = rpCollect(), sig = rpHash(Object.keys(keys).sort().map(k => k + '=' + keys[k]).join('|')), L = rpLoad();
+    if (!force && L.length && L[0].sig === sig) return false;
+    L.unshift({ id: 'rp' + Date.now().toString(36), at: nowIso(), why: why || '', sig, keys }); while (L.length > RP_MAX + 1) L.pop();
+    let others = 0; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k !== RP_KEY) others += k.length + (localStorage.getItem(k) || '').length; }
+    const CAP = 3.6 * 1024 * 1024;   // 전체 보관 한도(약 500만 자)의 70% 안에서만 보관해요
+    while (L.length && others + JSON.stringify(L).length > CAP) L.pop();
+    if (!L.length) return false;
+    while (true) { try { localStorage.setItem(RP_KEY, JSON.stringify(L)); return true; } catch (e) { if (L.length <= 1) return false; L.pop(); } }
+  } catch (e) { return false; }
+}
+window.AppRestore = { take: (why, force) => rpTake(why, force) };
+const rpArrs = j => { const o = []; if (j && typeof j === 'object' && !Array.isArray(j)) Object.keys(j).forEach(k => { if (Array.isArray(j[k])) j[k].forEach(x => { if (x && typeof x === 'object' && x.id) o.push(String(x.id)); }); }); return o; };
+function rpDiff(p){   // 지금과 다른 저장소만 골라서 (지금 N건 → 그때 M건) 로 보여줘요
+  const out = []; Object.keys(p.keys).forEach(k => {
+    let a = null, b = null; try { a = JSON.parse(localStorage.getItem(k) || 'null'); b = JSON.parse(p.keys[k]); } catch (e) { return; }
+    if (!b || typeof b !== 'object' || Array.isArray(b)) return;
+    const norm = x => JSON.stringify(x, (kk, v) => (kk === 'photo' ? undefined : v));
+    if (norm(a) === norm(b)) return;
+    const ia = rpArrs(a), ib = rpArrs(b), sb = {}; ib.forEach(id => { sb[id] = 1; }); const sa = {}; ia.forEach(id => { sa[id] = 1; });
+    out.push({ k, name: STORE_NAMES[k] || k, now: ia.length, then: ib.length, gone: ia.filter(id => !sb[id]).length, back: ib.filter(id => !sa[id]).length });
+  });
+  return out;
+}
+function rpRestore(pid, key){
+  const p = rpLoad().find(x => x.id === pid); if (!p || p.keys[key] == null) return;
+  let j, cur = null; try { j = JSON.parse(p.keys[key]); cur = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { toast('복원 지점을 읽지 못했어요.'); return; }
+  if (!j || typeof j !== 'object' || Array.isArray(j)) { toast('이 항목은 되돌릴 수 없어요.'); return; }
+  const d = rpDiff({ keys: { [key]: p.keys[key] } })[0] || { gone: 0, back: 0, name: STORE_NAMES[key] || key };
+  if (!confirm('“' + d.name + '”을(를) ' + fmtRp(p.at) + ' 상태로 되돌립니다.\n· 그 이후에 추가한 ' + d.gone + '건은 사라지고\n· 그 이후에 지운 ' + d.back + '건은 다시 살아나요.\n되돌리기 직전 상태도 복원 지점으로 남겨 두니 필요하면 다시 되돌릴 수 있어요. 계속할까요?')) return;
+  rpTake('되돌리기 직전 (' + (STORE_NAMES[key] || key) + ')', true);
+  const now = nowIso(), keep = {}; rpArrs(j).forEach(id => { keep[id] = 1; });
+  if (key === SHOP_KEY && cur) { const ph = {}; (cur.items || []).forEach(i => { if (i && i.photo) ph[i.id] = i.photo; }); (j.items || []).forEach(i => { if (i && !i.photo && ph[i.id]) i.photo = ph[i.id]; }); }
+  Object.keys(j).forEach(k => { if (Array.isArray(j[k])) j[k].forEach(x => { if (x && typeof x === 'object' && x.id) x.u = now; }); else if (j[k] && typeof j[k] === 'object' && 'u' in j[k]) j[k].u = now; });   // 시트·다른 기기와 합쳐질 때 이 상태가 이기도록 수정 시각을 갱신
+  j.del = j.del && typeof j.del === 'object' ? j.del : {}; Object.keys(keep).forEach(id => { delete j.del[id]; });
+  rpArrs(cur).forEach(id => { if (!keep[id]) j.del[id] = now; });
+  try { localStorage.setItem(key, JSON.stringify(j)); } catch (e) { toast('저장하지 못했어요.'); return; }
+  try { changed(); } catch (e) { /* 무시 */ }
+  toast('되돌렸어요. 앱을 다시 불러와요…'); setTimeout(() => location.reload(), 700);
+}
+const fmtRp = iso => { const d = new Date(iso); return isNaN(d) ? '' : (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+function rpDlgRender(){
+  const L = rpLoad(); $('rp-list').innerHTML = L.length ? L.map(p => {
+    const df = rpDiff(p);
+    return '<div class="rp-pt"><b>' + esc(fmtRp(p.at)) + '</b> <span class="td-note">' + esc(p.why || '') + '</span>' +
+      (df.length ? df.map(x => '<div class="hist-row"><span><b>' + esc(x.name) + '</b><i>지금 ' + x.now + '건 → 그때 ' + x.then + '건' + (x.gone || x.back ? ' (사라질 ' + x.gone + ' · 되살아날 ' + x.back + ')' : ' (내용만 다름)') + '</i></span><button type="button" class="primary" data-rp="restore" data-id="' + esc(p.id) + '" data-k="' + esc(x.k) + '">되돌리기</button></div>').join('') : '<p class="td-note">지금과 같은 상태예요.</p>') + '</div>';
+  }).join('') : '<p class="td-note">아직 복원 지점이 없어요. “지금 만들기”를 눌러 보세요.</p>';
+}
+function rpOpen(){ rpDlgRender(); $('rp-dlg').showModal(); }
 /* ---- 데이터 점검 ---- */
 const CKI_KEY = 'ck_ign_v1';
 function ckIgn(){ try { const o = JSON.parse(localStorage.getItem(CKI_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
@@ -7444,6 +7611,7 @@ function dataChecks(){
   { const ex = window.AppMeeting ? window.AppMeeting.list() : [], byId = {}; ex.forEach(e => { byId[e.id] = e; });
     const bad = Q.meets.filter(m => m.xid && Life.isMet(m) && byId[m.xid] && !m.vg).filter(m => { const e = byId[m.xid], g = mealGuess(e.item, e.time, e.amount); return (e.time || MG_CAFE.test(e.item)) && g.t !== m.type && (Life.typesOf(m).indexOf(g.t) < 0); });
     if (bad.length) add(3, '인맥', '회의비와 연결된 만남 ' + bad.length + '건의 방식이 결제 시간·가맹점과 달라 보여요 (예: ' + bad.slice(0, 2).map(m => { const e = byId[m.xid]; return e.item + ' ' + (e.time ? e.time + ' ' : '') + mealGuess(e.item, e.time, e.amount).t + '?'; }).join(', ') + ') — 눌러서 이력 확인', ['people-log']); }
+  carMaintStatus().filter(x => x.kmLeft !== null && x.kmLeft <= 1000 && !(x.days !== null && x.days < 0)).forEach(x => add(2, '내 차', carName(x.car) + ' ' + x.kind + ' — ' + (x.kmLeft < 0 ? carKm(-x.kmLeft) + ' 초과' : carKm(x.kmLeft) + ' 남음') + ' (마지막 ' + x.last.date + ')', ['car']));
   const seen = {};
   SH.items.forEach(i => { if (!i.purchaseDate) return; const k = [i.cat, normNm(i.item), i.purchaseDate, Number(i.purchasePrice)].join('|'); (seen[k] = seen[k] || []).push(i); });
   Object.keys(seen).forEach(k => { const l = seen[k]; if (l.length > 1) add(1, '소비', l[0].item + ' — 같은 날 같은 금액으로 ' + l.length + '줄 등록돼 있어요 (같은 물건이면 한 줄로 합치는 것을 검토해 보세요)', ['shop', l[0].id]); });
@@ -7586,6 +7754,7 @@ function gsItems(){
   tr(() => SB.items.filter(i => i.active !== false).forEach(i => add('구독·보험', '💳', i.name, [i.cat, i.card, i.day + '일'].filter(Boolean).join(' · '), i.memo, 'sub', i.id)));
   tr(() => CAR.ins.forEach(r => add('내 차', '🚗', carName(r.car) + ' 보험 ' + (r.ins || ''), [r.start, r.prem === '' ? '' : won(r.prem), r.join ? '가입' : '견적'].filter(Boolean).join(' · '), [r.sp, r.dc, r.memo].join(' '), 'car', r.id)));
   tr(() => CAR.wash.forEach(r => add('내 차', '🧽', carName(r.car) + ' 세차 ' + (r.kind || ''), [r.date, r.cost === '' ? '' : won(r.cost)].filter(Boolean).join(' · '), [r.place, r.memo].join(' '), 'car', r.id)));
+  tr(() => CAR.maint.forEach(r => add('내 차', '🔧', carName(r.car) + ' 정비 ' + (r.kind || ''), [r.date, r.km === '' ? '' : carKm(r.km), r.cost === '' ? '' : won(r.cost)].filter(Boolean).join(' · '), [r.place, r.memo].join(' '), 'car', r.id)));
   tr(() => Q.people.forEach(p => add('인맥', '🙂', p.name, p.group, p.memo, 'people-list', p.id)));
   tr(() => FE.items.forEach(r => add('경조사', '💐', feWho(r) + ' ' + r.kind, [r.date, (r.dir === 'give' ? '낸 ' : '받은 ') + won(r.amount)].join(' · '), r.memo, 'people-gift', r.id)));
   tr(() => LV.items.forEach(r => add('연차', '🏖', '연차 ' + r.date, r.days < 1 ? '반차' : '1일', r.memo, 'leave', r.id)));
@@ -7622,16 +7791,52 @@ $('gs-res').addEventListener('click', e => { const b = e.target.closest('[data-g
 /* A9 오늘 화면 카드 켜기/끄기 (이 기기에만 저장) */
 const TD_CARDS = [['timeline', '오늘 시간표'], ['tasks', '할 일 · 일정'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['assets', '자산 합계'], ['body', '오늘 체중·식단'], ['conn', '캘린더·요약 연결 설정'], ['quick', '빠른 입력'], ['review', '이번 달 돌아보기'], ['backup', '백업'], ['check', '데이터 점검']];
 function tdPrefs(){ try { const o = JSON.parse(localStorage.getItem('td_cards_v1') || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
+const TD_ORD_KEY = 'td_order_v1', TD_PRE_KEY = 'td_presets_v1';
+function tdOrderGet(){ try { const a = JSON.parse(localStorage.getItem(TD_ORD_KEY) || '[]'); return Array.isArray(a) ? a.filter((k, i) => TD_CARDS.some(c => c[0] === k) && a.indexOf(k) === i) : []; } catch (e) { return []; } }
+function tdPresets(){ try { const a = JSON.parse(localStorage.getItem(TD_PRE_KEY) || '[]'); return Array.isArray(a) ? a.filter(p => p && p.id && p.name).slice(0, 4) : []; } catch (e) { return []; } }
+function tdLsSet(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* 무시 */ } }
 function tdFilter(h){
-  const pr = tdPrefs(), parts = h.split(/<!--c:(\w+)-->/); let out = parts[0];
-  for (let i = 1; i < parts.length; i += 2) { if (pr[parts[i]] !== false) out += parts[i + 1]; }
-  out += '<details class="td-card td-cfg"><summary>⚙ 오늘 화면에 보일 카드 고르기</summary>' + TD_CARDS.map(c => '<label><input type="checkbox" data-tdc="' + c[0] + '"' + (pr[c[0]] === false ? '' : ' checked') + '> ' + c[1] + '</label>').join('') + '<p class="td-note">이 기기에만 저장돼요.</p></details>';
+  const pr = tdPrefs(), parts = h.split(/<!--c:(\w+)-->/), saved = tdOrderGet();
+  const chunks = []; for (let i = 1; i < parts.length; i += 2) chunks.push({ k: parts[i], h: parts[i + 1], i: i });
+  const renderOrder = chunks.map(c => c.k);
+  const order = saved.length ? saved.concat(renderOrder.filter(k => saved.indexOf(k) < 0)) : renderOrder;
+  const shown = chunks.slice().sort((a, b) => { const x = order.indexOf(a.k), y = order.indexOf(b.k); return (x < 0 ? 999 : x) - (y < 0 ? 999 : y) || a.i - b.i; });
+  let out = parts[0]; shown.forEach(c => { if (pr[c.k] !== false) out += c.h; });
+  const full = order.concat(TD_CARDS.map(c => c[0]).filter(k => order.indexOf(k) < 0)), nm = {}; TD_CARDS.forEach(c => { nm[c[0]] = c[1]; });
+  const pre = tdPresets();
+  out += '<details class="td-card td-cfg"><summary>⚙ 오늘 화면 카드 고르기 · 순서 바꾸기</summary>' + full.filter(k => nm[k]).map((k, i, a) => '<div class="td-cfgrow"><label><input type="checkbox" data-tdc="' + k + '"' + (pr[k] === false ? '' : ' checked') + '> ' + esc(nm[k]) + '</label><span><button type="button" class="pc-btn small" data-tdm="up" data-k="' + k + '"' + (i === 0 ? ' disabled' : '') + ' aria-label="위로">▲</button><button type="button" class="pc-btn small" data-tdm="dn" data-k="' + k + '"' + (i === a.length - 1 ? ' disabled' : '') + ' aria-label="아래로">▼</button></span></div>').join('') +
+    '<div class="td-pre"><b>구성 프리셋</b> <span class="td-note">지금의 카드 선택·순서를 이름 붙여 저장해 두고 한 번에 바꿔요 (예: 출근, 퇴근 후)</span>' +
+    (pre.length ? '<div class="pk-tags">' + pre.map(p => '<span class="pk-tag"><button type="button" class="td-pbtn" data-tdp="apply" data-id="' + esc(p.id) + '">' + esc(p.name) + '</button><button type="button" data-tdp="del" data-id="' + esc(p.id) + '" aria-label="삭제">✕</button></span>').join('') + '</div>' : '') +
+    (pre.length < 4 ? '<div class="pk-newp"><input id="td-pre-name" type="text" maxlength="10" placeholder="프리셋 이름" autocomplete="off"><button type="button" class="pc-btn small" data-tdp="save">현재 구성 저장</button></div>' : '<p class="td-note">프리셋은 최대 4개예요.</p>') +
+    ((saved.length || Object.keys(pr).some(k => pr[k] === false)) ? '<button type="button" class="pc-btn small" data-tdp="reset" style="margin-top:6px">기본 구성으로 되돌리기</button>' : '') + '</div>' +
+    '<p class="td-note">이 기기에만 저장돼요.</p></details>';
   return out;
 }
+function tdCfgRefresh(){ renderToday(); const d = document.querySelector('#td-body .td-cfg'); if (d) d.open = true; }
 $('todayView').addEventListener('change', e => {
   const c = e.target.closest('[data-tdc]'); if (!c) return;
-  const pr = tdPrefs(); pr[c.dataset.tdc] = c.checked; try { localStorage.setItem('td_cards_v1', JSON.stringify(pr)); } catch (er) { /* 무시 */ }
-  renderToday(); const d = document.querySelector('#td-body .td-cfg'); if (d) d.open = true;
+  const pr = tdPrefs(); pr[c.dataset.tdc] = c.checked; tdLsSet('td_cards_v1', pr); tdCfgRefresh();
+});
+$('todayView').addEventListener('click', e => {
+  const m = e.target.closest('[data-tdm]'), p = e.target.closest('[data-tdp]');
+  if (m) {
+    const nm = {}; TD_CARDS.forEach(c => { nm[c[0]] = 1; });
+    const cur = [...document.querySelectorAll('#td-body .td-cfg [data-tdc]')].map(x => x.dataset.tdc).filter(k => nm[k]), i = cur.indexOf(m.dataset.k), j = m.dataset.tdm === 'up' ? i - 1 : i + 1;
+    if (i < 0 || j < 0 || j >= cur.length) return; const t = cur[i]; cur[i] = cur[j]; cur[j] = t; tdLsSet(TD_ORD_KEY, cur); tdCfgRefresh(); return;
+  }
+  if (!p) return; const a = p.dataset.tdp;
+  if (a === 'save') {
+    const inp = document.getElementById('td-pre-name'), name = (inp && inp.value || '').trim(); if (!name) { toast('프리셋 이름을 입력해 주세요.'); return; }
+    const cur = [...document.querySelectorAll('#td-body .td-cfg [data-tdc]')].map(x => x.dataset.tdc), list = tdPresets();
+    if (list.some(x => x.name === name)) { toast('같은 이름의 프리셋이 있어요.'); return; }
+    list.push({ id: 'tp' + Date.now().toString(36), name, order: cur, pr: Object.assign({}, tdPrefs()) }); tdLsSet(TD_PRE_KEY, list); toast('“' + name + '” 프리셋을 저장했어요.'); tdCfgRefresh();
+  } else if (a === 'apply') {
+    const x = tdPresets().find(q => q.id === p.dataset.id); if (!x) return; tdLsSet(TD_ORD_KEY, x.order || []); tdLsSet('td_cards_v1', x.pr || {}); toast('“' + x.name + '” 구성으로 바꿨어요.'); tdCfgRefresh();
+  } else if (a === 'del') {
+    const x = tdPresets().find(q => q.id === p.dataset.id); if (!x || !confirm('“' + x.name + '” 프리셋을 삭제할까요?')) return; tdLsSet(TD_PRE_KEY, tdPresets().filter(q => q.id !== x.id)); tdCfgRefresh();
+  } else if (a === 'reset') {
+    if (!confirm('카드 선택과 순서를 기본으로 되돌릴까요? (프리셋은 그대로예요)')) return; try { localStorage.removeItem(TD_ORD_KEY); localStorage.removeItem('td_cards_v1'); } catch (er) { /* 무시 */ } tdCfgRefresh();
+  }
 });
 
 /* B7 회의비 지출 → 만남 기록 연결 + 지난 만남 일괄 입력 */
@@ -7988,6 +8193,7 @@ function renderToday(quiet){
     const v = bkView(), btn = v.k === 'saving' ? '<button type="button" class="pc-btn small" disabled>백업 중…</button>' : (v.k === 'none' ? '<button type="button" class="pc-btn small primary" data-td="go" data-act="settings">⚙ 주소 입력</button>' : '<button type="button" class="pc-btn small primary" data-td="go" data-act="backup">☁ 지금 백업</button>');
     h += '<!--c:backup--><div class="td-card"><h3>☁ 백업</h3><p class="td-note' + (v.dot === 'warn' ? ' td-warn' : '') + '" style="font-size:14px"><b data-bk="txt">' + esc(v.text) + '</b></p>' + (v.sub ? '<p class="td-note">' + esc(v.sub) + '</p>' : '') +
       '<p class="td-note">자동 백업 ' + (A.auto() ? '켜짐 — 내용을 바꾸면 알아서 시트에 저장해요' : '꺼짐 — 직접 눌러야 저장돼요') + '</p>' + btn +
+      '<p class="td-note">🕘 이 기기 복원 지점 ' + rpLoad().length + '개' + (rpLoad()[0] ? ' · 마지막 ' + fmtRp(rpLoad()[0].at) : '') + ' <button type="button" class="pc-btn small" data-rp="open">보기·되돌리기</button></p>' +
       '<details class="td-more"><summary>이 기기 저장공간 ' + st.pct + '% 사용</summary><div class="td-bar' + (st.pct >= 70 ? ' warn' : '') + '"><i style="width:' + st.pct + '%"></i></div>' +
       '<p class="td-note">전체 <b>' + fmtKB(st.tot * 2) + '</b> 중 마이라이프 <b>' + fmtKB(st.mine * 2) + '</b>' + (st.other ? ' · 같은 주소를 쓰는 다른 앱 <b>' + fmtKB(st.other * 2) + '</b>' : '') + ' · 백업 데이터 약 ' + fmtKB(st.bk) + '</p>' +
       '<p class="td-note">큰 데이터: ' + st.top.map(x => esc(x[0]) + ' ' + fmtKB(x[1] * 2)).join(' · ') + '</p>' +
@@ -7998,7 +8204,7 @@ function renderToday(quiet){
   h += '<!--c:check--><details class="td-card td-chk"' + (warn ? ' open' : '') + '><summary>🩺 데이터 점검 — ' + (ck.length ? '확인할 항목 ' + ck.length + '건' + (warn ? ' (중요 ' + warn + ')' : '') : '문제 없어요') + '</summary>' +
     ckGroups(ck) + (ckIgnCount ? '<p class="td-note">숨긴 항목 ' + ckIgnCount + '건 (이 기기에서만 · 내용이 바뀌면 다시 나타나요) · <button type="button" class="pc-btn small" data-td="ckun">모두 다시 보기</button></p>' : '') + '</details>';
   h = tdFilter(h);
-  const agAct = document.activeElement, agTyping = !!(agAct && agAct.closest && agAct.closest('#td-body .td-ag') && /INPUT|TEXTAREA/.test(agAct.tagName));
+  const agAct = document.activeElement, agTyping = !!(agAct && agAct.closest && agAct.closest('#td-body .td-ag, #td-body .td-cfg') && /INPUT|TEXTAREA/.test(agAct.tagName));
   if (quiet === true && agTyping) return;     // 연결 설정에 입력 중이면 자동 갱신으로 화면을 다시 그리지 않음
   const agOpen = !!document.querySelector('#td-body .td-ag[open]');
   $('td-body').innerHTML = h;
@@ -8007,7 +8213,7 @@ function renderToday(quiet){
 }
 function tdGo(act, id){
   if (act === 'rm') rmOpen(); else if (act === 'shop') gotoShop(id); else if (act === 'sub') { if (id) sbGoto([id], {}); else setMode('sub'); }
-  else if (act === 'leave') setMode('leave'); else if (act === 'people') setMode('people'); else if (act === 'manual') setMode('manual'); else if (act === 'med') { if (id && /^(chk|noCd|noAmt|open|all)$/.test(id)) { mdFlt.st = id; mdFlt.year = 'all'; } setMode('med'); if (id === 'mplink') mdLkOpen(); } else if (act === 'meeting') setMode('meeting');
+  else if (act === 'car') { carTab = 'maint'; carSaveUi(); setMode('car'); } else if (act === 'leave') setMode('leave'); else if (act === 'people') setMode('people'); else if (act === 'manual') setMode('manual'); else if (act === 'med') { if (id && /^(chk|noCd|noAmt|open|all)$/.test(id)) { mdFlt.st = id; mdFlt.year = 'all'; } setMode('med'); if (id === 'mplink') mdLkOpen(); } else if (act === 'meeting') setMode('meeting');
   else if (act === 'photo') { recompressPhotos(); } else if (act === 'golf') { shCat = 'golf'; szOpen = false; setMode('shop'); } else if (act === 'backup') { doBackup(); setTimeout(renderToday, 900); } else if (act === 'settings') { window.AppSync.openSettings(); }
   else if (act === 'qk-exp') qkExpOpen(); else if (act === 'qk-meet') { if (!Q.people.length) { toast('먼저 인맥 탭에서 사람을 등록해 주세요.'); return; } openMeet(null, null); } else if (act === 'qk-skin') qkSkinOpen(); else if (act === 'qk-med') { mdSmsOpen(); }
   else if (act === 'chkall') { window.__tdChkAll = !window.__tdChkAll; renderToday(); } else if (act === 'wizard') { setMode('med'); mdWzOpen(); } else if (act === 'skin') { setMode('skin'); if (id) { try { openSkin(id); } catch (e) { /* 무시 */ } } } else if (act === 'people-log') { ppTab = 'log'; setMode('people'); }
@@ -8086,6 +8292,9 @@ function qkSkinOpen(){
 }
 $('qk-dlg').addEventListener('click', e => { const b = e.target.closest('[data-qk]'); if (!b) return; if (b.dataset.qk === 'cancel') $('qk-dlg').close(); else if (b.dataset.qk === 'save') qkExpSave(); });
 $('qk-sk-dlg').addEventListener('click', e => { const b = e.target.closest('[data-qk]'); if (!b) return; if (b.dataset.qk === 'cancel') $('qk-sk-dlg').close(); else if (b.dataset.qk === 'sk') { $('qk-sk-dlg').close(); skToday(b.dataset.id); } });
+document.addEventListener('click', e => { const b = e.target.closest('[data-rp]'); if (!b) return; const a = b.dataset.rp;
+  if (a === 'open') rpOpen(); else if (a === 'close') $('rp-dlg').close(); else if (a === 'now') { toast(rpTake('직접 만듦', true) ? '복원 지점을 만들었어요.' : '저장공간이 부족해 만들지 못했어요.'); rpDlgRender(); if (mode === 'today') renderToday(true); } else if (a === 'restore') { $('rp-dlg').close(); rpRestore(b.dataset.id, b.dataset.k); }
+});
 $('todayView').addEventListener('click', e => { const el = e.target.closest('[data-td="go"]'); if (el) tdGo(el.dataset.act, el.dataset.id); });
 $('todayView').addEventListener('click', e => { const el = e.target.closest('[data-td="rv"]'); if (!el || el.disabled) return; const d = Number(el.dataset.d); window.__tdRvOff = d === 0 ? 0 : Math.min(0, (window.__tdRvOff || 0) + d); renderToday(true); });
 let snzPid = null;
@@ -8320,12 +8529,15 @@ $('carView').addEventListener('click', e => {
   else if (a === 'tab') { carTab = el.dataset.t; carSaveUi(); renderCar(); }
   else if (a === 'ins-add') openCarIns(null); else if (a === 'ins-copy') carCopyPrev(); else if (a === 'ins-edit') openCarIns(el.dataset.id);
   else if (a === 'wash-add') openCarWash(null); else if (a === 'wash-edit') openCarWash(el.dataset.id);
+  else if (a === 'maint-add') openCarMaint(null, el.dataset.kind); else if (a === 'maint-edit') openCarMaint(el.dataset.id); else if (a === 'odo') carOdoSet(el.dataset.id); else if (a === 'mk-cfg') cmkOpen();
   else if (a === 'backup') doBackup(); else if (a === 'cov-cmp') openCarCmp(); else if (a === 'cov-tg') { carOpenCov[el.dataset.id] = !carOpenCov[el.dataset.id]; renderCar(); } else if (a === 'noop') return;
 });
 $('cc-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; if (el.dataset.car === 'cc-close') $('cc-dlg').close(); else if (el.dataset.car === 'cc-tog') { const i = ccSel.indexOf(el.dataset.id); if (i >= 0) ccSel.splice(i, 1); else { if (ccSel.length >= 4) { toast('한 번에 4개까지 비교할 수 있어요.'); return; } ccSel.push(el.dataset.id); } renderCarCmp(); } });
 $('ci-dlg').addEventListener('input', e => { if (e.target.closest('#ci-cov') || e.target.id === 'ci-prem') ciCovSum(); });
 $('ci-dlg').addEventListener('change', e => { if (e.target.id === 'ci-car' || e.target.id === 'ci-start') ciCovSum(); });
 $('ci-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car; if (a === 'cov-add') { $('ci-cov').insertAdjacentHTML('beforeend', ciCovRow()); ciCovSum(); return; } if (a === 'cov-del') { el.closest('.ci-cov').remove(); ciCovSum(); return; } if (a === 'cov-tot') { const cv = ciCovRead(); if (!cv.length) { toast('먼저 담보별 금액을 입력해 주세요.'); return; } $('ci-prem').value = cv.reduce((x, c) => x + carNum(c.v), 0); ciCovSum(); return; } if (a === 'ci-cancel') $('ci-dlg').close(); else if (a === 'ci-save') saveCarIns(); else if (a === 'ci-delete') delCarIns(); });
+$('cm-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car; if (a === 'cm-cancel') $('cm-dlg').close(); else if (a === 'cm-save') saveCarMaint(); else if (a === 'cm-delete') delCarMaint(); });
+$('cmk-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car; if (a === 'mk-cancel') $('cmk-dlg').close(); else if (a === 'mk-save') cmkSave(); else if (a === 'mk-add') $('cmk-rows').insertAdjacentHTML('beforeend', cmkRow()); else if (a === 'mk-del') el.closest('.cmk-row').remove(); });
 $('cw-dlg').addEventListener('click', e => { const el = e.target.closest('[data-car]'); if (!el) return; const a = el.dataset.car; if (a === 'cw-cancel') $('cw-dlg').close(); else if (a === 'cw-save') saveCarWash(); else if (a === 'cw-delete') delCarWash(); });
 $('car-cfg').addEventListener('change', e => {
   const pe = e.target.closest('[data-carcfg="plate"]'); if (pe) { CAR.cfg.plates[pe.dataset.id] = pe.value.trim(); carCfgSave(); toast('차량번호를 저장했어요.'); return; }
@@ -8492,6 +8704,7 @@ try { document.title = APP_NAME; } catch (e) { /* 무시 */ }
 setInterval(() => { if (mode === 'shop') checkBenefits(); }, 60 * 1000);
 setInterval(renderGlobal, 2000);
 unifyAllCards();
+setTimeout(() => { try { const L = rpLoad(); if (!L.length || Date.now() - Date.parse(L[0].at) > 20 * 3600000) rpTake('자동 (하루 한 번)'); } catch (e) { /* 무시 */ } }, 4000);
 migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
