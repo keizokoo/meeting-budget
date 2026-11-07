@@ -758,6 +758,15 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .gd-tx p{ margin:0 0 10px; font-size:15px; line-height:1.85; } .gd-tx .gd-q{ border-left:4px solid var(--accent); padding:2px 0 2px 12px; margin:16px 0; font-weight:800; font-size:16px; line-height:1.6; }
   .td-dir{ display:block; width:100%; text-align:left; font:inherit; border:0; border-radius:12px; padding:18px; margin-bottom:12px; background:var(--accent); color:var(--on-accent); cursor:pointer; }
   .td-dir small{ display:block; font-size:12.5px; font-weight:800; opacity:.85; } .td-dir b{ display:block; font-size:19px; line-height:1.5; margin:6px 0 4px; letter-spacing:-.01em; } .td-dir span{ display:block; font-size:13.5px; opacity:.92; } .td-dir u{ display:block; text-decoration:none; font-size:12.5px; opacity:.8; margin-top:10px; }
+  .td-dir{ position:relative; }
+  .td-dir .td-dir-gear{ z-index:2; position:absolute; right:10px; top:10px; border:0; border-radius:8px; padding:6px 10px; font:inherit; font-size:12px; font-weight:800; background:rgba(255,255,255,.22); color:var(--on-accent); cursor:pointer; min-height:32px; }
+  .td-dir small{ padding-right:84px; }
+  #dir-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); } #dir-dlg::backdrop{ background:rgba(0,0,0,.45); } #dir-dlg h3{ margin:0 0 4px; font-size:16px; }
+  #dir-q{ width:100%; font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:9px 11px; min-height:42px; margin:6px 0; }
+  #dir-list{ max-height:42vh; overflow-y:auto; border:1px solid var(--line); border-radius:8px; padding:4px 8px 8px; }
+  .dir-h{ font-size:12.5px; font-weight:800; color:var(--ink2); margin:10px 0 3px; }
+  .dir-row{ display:flex; gap:8px; width:100%; text-align:left; font:inherit; font-size:14px; line-height:1.5; padding:9px 10px; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:8px; margin:3px 0; cursor:pointer; } .dir-row i{ font-style:normal; opacity:.25; } .dir-row.on{ border-color:var(--accent); background:var(--soft); font-weight:700; } .dir-row.on i{ opacity:1; color:var(--accent-ink); }
+  .dir-seg{ display:flex; gap:6px; margin:10px 0 6px; } .dir-seg button{ flex:1; padding:9px 2px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); border-radius:8px; font:inherit; font-size:12.5px; font-weight:700; cursor:pointer; } .dir-seg button.on{ background:var(--ink); color:var(--surface); }
   #gd-read-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); } #gd-read-dlg::backdrop{ background:rgba(0,0,0,.45); }
   #gd-read-dlg .gd-card{ border:0; box-shadow:none; padding:0; margin:0 0 6px; } #gd-read-dlg .gd-h b{ font-size:17px; line-height:1.4; }
   #gd-dlg #gd-f-newk-w{ margin-top:-4px; } #gd-dlg #gd-f-newk-w[hidden]{ display:none; }
@@ -1422,6 +1431,17 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <textarea id="md-sms-in" rows="5" placeholder="[Web발신] 하나8*9*승인 고*희 45,650원 일시불 08/25 15:12 광교삼성H정형외과 누적…"></textarea>
   <div id="md-sms-list"></div>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-md="s-cancel">닫기</button><button class="pc-btn primary" id="md-sms-go" data-md="s-go" disabled>등록</button></div>
+</dialog>
+
+<dialog id="dir-dlg">
+  <h3>오늘 화면에 보일 내용 고르기</h3>
+  <p class="td-note">가이드의 카드·문장 중 보고 싶은 것을 눌러 고르세요. 여러 개를 고르면 아래 방식으로 보여요.</p>
+  <input id="dir-q" type="search" placeholder="문장·카드 검색" autocomplete="off">
+  <div id="dir-list"></div>
+  <div class="td-note" id="dir-cnt" style="margin-top:6px"></div>
+  <div class="dir-seg"><button type="button" data-dm="daily">매일 번갈아</button><button type="button" data-dm="random">열 때마다 랜덤</button><button type="button" data-dm="fixed">첫 번째만 고정</button></div>
+  <label class="mp-chk"><input type="checkbox" id="dir-f-open"> 누르면 카드 전문 열기</label>
+  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-da="cancel">취소</button><button class="pc-btn primary" data-da="save">저장</button></div>
 </dialog>
 
 <dialog id="gd-read-dlg">
@@ -3543,9 +3563,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-08-b (나의 방향: 가이드 글 형식 카드 · 오늘 화면 한 줄 카드 + 눌러서 전문 보기 · 이전: 가이드: 입력칸 높이 오류 수정 · 카드 작성 중 새 주제 바로 만들기 · 이전: 2026-11-06-g (샐러리캡 인센티브도 상·하반기 연 2회 · 이전: 2026-11-06-f: 연봉 이력에 추가상여 칸 · 이전: 2026-11-06-e: 모든 금액 원 단위·천 단위 쉼표(입력칸 자동 쉼표), 연봉 입력·표시를 원 단위로 · 이전: 2026-11-06-d: 연봉 이력에 목표인센티브(연 2회)·샐러리캡 인센티브(연 1회) · 이전: 2026-11-06-c: 내 차 정비·소모품 주기 · 오늘 카드 순서 바꾸기·프리셋 · 이 기기 복원 지점 · 이전: 2026-11-06-b: 회의비↔인맥 방식 자동 구분: 문자 시간·가맹점 이름 분석(커피/점심/저녁) · 이전: 2026-11-06-a: 만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-08-d (오늘 화면 “나의 방향” 카드에서 가이드 문장 직접 고르기 · 이전: 2026-11-08-c: 이미 가이드에 넣어 둔 나의 방향 글에도 오늘 화면 한 줄 카드 연결 · 이전: 2026-11-08-b: 나의 방향: 가이드 글 형식 카드 · 오늘 화면 한 줄 카드 + 눌러서 전문 보기 · 이전: 가이드: 입력칸 높이 오류 수정 · 카드 작성 중 새 주제 바로 만들기 · 이전: 2026-11-06-g (샐러리캡 인센티브도 상·하반기 연 2회 · 이전: 2026-11-06-f: 연봉 이력에 추가상여 칸 · 이전: 2026-11-06-e: 모든 금액 원 단위·천 단위 쉼표(입력칸 자동 쉼표), 연봉 입력·표시를 원 단위로 · 이전: 2026-11-06-d: 연봉 이력에 목표인센티브(연 2회)·샐러리캡 인센티브(연 1회) · 이전: 2026-11-06-c: 내 차 정비·소모품 주기 · 오늘 카드 순서 바꾸기·프리셋 · 이 기기 복원 지점 · 이전: 2026-11-06-b: 회의비↔인맥 방식 자동 구분: 문자 시간·가맹점 이름 분석(커피/점심/저녁) · 이전: 2026-11-06-a: 만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['오늘 화면 “나의 방향” 한 줄 카드(누르면 전문) · 가이드 카드 “글 형식”(편지·다짐글을 문단 그대로) · 오늘 한 줄 지정 칸', '나 > 가이드: 카드 내용 입력칸이 한 줄로 보이던 오류 수정 · 카드 작성 중 “＋ 새 주제 만들기”로 기타 외 주제 바로 추가', '돈 > 연봉: 샐러리캡 인센티브를 상반기·하반기 연 2회로 입력(기존 입력값은 상반기로 유지)', '돈 > 연봉: 추가상여 입력 칸(있는 해만), 총연봉·누적에 합산', '금액 공통: 입력칸에 천 단위 쉼표 자동 + 연봉·골프·차트 금액을 원 단위로 통일', '돈 > 연봉: 목표인센티브 상·하반기 + 샐러리캡 인센티브 입력, 총연봉·누적에 합산', '내 차 > 정비: 엔진오일·타이어 등 마지막 정비 기준 다음 교체 시기(개월·km), 알림·요약 연동', '오늘 화면: 카드 ▲▼ 순서 바꾸기 + 구성 프리셋(출근/퇴근 후 등) 저장', '이 기기 복원 지점: 하루 1회·가져오기 직전 자동 저장, 항목별 정확히 되돌리기', '회의비 → 만남 기록: 카드 문자의 결제 시간과 가맹점 이름으로 커피·점심식사·저녁식사를 자동 선택(근거 표시)', '만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
+const APP_RECENT = ['오늘 > 나의 방향 카드 “⚙ 바꾸기”: 가이드의 카드·문장을 골라 올리기 + 매일 번갈아/랜덤/고정 + 누르면 전문 열기 선택', '오늘 화면 “나의 방향” 한 줄 카드(누르면 전문) · 가이드 카드 “글 형식”(편지·다짐글을 문단 그대로) · 오늘 한 줄 지정 칸', '나 > 가이드: 카드 내용 입력칸이 한 줄로 보이던 오류 수정 · 카드 작성 중 “＋ 새 주제 만들기”로 기타 외 주제 바로 추가', '돈 > 연봉: 샐러리캡 인센티브를 상반기·하반기 연 2회로 입력(기존 입력값은 상반기로 유지)', '돈 > 연봉: 추가상여 입력 칸(있는 해만), 총연봉·누적에 합산', '금액 공통: 입력칸에 천 단위 쉼표 자동 + 연봉·골프·차트 금액을 원 단위로 통일', '돈 > 연봉: 목표인센티브 상·하반기 + 샐러리캡 인센티브 입력, 총연봉·누적에 합산', '내 차 > 정비: 엔진오일·타이어 등 마지막 정비 기준 다음 교체 시기(개월·km), 알림·요약 연동', '오늘 화면: 카드 ▲▼ 순서 바꾸기 + 구성 프리셋(출근/퇴근 후 등) 저장', '이 기기 복원 지점: 하루 1회·가져오기 직전 자동 저장, 항목별 정확히 되돌리기', '회의비 → 만남 기록: 카드 문자의 결제 시간과 가맹점 이름으로 커피·점심식사·저녁식사를 자동 선택(근거 표시)', '만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4582,6 +4602,18 @@ function migrateAE(){
       '> 더 나은 삶을 위해 성장하되, 성장하기 위해 삶을 희생하지 말자.',
       '> 건강하게, 여유롭게, 즐겁게. 그리고 지금 이 순간도 충분히 행복하게. 🌿'] });
   GD = gdNorm(GD); gdSave(); changed(); done();
+}
+/* 1회 마이그레이션(mig_af_v1): 이미 가이드에 넣어 둔 '나의 방향' 글 카드에 오늘 화면 한 줄·글 형식을 붙임(없으면 새로 등록) */
+function migrateAF(){
+  const MK = 'mig_af_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const ID = 'gd_seed_direction', done = () => { try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ } };
+  const hit = GD.items.find(x => x.id === ID || /성장하기 위해 삶을 희생/.test(x.lines.join(' ')));
+  if (hit) {
+    if (!String(hit.hl || '').trim()) { hit.hl = '더 나은 삶을 위해 성장하되, 성장하기 위해 삶을 희생하지 말자.\n건강하게 · 여유롭게 · 즐겁게'; hit.tx = true; hit.u = nowIso(); GD = gdNorm(GD); gdSave(); changed(); }
+    done(); return;
+  }
+  try { localStorage.removeItem('mig_ae_v1'); } catch (e) { /* 무시 */ }
+  migrateAE(); done();
 }
 /* 1회 마이그레이션(mig_ad_v1): 등록해 둔 두 대 보험 건의 담보별 보험료를 항목으로 분리(메모의 담보 문구는 정리) */
 function migrateAD(){
@@ -5893,12 +5925,61 @@ function delGuide(){
   GD.items = GD.items.filter(x => x.id !== gdEditing); GD.del[gdEditing] = nowIso(); gdSave(); changed(); $('gd-dlg').close(); renderAll(); renderQuick();
 }
 /* 오늘 화면 '나의 방향' 한 줄 카드 (가이드 카드의 hl 필드) */
-function dirItems(){ return gdSorted(GD.items.filter(i => String(i.hl || '').trim())); }
-function dirCardHtml(){
-  const a = dirItems(); if (!a.length) return '';
-  const i = a[Math.floor(Date.now() / 864e5) % a.length], L = i.hl.split('\n').map(x => x.trim()).filter(Boolean);
-  return '<!--c:direction--><button type="button" class="td-dir" data-td="dir" data-id="' + esc(i.id) + '"><small>' + esc(GD_KINDS[i.kind] || '') + '</small><b>' + esc(L[0] || '') + '</b>' + (L[1] ? '<span>' + esc(L[1]) + '</span>' : '') + '<u>눌러서 전문 보기 ›</u></button>';
+const DIR_KEY = 'dir_cfg_v1', DIR_HL = '__hl';
+function dirCfg(){
+  let o = null; try { o = JSON.parse(localStorage.getItem(DIR_KEY) || 'null'); } catch (e) { o = null; }
+  if (!o || typeof o !== 'object') o = { picks: GD.items.filter(i => String(i.hl || '').trim()).map(i => ({ id: i.id, t: DIR_HL })), mode: 'daily', open: true, saved: false };
+  o.picks = (Array.isArray(o.picks) ? o.picks : []).filter(x => x && x.id); o.mode = ['daily', 'random', 'fixed'].indexOf(o.mode) >= 0 ? o.mode : 'daily'; o.open = o.open !== false; return o;
 }
+function dirResolve(){   // 선택 목록 → 지금도 존재하는 문장들(가이드 카드 순서)
+  const cfg = dirCfg(), out = [];
+  gdSorted(GD.items).forEach(it => cfg.picks.filter(x => x.id === it.id).forEach(x => {
+    if (x.t === DIR_HL) { const L = String(it.hl || '').split('\n').map(z => z.trim()).filter(Boolean); if (L.length) out.push({ it, main: L[0], sub: L[1] || '' }); }
+    else if (it.lines.indexOf(x.t) >= 0) out.push({ it, main: x.t.replace(/^>\s?/, ''), sub: '' });
+  }));
+  return out;
+}
+function dirCardHtml(){
+  const a = dirResolve(), cfg = dirCfg();
+  if (!a.length) return GD.items.length && !(tdPrefs().direction === false) ? '<!--c:direction--><div class="td-card"><h3>🌿 나의 방향</h3><p class="td-note">가이드에 적어 둔 문장 중 오늘 화면에 보고 싶은 것을 골라 보세요.</p><div class="pc-row2"><button type="button" class="pc-btn primary" data-td="dirset">문장 고르기</button><button type="button" class="pc-btn" data-td="dirhide">이 카드 안 보기</button></div></div>' : '';
+  if (cfg.mode === 'random' && window.__dirRnd === undefined) window.__dirRnd = Math.random();
+  const ix = cfg.mode === 'fixed' ? 0 : cfg.mode === 'random' ? Math.floor(window.__dirRnd * a.length) : Math.floor(Date.now() / 864e5) % a.length, c = a[ix % a.length];
+  return '<!--c:direction--><div class="td-dir" role="button" tabindex="0" data-td="dir" data-id="' + esc(c.it.id) + '"><button type="button" class="td-dir-gear" data-td="dirset" aria-label="오늘 화면 문장 바꾸기">⚙ 바꾸기</button><small>' + esc(GD_KINDS[c.it.kind] || '') + (a.length > 1 ? ' · ' + (ix % a.length + 1) + '/' + a.length : '') + '</small><b>' + esc(c.main) + '</b>' + (c.sub ? '<span>' + esc(c.sub) + '</span>' : '') + (cfg.open ? '<u>눌러서 전문 보기 ›</u>' : '') + '</div>';
+}
+/* 오늘 화면 문장 고르기 */
+let dirDraft = null, dirRows = [];
+function dirBuildRows(q){
+  q = String(q || '').trim().toLowerCase(); dirRows = [];
+  gdSorted(GD.items).forEach(it => {
+    const rows = []; if (String(it.hl || '').trim()) rows.push({ id: it.id, t: DIR_HL, label: '📌 ' + it.hl.split('\n')[0] });
+    it.lines.forEach(l => rows.push({ id: it.id, t: l, label: l.replace(/^>\s?/, '') }));
+    const hit = rows.filter(r => !q || (it.title + ' ' + r.label).toLowerCase().indexOf(q) >= 0); if (hit.length) dirRows.push({ it, rows: hit });
+  });
+}
+function dirListRender(){
+  const keyOf = r => r.id + '\u0001' + r.t; let n = 0;
+  $('dir-list').innerHTML = dirRows.map(g => '<div class="dir-h">' + esc(GD_KINDS[g.it.kind] || '') + ' · ' + esc(g.it.title) + '</div>' + g.rows.map(r => { const k = n++; r._k = k; return '<button type="button" class="dir-row' + (dirDraft.sel[keyOf(r)] ? ' on' : '') + '" data-dr="' + k + '"><i>✓</i><span>' + esc(r.label) + '</span></button>'; }).join('')).join('') || '<p class="td-note">가이드 카드가 없거나 검색 결과가 없어요.</p>';
+  $('dir-cnt').textContent = Object.keys(dirDraft.sel).filter(k => dirDraft.sel[k]).length + '개 선택';
+}
+function dirOpen(){
+  const cfg = dirCfg(); dirDraft = { sel: {}, mode: cfg.mode, open: cfg.open };
+  cfg.picks.forEach(x => { dirDraft.sel[x.id + '\u0001' + x.t] = true; });
+  $('dir-q').value = ''; dirBuildRows(''); dirListRender(); dirModeRender(); $('dir-dlg').showModal();
+}
+function dirModeRender(){ document.querySelectorAll('#dir-dlg [data-dm]').forEach(b => b.classList.toggle('on', b.dataset.dm === dirDraft.mode)); $('dir-f-open').checked = dirDraft.open; }
+function dirSave(){
+  const picks = []; gdSorted(GD.items).forEach(it => { const all = [{ t: DIR_HL }].concat(it.lines.map(l => ({ t: l }))); all.forEach(r => { if (dirDraft.sel[it.id + '\u0001' + r.t]) picks.push({ id: it.id, t: r.t }); }); });
+  tdLsSet(DIR_KEY, { picks, mode: dirDraft.mode, open: $('dir-f-open').checked, saved: true }); window.__dirRnd = undefined;
+  $('dir-dlg').close(); renderToday(true); toast(picks.length ? '오늘 화면에 ' + picks.length + '개를 올렸어요.' : '오늘 화면에서 뺐어요.');
+}
+$('dir-dlg').addEventListener('click', e => {
+  const r = e.target.closest('[data-dr]'), m = e.target.closest('[data-dm]'), a = e.target.closest('[data-da]');
+  if (r) { const row = dirRows.reduce((f, g) => f || g.rows.find(x => String(x._k) === r.dataset.dr), null); if (row) { const k = row.id + '\u0001' + row.t; dirDraft.sel[k] = !dirDraft.sel[k]; r.classList.toggle('on', !!dirDraft.sel[k]); $('dir-cnt').textContent = Object.keys(dirDraft.sel).filter(z => dirDraft.sel[z]).length + '개 선택'; } return; }
+  if (m) { dirDraft.mode = m.dataset.dm; dirModeRender(); return; }
+  if (a) { if (a.dataset.da === 'save') dirSave(); else $('dir-dlg').close(); }
+});
+$('dir-q').addEventListener('input', e => { dirBuildRows(e.target.value); dirListRender(); });
+$('dir-f-open').addEventListener('change', e => { if (dirDraft) dirDraft.open = e.target.checked; });
 let gdReadId = null;
 function gdRead(id){
   const i = GD.items.find(x => x.id === id); if (!i) return; gdReadId = id;
@@ -8374,7 +8455,12 @@ $('qk-sk-dlg').addEventListener('click', e => { const b = e.target.closest('[dat
 document.addEventListener('click', e => { const b = e.target.closest('[data-rp]'); if (!b) return; const a = b.dataset.rp;
   if (a === 'open') rpOpen(); else if (a === 'close') $('rp-dlg').close(); else if (a === 'now') { toast(rpTake('직접 만듦', true) ? '복원 지점을 만들었어요.' : '저장공간이 부족해 만들지 못했어요.'); rpDlgRender(); if (mode === 'today') renderToday(true); } else if (a === 'restore') { $('rp-dlg').close(); rpRestore(b.dataset.id, b.dataset.k); }
 });
-$('todayView').addEventListener('click', e => { const d = e.target.closest('[data-td="dir"]'); if (d) gdRead(d.dataset.id); });
+$('todayView').addEventListener('click', e => {
+  if (e.target.closest('[data-td="dirset"]')) { dirOpen(); return; }
+  if (e.target.closest('[data-td="dirhide"]')) { const pr = tdPrefs(); pr.direction = false; tdLsSet('td_cards_v1', pr); renderToday(true); toast('설정 > 오늘 화면 카드 고르기에서 다시 켤 수 있어요.'); return; }
+  const d = e.target.closest('[data-td="dir"]'); if (d && dirCfg().open) gdRead(d.dataset.id);
+});
+$('todayView').addEventListener('keydown', e => { if (e.key !== 'Enter') return; const d = e.target.closest && e.target.closest('[data-td="dir"]'); if (d && e.target === d && dirCfg().open) gdRead(d.dataset.id); });
 $('todayView').addEventListener('click', e => { const el = e.target.closest('[data-td="go"]'); if (el) tdGo(el.dataset.act, el.dataset.id); });
 $('todayView').addEventListener('click', e => { const el = e.target.closest('[data-td="rv"]'); if (!el || el.disabled) return; const d = Number(el.dataset.d); window.__tdRvOff = d === 0 ? 0 : Math.min(0, (window.__tdRvOff || 0) + d); renderToday(true); });
 let snzPid = null;
@@ -8816,7 +8902,7 @@ mnyScan(document.body);
 new MutationObserver(ms => { ms.forEach(m => m.addedNodes.forEach(mnyScan)); }).observe(document.body, { childList: true, subtree: true });
 
 setTimeout(() => { try { const L = rpLoad(); if (!L.length || Date.now() - Date.parse(L[0].at) > 20 * 3600000) rpTake('자동 (하루 한 번)'); } catch (e) { /* 무시 */ } }, 4000);
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); migrateAE(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); migrateAE(); migrateAF(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
