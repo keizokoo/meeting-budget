@@ -756,6 +756,14 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   #gd-dlg .pc-f textarea{ min-height:180px; line-height:1.6; resize:vertical; }
   #gd-dlg .pc-f textarea#gd-f-hl{ min-height:68px; }
   .gd-tx p{ margin:0 0 10px; font-size:15px; line-height:1.85; } .gd-tx .gd-q{ border-left:4px solid var(--accent); padding:2px 0 2px 12px; margin:16px 0; font-weight:800; font-size:16px; line-height:1.6; }
+  #gd-f-pick-w{ margin:2px 0 10px; } #gd-f-pick-w[hidden]{ display:none; } #gd-f-pick-w .gd-pk-h{ font-size:13px; font-weight:800; margin:0 0 6px; } #gd-f-pick-w .gd-pk-h span{ font-weight:500; opacity:.7; }
+  #gd-f-pick{ border:1px solid var(--line2); border-radius:8px; max-height:260px; overflow-y:auto; } #gd-f-pick button{ display:flex; gap:8px; align-items:flex-start; width:100%; text-align:left; font:inherit; font-size:13.5px; line-height:1.5; color:var(--ink); background:none; border:0; border-bottom:1px solid var(--line); padding:8px 10px; cursor:pointer; } #gd-f-pick button:last-child{ border-bottom:0; } #gd-f-pick button i{ font-style:normal; flex:none; font-size:16px; opacity:.45; } #gd-f-pick button.on{ background:var(--surface2,rgba(0,0,0,.05)); font-weight:800; box-shadow:inset 4px 0 0 var(--accent); } #gd-f-pick button.on i{ opacity:1; color:var(--accent); }
+  #sh-sz-wrap{ margin-top:12px; border:1px dashed var(--accent); border-radius:10px; padding:10px 12px; } #sh-sz-wrap[hidden]{ display:none; } #sh-sz-wrap>summary{ cursor:pointer; font-weight:800; font-size:14px; color:var(--accent-ink); } #sh-sz-wrap>summary small{ font-weight:500; color:var(--ink2); }
+  .sh-sz-fields{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; } .sh-sz-fields .pc-f{ margin:0; font-size:12px; }
+  .sh-szb{ font:inherit; font-size:11.5px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); background:var(--soft); border-radius:99px; padding:1px 9px; cursor:pointer; }
+  #szc-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); } #szc-dlg::backdrop{ background:rgba(0,0,0,.45); } #szc-dlg h3{ margin:0 0 2px; font-size:16px; }
+  .szc-tbl{ width:100%; border-collapse:collapse; font-size:13.5px; margin:10px 0 6px; } .szc-tbl th, .szc-tbl td{ padding:7px 4px; text-align:center; border-bottom:1px solid var(--line); } .szc-tbl th:first-child, .szc-tbl td:first-child{ text-align:left; } .szc-up{ color:var(--accent-ink); font-weight:800; } .szc-dn{ color:var(--ink2); font-weight:800; } .szc-sum{ font-size:13.5px; font-weight:700; margin:8px 0; line-height:1.6; }
+  #szc-dlg select{ font:inherit; font-size:14px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:8px 10px; width:100%; }
   .td-dir{ display:block; width:100%; text-align:left; font:inherit; border:0; border-radius:12px; padding:18px; margin-bottom:12px; background:var(--accent); color:var(--on-accent); cursor:pointer; }
   .td-dir small{ display:block; font-size:12.5px; font-weight:800; opacity:.85; } .td-dir b{ display:block; font-size:19px; line-height:1.5; margin:6px 0 4px; letter-spacing:-.01em; } .td-dir span{ display:block; font-size:13.5px; opacity:.92; } .td-dir u{ display:block; text-decoration:none; font-size:12.5px; opacity:.8; margin-top:10px; }
   .td-dir{ position:relative; }
@@ -1456,7 +1464,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <label class="pc-f" id="gd-f-newk-w" hidden>새 주제 이름<input id="gd-f-newk" type="text" maxlength="20" placeholder="예: 🌿 나의 방향, 🏋 운동, 📚 영어"></label>
   <label class="pc-f">내용 (한 줄에 한 항목)<textarea id="gd-f-lines"></textarea></label>
   <label class="mp-chk"><input type="checkbox" id="gd-f-ordered"> 1, 2, 3 번호로 보기 (순서가 중요한 루틴)</label>
-  <label class="mp-chk"><input type="checkbox" id="gd-f-tx"> 글 형식으로 보기 (편지·다짐글: 점·번호 없이 문단 그대로 · 줄 앞에 &gt; 를 붙이면 굵게 강조)</label>
+  <label class="mp-chk"><input type="checkbox" id="gd-f-tx"> 글 형식으로 보기 (편지·다짐글: 점·번호 없이 문단 그대로 · 아래에서 문장을 눌러 ★ 로 고르면 굵은 카드로 강조)</label>
+  <div id="gd-f-pick-w" hidden><div class="gd-pk-h">★ 카드로 강조할 문장 고르기 <span>(눌러서 켜고 끄기 · 내용을 고치면 목록도 바뀌어요)</span></div><div id="gd-f-pick"></div></div>
   <label class="pc-f">오늘 화면에 보일 한 줄 (비워 두면 안 보여요 · 둘째 줄은 작은 글씨)<textarea id="gd-f-hl" placeholder="예: 더 나은 삶을 위해 성장하되, 성장하기 위해 삶을 희생하지 말자."></textarea></label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-gd="d-cancel">취소</button><button class="pc-btn primary" data-gd="d-save">저장</button></div>
   <button id="gd-d-delete" class="pc-btn danger wide" data-gd="d-delete">이 카드 삭제</button>
@@ -1540,6 +1549,12 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <label class="pc-f">메모(선택)<textarea id="sz-f-note" class="ml" rows="3" placeholder="예: 어깨가 조금 큼, 세탁 후 줄어듦"></textarea></label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-sz="d-cancel">취소</button><button class="pc-btn primary" data-sz="d-save">저장</button></div>
   <button id="sz-d-delete" class="pc-btn danger wide" data-sz="d-delete">이 치수 삭제</button>
+</dialog>
+
+<dialog id="szc-dlg">
+  <h3 id="szc-title">치수 비교</h3>
+  <div id="szc-body"></div>
+  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-szc="close">닫기</button><button class="pc-btn primary" data-szc="edit">옷 수정</button></div>
 </dialog>
 
 <dialog id="gf-dlg">
@@ -1819,6 +1834,14 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <label class="pc-f" id="sh-brand-wrap" hidden>브랜드<input id="sh-f-brand" type="text" list="sh-brand-list" autocomplete="off" placeholder="예: 8second"></label>
   <datalist id="sh-brand-list"></datalist>
   <label class="pc-f" id="sh-size-wrap" hidden>사이즈<select id="sh-f-size" data-cb="1"></select><input id="sh-f-size-new" type="text" hidden placeholder="새 사이즈 (예: 100, 082)" autocomplete="off"><span class="pc-hint" id="sh-f-fzhint" hidden></span></label>
+  <details id="sh-sz-wrap" hidden>
+    <summary>📏 치수 같이 등록 <small>(선택 · 안 적으면 그냥 넘어가요)</small></summary>
+    <label class="pc-f">연결된 치수<select id="sh-sz-link"></select></label>
+    <label class="pc-f">옷 종류 <span class="pc-hint" style="display:inline">(품목명으로 자동 추측)</span><select id="sh-sz-kind"></select></label>
+    <div class="sh-sz-fields" id="sh-sz-fields"></div>
+    <p class="pc-hint" id="sh-sz-hint" hidden>바지는 평평하게 놓고 잰 단면 길이(cm) 기준이에요.</p>
+    <p class="pc-hint">단위는 cm예요. 브랜드·사이즈는 위에 적은 값이 치수표에 그대로 들어가고, 판매완료로 바꿔도 치수는 남아요.</p>
+  </details>
   <div id="sh-photo-wrap" hidden>
     <div class="grp">옷 사진</div>
     <div class="sh-photo-row">
@@ -3563,9 +3586,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-08-d (오늘 화면 “나의 방향” 카드에서 가이드 문장 직접 고르기 · 이전: 2026-11-08-c: 이미 가이드에 넣어 둔 나의 방향 글에도 오늘 화면 한 줄 카드 연결 · 이전: 2026-11-08-b: 나의 방향: 가이드 글 형식 카드 · 오늘 화면 한 줄 카드 + 눌러서 전문 보기 · 이전: 가이드: 입력칸 높이 오류 수정 · 카드 작성 중 새 주제 바로 만들기 · 이전: 2026-11-06-g (샐러리캡 인센티브도 상·하반기 연 2회 · 이전: 2026-11-06-f: 연봉 이력에 추가상여 칸 · 이전: 2026-11-06-e: 모든 금액 원 단위·천 단위 쉼표(입력칸 자동 쉼표), 연봉 입력·표시를 원 단위로 · 이전: 2026-11-06-d: 연봉 이력에 목표인센티브(연 2회)·샐러리캡 인센티브(연 1회) · 이전: 2026-11-06-c: 내 차 정비·소모품 주기 · 오늘 카드 순서 바꾸기·프리셋 · 이 기기 복원 지점 · 이전: 2026-11-06-b: 회의비↔인맥 방식 자동 구분: 문자 시간·가맹점 이름 분석(커피/점심/저녁) · 이전: 2026-11-06-a: 만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-09-a (패션 옷 등록창에 치수 같이 등록 · 옷 카드 📏 치수 비교 · 이전: 2026-11-08-e (가이드 글 형식: 카드로 강조할 문장을 눌러서 고르기 · 이전: 2026-11-08-d: 오늘 화면 “나의 방향” 카드에서 가이드 문장 직접 고르기 · 이전: 2026-11-08-c: 이미 가이드에 넣어 둔 나의 방향 글에도 오늘 화면 한 줄 카드 연결 · 이전: 2026-11-08-b: 나의 방향: 가이드 글 형식 카드 · 오늘 화면 한 줄 카드 + 눌러서 전문 보기 · 이전: 가이드: 입력칸 높이 오류 수정 · 카드 작성 중 새 주제 바로 만들기 · 이전: 2026-11-06-g (샐러리캡 인센티브도 상·하반기 연 2회 · 이전: 2026-11-06-f: 연봉 이력에 추가상여 칸 · 이전: 2026-11-06-e: 모든 금액 원 단위·천 단위 쉼표(입력칸 자동 쉼표), 연봉 입력·표시를 원 단위로 · 이전: 2026-11-06-d: 연봉 이력에 목표인센티브(연 2회)·샐러리캡 인센티브(연 1회) · 이전: 2026-11-06-c: 내 차 정비·소모품 주기 · 오늘 카드 순서 바꾸기·프리셋 · 이 기기 복원 지점 · 이전: 2026-11-06-b: 회의비↔인맥 방식 자동 구분: 문자 시간·가맹점 이름 분석(커피/점심/저녁) · 이전: 2026-11-06-a: 만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['오늘 > 나의 방향 카드 “⚙ 바꾸기”: 가이드의 카드·문장을 골라 올리기 + 매일 번갈아/랜덤/고정 + 누르면 전문 열기 선택', '오늘 화면 “나의 방향” 한 줄 카드(누르면 전문) · 가이드 카드 “글 형식”(편지·다짐글을 문단 그대로) · 오늘 한 줄 지정 칸', '나 > 가이드: 카드 내용 입력칸이 한 줄로 보이던 오류 수정 · 카드 작성 중 “＋ 새 주제 만들기”로 기타 외 주제 바로 추가', '돈 > 연봉: 샐러리캡 인센티브를 상반기·하반기 연 2회로 입력(기존 입력값은 상반기로 유지)', '돈 > 연봉: 추가상여 입력 칸(있는 해만), 총연봉·누적에 합산', '금액 공통: 입력칸에 천 단위 쉼표 자동 + 연봉·골프·차트 금액을 원 단위로 통일', '돈 > 연봉: 목표인센티브 상·하반기 + 샐러리캡 인센티브 입력, 총연봉·누적에 합산', '내 차 > 정비: 엔진오일·타이어 등 마지막 정비 기준 다음 교체 시기(개월·km), 알림·요약 연동', '오늘 화면: 카드 ▲▼ 순서 바꾸기 + 구성 프리셋(출근/퇴근 후 등) 저장', '이 기기 복원 지점: 하루 1회·가져오기 직전 자동 저장, 항목별 정확히 되돌리기', '회의비 → 만남 기록: 카드 문자의 결제 시간과 가맹점 이름으로 커피·점심식사·저녁식사를 자동 선택(근거 표시)', '만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
+const APP_RECENT = ['소비 > 패션: 옷 등록창에서 치수까지 한 번에 등록(치수표에 자동 연결·브랜드/사이즈 자동) · 옷 카드 “📏 치수 비교”(내 기준 치수 대비 ±cm) · 이미 있는 치수도 불러와 연결 · 판매완료여도 치수 유지', '나 > 가이드 글 형식: 카드 편집창에서 문장을 눌러 ★ 켜고 끄면 굵은 강조 카드로 표시(줄 앞 > 직접 입력 불필요)', '오늘 > 나의 방향 카드 “⚙ 바꾸기”: 가이드의 카드·문장을 골라 올리기 + 매일 번갈아/랜덤/고정 + 누르면 전문 열기 선택', '오늘 화면 “나의 방향” 한 줄 카드(누르면 전문) · 가이드 카드 “글 형식”(편지·다짐글을 문단 그대로) · 오늘 한 줄 지정 칸', '나 > 가이드: 카드 내용 입력칸이 한 줄로 보이던 오류 수정 · 카드 작성 중 “＋ 새 주제 만들기”로 기타 외 주제 바로 추가', '돈 > 연봉: 샐러리캡 인센티브를 상반기·하반기 연 2회로 입력(기존 입력값은 상반기로 유지)', '돈 > 연봉: 추가상여 입력 칸(있는 해만), 총연봉·누적에 합산', '금액 공통: 입력칸에 천 단위 쉼표 자동 + 연봉·골프·차트 금액을 원 단위로 통일', '돈 > 연봉: 목표인센티브 상·하반기 + 샐러리캡 인센티브 입력, 총연봉·누적에 합산', '내 차 > 정비: 엔진오일·타이어 등 마지막 정비 기준 다음 교체 시기(개월·km), 알림·요약 연동', '오늘 화면: 카드 ▲▼ 순서 바꾸기 + 구성 프리셋(출근/퇴근 후 등) 저장', '이 기기 복원 지점: 하루 1회·가져오기 직전 자동 저장, 항목별 정확히 되돌리기', '회의비 → 만남 기록: 카드 문자의 결제 시간과 가맹점 이름으로 커피·점심식사·저녁식사를 자동 선택(근거 표시)', '만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -3957,7 +3980,7 @@ function sNormalize(o){
     b.status = b.status === 'sold' ? 'sold' : 'hold'; b.id = String(b.id); b.u = String(b.u || ''); b.qty = Number(b.qty) || 1; b.b1done = Shop.isDone(b.b1done); b.b2done = Shop.isDone(b.b2done); { const a = Number(b.p1) || 0, c = Number(b.p2) || 0, tot = Number(b.points) || 0; if (b.p1 === undefined || a + c !== tot) { b.p1 = tot; b.p2 = 0; } else { b.p1 = a; b.p2 = c; } }
     b.size = String(b.size == null ? '' : b.size).trim(); b.memo = String(b.memo == null ? '' : b.memo); b.brand = b.cat === 'fashion' && i.brand === undefined ? '8second' : String(b.brand == null ? '' : b.brand).trim();
     b.tName = String(b.tName || '').trim(); b.tAmount = (b.tAmount === '' || b.tAmount == null || !isFinite(Number(b.tAmount))) ? '' : Number(b.tAmount); b.tDate = String(b.tDate || '');
-    b.photo = typeof b.photo === 'string' && b.photo.indexOf('data:image/') === 0 ? b.photo : ''; return b;
+    b.szId = String(b.szId || ''); b.photo = typeof b.photo === 'string' && b.photo.indexOf('data:image/') === 0 ? b.photo : ''; return b;
   });
   return { items, del: cleanDel(o.del) };
 }
@@ -3992,7 +4015,7 @@ function renderShop(){
     const hasActual = i.actualPrice !== '' && !isNaN(i.actualPrice) && Number(i.actualPrice) !== Number(i.purchasePrice);
     return '<div class="sh-row" data-sh="edit" data-id="' + esc(i.id) + '" tabindex="0"><div class="sh-lc">' + (i.photo ? '<img class="sh-thumb" src="' + i.photo + '" alt="옷 사진" data-sh="photo" data-id="' + esc(i.id) + '">' : '') + '<div class="sh-info"><div class="sh-top"><span class="sh-name">' + (esc(i.item) || '(이름 없음)') + '</span>' +
       '<span class="sh-badge ' + (i.status === 'sold' ? 'sold' : '') + '">' + (i.status === 'sold' ? '판매완료' : '보유중') + '</span>' + (i.qty > 1 ? '<span class="sh-badge">수량 ' + i.qty + '</span>' : '') + '</div>' +
-      '<div class="sh-meta">' + (i.brand ? '<span>브랜드 <b>' + esc(i.brand) + '</b></span>' : '') + (i.size ? '<span>사이즈 <b>' + esc(i.size) + '</b></span>' : '') + '<span>구매처 <b>' + (esc(i.store) || '-') + '</b></span><span>구매일 <b>' + esc(i.purchaseDate || '-') + '</b></span>' + (Number(i.points) > 0 ? '<span>적립금 <b>' + won(i.points) + '</b></span>' : '') + (ls ? '<span class="sh-ls ' + (ls.byActual.amt >= 0 ? 'good' : 'bad') + '">정가 ' + won(ls.list) + ' 대비 <b>' + (ls.byActual.amt >= 0 ? ls.byActual.pct + '% 저렴' : Math.abs(ls.byActual.pct) + '% 비쌈') + '</b></span>' : '') + (i.status === 'sold' ? '<span>판매일 <b>' + esc(i.saleDate || '-') + '</b></span>' : '') + '</div>' +
+      '<div class="sh-meta">' + (i.brand ? '<span>브랜드 <b>' + esc(i.brand) + '</b></span>' : '') + (i.size ? '<span>사이즈 <b>' + esc(i.size) + '</b></span>' : '') + (i.szId && SZ.items.some(x => x.id === i.szId) ? '<button type="button" class="sh-szb" data-sh="szcmp" data-id="' + esc(i.id) + '">📏 치수 비교</button>' : '') + '<span>구매처 <b>' + (esc(i.store) || '-') + '</b></span><span>구매일 <b>' + esc(i.purchaseDate || '-') + '</b></span>' + (Number(i.points) > 0 ? '<span>적립금 <b>' + won(i.points) + '</b></span>' : '') + (ls ? '<span class="sh-ls ' + (ls.byActual.amt >= 0 ? 'good' : 'bad') + '">정가 ' + won(ls.list) + ' 대비 <b>' + (ls.byActual.amt >= 0 ? ls.byActual.pct + '% 저렴' : Math.abs(ls.byActual.pct) + '% 비쌈') + '</b></span>' : '') + (i.status === 'sold' ? '<span>판매일 <b>' + esc(i.saleDate || '-') + '</b></span>' : '') + '</div>' +
       tradeHtml + memoHtml + benHtml + (i.status === 'sold' && Number(i.penalty) > 0 ? '<div class="sh-penalty">⚠ 위약금 ' + won(i.penalty) + '</div>' : '') + '</div></div>' +
       '<div class="sh-right">' + (hasActual ? '<div class="sh-price strike">' + won(i.purchasePrice) + '</div><div class="sh-real">실구매 ' + won(i.actualPrice) + '</div>' : '<div class="sh-price">' + won(i.purchasePrice) + '</div>') +
       (profit !== null ? '<div class="sh-profit ' + (profit >= 0 ? 'pos' : 'neg') + '">' + (profit >= 0 ? '+' : '') + won(profit) + '</div>' : '') + '</div></div>';
@@ -4071,7 +4094,7 @@ function openShop(id){
   SF.forEach(f => { $('sh-f-' + f).value = i ? (i[f] == null ? '' : i[f]) : (f === 'qty' ? 1 : (f === 'status' ? 'hold' : '')); });
   { const p1 = i ? (i.p1 != null ? i.p1 : i.points) : '', p2 = i ? i.p2 : ''; $('sh-f-points').value = p1 == null ? '' : p1; $('sh-f-points2').value = p2 ? p2 : ''; }
   shPhoto = i ? (i.photo || '') : ''; shPhotoUI(); shBrandUI();
-  cbFill('sh-f-store', allStores(), i ? i.store : ''); cbFill('sh-f-size', allSizes(), i ? (i.size || '') : '');
+  cbFill('sh-f-store', allStores(), i ? i.store : ''); cbFill('sh-f-size', allSizes(), i ? (i.size || '') : ''); shSzFill(i);
   $('sh-f-tRemind').checked = !!(i && RM.items.some(r => r.id === 'rm_tr_' + i.id));
   $('sh-f-b1done').checked = !!(i && Shop.isDone(i.b1done)); $('sh-f-b2done').checked = !!(i && Shop.isDone(i.b2done));
   // 실구매금액: 새 항목이거나 기존 값이 비었거나 자동 계산값과 같으면 '자동', 직접 입력해 둔 다른 값이면 '직접 입력'으로 시작(기존 값 보존)
@@ -4099,6 +4122,76 @@ function shRecalc(){
   else if (ca.actual !== '' && act.value !== '' && Number(act.value) !== ca.actual) { box.classList.add('diff'); box.textContent = '직접 입력한 값이에요. 자동 계산하면 ' + fmt(ca.actual) + '원 (입력값과 ' + fmt(Math.abs(ca.actual - Number(act.value))) + '원 차이) — 위 체크를 켜면 바뀝니다.'; }
   else box.textContent = '직접 입력 중이에요.';
 }
+/* ---------- 옷 ↔ 치수표 연결 (소비 > 패션) ---------- */
+// 옷 항목의 szId = 치수표 항목 id. 치수표 항목의 shId = 그 치수를 옷 등록창에서 만든 옷의 id(있으면 브랜드·사이즈를 옷과 맞춰 줌).
+let shSzLink = '', shSzKindTouched = false, szcId = '';
+function szGuessKind(name){
+  const n = String(name || ''), K = Size.KINDS;
+  const rules = [[/반바지|쇼츠|숏팬츠/, '반바지'], [/바지|팬츠|슬랙스|청바지|데님|조거|치노|레깅스/, '바지'], [/원피스|스커트|치마/, '원피스·스커트'], [/자켓|재킷|코트|점퍼|패딩|블루종|야상|바람막이|아우터|집업/, '아우터'], [/니트|맨투맨|스웨터|후드|풀오버|가디건/, '니트·맨투맨'], [/티셔츠|반팔|긴팔|롱슬리브|폴로|피케/, '티셔츠'], [/셔츠|남방/, '셔츠']];
+  for (const r of rules) if (r[0].test(n) && K[r[1]]) return r[1];
+  return K['티셔츠'] ? '티셔츠' : Size.KIND_KEYS[0];
+}
+function szLabel(z){ return (z.brand || '공통') + (z.size ? ' · ' + z.size : '') + ' (' + z.kind + ')'; }
+function shSzFieldsUI(kind, vals){
+  $('sh-sz-fields').innerHTML = (Size.KINDS[kind] || []).map(f => '<label class="pc-f">' + esc(Size.label(kind, f)) + '<input type="number" inputmode="decimal" min="0" step="any" data-f="' + esc(f) + '" value="' + (vals && vals[f] != null ? vals[f] : '') + '"></label>').join('');
+  $('sh-sz-hint').hidden = !Size.isBtm(kind);
+}
+function shSzRead(){ const o = {}; $('sh-sz-fields').querySelectorAll('input[data-f]').forEach(i => { if (i.value !== '') o[i.dataset.f] = Number(i.value); }); return o; }
+function shSzLinkUI(){
+  const cur = shSzLink ? SZ.items.find(x => x.id === shSzLink) : null, used = SH.items.filter(x => x.szId && x.id !== shEditing).map(x => x.szId);
+  let h = '<option value="">' + (cur ? '연결됨: ' + esc(szLabel(cur)) : '연결 없음 (아래에 치수를 적으면 새로 만들어요)') + '</option>';
+  if (cur) h += '<option value="__unlink__">연결 끊기 (치수표에는 그대로 남아요)</option>';
+  const cands = SZ.items.filter(x => x.id !== shSzLink && used.indexOf(x.id) < 0);
+  if (cands.length) h += '<optgroup label="치수표에 이미 있는 치수와 연결">' + cands.map(x => '<option value="' + esc(x.id) + '">' + esc(szLabel(x)) + '</option>').join('') + '</optgroup>';
+  $('sh-sz-link').innerHTML = h;
+}
+function shSzUI(){ $('sh-sz-wrap').hidden = $('sh-f-cat').value !== 'fashion'; }
+function shSzFill(i){
+  const cur = i && i.szId ? SZ.items.find(x => x.id === i.szId) : null;
+  shSzLink = cur ? cur.id : ''; shSzKindTouched = !!cur;
+  const kind = cur ? cur.kind : szGuessKind(i ? i.item : '');
+  fillSelect($('sh-sz-kind'), Size.KIND_KEYS.map(k => ({ v: k, t: k })), kind); shSzFieldsUI(kind, cur ? cur.m : {}); shSzLinkUI();
+  $('sh-sz-wrap').open = !!cur; shSzUI();
+}
+function shSzSave(sv, prevId){   // 옷 저장 직후 호출: 치수표 항목을 만들거나(연결) 갱신
+  if (sv.cat !== 'fashion') return;
+  const kind = $('sh-sz-kind').value, m = Size.cleanM(kind, shSzRead()), has = Object.keys(m).length, now = nowIso();
+  let z = shSzLink ? SZ.items.find(x => x.id === shSzLink) : null;
+  if (z) {
+    const before = JSON.stringify([z.kind, z.brand, z.size, z.m]);
+    if (has) { z.kind = kind; z.m = m; }
+    if (z.shId === sv.id) { z.brand = sv.brand; z.size = sv.size; }
+    if (JSON.stringify([z.kind, z.brand, z.size, z.m]) !== before) z.u = now;
+    sv.szId = z.id;
+  } else if (has) {
+    z = { id: uid('sz'), kind, brand: sv.brand, size: sv.size, note: '', m, shId: sv.id, u: now }; SZ.items.push(z); sv.szId = z.id;
+  } else sv.szId = '';
+  if (prevId && prevId !== sv.szId) { const o = SZ.items.find(x => x.id === prevId); if (o && o.shId === sv.id) { o.shId = ''; o.u = now; } }   // 연결을 끊으면 더는 옷과 맞추지 않음
+  szSave();
+}
+// 비교 기준(자동 고정): 같은 종류의 '공통(내 기준)' 중 가장 최근 → 없으면 같은 종류의 다른 치수 중 가장 최근
+function szcAutoBase(z){
+  const same = SZ.items.filter(x => x.kind === z.kind && x.id !== z.id).sort((a, b) => String(b.u).localeCompare(String(a.u)));
+  return same.find(x => !x.brand) || same[0] || null;
+}
+function szcOpen(shId, baseId){
+  const it = SH.items.find(x => x.id === shId), z = it && it.szId ? SZ.items.find(x => x.id === it.szId) : null; if (!z) { toast('연결된 치수를 찾지 못했어요.'); return; }
+  szcId = shId;
+  const cands = SZ.items.filter(x => x.kind === z.kind && x.id !== z.id), base = (baseId && cands.find(x => x.id === baseId)) || szcAutoBase(z), fs = Size.KINDS[z.kind] || [];
+  $('szc-title').textContent = (it.brand ? it.brand + ' ' : '') + it.item + (it.size ? ' · ' + it.size : '');
+  let h = '';
+  if (!base) {
+    h = '<p class="pc-hint" style="margin:6px 0">같은 종류(' + esc(z.kind) + ')의 비교할 기준 치수가 아직 없어요. 치수표에서 “내 기준(공통)” 치수를 하나 등록하면 자동으로 비교돼요.</p>' +
+      '<table class="szc-tbl"><thead><tr><th>항목</th><th>이번 옷(cm)</th></tr></thead><tbody>' + fs.filter(f => z.m[f] != null).map(f => '<tr><td>' + esc(Size.label(z.kind, f)) + '</td><td>' + z.m[f] + '</td></tr>').join('') + '</tbody></table>';
+  } else {
+    const rows = fs.filter(f => z.m[f] != null || base.m[f] != null).map(f => ({ f, a: base.m[f], b: z.m[f], d: (z.m[f] != null && base.m[f] != null) ? Math.round((z.m[f] - base.m[f]) * 10) / 10 : null }));
+    const big = rows.filter(r => r.d).sort((a, b) => Math.abs(b.d) - Math.abs(a.d)).slice(0, 3);
+    h = '<div class="szc-sum">기준: <b>' + esc(szLabel(base)) + '</b><br>' + (big.length ? '기준 대비 ' + big.map(r => esc(Size.label(z.kind, r.f)) + ' ' + (r.d > 0 ? '+' : '−') + Math.abs(r.d)).join(' · ') + ' (cm)' : (rows.some(r => r.d === 0) ? '비교 가능한 항목이 기준과 모두 같아요.' : '겹치는 항목이 없어 차이를 계산하지 못했어요.')) + '</div>' +
+      '<table class="szc-tbl"><thead><tr><th>항목</th><th>기준</th><th>이번 옷</th><th>차이</th></tr></thead><tbody>' + rows.map(r => '<tr><td>' + esc(Size.label(z.kind, r.f)) + '</td><td>' + (r.a != null ? r.a : '-') + '</td><td>' + (r.b != null ? r.b : '-') + '</td><td class="' + (r.d > 0 ? 'szc-up' : r.d < 0 ? 'szc-dn' : '') + '">' + (r.d == null ? '-' : (r.d > 0 ? '+' : r.d < 0 ? '−' : '') + Math.abs(r.d)) + '</td></tr>').join('') + '</tbody></table>' +
+      (cands.length > 1 ? '<label class="pc-f" style="display:block;font-size:12.5px;color:var(--ink2)">다른 기준으로 보기<select id="szc-base">' + cands.map(x => '<option value="' + esc(x.id) + '"' + (x.id === base.id ? ' selected' : '') + '>' + esc(szLabel(x)) + '</option>').join('') + '</select></label>' : '');
+  }
+  $('szc-body').innerHTML = h; if (!$('szc-dlg').open) $('szc-dlg').showModal();
+}
 function saveShop(){
   const d = {}; SF.forEach(f => { d[f] = $('sh-f-' + f).value; });
   d.item = d.item.trim(); d.brand = $('sh-f-cat').value === 'fashion' ? d.brand.trim() : ''; d.memo = d.memo.trim(); d.tName = d.tName.trim(); d.store = cbGet('sh-f-store'); d.size = $('sh-f-cat').value === 'fashion' ? cbGet('sh-f-size') : ''; d.b1name = d.b1name.trim(); d.b2name = d.b2name.trim(); d.qty = Number(d.qty) || 1;
@@ -4110,15 +4203,18 @@ function saveShop(){
   d.b1done = $('sh-f-b1done').checked; d.b2done = $('sh-f-b2done').checked;
   d.cat = $('sh-f-cat').value; d.u = nowIso();
   if (!shEditing && SH.items.some(x => shDupSame(x, d)) && !confirm('같은 날짜 · 같은 금액의 같은 품목이 이미 등록돼 있어요.\n그래도 새로 추가할까요?\n(같은 물건을 여러 개 산 거라면 취소하고 기존 항목의 수량을 바꾸는 편이 깔끔해요)')) return;
-  let sv = null;
+  let sv = null; const prevSz = shEditing ? ((SH.items.find(x => x.id === shEditing) || {}).szId || '') : '';
   if (shEditing) { sv = SH.items.find(x => x.id === shEditing); if (sv) Object.assign(sv, d); }
   else { sv = Object.assign({ id: uid('sh') }, d); SH.items.push(sv); }
   if (sv) rmSyncTrade(sv, $('sh-f-tRemind').checked);
+  if (sv) shSzSave(sv, prevSz);
   shCat = d.cat; sSave(); changed(); $('sh-dlg').close(); toast('저장했어요.'); renderAll();
 }
 function delShop(){
   if (!shEditing || !confirm('이 항목을 삭제할까요?')) return;
   rmSyncTrade({ id: shEditing }, false);
+  { const it = SH.items.find(x => x.id === shEditing), z = it && it.szId ? SZ.items.find(x => x.id === it.szId) : null;
+    if (z) { if (confirm('연결된 치수(' + szLabel(z) + ')도 같이 삭제할까요?\n[확인] 치수도 삭제  /  [취소] 치수는 치수표에 남겨 두기')) { SZ.items = SZ.items.filter(x => x.id !== z.id); SZ.del[z.id] = nowIso(); } else if (z.shId === it.id) { z.shId = ''; z.u = nowIso(); } szSave(); } }
   SH.items = SH.items.filter(x => x.id !== shEditing); SH.del[shEditing] = nowIso();
   sSave(); changed(); $('sh-dlg').close(); renderAll();
 }
@@ -5725,7 +5821,7 @@ optReg(() => { Object.keys(Size.KINDS).forEach(k => { if (SZ_BASE.indexOf(k) < 0
 const SIZE_KEY = 'size_chart_v1';
 function szNorm(o){
   o = o && typeof o === 'object' ? o : {};
-  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Size.KINDS[i.kind]).map(i => ({ id: String(i.id), kind: i.kind, brand: String(i.brand || '').trim(), size: String(i.size || ''), note: String(i.note || ''), m: Size.cleanM(i.kind, i.m), u: String(i.u || '') }));
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Size.KINDS[i.kind]).map(i => ({ id: String(i.id), kind: i.kind, brand: String(i.brand || '').trim(), size: String(i.size || ''), note: String(i.note || ''), m: Size.cleanM(i.kind, i.m), shId: String(i.shId || ''), u: String(i.u || '') }));
   return { items, del: cleanDel(o.del) };
 }
 let SZ = loadK(SIZE_KEY, { items: [], del: {} }, szNorm), szOpen = false, szEditing = null, szFilter = (function () { try { const o = JSON.parse(localStorage.getItem('sz_filter_v1') || '{}'); return { kind: o.kind || 'all', brand: o.brand == null ? 'all' : o.brand }; } catch (e) { return { kind: 'all', brand: 'all' }; } })();
@@ -5901,9 +5997,20 @@ function openGuide(id){
   gdEditing = id || null; const i = id ? GD.items.find(x => x.id === id) : null;
   $('gd-f-kind').innerHTML = Object.keys(GD_KINDS).map(k => '<option value="' + esc(k) + '">' + esc(GD_KINDS[k]) + '</option>').join('') + '<option value="__new__">＋ 새 주제 만들기…</option>'; $('gd-f-newk').value = ''; $('gd-f-newk-w').hidden = true;
   $('gd-d-title').textContent = i ? '가이드 카드 수정' : '가이드 카드 추가';
-  $('gd-f-title').value = i ? i.title : ''; $('gd-f-kind').value = i ? i.kind : (gdFilter !== 'all' ? gdFilter : 'golf'); $('gd-f-lines').value = i ? i.lines.join('\n') : ''; $('gd-f-ordered').checked = i ? i.ordered : false; $('gd-f-tx').checked = i ? !!i.tx : false; $('gd-f-hl').value = i ? (i.hl || '') : '';
+  $('gd-f-title').value = i ? i.title : ''; $('gd-f-kind').value = i ? i.kind : (gdFilter !== 'all' ? gdFilter : 'golf'); $('gd-f-lines').value = i ? i.lines.join('\n') : ''; $('gd-f-ordered').checked = i ? i.ordered : false; $('gd-f-tx').checked = i ? !!i.tx : false; $('gd-f-hl').value = i ? (i.hl || '') : ''; gdPickRender();
   $('gd-d-delete').hidden = !i; $('gd-dlg').showModal(); if (!i) $('gd-f-title').focus();
 }
+function gdPickRender(){   // 글 형식 카드: 문장을 눌러 ★ 강조 켜고 끄기(줄 앞 '> ' 를 대신 붙여 줌)
+  const w = $('gd-f-pick-w'), on = $('gd-f-tx').checked; w.hidden = !on; if (!on) return;
+  const rows = $('gd-f-lines').value.split('\n'); let h = '';
+  rows.forEach((l, k) => { const t = l.trim(); if (!t) return; const q = /^>\s?/.test(t); h += '<button type="button" class="' + (q ? 'on' : '') + '" data-pk="' + k + '"><i>' + (q ? '★' : '☆') + '</i><span>' + esc(t.replace(/^>\s?/, '')) + '</span></button>'; });
+  $('gd-f-pick').innerHTML = h || '<div style="padding:10px;font-size:13px;opacity:.7">내용을 입력하면 문장이 여기에 나와요.</div>';
+}
+$('gd-f-pick').addEventListener('click', e => {
+  const b = e.target.closest('[data-pk]'); if (!b) return; const ta = $('gd-f-lines'), rows = ta.value.split('\n'), k = +b.dataset.pk, t = (rows[k] || '').trim(); if (!t) return;
+  rows[k] = /^>\s?/.test(t) ? t.replace(/^>\s?/, '') : '> ' + t; ta.value = rows.join('\n'); gdPickRender();
+});
+$('gd-f-lines').addEventListener('input', gdPickRender); $('gd-f-tx').addEventListener('change', gdPickRender);
 function gdNewKind(label){
   label = String(label || '').trim(); if (!label) { toast('새 주제 이름을 입력해 주세요.'); $('gd-f-newk').focus(); return null; }
   const same = Object.keys(GD_KINDS).find(k => GD_KINDS[k].toLowerCase() === label.toLowerCase()); if (same) return same;
@@ -8602,6 +8709,7 @@ $('shopView').addEventListener('click', e => {
   else if (a === 'add') openShop(null);
   else if (a === 'photo') { const it = SH.items.find(x => x.id === el.dataset.id); if (it && it.photo) { $('ph-big').src = it.photo; $('ph-dlg').showModal(); } }
   else if (a === 'done') toggleBenefitDone(el.dataset.id, el.dataset.k);
+  else if (a === 'szcmp') szcOpen(el.dataset.id);
   else if (a === 'edit') openShop(el.dataset.id);
   else if (a === 'csv-out') csvOut();
   else if (a === 'csv-in') $('sh-csv').click();
@@ -8614,7 +8722,17 @@ $('sh-photo-file').addEventListener('change', e => {
   shrinkImage(f).then(d => { shPhoto = d; shPhotoUI(); }).catch(() => toast('사진을 불러오지 못했어요. 다른 사진으로 시도해 주세요.'));
 });
 $('sh-photo-del').addEventListener('click', () => { shPhoto = ''; shPhotoUI(); });
-$('sh-f-cat').addEventListener('change', shPhotoUI); $('sh-f-cat').addEventListener('change', shBrandUI);
+$('sh-f-cat').addEventListener('change', shPhotoUI); $('sh-f-cat').addEventListener('change', shBrandUI); $('sh-f-cat').addEventListener('change', shSzUI);
+$('sh-f-item').addEventListener('input', () => { if (shSzKindTouched || shSzLink) return; const k = szGuessKind($('sh-f-item').value); if ($('sh-sz-kind').value !== k) { $('sh-sz-kind').value = k; shSzFieldsUI(k, shSzRead()); } });
+$('sh-sz-kind').addEventListener('change', e => { shSzKindTouched = true; shSzFieldsUI(e.target.value, shSzRead()); });
+$('sh-sz-link').addEventListener('change', e => {
+  const v = e.target.value;
+  if (v === '__unlink__') shSzLink = '';
+  else if (v) { const z = SZ.items.find(x => x.id === v); if (z) { shSzLink = z.id; shSzKindTouched = true; $('sh-sz-kind').value = z.kind; shSzFieldsUI(z.kind, z.m); } }
+  shSzLinkUI();
+});
+$('szc-dlg').addEventListener('click', e => { const el = e.target.closest('[data-szc]'); if (!el) return; if (el.dataset.szc === 'close') $('szc-dlg').close(); else if (el.dataset.szc === 'edit') { const id = szcId; $('szc-dlg').close(); openShop(id); } });
+$('szc-dlg').addEventListener('change', e => { if (e.target.id === 'szc-base') szcOpen(szcId, e.target.value); });
 $('skinView').addEventListener('click', e => {
   const el = e.target.closest('[data-sk]'); if (!el) return;
   const a = el.dataset.sk;
