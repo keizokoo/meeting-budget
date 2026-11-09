@@ -767,6 +767,12 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .subbar{ display:flex; gap:6px; align-items:stretch; margin:0 0 8px; } .subbar button{ flex:1; font:inherit; font-size:12.5px; font-weight:700; padding:8px 4px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); border-radius:8px; cursor:pointer; line-height:1.35; } .subbar button.on{ background:var(--ink); color:var(--surface); border-color:var(--ink); } .subbar button small{ display:block; font-weight:500; font-size:11px; opacity:.8; }
   .subbar .sb-all{ flex:none; padding:8px 10px; border-color:var(--accent); color:var(--accent-ink); }
   .sbadge{ display:inline-block; margin-left:6px; font-size:10.5px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); border-radius:99px; padding:0 7px; cursor:pointer; vertical-align:middle; white-space:nowrap; } .sbadge.on{ border-color:var(--line2); color:var(--ink2); }
+  .sz-nm{ display:block; font-size:12px; font-weight:500; color:var(--ink2); white-space:normal; max-width:200px; line-height:1.35; margin-top:2px; } .sz-nm.none{ color:var(--accent-ink); } .sz-lk{ font-size:10.5px; border:1px solid var(--line2); border-radius:999px; padding:0 6px; margin-left:4px; color:var(--ink2); }
+  #sz-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #sz-dlg .mp-chk input{ width:auto; }
+  .sz-q{ width:100%; font:inherit; font-size:14px; padding:9px 11px; border:1px solid var(--line2); border-radius:8px; background:var(--surface); color:var(--ink); margin:0 0 8px; } .sz-nnbtn{ font:inherit; font-size:12px; font-weight:700; border:1px solid var(--accent); color:var(--accent-ink); background:var(--soft); border-radius:999px; padding:4px 10px; cursor:pointer; margin:0 0 8px; } .sz-nnbtn.on{ background:var(--accent); color:var(--on-accent); }
+  .sh-fq{ margin:0 0 10px; } .sh-fq input{ width:100%; font:inherit; font-size:14px; padding:9px 11px; border:1px solid var(--line2); border-radius:8px; background:var(--surface); color:var(--ink); } .sh-fchips{ display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; } .sh-fchips button{ font:inherit; font-size:12px; font-weight:700; border:1px solid var(--line2); background:var(--surface); color:var(--ink); border-radius:999px; padding:4px 10px; cursor:pointer; } .sh-fchips button.on{ background:var(--ink); color:var(--surface); border-color:var(--ink); }
+  #sh-sz-sug{ margin:8px 0 0; font-size:13px; line-height:1.7; } #sh-sz-sug[hidden]{ display:none; }
+  .szc-sib tr[data-szcz]{ cursor:pointer; } .szc-best td{ font-weight:800; color:var(--accent-ink); }
   .td-dir{ display:block; width:100%; text-align:left; font:inherit; border:0; border-radius:12px; padding:18px; margin-bottom:12px; background:var(--accent); color:var(--on-accent); cursor:pointer; }
   .td-dir small{ display:block; font-size:12.5px; font-weight:800; opacity:.85; } .td-dir b{ display:block; font-size:19px; line-height:1.5; margin:6px 0 4px; letter-spacing:-.01em; } .td-dir span{ display:block; font-size:13.5px; opacity:.92; } .td-dir u{ display:block; text-decoration:none; font-size:12.5px; opacity:.8; margin-top:10px; }
   .td-dir{ position:relative; }
@@ -1054,11 +1060,14 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <div class="strip" id="sh-summary"></div>
   <div class="sectionhead"><h3 id="sh-title">전자제품 품목</h3><span class="sh-hbtns"><button class="pc-btn small" data-sh="sz" id="sh-sz-btn" hidden>📏 내 치수표</button><button class="pc-btn small primary" data-sh="add">+ 항목 추가</button></span></div>
   <details id="fz-guide" class="pc-card fz-guide" hidden><summary id="fz-sum">👕 사이즈 · 색상 가이드</summary><div id="fz-body"></div></details>
+  <div class="sh-fq" id="sh-fq-wrap"><input type="search" id="sh-fq" placeholder="🔍 품목 · 브랜드 · 사이즈 검색" autocomplete="off"><div class="sh-fchips" id="sh-fchips"></div></div>
   <div id="sh-list"></div>
   </div>
   <div id="sz-panel" hidden>
     <div class="sectionhead"><h3>📏 내 치수표</h3><span class="sh-hbtns"><button class="pc-btn small" data-sz="back">← 품목으로</button><button class="pc-btn small" data-sz="autolink">🔗 옷과 자동 연결</button><button class="pc-btn small primary" data-sz="add">+ 치수 추가</button></span></div>
-    <p class="pc-hint" style="margin-top:-6px">옷 종류별로 내 몸에 잘 맞았던 옷의 실측(cm)을 적어 두세요. 브랜드를 비우면 “공통” 기준이에요.</p>
+    <p class="pc-hint" style="margin-top:-6px">잘 맞는 옷의 실측(cm)을 적고 ⭐로 “내 기준”을 정해 두세요. 새 옷 사이즈표를 같은 품목명으로 적어 두면 ⚖ 비교에서 가장 가까운 사이즈를 알려 줘요.</p>
+    <input type="search" id="sz-f-q" class="sz-q" placeholder="🔍 품목명 · 브랜드 · 사이즈 검색" autocomplete="off">
+    <button type="button" class="sz-nnbtn" id="sz-noname" data-sz="noname" hidden></button>
     <div class="sk-filters">
       <label>옷 종류<select id="sz-f-kind" aria-label="옷 종류 필터"></select></label>
       <label>브랜드<select id="sz-f-brand" aria-label="브랜드 필터"></select></label>
@@ -1543,6 +1552,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
 </dialog>
 <dialog id="sz-dlg">
   <h3 id="sz-d-title">치수 추가</h3>
+  <label class="pc-f">구매한 옷에서 불러오기 <span class="pc-hint" style="display:inline">(품목명·브랜드·사이즈가 자동으로 들어가요)</span><select id="sz-f-from"></select></label>
+  <label class="pc-f">품목명<input id="sz-f-name" type="text" list="sz-name-list" autocomplete="off" placeholder="예: 릴렉스핏 옥스포드 셔츠"></label>
+  <datalist id="sz-name-list"></datalist>
   <div class="pc-row2">
     <label class="pc-f">옷 종류<select id="sz-f-kind2"></select></label>
     <label class="pc-f">사이즈 표기<input id="sz-f-size" type="text" placeholder="예: 100, L, 32, 바지는 078"></label>
@@ -1552,14 +1564,17 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <div class="grp">실측 치수 (cm)</div>
   <div id="sz-f-fields" class="pc-row2 sz-fields"></div>
   <label class="pc-f">메모(선택)<textarea id="sz-f-note" class="ml" rows="3" placeholder="예: 어깨가 조금 큼, 세탁 후 줄어듦"></textarea></label>
+  <label class="mp-chk"><input type="checkbox" id="sz-f-base"> ⭐ 이 종류의 “내 기준” 치수로 쓰기 (비교할 때 기준이 돼요)</label>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-sz="d-cancel">취소</button><button class="pc-btn primary" data-sz="d-save">저장</button></div>
+  <button id="sz-d-save-next" class="pc-btn wide" data-sz="d-save-next" style="margin-top:8px">＋ 저장하고 같은 품목의 다음 사이즈 입력</button>
   <button id="sz-d-delete" class="pc-btn danger wide" data-sz="d-delete">이 치수 삭제</button>
 </dialog>
 
 <dialog id="szc-dlg">
   <h3 id="szc-title">치수 비교</h3>
   <div id="szc-body"></div>
-  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-szc="close">닫기</button><button class="pc-btn primary" data-szc="edit">옷 수정</button></div>
+  <div class="pc-row2" style="margin-top:12px"><button class="pc-btn" data-szc="close">닫기</button><button class="pc-btn primary" data-szc="edit" id="szc-edit-btn">옷 수정</button></div>
+  <button class="pc-btn wide" data-szc="base" id="szc-base-btn" style="margin-top:8px">⭐ 이 치수를 내 기준으로</button>
 </dialog>
 
 <dialog id="gf-dlg">
@@ -1841,7 +1856,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <label class="pc-f" id="sh-size-wrap" hidden>사이즈<select id="sh-f-size" data-cb="1"></select><input id="sh-f-size-new" type="text" hidden placeholder="새 사이즈 (예: 100, 082)" autocomplete="off"><span class="pc-hint" id="sh-f-fzhint" hidden></span></label>
   <details id="sh-sz-wrap" hidden>
     <summary>📏 치수 같이 등록 <small>(선택 · 안 적으면 그냥 넘어가요)</small></summary>
+    <div id="sh-sz-sug" hidden></div>
     <label class="pc-f">연결된 치수<select id="sh-sz-link"></select></label>
+    <label class="pc-f">착용감 (입어 본 느낌 · 다음 사이즈 고를 때 참고)<select id="sh-f-fit"><option value="">선택 안 함</option><option value="ok">딱 맞음</option><option value="big">조금 큼</option><option value="small">조금 작음</option></select></label>
     <label class="pc-f">옷 종류 <span class="pc-hint" style="display:inline">(품목명으로 자동 추측)</span><select id="sh-sz-kind"></select></label>
     <div class="sh-sz-fields" id="sh-sz-fields"></div>
     <p class="pc-hint" id="sh-sz-hint" hidden>바지는 평평하게 놓고 잰 단면 길이(cm) 기준이에요.</p>
@@ -3613,9 +3630,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-09-b (회의비 상신완료 구분 · 옷↔치수표 자동 연결 · 변경이력 3개로 요약)';
+const APP_BUILD_VERSION = '2026-11-09-c (치수표 품목명 · 옷↔치수 추천 연결 · 사이즈 비교 개선)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['회의비: 상신완료·미상신 구분, 미상신만 모아보기, 한 번에 상신완료', '소비 > 패션: 옷↔치수표 자동 연결 + 옷 카드에서 치수 비교', '나 > 가이드: 글 형식 카드에서 문장을 눌러 강조 고르기'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
+const APP_RECENT = ['소비 > 패션·치수표: 치수표에 품목명 추가 · 옷↔치수 추천 연결 · 사이즈 비교(내 기준 ⭐·같은 품목 가장 가까운 사이즈)', '회의비: 상신완료·미상신 구분, 미상신만 모아보기, 한 번에 상신완료', '소비 > 패션: 옷↔치수표 자동 연결 + 옷 카드에서 치수 비교'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4007,7 +4024,7 @@ function sNormalize(o){
     b.status = b.status === 'sold' ? 'sold' : 'hold'; b.id = String(b.id); b.u = String(b.u || ''); b.qty = Number(b.qty) || 1; b.b1done = Shop.isDone(b.b1done); b.b2done = Shop.isDone(b.b2done); { const a = Number(b.p1) || 0, c = Number(b.p2) || 0, tot = Number(b.points) || 0; if (b.p1 === undefined || a + c !== tot) { b.p1 = tot; b.p2 = 0; } else { b.p1 = a; b.p2 = c; } }
     b.size = String(b.size == null ? '' : b.size).trim(); b.memo = String(b.memo == null ? '' : b.memo); b.brand = b.cat === 'fashion' && i.brand === undefined ? '8second' : String(b.brand == null ? '' : b.brand).trim();
     b.tName = String(b.tName || '').trim(); b.tAmount = (b.tAmount === '' || b.tAmount == null || !isFinite(Number(b.tAmount))) ? '' : Number(b.tAmount); b.tDate = String(b.tDate || '');
-    b.szId = String(b.szId || ''); b.photo = typeof b.photo === 'string' && b.photo.indexOf('data:image/') === 0 ? b.photo : ''; return b;
+    b.szId = String(b.szId || ''); b.fit = ['ok', 'big', 'small'].indexOf(b.fit) >= 0 ? b.fit : ''; b.photo = typeof b.photo === 'string' && b.photo.indexOf('data:image/') === 0 ? b.photo : ''; return b;
   });
   return { items, del: cleanDel(o.del) };
 }
@@ -4019,7 +4036,20 @@ let SH = sLoad(), shCat = 'electronics', notifyOn = false, shEditing = null;
 try { notifyOn = localStorage.getItem(NOTIFY_KEY) === '1'; } catch (e) { /* 기본값 */ }
 function sSave(){ try { localStorage.setItem(SHOP_KEY, JSON.stringify(SH)); } catch (e) { toast('저장하지 못했어요.'); } }
 function shItems(cat){ return SH.items.filter(i => i.cat === cat); }
+let shFq = '', shFf = '';
+function shPass(i){
+  if (shFf === 'hold' && i.status === 'sold') return false; if (shFf === 'sold' && i.status !== 'sold') return false;
+  if (shFf === 'nosz' && (i.cat !== 'fashion' || (i.szId && SZ.items.some(z => z.id === i.szId)))) return false;
+  const q = shFq.trim().toLowerCase(); return !q || [i.item, i.brand, i.size, i.store, i.memo].join(' ').toLowerCase().indexOf(q) >= 0;
+}
+function renderShFilter(){
+  const all = shItems(shCat), fa = shCat === 'fashion', nz = all.filter(i => !(i.szId && SZ.items.some(z => z.id === i.szId))).length;
+  if (shFf === 'nosz' && !fa) shFf = '';
+  const b = (v, t) => '<button type="button" class="' + (shFf === v ? 'on' : '') + '" data-sh="ff" data-v="' + v + '">' + t + '</button>';
+  $('sh-fchips').innerHTML = b('', '전체 ' + all.length) + b('hold', '보유중 ' + all.filter(i => i.status !== 'sold').length) + b('sold', '판매완료 ' + all.filter(i => i.status === 'sold').length) + (fa ? b('nosz', '📏 치수 없음 ' + nz) : '');
+}
 function renderShop(){
+  renderShFilter();
   $('sh-tabs').innerHTML = Shop.CAT_KEYS.map(c => '<button class="' + (c === shCat ? 'on' : '') + '" data-sh="cat" data-cat="' + c + '">' + Shop.CATS[c] + '<span class="sh-cnt">' + shItems(c).length + '</span></button>').join('');
   $('sh-title').textContent = Shop.CATS[shCat] + ' 품목';
   const s = Shop.summarize(shItems(shCat));
@@ -4028,7 +4058,7 @@ function renderShop(){
     (s.listN ? '<div class="scard"><div class="l">정가 대비 총 절감 (' + s.listN + '건)</div><div class="v tabular" style="color:var(--good)">' + (s.listSaved >= 0 ? '' : '+') + won(Math.abs(s.listSaved)) + (s.listSaved >= 0 ? ' 절감' : ' 더 씀') + '</div><div class="sub">정가 합계 ' + won(s.listSum) + ' · ' + (Math.round(s.listSaved / s.listSum * 1000) / 10) + '%</div></div>' : '') +
     '<div class="scard"><div class="l">판매완료 · 총 판매금액</div><div class="v tabular">' + s.soldCount + '건 · ' + won(s.totalSale) + '</div></div>' +
     '<div class="scard"><div class="l">재판매 손익 (위약금·실구매 반영)</div><div class="v tabular" style="color:' + (s.profit >= 0 ? 'var(--good)' : 'var(--warn)') + '">' + (s.profit >= 0 ? '+' : '') + won(s.profit) + '</div></div>';
-  const items = shItems(shCat).slice().sort((a, b) => (b.purchaseDate || '').localeCompare(a.purchaseDate || '')), today = todayStr();
+  const items = shItems(shCat).filter(shPass).sort((a, b) => (b.purchaseDate || '').localeCompare(a.purchaseDate || '')), today = todayStr();
   $('sh-list').innerHTML = items.length ? items.map(i => {
     const profit = Shop.itemProfit(i), ls = Shop.listSaving(i), ben = [];
     if (i.b1name || i.b1amount !== '') ben.push({ n: i.b1name, a: i.b1amount, d: i.b1date, k: 'b1', done: Shop.isDone(i.b1done) });
@@ -4042,11 +4072,11 @@ function renderShop(){
     const hasActual = i.actualPrice !== '' && !isNaN(i.actualPrice) && Number(i.actualPrice) !== Number(i.purchasePrice);
     return '<div class="sh-row" data-sh="edit" data-id="' + esc(i.id) + '" tabindex="0"><div class="sh-lc">' + (i.photo ? '<img class="sh-thumb" src="' + i.photo + '" alt="옷 사진" data-sh="photo" data-id="' + esc(i.id) + '">' : '') + '<div class="sh-info"><div class="sh-top"><span class="sh-name">' + (esc(i.item) || '(이름 없음)') + '</span>' +
       '<span class="sh-badge ' + (i.status === 'sold' ? 'sold' : '') + '">' + (i.status === 'sold' ? '판매완료' : '보유중') + '</span>' + (i.qty > 1 ? '<span class="sh-badge">수량 ' + i.qty + '</span>' : '') + '</div>' +
-      '<div class="sh-meta">' + (i.brand ? '<span>브랜드 <b>' + esc(i.brand) + '</b></span>' : '') + (i.size ? '<span>사이즈 <b>' + esc(i.size) + '</b></span>' : '') + (i.szId && SZ.items.some(x => x.id === i.szId) ? '<button type="button" class="sh-szb" data-sh="szcmp" data-id="' + esc(i.id) + '">📏 치수 비교</button>' : '') + '<span>구매처 <b>' + (esc(i.store) || '-') + '</b></span><span>구매일 <b>' + esc(i.purchaseDate || '-') + '</b></span>' + (Number(i.points) > 0 ? '<span>적립금 <b>' + won(i.points) + '</b></span>' : '') + (ls ? '<span class="sh-ls ' + (ls.byActual.amt >= 0 ? 'good' : 'bad') + '">정가 ' + won(ls.list) + ' 대비 <b>' + (ls.byActual.amt >= 0 ? ls.byActual.pct + '% 저렴' : Math.abs(ls.byActual.pct) + '% 비쌈') + '</b></span>' : '') + (i.status === 'sold' ? '<span>판매일 <b>' + esc(i.saleDate || '-') + '</b></span>' : '') + '</div>' +
+      '<div class="sh-meta">' + (i.brand ? '<span>브랜드 <b>' + esc(i.brand) + '</b></span>' : '') + (i.size ? '<span>사이즈 <b>' + esc(i.size) + '</b></span>' : '') + (i.fit ? '<span>착용감 <b>' + ({ ok: '딱 맞음', big: '조금 큼', small: '조금 작음' })[i.fit] + '</b></span>' : '') + (i.szId && SZ.items.some(x => x.id === i.szId) ? '<button type="button" class="sh-szb" data-sh="szcmp" data-id="' + esc(i.id) + '">📏 치수 비교</button>' : '') + '<span>구매처 <b>' + (esc(i.store) || '-') + '</b></span><span>구매일 <b>' + esc(i.purchaseDate || '-') + '</b></span>' + (Number(i.points) > 0 ? '<span>적립금 <b>' + won(i.points) + '</b></span>' : '') + (ls ? '<span class="sh-ls ' + (ls.byActual.amt >= 0 ? 'good' : 'bad') + '">정가 ' + won(ls.list) + ' 대비 <b>' + (ls.byActual.amt >= 0 ? ls.byActual.pct + '% 저렴' : Math.abs(ls.byActual.pct) + '% 비쌈') + '</b></span>' : '') + (i.status === 'sold' ? '<span>판매일 <b>' + esc(i.saleDate || '-') + '</b></span>' : '') + '</div>' +
       tradeHtml + memoHtml + benHtml + (i.status === 'sold' && Number(i.penalty) > 0 ? '<div class="sh-penalty">⚠ 위약금 ' + won(i.penalty) + '</div>' : '') + '</div></div>' +
       '<div class="sh-right">' + (hasActual ? '<div class="sh-price strike">' + won(i.purchasePrice) + '</div><div class="sh-real">실구매 ' + won(i.actualPrice) + '</div>' : '<div class="sh-price">' + won(i.purchasePrice) + '</div>') +
       (profit !== null ? '<div class="sh-profit ' + (profit >= 0 ? 'pos' : 'neg') + '">' + (profit >= 0 ? '+' : '') + won(profit) + '</div>' : '') + '</div></div>';
-  }).join('') : '<div class="empty">아직 등록된 품목이 없어요. 위의 “+ 항목 추가”로 등록해 보세요.</div>';
+  }).join('') : '<div class="empty">' + (shItems(shCat).length ? '조건에 맞는 품목이 없어요.' : '아직 등록된 품목이 없어요. 위의 “+ 항목 추가”로 등록해 보세요.') + '</div>';
   window.AppSettings.refresh();
   const fashion = shCat === 'fashion', showSz = fashion && szOpen;
   renderFzGuide();
@@ -4159,19 +4189,37 @@ function szGuessKind(name, strict){
   if (strict) return null;
   return K['티셔츠'] ? '티셔츠' : Size.KIND_KEYS[0];
 }
-function szLabel(z){ return (z.brand || '공통') + (z.size ? ' · ' + z.size : '') + ' (' + z.kind + ')'; }
+function szLabel(z){ return (z.brand || '공통') + (z.name ? ' ' + z.name : '') + (z.size ? ' · ' + z.size : '') + ' (' + z.kind + ')'; }
 function shSzFieldsUI(kind, vals){
   $('sh-sz-fields').innerHTML = (Size.KINDS[kind] || []).map(f => '<label class="pc-f">' + esc(Size.label(kind, f)) + '<input type="number" inputmode="decimal" min="0" step="any" data-f="' + esc(f) + '" value="' + (vals && vals[f] != null ? vals[f] : '') + '"></label>').join('');
   $('sh-sz-hint').hidden = !Size.isBtm(kind);
 }
 function shSzRead(){ const o = {}; $('sh-sz-fields').querySelectorAll('input[data-f]').forEach(i => { if (i.value !== '') o[i.dataset.f] = Number(i.value); }); return o; }
+const szSame = (a, b) => { a = String(a || '').trim().toLowerCase().replace(/\s+/g, ''); b = String(b || '').trim().toLowerCase().replace(/\s+/g, ''); return !!a && (a === b || (/^\d+$/.test(a) && /^\d+$/.test(b) && Number(a) === Number(b))); };
+const szNm = s => String(s || '').toLowerCase().replace(/[^0-9a-z가-힣\s]/g, ' ').split(/\s+/).filter(w => w.length >= 2);
+function szNameSim(a, b){   // 품목명이 비슷한가(포함 관계 또는 겹치는 단어)
+  const A = szNm(a), B = szNm(b); if (!A.length || !B.length) return false;
+  const na = A.join(''), nb = B.join(''); if (na === nb || (na.length >= 3 && nb.indexOf(na) >= 0) || (nb.length >= 3 && na.indexOf(nb) >= 0)) return true;
+  const sh = A.filter(w => B.indexOf(w) >= 0).length; return sh >= 2 || (sh >= 1 && Math.min(A.length, B.length) === 1);
+}
+function szScore(z, it){ let s = 0; if (z.name && szNameSim(z.name, it.item)) s += 3; if (it.brand && szSame(z.brand, it.brand)) s += 2; if (it.size && szSame(z.size, it.size)) s += 1; return s; }
+function shSzCur(){ let size = ''; try { size = cbGet('sh-f-size'); } catch (e) { size = ''; } return { item: $('sh-f-item').value, brand: $('sh-f-brand').value.trim(), size }; }
 function shSzLinkUI(){
-  const cur = shSzLink ? SZ.items.find(x => x.id === shSzLink) : null;
+  const cur = shSzLink ? SZ.items.find(x => x.id === shSzLink) : null, me = shSzCur();
   let h = '<option value="">' + (cur ? '연결됨: ' + esc(szLabel(cur)) : '연결 없음 (아래에 치수를 적으면 새로 만들어요)') + '</option>';
   if (cur) h += '<option value="__unlink__">연결 끊기 (치수표에는 그대로 남아요)</option>';
-  const cands = SZ.items.filter(x => x.id !== shSzLink);
-  if (cands.length) h += '<optgroup label="치수표에 이미 있는 치수와 연결">' + cands.map(x => '<option value="' + esc(x.id) + '">' + esc(szLabel(x)) + '</option>').join('') + '</optgroup>';
+  const cands = SZ.items.filter(x => x.id !== shSzLink).map(x => ({ x, s: szScore(x, me) })).sort((a, b) => b.s - a.s || String(b.x.u).localeCompare(String(a.x.u))), good = cands.filter(c => c.s >= 3), rest = cands.filter(c => c.s < 3);
+  const opt = c => '<option value="' + esc(c.x.id) + '">' + esc(szLabel(c.x)) + '</option>';
+  if (good.length) h += '<optgroup label="💡 비슷한 치수 (추천)">' + good.map(opt).join('') + '</optgroup>';
+  if (rest.length) h += '<optgroup label="치수표 전체">' + rest.map(opt).join('') + '</optgroup>';
   $('sh-sz-link').innerHTML = h;
+  const sug = !cur && good.length ? good[0].x : null; $('sh-sz-sug').hidden = !sug;
+  if (sug) $('sh-sz-sug').innerHTML = '💡 비슷한 치수가 있어요: <b>' + esc(szLabel(sug)) + '</b> <button type="button" class="pc-btn small primary" data-sug="' + esc(sug.id) + '">이 치수와 연결</button>';
+}
+function shSzPick(v){
+  if (v === '__unlink__') shSzLink = '';
+  else if (v) { const z = SZ.items.find(x => x.id === v); if (z) { shSzLink = z.id; shSzKindTouched = true; $('sh-sz-kind').value = z.kind; shSzFieldsUI(z.kind, z.m); $('sh-sz-wrap').open = true; } }
+  shSzLinkUI();
 }
 function shSzUI(){ $('sh-sz-wrap').hidden = $('sh-f-cat').value !== 'fashion'; }
 function shSzFill(i){
@@ -4179,7 +4227,7 @@ function shSzFill(i){
   shSzLink = cur ? cur.id : ''; shSzKindTouched = !!cur;
   const kind = cur ? cur.kind : szGuessKind(i ? i.item : '');
   fillSelect($('sh-sz-kind'), Size.KIND_KEYS.map(k => ({ v: k, t: k })), kind); shSzFieldsUI(kind, cur ? cur.m : {}); shSzLinkUI();
-  $('sh-sz-wrap').open = !!cur; shSzUI();
+  $('sh-f-fit').value = i ? (i.fit || '') : ''; shSzLinkUI(); $('sh-sz-wrap').open = !!cur || !!(i && i.fit) || !$('sh-sz-sug').hidden; shSzUI();
 }
 function shSzSave(sv, prevId){   // 옷 저장 직후 호출: 치수표 항목을 만들거나(연결) 갱신
   if (sv.cat !== 'fashion') return;
@@ -4198,47 +4246,81 @@ function shSzSave(sv, prevId){   // 옷 저장 직후 호출: 치수표 항목�
   szSave();
 }
 // 비교 기준(자동 고정): 같은 종류의 '공통(내 기준)' 중 가장 최근 → 없으면 같은 종류의 다른 치수 중 가장 최근
-const szSame = (a, b) => { a = String(a || '').trim().toLowerCase().replace(/\s+/g, ''); b = String(b || '').trim().toLowerCase().replace(/\s+/g, ''); return !!a && (a === b || (/^\d+$/.test(a) && /^\d+$/.test(b) && Number(a) === Number(b))); };
-// 브랜드 + 사이즈가 같은 옷↔치수를 연결(이미 연결된 옷은 그대로). 종류가 달라 보이면 건너뜀. { n: 연결, skip: 건너뜀 }
+// 옷 ↔ 치수 자동 연결. ① 품목명이 비슷한 치수(브랜드·사이즈가 있으면 함께 맞아야 함) ② 품목명이 없는 치수는 브랜드+사이즈가 같고 종류가 맞을 때.
+// 이미 연결된 옷은 그대로 두고, 연결한 치수에 품목명이 비어 있으면 옷 이름을 채움. { n: 새로 연결, skip: 애매해서 건너뜀, named: 품목명 채움 }
 function szAutoLink(){
-  let n = 0, skip = 0; const now = nowIso();
+  let n = 0, skip = 0, named = 0; const now = nowIso();
   SH.items.forEach(it => {
-    if (it.cat !== 'fashion' || !it.brand || !it.size || (it.szId && SZ.items.some(z => z.id === it.szId))) return;
-    const c = SZ.items.filter(z => szSame(z.brand, it.brand) && szSame(z.size, it.size)); if (!c.length) return;
-    const k = szGuessKind(it.item, true), z = k ? c.find(x => x.kind === k) : (c.length === 1 ? c[0] : null);
-    if (z) { it.szId = z.id; it.u = now; n++; } else skip++;
+    if (it.cat !== 'fashion' || (it.szId && SZ.items.some(z => z.id === it.szId))) return;
+    const okB = z => !it.brand || !z.brand || szSame(z.brand, it.brand), okS = z => !it.size || !z.size || szSame(z.size, it.size);
+    let z = null, amb = false;
+    const byName = SZ.items.filter(x => x.name && szNameSim(x.name, it.item) && okB(x) && okS(x));
+    if (byName.length === 1) z = byName[0];
+    else if (byName.length > 1) { const e = byName.filter(x => szSame(x.size, it.size) && szSame(x.brand, it.brand)); if (e.length === 1) z = e[0]; else amb = true; }
+    else if (it.brand && it.size) {
+      const c = SZ.items.filter(x => (!x.name || szNameSim(x.name, it.item)) && szSame(x.brand, it.brand) && szSame(x.size, it.size));
+      const k = szGuessKind(it.item, true), p = k ? c.filter(x => x.kind === k) : (c.length === 1 ? c : []);
+      if (p.length === 1) z = p[0]; else if (c.length) amb = true;
+    }
+    if (z) { it.szId = z.id; it.u = now; n++; } else if (amb) skip++;
   });
-  if (n) { sSave(); changed(); }
-  return { n, skip };
+  const cnt = szLinkedMap();
+  SH.items.forEach(it => { const z = it.cat === 'fashion' && it.szId ? SZ.items.find(x => x.id === it.szId) : null; if (z && !z.name && cnt[z.id] === 1 && it.item) { z.name = it.item; z.u = now; named++; } });
+  if (n) sSave(); if (named) szSave(); if (n || named) changed();
+  return { n, skip, named };
 }
-/* 1회 마이그레이션(mig_ag_v1): 기존 옷 ↔ 치수표 자동 연결 (치수표·옷이 둘 다 있을 때만 실행하고 마킹) */
-function migrateAG(){
-  const MK = 'mig_ag_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+/* 1회 마이그레이션(mig_ag_v1 · mig_ah_v1): 기존 옷 ↔ 치수표 자동 연결 (치수표·옷이 둘 다 있을 때만 실행하고 마킹) */
+function migrateAutoLink(MK){
+  try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
   if (!SZ.items.length || !SH.items.some(i => i.cat === 'fashion')) return;
   const r = szAutoLink(); try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
-  if (r.n) { renderAll(); toast('옷 ' + r.n + '벌을 치수표와 자동 연결했어요.'); }
+  if (r.n || r.named) { renderAll(); toast('옷 ' + r.n + '벌 연결' + (r.named ? ' · 치수 품목명 ' + r.named + '건 채움' : '') + '했어요.'); }
 }
+function migrateAG(){ migrateAutoLink('mig_ag_v1'); }
+function migrateAH(){ migrateAutoLink('mig_ah_v1'); }
+// 비교 기준(자동 고정): ① ⭐ 내 기준 ② 착용감 “딱 맞음”인 옷의 치수(최근 구매) ③ 공통 치수 ④ 같은 종류의 최근 치수
 function szcAutoBase(z){
   const same = SZ.items.filter(x => x.kind === z.kind && x.id !== z.id).sort((a, b) => String(b.u).localeCompare(String(a.u)));
-  return same.find(x => !x.brand) || same[0] || null;
+  let b = same.find(x => x.base); if (b) return { b, why: '⭐ 내 기준' };
+  const ids = SH.items.filter(i => i.fit === 'ok' && i.szId).sort((a, c) => (c.purchaseDate || '').localeCompare(a.purchaseDate || '')).map(i => i.szId);
+  for (const id of ids) { b = same.find(x => x.id === id); if (b) return { b, why: '딱 맞는 옷' }; }
+  b = same.find(x => !x.brand); if (b) return { b, why: '공통 치수' };
+  return same[0] ? { b: same[0], why: '같은 종류의 최근 치수' } : null;
 }
+function szDist(r, base){ let sum = 0, n = 0; (Size.KINDS[r.kind] || []).forEach(f => { if (r.m[f] != null && base.m[f] != null) { sum += Math.abs(r.m[f] - base.m[f]); n++; } }); return n ? { sum: Math.round(sum * 10) / 10, n } : null; }
+function szDiffs(r, base){ return (Size.KINDS[r.kind] || []).filter(f => r.m[f] != null && base.m[f] != null).map(f => ({ f, d: Math.round((r.m[f] - base.m[f]) * 10) / 10 })); }
+const szSg = d => (d > 0 ? '+' : d < 0 ? '−' : '') + Math.abs(d);
+let szcSrc = null, szcZ = '';
+function szTitle(z){ return (z.brand || '공통') + (z.name ? ' ' + z.name : '') + (z.size ? ' · ' + z.size : ''); }
 function szcOpen(shId, baseId){
   const it = SH.items.find(x => x.id === shId), z = it && it.szId ? SZ.items.find(x => x.id === it.szId) : null; if (!z) { toast('연결된 치수를 찾지 못했어요.'); return; }
-  szcId = shId;
-  const cands = SZ.items.filter(x => x.kind === z.kind && x.id !== z.id), base = (baseId && cands.find(x => x.id === baseId)) || szcAutoBase(z), fs = Size.KINDS[z.kind] || [];
-  $('szc-title').textContent = (it.brand ? it.brand + ' ' : '') + it.item + (it.size ? ' · ' + it.size : '');
+  szcSrc = { t: 'shop', id: shId }; szcShow(z, (it.brand ? it.brand + ' ' : '') + it.item + (it.size ? ' · ' + it.size : '') + (it.fit ? ' · ' + ({ ok: '딱 맞음', big: '조금 큼', small: '조금 작음' })[it.fit] : ''), baseId);
+}
+function szcOpenZ(zid, baseId){ const z = SZ.items.find(x => x.id === zid); if (!z) return; szcSrc = { t: 'size', id: zid }; szcShow(z, szTitle(z), baseId); }
+function szcReopen(baseId){ if (!szcSrc) return; if (szcSrc.t === 'shop') szcOpen(szcSrc.id, baseId); else szcOpenZ(szcSrc.id, baseId); }
+function szcShow(z, title, baseId){
+  szcZ = z.id;
+  const cands = SZ.items.filter(x => x.kind === z.kind && x.id !== z.id), auto = szcAutoBase(z), pick = baseId ? cands.find(x => x.id === baseId) : null, base = pick || (auto && auto.b) || null, fs = Size.KINDS[z.kind] || [];
+  $('szc-title').textContent = title;
   let h = '';
   if (!base) {
-    h = '<p class="pc-hint" style="margin:6px 0">같은 종류(' + esc(z.kind) + ')의 비교할 기준 치수가 아직 없어요. 치수표에서 “내 기준(공통)” 치수를 하나 등록하면 자동으로 비교돼요.</p>' +
-      '<table class="szc-tbl"><thead><tr><th>항목</th><th>이번 옷(cm)</th></tr></thead><tbody>' + fs.filter(f => z.m[f] != null).map(f => '<tr><td>' + esc(Size.label(z.kind, f)) + '</td><td>' + z.m[f] + '</td></tr>').join('') + '</tbody></table>';
+    h = '<p class="pc-hint" style="margin:6px 0">같은 종류(' + esc(z.kind) + ')의 비교할 기준 치수가 아직 없어요. 잘 맞는 옷의 치수를 하나 등록하고 ⭐ 내 기준으로 지정하면 자동으로 비교돼요.</p>' +
+      '<table class="szc-tbl"><thead><tr><th>항목</th><th>이 치수(cm)</th></tr></thead><tbody>' + fs.filter(f => z.m[f] != null).map(f => '<tr><td>' + esc(Size.label(z.kind, f)) + '</td><td>' + z.m[f] + '</td></tr>').join('') + '</tbody></table>';
   } else {
     const rows = fs.filter(f => z.m[f] != null || base.m[f] != null).map(f => ({ f, a: base.m[f], b: z.m[f], d: (z.m[f] != null && base.m[f] != null) ? Math.round((z.m[f] - base.m[f]) * 10) / 10 : null }));
-    const big = rows.filter(r => r.d).sort((a, b) => Math.abs(b.d) - Math.abs(a.d)).slice(0, 3);
-    h = '<div class="szc-sum">기준: <b>' + esc(szLabel(base)) + '</b><br>' + (big.length ? '기준 대비 ' + big.map(r => esc(Size.label(z.kind, r.f)) + ' ' + (r.d > 0 ? '+' : '−') + Math.abs(r.d)).join(' · ') + ' (cm)' : (rows.some(r => r.d === 0) ? '비교 가능한 항목이 기준과 모두 같아요.' : '겹치는 항목이 없어 차이를 계산하지 못했어요.')) + '</div>' +
-      '<table class="szc-tbl"><thead><tr><th>항목</th><th>기준</th><th>이번 옷</th><th>차이</th></tr></thead><tbody>' + rows.map(r => '<tr><td>' + esc(Size.label(z.kind, r.f)) + '</td><td>' + (r.a != null ? r.a : '-') + '</td><td>' + (r.b != null ? r.b : '-') + '</td><td class="' + (r.d > 0 ? 'szc-up' : r.d < 0 ? 'szc-dn' : '') + '">' + (r.d == null ? '-' : (r.d > 0 ? '+' : r.d < 0 ? '−' : '') + Math.abs(r.d)) + '</td></tr>').join('') + '</tbody></table>' +
-      (cands.length > 1 ? '<label class="pc-f" style="display:block;font-size:12.5px;color:var(--ink2)">다른 기준으로 보기<select id="szc-base">' + cands.map(x => '<option value="' + esc(x.id) + '"' + (x.id === base.id ? ' selected' : '') + '>' + esc(szLabel(x)) + '</option>').join('') + '</select></label>' : '');
+    const big = rows.filter(r => r.d).sort((a, b) => Math.abs(b.d) - Math.abs(a.d)).slice(0, 3), dist = szDist(z, base);
+    h = '<div class="szc-sum">기준: <b>' + esc(szLabel(base)) + '</b> <span class="pc-dim">(' + esc(pick ? '직접 고른 기준' : auto.why) + ')</span><br>' + (big.length ? '기준 대비 ' + big.map(r => esc(Size.label(z.kind, r.f)) + ' ' + szSg(r.d)).join(' · ') + ' (cm)' : (rows.some(r => r.d === 0) ? '비교 가능한 항목이 기준과 모두 같아요.' : '겹치는 항목이 없어 차이를 계산하지 못했어요.')) + (dist ? '<br>차이 합계 <b>' + dist.sum + 'cm</b> (' + dist.n + '개 항목)' : '') + '</div>' +
+      '<table class="szc-tbl"><thead><tr><th>항목</th><th>기준</th><th>이 치수</th><th>차이</th></tr></thead><tbody>' + rows.map(r => '<tr><td>' + esc(Size.label(z.kind, r.f)) + '</td><td>' + (r.a != null ? r.a : '-') + '</td><td>' + (r.b != null ? r.b : '-') + '</td><td class="' + (r.d > 0 ? 'szc-up' : r.d < 0 ? 'szc-dn' : '') + '">' + (r.d == null ? '-' : szSg(r.d)) + '</td></tr>').join('') + '</tbody></table>';
+    // 같은 품목(브랜드+품목명)의 다른 사이즈 중 기준에 가장 가까운 것
+    if (z.name) {
+      const nz = szNm(z.name).join(''), sib = SZ.items.filter(x => x.kind === z.kind && x.id !== base.id && szSame(x.brand || '-', z.brand || '-') && szNm(x.name).join('') === nz).map(x => ({ x, d: szDist(x, base) })).filter(r => r.d).sort((a, b) => a.d.sum - b.d.sum);
+      if (sib.length > 1) h += '<h4 style="margin:12px 0 4px;font-size:13px">🎯 같은 품목 사이즈 중 기준과 가까운 순</h4><table class="szc-tbl szc-sib"><thead><tr><th>사이즈</th><th>차이 합계</th><th>주요 차이</th></tr></thead><tbody>' + sib.map((r, k) => '<tr data-szcz="' + esc(r.x.id) + '" class="' + (k === 0 ? 'szc-best' : '') + '"><td>' + (k === 0 ? '⭐ ' : '') + esc(r.x.size || '-') + (r.x.id === z.id ? ' <span class="pc-dim">(보는 중)</span>' : '') + '</td><td>' + r.d.sum + 'cm</td><td>' + szDiffs(r.x, base).filter(q => q.d).sort((a, b) => Math.abs(b.d) - Math.abs(a.d)).slice(0, 2).map(q => esc(Size.label(r.x.kind, q.f)) + ' ' + szSg(q.d)).join(' · ') + '</td></tr>').join('') + '</tbody></table><p class="pc-hint" style="margin:4px 0 0">사이즈를 누르면 그 사이즈를 자세히 비교해요.</p>';
+    }
+    if (cands.length > 1) h += '<label class="pc-f" style="display:block;font-size:12.5px;color:var(--ink2);margin-top:8px">다른 기준으로 보기<select id="szc-base">' + cands.map(x => '<option value="' + esc(x.id) + '"' + (x.id === base.id ? ' selected' : '') + '>' + esc(szLabel(x)) + '</option>').join('') + '</select></label>';
   }
-  $('szc-body').innerHTML = h; if (!$('szc-dlg').open) $('szc-dlg').showModal();
+  $('szc-body').innerHTML = h;
+  $('szc-edit-btn').textContent = szcSrc && szcSrc.t === 'size' ? '치수 수정' : '옷 수정'; $('szc-base-btn').textContent = z.base ? '⭐ 내 기준 해제' : '⭐ 이 치수를 내 기준으로';
+  if (!$('szc-dlg').open) $('szc-dlg').showModal();
 }
 function saveShop(){
   const d = {}; SF.forEach(f => { d[f] = $('sh-f-' + f).value; });
@@ -4247,7 +4329,7 @@ function saveShop(){
   { const q1 = d.points === '' ? 0 : d.points, q2 = $('sh-f-points2').value === '' ? 0 : Number($('sh-f-points2').value) || 0; d.p1 = q1; d.p2 = q2; d.points = q1 + q2 > 0 ? q1 + q2 : ''; }
   if (!d.item) { toast('품목명을 입력해 주세요.'); return; }
   if ($('sh-f-auto').checked) { const ca = Shop.autoActual(d); if (ca.over) { toast('혜택·적립금 합계가 구매금액보다 커요.'); return; } if (ca.actual !== '') d.actualPrice = ca.actual; }   // 자동 계산값이 없으면 직접 입력한 값(또는 빈 값)을 그대로 저장
-  d.photo = shPhoto;
+  d.photo = shPhoto; d.fit = $('sh-f-cat').value === 'fashion' ? $('sh-f-fit').value : '';
   d.b1done = $('sh-f-b1done').checked; d.b2done = $('sh-f-b2done').checked;
   d.cat = $('sh-f-cat').value; d.u = nowIso();
   if (!shEditing && SH.items.some(x => shDupSame(x, d)) && !confirm('같은 날짜 · 같은 금액의 같은 품목이 이미 등록돼 있어요.\n그래도 새로 추가할까요?\n(같은 물건을 여러 개 산 거라면 취소하고 기존 항목의 수량을 바꾸는 편이 깔끔해요)')) return;
@@ -5856,7 +5938,7 @@ const Size = (() => {
   // 한 종류의 비교표 행: '공통'(브랜드 없음)이 먼저, 그다음 브랜드 가나다순, 같은 브랜드는 사이즈순. brand: 'all' | '' (공통만) | 브랜드명
   function rows(items, kind, brand){
     return items.filter(i => i.kind === kind && (brand === 'all' || (brand === '' ? !i.brand : i.brand === brand)))
-      .sort((a, b) => (a.brand ? 1 : 0) - (b.brand ? 1 : 0) || a.brand.localeCompare(b.brand, 'ko') || String(a.size).localeCompare(String(b.size), 'ko', { numeric: true }));
+      .sort((a, b) => (a.brand ? 1 : 0) - (b.brand ? 1 : 0) || a.brand.localeCompare(b.brand, 'ko') || String(a.name || '').localeCompare(String(b.name || ''), 'ko') || String(a.size).localeCompare(String(b.size), 'ko', { numeric: true }));
   }
   function brands(items){ const r = []; items.forEach(i => { if (i.brand && r.indexOf(i.brand) < 0) r.push(i.brand); }); return r.sort((a, b) => a.localeCompare(b, 'ko')); }
   const isTop = k => KINDS[k] === TOPF, isBtm = k => KINDS[k] === BTMF, label = (k, f) => (KINDS[k] === TOPF ? (TOPL[f] || f) : KINDS[k] === BTMF ? (BTML[f] || f) : f);
@@ -5870,24 +5952,31 @@ optReg(() => { Object.keys(Size.KINDS).forEach(k => { if (SZ_BASE.indexOf(k) < 0
 const SIZE_KEY = 'size_chart_v1';
 function szNorm(o){
   o = o && typeof o === 'object' ? o : {};
-  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Size.KINDS[i.kind]).map(i => ({ id: String(i.id), kind: i.kind, brand: String(i.brand || '').trim(), size: String(i.size || ''), note: String(i.note || ''), m: Size.cleanM(i.kind, i.m), shId: String(i.shId || ''), u: String(i.u || '') }));
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Size.KINDS[i.kind]).map(i => ({ id: String(i.id), kind: i.kind, brand: String(i.brand || '').trim(), size: String(i.size || ''), note: String(i.note || ''), m: Size.cleanM(i.kind, i.m), name: String(i.name || '').trim(), base: i.base === true || i.base === 'true', shId: String(i.shId || ''), u: String(i.u || '') }));
   return { items, del: cleanDel(o.del) };
 }
 let SZ = loadK(SIZE_KEY, { items: [], del: {} }, szNorm), szOpen = false, szEditing = null, szFilter = (function () { try { const o = JSON.parse(localStorage.getItem('sz_filter_v1') || '{}'); return { kind: o.kind || 'all', brand: o.brand == null ? 'all' : o.brand }; } catch (e) { return { kind: 'all', brand: 'all' }; } })();
 function szSave(){ saveK(SIZE_KEY, SZ); }
 function szFilterSave(){ try { localStorage.setItem('sz_filter_v1', JSON.stringify(szFilter)); } catch (e) { /* 무시 */ } }
+let szQ = '', szNoName = false, szLinkShId = '';
+function szLinkedMap(){ const m = {}; SH.items.forEach(i => { if (i.szId) m[i.szId] = (m[i.szId] || 0) + 1; }); return m; }
 function renderSizes(){
-  const items = SZ.items, bs = Size.brands(items);
+  const items = SZ.items, bs = Size.brands(items), lk = szLinkedMap();
   if (szFilter.kind !== 'all' && !Size.KINDS[szFilter.kind]) szFilter.kind = 'all';
   if (szFilter.brand !== 'all' && szFilter.brand !== '' && bs.indexOf(szFilter.brand) < 0) szFilter.brand = 'all';
   $('sz-f-kind').innerHTML = '<option value="all">전체 (' + items.length + ')</option>' + Size.KIND_KEYS.map(k => '<option value="' + esc(k) + '"' + (szFilter.kind === k ? ' selected' : '') + '>' + esc(k) + ' (' + items.filter(i => i.kind === k).length + ')</option>').join('');
   $('sz-f-brand').innerHTML = '<option value="all">전체 브랜드</option><option value=""' + (szFilter.brand === '' ? ' selected' : '') + '>공통만</option>' + bs.map(b => '<option value="' + esc(b) + '"' + (szFilter.brand === b ? ' selected' : '') + '>' + esc(b) + '</option>').join('');
+  const nn = items.filter(r => !r.name && r.brand).length; if (!nn) szNoName = false;
+  { const b = $('sz-noname'); b.hidden = !nn; b.classList.toggle('on', szNoName); b.textContent = szNoName ? '✕ 품목명 없는 치수만 보는 중 (' + nn + '건)' : '🏷 품목명이 없는 치수 ' + nn + '건 — 눌러서 채우기'; }
+  const q = szQ.trim().toLowerCase(), pass = r => (!szNoName || (!r.name && r.brand)) && (!q || [r.brand, r.name, r.size, r.note, r.kind].join(' ').toLowerCase().indexOf(q) >= 0);
   const kinds = Size.KIND_KEYS.filter(k => szFilter.kind === 'all' || k === szFilter.kind);
   const html = kinds.map(k => {
-    const rs = Size.rows(items, k, szFilter.brand); if (!rs.length) return '';
-    const fs = Size.KINDS[k];
-    return '<div class="sz-group"><h4>' + esc(k) + ' <small class="pc-dim">' + rs.length + '건</small>' + ((Size.isTop(k) || Size.isBtm(k)) ? ' <button type="button" class="pc-btn small" data-sz="dia" data-kind="' + esc(k) + '">📐 측정 도해</button>' : '') + '</h4><div class="sz-wrap"><table class="sz-tbl"><thead><tr><th>브랜드 · 사이즈</th>' + fs.map(f => '<th>' + Size.label(k, f) + '</th>').join('') + '</tr></thead><tbody>' +
-      rs.map(r => '<tr tabindex="0" data-sz="edit" data-id="' + esc(r.id) + '"><td>' + (r.brand ? '<b>' + esc(r.brand) + '</b>' : '<b>공통</b><span class="sz-common">내 기준</span>') + (r.size ? '<span class="sz-sz">' + esc(r.size) + '</span>' : '') + (r.note ? '<span class="sz-note">' + esc(r.note) + '</span>' : '') + ((Size.isTop(k) || Size.isBtm(k)) ? '<button type="button" class="sz-view" data-sz="view" data-id="' + esc(r.id) + '" aria-label="도해와 함께 보기">📐</button>' : '') + '</td>' +
+    const rs = Size.rows(items, k, szFilter.brand).filter(pass); if (!rs.length) return '';
+    const fs = Size.KINDS[k], dia = Size.isTop(k) || Size.isBtm(k);
+    return '<div class="sz-group"><h4>' + esc(k) + ' <small class="pc-dim">' + rs.length + '건</small>' + (dia ? ' <button type="button" class="pc-btn small" data-sz="dia" data-kind="' + esc(k) + '">📐 측정 도해</button>' : '') + '</h4><div class="sz-wrap"><table class="sz-tbl"><thead><tr><th>브랜드 · 품목 · 사이즈</th>' + fs.map(f => '<th>' + Size.label(k, f) + '</th>').join('') + '</tr></thead><tbody>' +
+      rs.map(r => '<tr tabindex="0" data-sz="edit" data-id="' + esc(r.id) + '"><td>' + (r.brand ? '<b>' + esc(r.brand) + '</b>' : '<b>공통</b>') + (r.size ? '<span class="sz-sz">' + esc(r.size) + '</span>' : '') + (r.base ? '<span class="sz-common">⭐ 기준</span>' : '') + (lk[r.id] ? '<span class="sz-lk">👕' + (lk[r.id] > 1 ? ' ' + lk[r.id] : '') + '</span>' : '') +
+        (r.name ? '<span class="sz-nm">' + esc(r.name) + '</span>' : (r.brand ? '<span class="sz-nm none">품목명 없음</span>' : '')) + (r.note ? '<span class="sz-note">' + esc(r.note) + '</span>' : '') +
+        '<button type="button" class="sz-view" data-sz="cmp" data-id="' + esc(r.id) + '" aria-label="기준과 비교">⚖ 비교</button>' + (dia ? '<button type="button" class="sz-view" data-sz="view" data-id="' + esc(r.id) + '" aria-label="도해와 함께 보기">📐</button>' : '') + '</td>' +
         fs.map(f => '<td>' + (r.m[f] != null ? r.m[f] : '<span class="pc-dim">-</span>') + '</td>').join('') + '</tr>').join('') + '</tbody></table></div></div>';
   }).join('');
   $('sz-list').innerHTML = html || '<div class="empty">' + (items.length ? '조건에 맞는 치수가 없어요.' : '아직 등록된 치수가 없어요. “+ 치수 추가”로 내 기준 치수부터 적어 보세요.') + '</div>';
@@ -5904,21 +5993,30 @@ function szDia(id, kind){
   $('sz-dia-body').innerHTML = '<img class="sz-dia-img" src="' + (Size.isBtm(k) ? SZ_DIA_B : SZ_DIA) + '" alt="' + (Size.isBtm(k) ? '바지' : '상의') + ' 측정 도해">' + (r ? '<table class="sz-tbl sz-dia-tbl"><tbody>' + Size.KINDS[k].map(f => '<tr><th>' + Size.label(k, f) + '</th><td>' + (r.m[f] != null ? '<b>' + r.m[f] + '</b> cm' : '<span class="pc-dim">-</span>') + '</td></tr>').join('') + '</tbody></table>' + (r.note ? '<p class="pc-hint">' + esc(r.note) + '</p>' : '') : '<p class="pc-hint">표의 열 이름이 이 도해의 이름과 같아요. 각 줄의 📐를 누르면 그 옷의 치수를 도해와 함께 볼 수 있어요.</p>');
   if (!$('sz-dia-dlg').open) $('sz-dia-dlg').showModal();
 }
-function openSize(id){
+function openSize(id, pre){
   const it = id ? SZ.items.find(x => x.id === id) : null; if (id && !it) return;
-  szEditing = id || null; renderSizes();
+  szEditing = id || null; szLinkShId = ''; renderSizes();
   $('sz-d-title').textContent = it ? '치수 수정' : '치수 추가';
-  const kind = it ? it.kind : (szFilter.kind !== 'all' ? szFilter.kind : '티셔츠');
+  const kind = it ? it.kind : ((pre && pre.kind) || (szFilter.kind !== 'all' ? szFilter.kind : '티셔츠'));
   fillSelect($('sz-f-kind2'), Size.KIND_KEYS.map(k => ({ v: k, t: k })), kind);
-  $('sz-f-size').value = it ? it.size : ''; $('sz-f-brand2').value = it ? it.brand : (szFilter.brand && szFilter.brand !== 'all' ? szFilter.brand : ''); $('sz-f-note').value = it ? it.note : '';
+  $('sz-f-from').innerHTML = '<option value="">구매한 옷에서 불러오기 (선택 사항)</option>' + SH.items.filter(i => i.cat === 'fashion').sort((a, b) => (b.purchaseDate || '').localeCompare(a.purchaseDate || '')).map(i => '<option value="' + esc(i.id) + '">' + (i.szId && SZ.items.some(z => z.id === i.szId) ? '✓ ' : '') + esc((i.brand ? i.brand + ' ' : '') + i.item + (i.size ? ' · ' + i.size : '')) + '</option>').join('');
+  { const names = []; SZ.items.forEach(z => { if (z.name && names.indexOf(z.name) < 0) names.push(z.name); }); SH.items.forEach(i => { if (i.cat === 'fashion' && i.item && names.indexOf(i.item) < 0) names.push(i.item); }); $('sz-name-list').innerHTML = names.map(n => '<option value="' + esc(n) + '">').join(''); }
+  $('sz-f-name').value = it ? it.name : (pre ? pre.name : '');
+  $('sz-f-size').value = it ? it.size : ''; $('sz-f-brand2').value = it ? it.brand : (pre ? pre.brand : (szFilter.brand && szFilter.brand !== 'all' ? szFilter.brand : '')); $('sz-f-note').value = it ? it.note : '';
+  $('sz-f-base').checked = !!(it && it.base); $('sz-d-save-next').hidden = !!it;
   szFieldsUI(kind, it ? it.m : {}); $('sz-d-delete').hidden = !it; $('sz-dlg').showModal();
 }
-function saveSize(){
+function saveSize(next){
   const kind = $('sz-f-kind2').value, m = Size.cleanM(kind, szReadFields());
   if (!Object.keys(m).length) { toast('치수를 하나 이상 입력해 주세요.'); return; }
-  const d = { kind, brand: $('sz-f-brand2').value.trim(), size: $('sz-f-size').value.trim(), note: $('sz-f-note').value.trim(), m, u: nowIso() };
-  if (szEditing) { const it = SZ.items.find(x => x.id === szEditing); if (it) Object.assign(it, d); } else SZ.items.push(Object.assign({ id: uid('sz') }, d));
-  szSave(); changed(); $('sz-dlg').close(); toast('저장했어요.'); renderAll();
+  const d = { kind, name: $('sz-f-name').value.trim(), brand: $('sz-f-brand2').value.trim(), size: $('sz-f-size').value.trim(), note: $('sz-f-note').value.trim(), base: $('sz-f-base').checked, m, u: nowIso() };
+  let z = null;
+  if (szEditing) { z = SZ.items.find(x => x.id === szEditing); if (z) Object.assign(z, d); } else { z = Object.assign({ id: uid('sz'), shId: szLinkShId }, d); SZ.items.push(z); }
+  if (z && d.base) SZ.items.forEach(x => { if (x !== z && x.kind === kind && x.base) { x.base = false; x.u = d.u; } });   // 한 종류에 ⭐ 기준은 하나
+  if (z && szLinkShId) { const c = SH.items.find(x => x.id === szLinkShId); if (c) { c.szId = z.id; c.u = nowIso(); sSave(); } }
+  szSave(); changed(); $('sz-dlg').close();
+  if (next) { toast('저장했어요. 같은 품목의 다음 사이즈를 입력하세요.'); renderAll(); openSize(null, { name: d.name, brand: d.brand, kind }); $('sz-f-size').focus(); return; }
+  toast('저장했어요.'); renderAll();
 }
 function delSize(){
   if (!szEditing || !confirm('이 치수를 삭제할까요?')) return;
@@ -8753,7 +8851,8 @@ $('shopView').addEventListener('click', e => {
   const gx = e.target.closest('[data-g="x"]'); if (gx) { dismissAlert(gx.dataset.key); renderGlobal(); checkBenefits(); return; }
   const el = e.target.closest('[data-sh]'); if (!el) return;
   const a = el.dataset.sh;
-  if (a === 'cat') { shCat = el.dataset.cat; szOpen = false; renderShop(); }
+  if (a === 'ff') { shFf = el.dataset.v; renderShop(); }
+  else if (a === 'cat') { shCat = el.dataset.cat; szOpen = false; renderShop(); }
   else if (a === 'sz') { szOpen = true; renderShop(); window.scrollTo(0, 0); }
   else if (a === 'add') openShop(null);
   else if (a === 'photo') { const it = SH.items.find(x => x.id === el.dataset.id); if (it && it.photo) { $('ph-big').src = it.photo; $('ph-dlg').showModal(); } }
@@ -8764,6 +8863,7 @@ $('shopView').addEventListener('click', e => {
   else if (a === 'csv-in') $('sh-csv').click();
   else if (a === 'backup') doBackup();
 });
+$('sh-fq').addEventListener('input', e => { shFq = e.target.value; renderShop(); });
 $('sh-notify').addEventListener('click', toggleNotify);
 $('sh-photo-pick').addEventListener('click', () => $('sh-photo-file').click());
 $('sh-photo-file').addEventListener('change', e => {
@@ -8774,14 +8874,17 @@ $('sh-photo-del').addEventListener('click', () => { shPhoto = ''; shPhotoUI(); }
 $('sh-f-cat').addEventListener('change', shPhotoUI); $('sh-f-cat').addEventListener('change', shBrandUI); $('sh-f-cat').addEventListener('change', shSzUI);
 $('sh-f-item').addEventListener('input', () => { if (shSzKindTouched || shSzLink) return; const k = szGuessKind($('sh-f-item').value); if ($('sh-sz-kind').value !== k) { $('sh-sz-kind').value = k; shSzFieldsUI(k, shSzRead()); } });
 $('sh-sz-kind').addEventListener('change', e => { shSzKindTouched = true; shSzFieldsUI(e.target.value, shSzRead()); });
-$('sh-sz-link').addEventListener('change', e => {
-  const v = e.target.value;
-  if (v === '__unlink__') shSzLink = '';
-  else if (v) { const z = SZ.items.find(x => x.id === v); if (z) { shSzLink = z.id; shSzKindTouched = true; $('sh-sz-kind').value = z.kind; shSzFieldsUI(z.kind, z.m); } }
-  shSzLinkUI();
+$('sh-sz-link').addEventListener('change', e => shSzPick(e.target.value));
+$('sh-sz-sug').addEventListener('click', e => { const b = e.target.closest('[data-sug]'); if (b) shSzPick(b.dataset.sug); });
+['sh-f-item', 'sh-f-brand'].forEach(id => $(id).addEventListener('input', () => { if (!shSzLink) shSzLinkUI(); })); $('sh-f-size').addEventListener('change', () => { if (!shSzLink) shSzLinkUI(); });
+$('szc-dlg').addEventListener('click', e => {
+  const r = e.target.closest('[data-szcz]'); if (r) { szcOpenZ(r.dataset.szcz); return; }
+  const el = e.target.closest('[data-szc]'); if (!el) return;
+  if (el.dataset.szc === 'close') $('szc-dlg').close();
+  else if (el.dataset.szc === 'edit') { const src = szcSrc; $('szc-dlg').close(); if (src && src.t === 'size') openSize(src.id); else if (src) openShop(src.id); }
+  else if (el.dataset.szc === 'base') { const z = SZ.items.find(x => x.id === szcZ); if (!z) return; const on = !z.base, now = nowIso(); if (on) SZ.items.forEach(x => { if (x !== z && x.kind === z.kind && x.base) { x.base = false; x.u = now; } }); z.base = on; z.u = now; szSave(); changed(); renderAll(); szcReopen(); toast(on ? '이 치수를 ' + z.kind + ' 내 기준으로 정했어요.' : '내 기준을 해제했어요.'); }
 });
-$('szc-dlg').addEventListener('click', e => { const el = e.target.closest('[data-szc]'); if (!el) return; if (el.dataset.szc === 'close') $('szc-dlg').close(); else if (el.dataset.szc === 'edit') { const id = szcId; $('szc-dlg').close(); openShop(id); } });
-$('szc-dlg').addEventListener('change', e => { if (e.target.id === 'szc-base') szcOpen(szcId, e.target.value); });
+$('szc-dlg').addEventListener('change', e => { if (e.target.id === 'szc-base') szcReopen(e.target.value); });
 $('skinView').addEventListener('click', e => {
   const el = e.target.closest('[data-sk]'); if (!el) return;
   const a = el.dataset.sk;
@@ -8795,16 +8898,22 @@ $('sk-f-stat').addEventListener('change', e => { skFilter.stat = e.target.value;
 $('sz-panel').addEventListener('click', e => {
   const el = e.target.closest('[data-sz]'); if (!el) return;
   const a = el.dataset.sz;
-  if (a === 'dia') szDia(null, el.dataset.kind); else if (a === 'view') szDia(el.dataset.id); else if (a === 'autolink') { const r = szAutoLink(); renderAll(); toast(r.n ? '옷 ' + r.n + '벌을 연결했어요.' + (r.skip ? ' (종류가 달라 보여 건너뜀 ' + r.skip + '건 — 옷 수정에서 직접 연결)' : '') : (r.skip ? '종류가 달라 보여 건너뛴 옷이 ' + r.skip + '건 있어요. 옷 수정에서 직접 연결해 주세요.' : '새로 연결할 옷이 없어요. (브랜드·사이즈가 같은 치수가 있어야 해요)')); }
+  if (a === 'dia') szDia(null, el.dataset.kind); else if (a === 'view') szDia(el.dataset.id); else if (a === 'cmp') szcOpenZ(el.dataset.id); else if (a === 'noname') { szNoName = !szNoName; renderSizes(); } else if (a === 'autolink') { const r = szAutoLink(); renderAll(); toast(r.n || r.named ? '옷 ' + r.n + '벌 연결' + (r.named ? ' · 치수 품목명 ' + r.named + '건 채움' : '') + '했어요.' + (r.skip ? ' (애매해서 건너뜀 ' + r.skip + '건 — 옷 수정에서 직접 연결)' : '') : (r.skip ? '애매해서 건너뛴 옷이 ' + r.skip + '건 있어요. 옷 수정에서 직접 연결해 주세요.' : '새로 연결할 옷이 없어요. (품목명이나 브랜드·사이즈가 같은 치수가 있어야 해요)')); }
   else if (a === 'back') { szOpen = false; renderShop(); } else if (a === 'add') openSize(null); else if (a === 'edit') openSize(el.dataset.id);
 });
 $('sz-dia-dlg').addEventListener('click', e => { if (e.target.closest('[data-szd="close"]')) $('sz-dia-dlg').close(); });
 $('sz-f-kind').addEventListener('change', e => { szFilter.kind = e.target.value; szFilterSave(); renderSizes(); });
 $('sz-f-brand').addEventListener('change', e => { szFilter.brand = e.target.value; szFilterSave(); renderSizes(); });
 $('sz-f-kind2').addEventListener('change', e => szFieldsUI(e.target.value, szReadFields()));
+$('sz-f-q').addEventListener('input', e => { szQ = e.target.value; renderSizes(); });
+$('sz-f-from').addEventListener('change', e => {
+  const i = SH.items.find(x => x.id === e.target.value); if (!i) { szLinkShId = ''; return; }
+  szLinkShId = i.id; $('sz-f-name').value = i.item; $('sz-f-brand2').value = i.brand || ''; $('sz-f-size').value = i.size || '';
+  const k = szGuessKind(i.item, true); if (k && Size.KINDS[k]) { $('sz-f-kind2').value = k; szFieldsUI(k, szReadFields()); }
+});
 $('sz-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-sz]'); if (!el) return;
-  if (el.dataset.sz === 'd-cancel') $('sz-dlg').close(); else if (el.dataset.sz === 'd-save') saveSize(); else if (el.dataset.sz === 'd-delete') delSize();
+  if (el.dataset.sz === 'd-cancel') $('sz-dlg').close(); else if (el.dataset.sz === 'd-save') saveSize(); else if (el.dataset.sz === 'd-save-next') saveSize(true); else if (el.dataset.sz === 'd-delete') delSize();
 });
 $('sk-dlg').addEventListener('click', e => {
   const el = e.target.closest('[data-sk]'); if (!el) return;
@@ -9070,7 +9179,7 @@ mnyScan(document.body);
 new MutationObserver(ms => { ms.forEach(m => m.addedNodes.forEach(mnyScan)); }).observe(document.body, { childList: true, subtree: true });
 
 setTimeout(() => { try { const L = rpLoad(); if (!L.length || Date.now() - Date.parse(L[0].at) > 20 * 3600000) rpTake('자동 (하루 한 번)'); } catch (e) { /* 무시 */ } }, 4000);
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); migrateAE(); migrateAF(); migrateAG(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); migrateAE(); migrateAF(); migrateAG(); migrateAH(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
