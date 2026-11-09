@@ -764,6 +764,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   #szc-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); } #szc-dlg::backdrop{ background:rgba(0,0,0,.45); } #szc-dlg h3{ margin:0 0 2px; font-size:16px; }
   .szc-tbl{ width:100%; border-collapse:collapse; font-size:13.5px; margin:10px 0 6px; } .szc-tbl th, .szc-tbl td{ padding:7px 4px; text-align:center; border-bottom:1px solid var(--line); } .szc-tbl th:first-child, .szc-tbl td:first-child{ text-align:left; } .szc-up{ color:var(--accent-ink); font-weight:800; } .szc-dn{ color:var(--ink2); font-weight:800; } .szc-sum{ font-size:13.5px; font-weight:700; margin:8px 0; line-height:1.6; }
   #szc-dlg select{ font:inherit; font-size:14px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:8px 10px; width:100%; }
+  .subbar{ display:flex; gap:6px; align-items:stretch; margin:0 0 8px; } .subbar button{ flex:1; font:inherit; font-size:12.5px; font-weight:700; padding:8px 4px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); border-radius:8px; cursor:pointer; line-height:1.35; } .subbar button.on{ background:var(--ink); color:var(--surface); border-color:var(--ink); } .subbar button small{ display:block; font-weight:500; font-size:11px; opacity:.8; }
+  .subbar .sb-all{ flex:none; padding:8px 10px; border-color:var(--accent); color:var(--accent-ink); }
+  .sbadge{ display:inline-block; margin-left:6px; font-size:10.5px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); border-radius:99px; padding:0 7px; cursor:pointer; vertical-align:middle; white-space:nowrap; } .sbadge.on{ border-color:var(--line2); color:var(--ink2); }
   .td-dir{ display:block; width:100%; text-align:left; font:inherit; border:0; border-radius:12px; padding:18px; margin-bottom:12px; background:var(--accent); color:var(--on-accent); cursor:pointer; }
   .td-dir small{ display:block; font-size:12.5px; font-weight:800; opacity:.85; } .td-dir b{ display:block; font-size:19px; line-height:1.5; margin:6px 0 4px; letter-spacing:-.01em; } .td-dir span{ display:block; font-size:13.5px; opacity:.92; } .td-dir u{ display:block; text-decoration:none; font-size:12.5px; opacity:.8; margin-top:10px; }
   .td-dir{ position:relative; }
@@ -935,6 +938,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       </select>
     </div>
 
+    <div class="subbar" id="subBar" role="group" aria-label="상신 구분"></div>
+
     <div class="erow headrow">
       <span>지출일</span><span>구분</span><span>지출항목</span><span style="text-align:right;">결제금액</span><span></span>
     </div>
@@ -1052,7 +1057,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <div id="sh-list"></div>
   </div>
   <div id="sz-panel" hidden>
-    <div class="sectionhead"><h3>📏 내 치수표</h3><span class="sh-hbtns"><button class="pc-btn small" data-sz="back">← 품목으로</button><button class="pc-btn small primary" data-sz="add">+ 치수 추가</button></span></div>
+    <div class="sectionhead"><h3>📏 내 치수표</h3><span class="sh-hbtns"><button class="pc-btn small" data-sz="back">← 품목으로</button><button class="pc-btn small" data-sz="autolink">🔗 옷과 자동 연결</button><button class="pc-btn small primary" data-sz="add">+ 치수 추가</button></span></div>
     <p class="pc-hint" style="margin-top:-6px">옷 종류별로 내 몸에 잘 맞았던 옷의 실측(cm)을 적어 두세요. 브랜드를 비우면 “공통” 기준이에요.</p>
     <div class="sk-filters">
       <label>옷 종류<select id="sz-f-kind" aria-label="옷 종류 필터"></select></label>
@@ -2247,10 +2252,12 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   let searchTerm = '';
   let filterCardType = '';
   let sortOrder = 'date_asc';
+  let filterSub = '';   // '' 전체 · 'no' 미상신 · 'yes' 상신완료
 
   function filteredSortedExpenses(mk){
     let list = monthExpenses(mk);
     if(filterCardType) list = list.filter(e => e.cardType === filterCardType);
+    if(filterSub === 'no') list = list.filter(e => !e.sb); else if(filterSub === 'yes') list = list.filter(e => e.sb);
     if(searchTerm) list = list.filter(e => e.item.toLowerCase().includes(searchTerm.toLowerCase()) || (e.memo||'').toLowerCase().includes(searchTerm.toLowerCase()));
     list = list.slice();
     if(sortOrder === 'date_asc') list.sort((a,b)=> a.date.localeCompare(b.date));
@@ -2310,6 +2317,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     if(newDateMonth !== currentMonth || !el('newDate').value){ el('newDate').value = currentMonth === todayMonth() ? todayStr() : (currentMonth + '-01'); newDateMonth = currentMonth; }
 
     renderBreakdown(currentMonth);
+    renderSubBar();
 
     const fullList = monthExpenses(currentMonth);
     const list = filteredSortedExpenses(currentMonth);
@@ -2334,13 +2342,29 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     checkNewMonthBanner();
   }
 
+  // 상신(결재 올림) 구분: 지출 항목의 sb=true 면 상신완료, 없으면 미상신
+  function renderSubBar(){
+    const all = monthExpenses(currentMonth), no = all.filter(e => !e.sb), yes = all.length - no.length, noAmt = no.reduce((t, e) => t + Number(e.amount || 0), 0);
+    const b = (k, t, sm) => `<button type="button" data-subf="${k}" class="${filterSub === k ? 'on' : ''}">${t}${sm ? `<small>${sm}</small>` : ''}</button>`;
+    el('subBar').innerHTML = b('', '전체', all.length + '건') + b('no', '미상신', no.length + '건 · ' + won(noAmt)) + b('yes', '상신완료', yes + '건') + (no.length ? '<button type="button" class="sb-all" data-suball="1">모두 상신완료</button>' : '');
+  }
+  el('subBar').addEventListener('click', e => {
+    const f = e.target.closest('[data-subf]');
+    if(f){ filterSub = f.dataset.subf; render(); return; }
+    if(e.target.closest('[data-suball]')){
+      const no = monthExpenses(currentMonth).filter(x => !x.sb); if(!no.length) return;
+      if(!confirm(`${monthLabelKo(currentMonth)} 미상신 ${no.length}건(${won(no.reduce((t, x) => t + Number(x.amount || 0), 0))})을 모두 상신완료로 바꿀까요?`)) return;
+      no.forEach(x => { x.sb = true; }); saveData(data); render(); showToast(`${no.length}건을 상신완료로 바꿨습니다`);
+    }
+  });
+
   function rowHtml(e){
     const lk = window.AppLife && window.AppLife.names ? window.AppLife.names(e.id) : '';
     const memoHtml = (e.memo ? `<div class="memo mx">📝 ${escapeHtml(e.memo)}</div>` : '') + (lk ? `<div class="memo">👥 ${escapeHtml(lk)}</div>` : '');
     return `<div class="erow" data-id="${e.id}">
       <div class="date">${e.date.slice(5).replace('-','.')}</div>
       <div class="tag" style="${cardTagStyle(e.cardType)}">${escapeHtml(e.cardType)}</div>
-      <div class="item">${escapeHtml(e.item)}</div>
+      <div class="item">${escapeHtml(e.item)}<span class="sbadge ${e.sb ? 'on' : ''}" data-sub="${e.id}" title="눌러서 상신 여부 바꾸기">${e.sb ? '상신완료' : '미상신'}</span></div>
       <div class="amt tabular">${won(e.amount)}</div>
       <div class="rowbtns">
         <button class="miniicon" data-meet="${e.id}" title="함께 만난 사람 기록(인맥에 연결)">👥</button>
@@ -2565,6 +2589,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     const editId = e.target.dataset.edit;
     const delId = e.target.dataset.del;
     const meetId = e.target.dataset.meet;
+    const subId = e.target.dataset.sub;
+    if(subId){ const x = data.expenses.find(v => v.id === subId); if(x){ if(x.sb) delete x.sb; else x.sb = true; saveData(data); render(); showToast(x.sb ? '상신완료로 표시했습니다' : '미상신으로 되돌렸습니다'); } return; }
     if(meetId){ const ex = data.expenses.find(x => x.id === meetId); if(ex && window.AppLife) window.AppLife.fromExpense({ id: ex.id, date: ex.date, item: ex.item, amount: Number(ex.amount) || 0, time: ex.time || '' }); return; }
     if(editId) enterEditMode(editId);
     if(delId){
@@ -2592,6 +2618,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
         <button class="miniicon" data-save="${id}" title="저장">✔</button>
         <button class="miniicon" data-cancel="${id}" title="취소">✕</button>
       </div>
+      <label style="grid-column:1 / -1; display:flex; align-items:center; gap:8px; font-size:13px; margin-top:2px;"><input type="checkbox" data-f="sb" style="width:auto" ${exp.sb ? 'checked' : ''}> 상신완료</label>
       <textarea data-f="memo" rows="3" placeholder="메모 (선택)" style="grid-column:1 / -1; margin-top:2px;">${escapeHtml(exp.memo||'')}</textarea>`;
     row.querySelector('[data-save]').addEventListener('click', () => {
       const date = row.querySelector('[data-f="date"]').value;
@@ -2600,7 +2627,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       const amount = Number(row.querySelector('[data-f="amount"]').value);
       const memo = row.querySelector('[data-f="memo"]').value.trim();
       if(!date || !item || !amount || amount<=0){ showToast('입력값을 확인해주세요'); return; }
-      exp.date = date; exp.cardType = cardType; exp.item = item; exp.amount = amount; exp.memo = memo;
+      exp.date = date; exp.cardType = cardType; exp.item = item; exp.amount = amount; exp.memo = memo; if(row.querySelector('[data-f="sb"]').checked) exp.sb = true; else delete exp.sb;
       saveData(data);
       currentMonth = monthKey(date);
       render();
@@ -3586,9 +3613,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-09-a (패션 옷 등록창에 치수 같이 등록 · 옷 카드 📏 치수 비교 · 이전: 2026-11-08-e (가이드 글 형식: 카드로 강조할 문장을 눌러서 고르기 · 이전: 2026-11-08-d: 오늘 화면 “나의 방향” 카드에서 가이드 문장 직접 고르기 · 이전: 2026-11-08-c: 이미 가이드에 넣어 둔 나의 방향 글에도 오늘 화면 한 줄 카드 연결 · 이전: 2026-11-08-b: 나의 방향: 가이드 글 형식 카드 · 오늘 화면 한 줄 카드 + 눌러서 전문 보기 · 이전: 가이드: 입력칸 높이 오류 수정 · 카드 작성 중 새 주제 바로 만들기 · 이전: 2026-11-06-g (샐러리캡 인센티브도 상·하반기 연 2회 · 이전: 2026-11-06-f: 연봉 이력에 추가상여 칸 · 이전: 2026-11-06-e: 모든 금액 원 단위·천 단위 쉼표(입력칸 자동 쉼표), 연봉 입력·표시를 원 단위로 · 이전: 2026-11-06-d: 연봉 이력에 목표인센티브(연 2회)·샐러리캡 인센티브(연 1회) · 이전: 2026-11-06-c: 내 차 정비·소모품 주기 · 오늘 카드 순서 바꾸기·프리셋 · 이 기기 복원 지점 · 이전: 2026-11-06-b: 회의비↔인맥 방식 자동 구분: 문자 시간·가맹점 이름 분석(커피/점심/저녁) · 이전: 2026-11-06-a: 만남 기록·모임·경조사 입력창에서 새 사람 바로 등록 · 이전: 2026-11-05-d: 인맥 예약 “취소됐어요” 정리 · 이전: 2026-11-05-c: 홈 아이콘 길게 누르기 바로가기 · 돌아보기 월 이동·소비 구매액 · 데이터 점검에 연차·휴일표 · 이전: 2026-11-05-b: 사람 추가·수정에서 새 모임 바로 만들기(CS센터 등) · 이전: 2026-11-05-a: 인맥 사람 추가·수정에서 새 그룹 바로 추가 · 이전: 2026-11-04-a: 경조사 장부·연차(계획 시뮬레이터)·재구매 예상·구독 끝나는 날 D-day·오늘 시간표·공유 받기 · 이전: 2026-11-03-d: 내 차 보험 목록 담보 표시·입력 화면 개편·견적 실시간 증감 · 문자 등록 도수치료 연동: 기존 기록 없을 때 자동 생성 안내·질병 선택 · 보험 담보별 금액 등록·비교 · 차 보험 2건 등록·차량번호 · 내 차(자동차 보험료·세차) · 앱 스타일 7종 · 하단 버전·최근 변경 · 자산 카드 주말·휴장일 처리 · 금액 불일치 점검·도수 한도 알림·일괄 작업 되돌리기·의료비 연간 리포트·알림 묶어보기·문자 병원 인식 보강)';
+const APP_BUILD_VERSION = '2026-11-09-b (회의비 상신완료 구분 · 옷↔치수표 자동 연결 · 변경이력 3개로 요약)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['소비 > 패션: 옷 등록창에서 치수까지 한 번에 등록(치수표에 자동 연결·브랜드/사이즈 자동) · 옷 카드 “📏 치수 비교”(내 기준 치수 대비 ±cm) · 이미 있는 치수도 불러와 연결 · 판매완료여도 치수 유지', '나 > 가이드 글 형식: 카드 편집창에서 문장을 눌러 ★ 켜고 끄면 굵은 강조 카드로 표시(줄 앞 > 직접 입력 불필요)', '오늘 > 나의 방향 카드 “⚙ 바꾸기”: 가이드의 카드·문장을 골라 올리기 + 매일 번갈아/랜덤/고정 + 누르면 전문 열기 선택', '오늘 화면 “나의 방향” 한 줄 카드(누르면 전문) · 가이드 카드 “글 형식”(편지·다짐글을 문단 그대로) · 오늘 한 줄 지정 칸', '나 > 가이드: 카드 내용 입력칸이 한 줄로 보이던 오류 수정 · 카드 작성 중 “＋ 새 주제 만들기”로 기타 외 주제 바로 추가', '돈 > 연봉: 샐러리캡 인센티브를 상반기·하반기 연 2회로 입력(기존 입력값은 상반기로 유지)', '돈 > 연봉: 추가상여 입력 칸(있는 해만), 총연봉·누적에 합산', '금액 공통: 입력칸에 천 단위 쉼표 자동 + 연봉·골프·차트 금액을 원 단위로 통일', '돈 > 연봉: 목표인센티브 상·하반기 + 샐러리캡 인센티브 입력, 총연봉·누적에 합산', '내 차 > 정비: 엔진오일·타이어 등 마지막 정비 기준 다음 교체 시기(개월·km), 알림·요약 연동', '오늘 화면: 카드 ▲▼ 순서 바꾸기 + 구성 프리셋(출근/퇴근 후 등) 저장', '이 기기 복원 지점: 하루 1회·가져오기 직전 자동 저장, 항목별 정확히 되돌리기', '회의비 → 만남 기록: 카드 문자의 결제 시간과 가맹점 이름으로 커피·점심식사·저녁식사를 자동 선택(근거 표시)', '만남 기록·모임 만들기·경조사 입력창: 목록에 없는 사람을 이름·그룹만 적어 바로 등록하고 선택', '인맥 > 예약: “취소됐어요”로 정리 (만남 횟수·알림에서 제외, 이력엔 취소로 남김)', '홈 아이콘 길게 누르기: 회의비 입력 · 가격 체크 · 구매 기록 · 만남 기록 바로가기', '오늘 > 돌아보기: ◀ ▶로 지난달 결산 보기 + 소비 구매액 추가', '데이터 점검: 연차 총일수 미입력·공휴일 표 만료 알림', '인맥 > 사람 추가·수정: 소속 모임에서 “＋ 새 모임 만들기”로 바로 만들고 소속시키기', '인맥 > 사람 추가·수정: 그룹 선택에서 “＋ 새 그룹 추가”로 바로 만들기', '신규: 연차 · 인맥>경조사 장부 · 가격>재구매 예상 · 구독 D-day · 오늘 시간표 · 공유 받기', '내 차 > 보험: 카드에 핵심 담보 표시, 눌러서 담보 전체표(비중 막대)', '보험 입력: 담보 행 카드 + 신규 견적 입력 중 가입 건 대비 증감 실시간 표시', '의료비 문자 등록: 연동할 도수치료 기록이 없으면 새 기록 자동 생성 안내'];
+const APP_RECENT = ['회의비: 상신완료·미상신 구분, 미상신만 모아보기, 한 번에 상신완료', '소비 > 패션: 옷↔치수표 자동 연결 + 옷 카드에서 치수 비교', '나 > 가이드: 글 형식 카드에서 문장을 눌러 강조 고르기'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4125,10 +4152,11 @@ function shRecalc(){
 /* ---------- 옷 ↔ 치수표 연결 (소비 > 패션) ---------- */
 // 옷 항목의 szId = 치수표 항목 id. 치수표 항목의 shId = 그 치수를 옷 등록창에서 만든 옷의 id(있으면 브랜드·사이즈를 옷과 맞춰 줌).
 let shSzLink = '', shSzKindTouched = false, szcId = '';
-function szGuessKind(name){
+function szGuessKind(name, strict){
   const n = String(name || ''), K = Size.KINDS;
   const rules = [[/반바지|쇼츠|숏팬츠/, '반바지'], [/바지|팬츠|슬랙스|청바지|데님|조거|치노|레깅스/, '바지'], [/원피스|스커트|치마/, '원피스·스커트'], [/자켓|재킷|코트|점퍼|패딩|블루종|야상|바람막이|아우터|집업/, '아우터'], [/니트|맨투맨|스웨터|후드|풀오버|가디건/, '니트·맨투맨'], [/티셔츠|반팔|긴팔|롱슬리브|폴로|피케/, '티셔츠'], [/셔츠|남방/, '셔츠']];
   for (const r of rules) if (r[0].test(n) && K[r[1]]) return r[1];
+  if (strict) return null;
   return K['티셔츠'] ? '티셔츠' : Size.KIND_KEYS[0];
 }
 function szLabel(z){ return (z.brand || '공통') + (z.size ? ' · ' + z.size : '') + ' (' + z.kind + ')'; }
@@ -4138,10 +4166,10 @@ function shSzFieldsUI(kind, vals){
 }
 function shSzRead(){ const o = {}; $('sh-sz-fields').querySelectorAll('input[data-f]').forEach(i => { if (i.value !== '') o[i.dataset.f] = Number(i.value); }); return o; }
 function shSzLinkUI(){
-  const cur = shSzLink ? SZ.items.find(x => x.id === shSzLink) : null, used = SH.items.filter(x => x.szId && x.id !== shEditing).map(x => x.szId);
+  const cur = shSzLink ? SZ.items.find(x => x.id === shSzLink) : null;
   let h = '<option value="">' + (cur ? '연결됨: ' + esc(szLabel(cur)) : '연결 없음 (아래에 치수를 적으면 새로 만들어요)') + '</option>';
   if (cur) h += '<option value="__unlink__">연결 끊기 (치수표에는 그대로 남아요)</option>';
-  const cands = SZ.items.filter(x => x.id !== shSzLink && used.indexOf(x.id) < 0);
+  const cands = SZ.items.filter(x => x.id !== shSzLink);
   if (cands.length) h += '<optgroup label="치수표에 이미 있는 치수와 연결">' + cands.map(x => '<option value="' + esc(x.id) + '">' + esc(szLabel(x)) + '</option>').join('') + '</optgroup>';
   $('sh-sz-link').innerHTML = h;
 }
@@ -4170,6 +4198,26 @@ function shSzSave(sv, prevId){   // 옷 저장 직후 호출: 치수표 항목�
   szSave();
 }
 // 비교 기준(자동 고정): 같은 종류의 '공통(내 기준)' 중 가장 최근 → 없으면 같은 종류의 다른 치수 중 가장 최근
+const szSame = (a, b) => { a = String(a || '').trim().toLowerCase().replace(/\s+/g, ''); b = String(b || '').trim().toLowerCase().replace(/\s+/g, ''); return !!a && (a === b || (/^\d+$/.test(a) && /^\d+$/.test(b) && Number(a) === Number(b))); };
+// 브랜드 + 사이즈가 같은 옷↔치수를 연결(이미 연결된 옷은 그대로). 종류가 달라 보이면 건너뜀. { n: 연결, skip: 건너뜀 }
+function szAutoLink(){
+  let n = 0, skip = 0; const now = nowIso();
+  SH.items.forEach(it => {
+    if (it.cat !== 'fashion' || !it.brand || !it.size || (it.szId && SZ.items.some(z => z.id === it.szId))) return;
+    const c = SZ.items.filter(z => szSame(z.brand, it.brand) && szSame(z.size, it.size)); if (!c.length) return;
+    const k = szGuessKind(it.item, true), z = k ? c.find(x => x.kind === k) : (c.length === 1 ? c[0] : null);
+    if (z) { it.szId = z.id; it.u = now; n++; } else skip++;
+  });
+  if (n) { sSave(); changed(); }
+  return { n, skip };
+}
+/* 1회 마이그레이션(mig_ag_v1): 기존 옷 ↔ 치수표 자동 연결 (치수표·옷이 둘 다 있을 때만 실행하고 마킹) */
+function migrateAG(){
+  const MK = 'mig_ag_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  if (!SZ.items.length || !SH.items.some(i => i.cat === 'fashion')) return;
+  const r = szAutoLink(); try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+  if (r.n) { renderAll(); toast('옷 ' + r.n + '벌을 치수표와 자동 연결했어요.'); }
+}
 function szcAutoBase(z){
   const same = SZ.items.filter(x => x.kind === z.kind && x.id !== z.id).sort((a, b) => String(b.u).localeCompare(String(a.u)));
   return same.find(x => !x.brand) || same[0] || null;
@@ -4214,7 +4262,8 @@ function delShop(){
   if (!shEditing || !confirm('이 항목을 삭제할까요?')) return;
   rmSyncTrade({ id: shEditing }, false);
   { const it = SH.items.find(x => x.id === shEditing), z = it && it.szId ? SZ.items.find(x => x.id === it.szId) : null;
-    if (z) { if (confirm('연결된 치수(' + szLabel(z) + ')도 같이 삭제할까요?\n[확인] 치수도 삭제  /  [취소] 치수는 치수표에 남겨 두기')) { SZ.items = SZ.items.filter(x => x.id !== z.id); SZ.del[z.id] = nowIso(); } else if (z.shId === it.id) { z.shId = ''; z.u = nowIso(); } szSave(); } }
+    if (z && SH.items.some(x => x.id !== it.id && x.szId === z.id)) { if (z.shId === it.id) { z.shId = ''; z.u = nowIso(); szSave(); } }   // 다른 옷도 쓰는 치수는 그대로 둠
+    else if (z) { if (confirm('연결된 치수(' + szLabel(z) + ')도 같이 삭제할까요?\n[확인] 치수도 삭제  /  [취소] 치수는 치수표에 남겨 두기')) { SZ.items = SZ.items.filter(x => x.id !== z.id); SZ.del[z.id] = nowIso(); } else if (z.shId === it.id) { z.shId = ''; z.u = nowIso(); } szSave(); } }
   SH.items = SH.items.filter(x => x.id !== shEditing); SH.del[shEditing] = nowIso();
   sSave(); changed(); $('sh-dlg').close(); renderAll();
 }
@@ -8746,7 +8795,8 @@ $('sk-f-stat').addEventListener('change', e => { skFilter.stat = e.target.value;
 $('sz-panel').addEventListener('click', e => {
   const el = e.target.closest('[data-sz]'); if (!el) return;
   const a = el.dataset.sz;
-  if (a === 'dia') szDia(null, el.dataset.kind); else if (a === 'view') szDia(el.dataset.id); else if (a === 'back') { szOpen = false; renderShop(); } else if (a === 'add') openSize(null); else if (a === 'edit') openSize(el.dataset.id);
+  if (a === 'dia') szDia(null, el.dataset.kind); else if (a === 'view') szDia(el.dataset.id); else if (a === 'autolink') { const r = szAutoLink(); renderAll(); toast(r.n ? '옷 ' + r.n + '벌을 연결했어요.' + (r.skip ? ' (종류가 달라 보여 건너뜀 ' + r.skip + '건 — 옷 수정에서 직접 연결)' : '') : (r.skip ? '종류가 달라 보여 건너뛴 옷이 ' + r.skip + '건 있어요. 옷 수정에서 직접 연결해 주세요.' : '새로 연결할 옷이 없어요. (브랜드·사이즈가 같은 치수가 있어야 해요)')); }
+  else if (a === 'back') { szOpen = false; renderShop(); } else if (a === 'add') openSize(null); else if (a === 'edit') openSize(el.dataset.id);
 });
 $('sz-dia-dlg').addEventListener('click', e => { if (e.target.closest('[data-szd="close"]')) $('sz-dia-dlg').close(); });
 $('sz-f-kind').addEventListener('change', e => { szFilter.kind = e.target.value; szFilterSave(); renderSizes(); });
@@ -8967,7 +9017,7 @@ $('py-sync-chk').addEventListener('change', e => {
 });
 renderNav();
 
-$('appVer').innerHTML = '<b>' + esc(APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION.split(' (')[0]) + '</b><ul class="appver-ch">' + APP_RECENT.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>';
+$('appVer').innerHTML = '<b>' + esc(APP_NAME + ' · 앱 버전 ' + APP_BUILD_VERSION.split(' (')[0]) + '</b><ul class="appver-ch">' + APP_RECENT.slice(0, 3).map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>';
 /* ---------- 앱 스타일 선택 ---------- */
 const STYLE_KEY = 'mylife_style_v1';
 const STYLES = [['', '오렌지 (기본)', '#FF4D00', 0], ['blue', '인디고 블루', '#2F45FF', 0], ['green', '에메랄드 그린', '#00945C', 0], ['violet', '바이올렛', '#7438F5', 0], ['mono-lime', 'B&W + 라임', '#C6F000', 1], ['mono-red', 'B&W + 레드', '#E5122D', 1], ['mono-blue', 'B&W + 블루', '#0A5CFF', 1]];
@@ -9020,7 +9070,7 @@ mnyScan(document.body);
 new MutationObserver(ms => { ms.forEach(m => m.addedNodes.forEach(mnyScan)); }).observe(document.body, { childList: true, subtree: true });
 
 setTimeout(() => { try { const L = rpLoad(); if (!L.length || Date.now() - Date.parse(L[0].at) > 20 * 3600000) rpTake('자동 (하루 한 번)'); } catch (e) { /* 무시 */ } }, 4000);
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); migrateAE(); migrateAF(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); migrateAE(); migrateAF(); migrateAG(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
