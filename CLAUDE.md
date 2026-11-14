@@ -3,7 +3,7 @@
 ## 무엇
 - 회의비 · 가격 · 쇼핑 · 구독 · 인맥 · 피부 루틴 · 옷 사이즈를 한곳에서 관리하는 PWA "마이라이프".
   (원래 회의비 대시보드로 시작해서 저장소 이름이 meeting-budget)
-- 파일: index.html(단일 파일, 약 1MB) · sw.js · manifest.json · mylife.webmanifest · 아이콘.
+- 파일: index.html(단일 파일, 약 1MB) · sw.js · mylife.webmanifest · 아이콘. (쓰이지 않던 manifest.json은 2026-11-14 삭제)
 - 데이터: Google 시트 ↔ Apps Script 웹앱으로 동기화(`syncUp` / `syncDown`, 시트 내용을 합친 뒤 반영).
   시트의 '등록대기' 탭에 적은 항목을 앱이 가져와 반영하는 구조가 있음.
 - 서버 코드: `gas/Code.gs` (2026-11-15 서버 현재본에서 가져옴).
@@ -11,7 +11,12 @@
 ## 이 앱만의 주의점
 - 피부 루틴 변경은 `skincare-routine-guide-sync`, 옷 사이즈는 `clothing-size-check` 스킬과 연결됨 (시트 '등록대기' 경유).
 - 회의비 금액 계산을 바꿀 때는 `financial-calc-verification` 스킬 적용.
-- manifest 파일이 두 개(manifest.json, mylife.webmanifest) → 어느 쪽을 쓰는지 확인하고 바꿀 것.
+- manifest는 `mylife.webmanifest` 하나만 쓴다(index.html에서 `?v=날짜`로 불러옴 → 내용을 바꾸면 날짜도 바꿀 것).
+- 삭제 보관함: 맨 앞 스크립트가 `localStorage.setItem`을 감싸 저장 전후를 비교해 사라진 항목을 `trash_v1`에 30일 보관한다(화면별 삭제 코드 60여 곳을 건드리지 않기 위함). 새 저장 키를 만들면 그 스크립트의 `WATCH` 목록에 추가.
+- 동기화 `syncUp`: 받기 → 병합 → (자동이고 변경 없으면 보내기 생략) → 보내기 → 서버 응답의 `rev`·`length`로 확인(옛 서버면 다시 읽어 확인). 데이터가 시트보다 40% 넘게 작으면 자동 백업을 멈춘다.
+- 같은 이름 함수(`num`, `netOf`, `won`, `uid`, `todayStr` 등)가 서로 다른 스크립트 범위에 따로 있다. 동작이 서로 다르니 합치거나 일괄 치환하지 말 것.
+- 공휴일·휴장일 표: `AG_HOLIDAYS`(장 휴장), 의료비 `HOL`(회사 지급일) 모두 2027년까지. `HOLIDAY_LAST_YEAR`도 함께 올릴 것. 머니트레일 앱·서버 표와 맞춘다.
+- 버전: 앱 `APP_BUILD_VERSION` + `APP_RECENT`, 서버 `CODE_VERSION`(v번호), sw.js `VER`.
 
 ## 배포
 - 확인 필요: GitHub Pages인지 다른 호스팅인지.
@@ -32,4 +37,4 @@
 - 비개발자 1인 운영. 설명은 한국어 존댓말, 결론 먼저, 사용자가 할 일은 번호 매긴 단계로.
 
 ## 결정 기록 (채팅에서 확정한 사항을 한 줄씩 추가)
-- (비어 있음)
+- 2026-11-14: 5개 앱 비교 점검 반영(앱 2026-11-14-a / code.gs v26). 서버 인증키는 넣지 않기로 함.
