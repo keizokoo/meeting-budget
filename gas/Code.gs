@@ -1,5 +1,5 @@
 /**
- * 마이라이프(회의비 · 가격 · 쇼핑 · 구독 · 인맥 · 의료비) - Google Sheets 백업용 Apps Script (v25)
+ * 마이라이프(회의비 · 가격 · 쇼핑 · 구독 · 인맥 · 의료비) - Google Sheets 백업용 Apps Script (v26)
  *
  * 앱의 [지금 백업] / [시트에서 불러오기] 버튼(그리고 자동 백업)이 호출하는 서버 역할을 합니다.
  *
@@ -9,6 +9,11 @@
  *  2) 사람이 보기 좋은 표 자동 생성: 예산현황 / 지출내역 / 가격체크_구매이력 / 쇼핑이력 / 골프장 / 골프_요금기록 / 구독결제 / 인맥_사람 / 인맥_모임 / 인맥_이력 / 도수치료 / 연봉이력 / 가이드
  *  3) 동시에 두 기기가 저장해도 섞이지 않도록 잠금(LockService) 사용
  *  4) 읽기 쉬운 표 정리에 문제가 생겨도 원본(RAW_JSON) 저장은 먼저 끝내고, 경고만 돌려줍니다.
+ *
+ * v26 변경점 (2026-11-14) — 앱 2026-11-14-a와 짝
+ *  1) 저장 응답에 rev(앱이 보낸 저장 번호)·codeVersion·serverMs 추가 → 앱이 시트를 다시 읽지 않고 응답만으로 저장을 확인(동기화 시간 단축).
+ *  2) ?action=ver → 서버 버전만 가볍게 돌려줌(앱의 '서버 연결 점검'·설정 화면 표시용).
+ *  저장 방식·시트 구조·기존 응답 필드는 그대로.
  *
  * v25 변경점 (2026-10-28)
  *  1) 가격체크_구매이력 표: 증정이 '1개당'이 아니라 '전체 용량'으로 바뀜(앱 2026-10-28 빌드). 단가 = (결제금−적립금) ÷ (용량×개수 + 증정).
@@ -95,6 +100,7 @@
  * priceCheck(가격), shopping(쇼핑), golf(골프장), subs(구독·결제), people(인맥) 항목이 같이 들어 있습니다.
  */
 
+var CODE_VERSION = 'v26 (2026-11-14)';
 var RAW_SHEET = 'RAW_JSON';
 var CHUNK_SIZE = 40000;   // 시트 한 칸 한도(50,000자)보다 작게
 var HIST_SHEET = 'RAW_HISTORY';
@@ -102,6 +108,7 @@ var HIST_KEEP = 12;                    // 보관할 이전 버전 개수
 var HIST_GAP_MS = 30 * 60 * 1000;      // 평소에는 30분 이상 간격으로만 보관
 
 function doPost(e) {
+  var t0_ = Date.now();
   var lock = LockService.getScriptLock();
   var locked = false;
   try {
@@ -128,7 +135,7 @@ function doPost(e) {
     try { var mw = syncMedCalendar_(ss, payload.medical); if (mw) warnings.push(mw); } catch (err) { warnings.push('의료비 캘린더 동기화 실패: ' + String(err)); }
     try { var aw = syncAgendaCalendar_(ss, payload._agenda); if (aw) warnings.push(aw); } catch (err) { warnings.push('할 일 캘린더 동기화 실패: ' + String(err)); }
 
-    return json_({ ok: true, savedAt: new Date().toISOString(), chunks: info.chunks, length: text.length, warnings: warnings });
+    return json_({ ok: true, savedAt: new Date().toISOString(), chunks: info.chunks, length: text.length, warnings: warnings, rev: String(payload._rev || ''), codeVersion: CODE_VERSION, serverMs: Date.now() - t0_ });
   } catch (err) {
     return json_({ ok: false, error: String(err) });
   } finally {
@@ -138,6 +145,7 @@ function doPost(e) {
 
 function doGet(e) {
   try {
+    if (e && e.parameter && e.parameter.action === 'ver') return json_({ ok: true, codeVersion: CODE_VERSION });
     if (e && e.parameter && e.parameter.action === 'hist') return histResponse_(e.parameter.i);
     if (e && e.parameter && e.parameter.action === 'cals') return json_(calsList_());
     if (e && e.parameter && e.parameter.action === 'agenda') return json_(agendaList_(e.parameter.cals, e.parameter.days));
