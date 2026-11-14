@@ -6,7 +6,7 @@
 - 파일: index.html(단일 파일, 약 1MB) · sw.js · manifest.json · mylife.webmanifest · 아이콘.
 - 데이터: Google 시트 ↔ Apps Script 웹앱으로 동기화(`syncUp` / `syncDown`, 시트 내용을 합친 뒤 반영).
   시트의 '등록대기' 탭에 적은 항목을 앱이 가져와 반영하는 구조가 있음.
-- 서버 코드 Code.gs: **저장소에 없음** → `gas/Code.gs`로 추가 예정.
+- 서버 코드: `gas/Code.gs` (2026-11-15 서버 현재본에서 가져옴).
 
 ## 이 앱만의 주의점
 - 피부 루틴 변경은 `skincare-routine-guide-sync`, 옷 사이즈는 `clothing-size-check` 스킬과 연결됨 (시트 '등록대기' 경유).
