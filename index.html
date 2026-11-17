@@ -68,7 +68,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   :root[data-style^="mono"] .td-bar, :root[data-style^="mono"] .mp-bar, :root[data-style^="mono"] .pp-prog, :root[data-style^="mono"] .md-rpbar .b, :root[data-style^="mono"] .modal .mrow{ box-shadow:inset 0 0 0 1.5px var(--ink); }
   :root[data-style^="mono"] .modebtn.on{ box-shadow:inset 0 -3px 0 var(--accent); }
   .stylepick{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-  .stylepick .grp{ width:100%; font-size:11px; font-weight:800; color:var(--ink3); margin-top:4px; }
+  .stylepick .grp{ width:100%; font-size:12px; font-weight:800; color:var(--ink3); margin-top:4px; }
   .stylepick button{ display:flex; align-items:center; gap:6px; border:1.5px solid var(--line2); background:var(--surface); color:var(--ink); border-radius:999px; padding:8px 12px; font-size:12.5px; font-weight:700; }
   .stylepick button i{ width:14px; height:14px; border-radius:50%; display:inline-block; }
   .stylepick button.on{ border-color:var(--ink); box-shadow:inset 0 0 0 1px var(--ink); }
@@ -113,9 +113,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .hero .big{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:clamp(38px,6vw,56px); font-weight:800; line-height:.95; letter-spacing:-.02em; color:var(--accent-ink); }
   .hero.over-budget .big{ color:var(--warn); }
   .hero .big span{ font-size:.4em; font-weight:700; vertical-align:top; margin-left:4px; color:var(--ink2); }
-  .hero .warn-label{ display:inline-block; margin-top:10px; background:var(--warn); color:var(--on-warn); font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:999px; }
+  .hero .warn-label{ display:inline-block; margin-top:10px; background:var(--warn); color:var(--on-warn); font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; }
   .hero .right{ text-align:right; }
-  .hero .right .l{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--ink2); margin-bottom:4px; }
+  .hero .right .l{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--ink2); margin-bottom:4px; }
   .hero .right .v{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:24px; font-weight:700; color:var(--ink); }
   .hero.over-budget .right .v{ color:var(--warn); }
   .hero .iconrow{ display:flex; gap:8px; justify-content:flex-end; margin-top:14px; }
@@ -129,7 +129,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .body{ padding:26px 28px 0; }
   .strip{ display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:12px; margin-bottom:26px; }
   .scard{ min-width:0; background:var(--surface); border:1px solid var(--ink); border-radius:10px; padding:14px 16px; box-shadow:none; }
-  .scard .l{ font-size:10.5px; color:var(--ink2); text-transform:uppercase; letter-spacing:.05em; font-weight:700; margin-bottom:8px; }
+  .scard .l{ font-size:12px; color:var(--ink2); text-transform:uppercase; letter-spacing:.05em; font-weight:700; margin-bottom:8px; }
   .scard .v{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:17px; font-weight:700; }
   .scard.editable .v{ cursor:text; border-bottom:1px dashed var(--ink3); display:inline-block; }
   .scard input.editv{
@@ -145,10 +145,10 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .elist{ margin-bottom:10px; }
   .erow{ display:grid; grid-template-columns:96px 64px 1fr auto 84px; gap:12px; align-items:center; padding:12px 4px; border-bottom:1px solid var(--line); }
   .erow.headrow{ padding-top:0; padding-bottom:8px; border-bottom:1.5px solid var(--line2); }
-  .erow.headrow span{ font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink2); }
+  .erow.headrow span{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink2); }
   .erow .date{ font-size:12.5px; color:var(--ink2); }
   .erow .tag{
-    font-size:11px; font-weight:700; border-radius:999px; padding:3px 9px; width:fit-content;
+    font-size:12px; font-weight:700; border-radius:999px; padding:3px 9px; width:fit-content;
     color:var(--tagc, var(--ink2)); background:var(--tagc-bg, transparent); border:1px solid var(--tagc-brd, var(--line2));
   }
   .erow .item{ font-weight:700; font-size:14px; }
@@ -203,8 +203,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .drawer .syncbtns{ display:flex; gap:8px; margin-top:10px; }
   .drawer .syncbtns button{ flex:1; border-radius:8px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); padding:8px; font-size:12px; font-weight:700; }
   .drawer .syncbtns button.primary{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
-  .synctime{ font-size:11px; color:var(--ink3); margin-top:8px; }
-  .urlsaved{ font-size:11px; color:var(--good); margin-top:5px; height:14px; opacity:0; transition:opacity .2s ease; }
+  .synctime{ font-size:12px; color:var(--ink3); margin-top:8px; }
+  .urlsaved{ font-size:12px; color:var(--good); margin-top:5px; height:14px; opacity:0; transition:opacity .2s ease; }
   .urlsaved.show{ opacity:1; }
   #periodicIntervalSelect{ border:1px solid var(--line2); border-radius:8px; padding:7px 10px; font-size:12.5px; background:var(--bg); color:var(--ink); }
   .pc-qtyb{ display:inline-block; background:var(--pc-soft); color:var(--pc); border-radius:6px; padding:0 5px; font-weight:800; }
@@ -214,7 +214,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   dialog{ position:fixed; }
   dialog .dlg-x{ float:right; position:sticky; top:0; z-index:3; width:34px; height:34px; margin:-8px -8px 0 8px; border:1px solid var(--line2); border-radius:50%; background:var(--surface); color:var(--ink); font-size:16px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; }
   dialog .dlg-x:hover{ border-color:var(--ink); }
-  .drawer .note{ font-size:11.5px; color:var(--ink3); line-height:1.6; }
+  .drawer .note{ font-size:12px; color:var(--ink3); line-height:1.6; }
 
   .toast{
     position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px);
@@ -225,9 +225,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
 
   @media (max-width:640px){
     .erow{ grid-template-columns:40px 30px 1fr auto 64px; gap:6px; padding:10px 2px; }
-    .erow.headrow span{ font-size:9px; }
-    .erow .date{ font-size:11px; white-space:nowrap; }
-    .erow .tag{ font-size:9.5px; padding:2px 5px; }
+    .erow.headrow span{ font-size:12px; }
+    .erow .date{ font-size:12px; white-space:nowrap; }
+    .erow .tag{ font-size:12px; padding:2px 5px; }
     .erow .item{ font-size:12.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .erow .amt{ font-size:12px; white-space:nowrap; }
     .erow .rowbtns{ gap:2px; }
@@ -240,7 +240,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
 
   /* ---------- breakdown panel ---------- */
   .breakdown{ margin-bottom:26px; }
-  .breakdown-title{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink2); margin-bottom:10px; }
+  .breakdown-title{ font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink2); margin-bottom:10px; }
   .bk-row{ display:flex; align-items:center; gap:10px; margin-bottom:7px; font-size:12.5px; }
   .bk-row .bk-name{ width:56px; font-weight:700; flex-shrink:0; }
   .bk-row .bk-track{ flex:1; height:9px; border-radius:99px; background:var(--line); overflow:hidden; }
@@ -255,7 +255,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .filterbar input[type=search]{ flex:1; min-width:0; }
 
   /* ---------- memo ---------- */
-  .erow .memo{ grid-column:3; font-size:11.5px; color:var(--ink2); margin-top:2px; }
+  .erow .memo{ grid-column:3; font-size:12px; color:var(--ink2); margin-top:2px; }
 
   /* ---------- 문자 붙여넣기 자동인식 ---------- */
   .smspaste{ margin-top:18px; }
@@ -265,7 +265,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     background:var(--surface); color:var(--ink); line-height:1.5;
   }
   .smspaste textarea:focus{ outline:2px solid var(--accent); outline-offset:1px; border-style:solid; }
-  .smspaste-note{ display:block; font-size:11.5px; color:var(--good); margin-top:5px; min-height:14px; }
+  .smspaste-note{ display:block; font-size:12px; color:var(--good); margin-top:5px; min-height:14px; }
   .smspaste-note.warn{ color:var(--warn); }
 
   .addrow{ margin-top:10px; }
@@ -291,7 +291,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .addrow-memo textarea, .erow.editmode textarea{ font-family:inherit; line-height:1.5; min-height:56px; max-height:50vh; resize:vertical; box-sizing:border-box; display:block; }
 
   /* ---------- badges ---------- */
-  .badge-caution{ display:inline-block; margin-top:10px; background:transparent; border:1.5px solid var(--ink3); color:var(--ink2); font-size:11.5px; font-weight:700; padding:3.5px 10px; border-radius:999px; }
+  .badge-caution{ display:inline-block; margin-top:10px; background:transparent; border:1.5px solid var(--ink3); color:var(--ink2); font-size:12px; font-weight:700; padding:3.5px 10px; border-radius:999px; }
 
   /* ---------- modal (annual summary) ---------- */
   .modal{
@@ -306,7 +306,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .modal .yearpick{ border:1px solid var(--line2); border-radius:8px; padding:6px 10px; font-size:12.5px; background:var(--surface); color:var(--ink); margin-bottom:18px; }
   .modal .kpis{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px; }
   .modal .kpi{ background:var(--surface); border:1px solid var(--line2); border-radius:12px; padding:12px 14px; }
-  .modal .kpi .l{ font-size:10.5px; color:var(--ink2); text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
+  .modal .kpi .l{ font-size:12px; color:var(--ink2); text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px; }
   .modal .kpi .v{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:15px; font-weight:700; }
   .modal .mrow{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:12.5px; }
   .modal .mrow .mname{ width:66px; flex-shrink:0; color:var(--ink2); }
@@ -365,8 +365,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   }
   [data-theme="dark"] #priceView, [data-theme="dark"] #shopView{ --pc-soft:var(--soft); --pc-up:#FF7A7F; --pc-up-bg:#3A1D22; --pc-down:#7DA6FF; --pc-down-bg:#1B2742; --pc-flat:#B4B0CA; --pc-flat-bg:#26272A; }
   .pc-wrap{ max-width:920px; margin:0 auto; padding:16px 16px 0; }
-  .appver{ max-width:920px; margin:0 auto; padding:18px 16px 28px; font-size:11.5px; color:var(--ink3); text-align:center; }
-  .appver b{ color:var(--ink2); } .appver-ch{ list-style:none; margin:8px 0 0; padding:0; font-size:11px; line-height:1.7; } .appver-ch li::before{ content:'· '; }
+  .appver{ max-width:920px; margin:0 auto; padding:18px 16px 28px; font-size:12px; color:var(--ink3); text-align:center; }
+  .appver b{ color:var(--ink2); } .appver-ch{ list-style:none; margin:8px 0 0; padding:0; font-size:12px; line-height:1.7; } .appver-ch li::before{ content:'· '; }
   .pc-tabs{ display:flex; gap:6px; margin:14px 0 12px; }
   .pc-tabs button{ flex:1; border:1px solid var(--line2); background:var(--surface); color:var(--ink2); font-weight:700; font-size:13px; padding:9px 6px; border-radius:999px; min-height:40px; }
   .pc-tabs button.on{ background:var(--pc); border-color:var(--pc); color:var(--pc-on); }
@@ -413,7 +413,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .pc-headrow h3{ margin:0; }
   .pc-tblwrap{ overflow-x:auto; margin:0 -4px; padding:0 4px; }
   table.pc-tbl{ border-collapse:collapse; width:100%; font-size:12px; }
-  .pc-tbl th{ font-size:11px; font-weight:800; color:var(--ink2); text-align:right; padding:8px 4px; border-bottom:2px solid var(--line); white-space:nowrap; background:var(--surface); }
+  .pc-tbl th{ font-size:12px; font-weight:800; color:var(--ink2); text-align:right; padding:8px 4px; border-bottom:2px solid var(--line); white-space:nowrap; background:var(--surface); }
   .pc-tbl th:first-child, .pc-tbl th.pc-pcell{ text-align:left; }
   .pc-tbl td{ padding:9px 4px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
   .pc-tbl td:first-child{ text-align:left; }
@@ -443,21 +443,21 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   /* ---------- 쇼핑 이력 ---------- */
   #sh-summary{ margin-bottom:18px; }
   #sh-summary .scard .v{ font-size:14px; }
-  .scard .sub{ font-size:11px; color:var(--ink2); margin-top:6px; line-height:1.4; }
+  .scard .sub{ font-size:12px; color:var(--ink2); margin-top:6px; line-height:1.4; }
   .sh-banner{ background:var(--ink); color:var(--bg); border-radius:10px; padding:12px 14px; font-size:13px; margin-bottom:12px; }
   .sh-banner b{ color:var(--accent); }
   .sh-banner .it{ padding:3px 0; }
-  .sh-banner .tg{ display:inline-block; font-size:10.5px; font-weight:800; border:1px solid var(--accent); color:var(--accent); border-radius:999px; padding:1px 7px; margin-right:6px; }
+  .sh-banner .tg{ display:inline-block; font-size:12px; font-weight:800; border:1px solid var(--accent); color:var(--accent); border-radius:999px; padding:1px 7px; margin-right:6px; }
   .sh-row{ display:grid; grid-template-columns:1fr auto; gap:10px; padding:14px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
   .sh-lc{ display:flex; gap:10px; align-items:flex-start; min-width:0; } .sh-info{ min-width:0; flex:1; }
   .sh-thumb{ width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid var(--line2); flex:none; cursor:zoom-in; background:var(--surface); }
   .sh-photo-row{ display:flex; gap:12px; align-items:center; margin:6px 0 2px; } #sh-photo-prev{ width:96px; height:96px; object-fit:cover; border-radius:10px; border:1px solid var(--line2); } .sh-photo-btns{ display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
   #ph-dlg{ padding:12px; border:1px solid var(--ink); border-radius:12px; max-width:94vw; background:var(--surface); } #ph-dlg::backdrop{ background:rgba(0,0,0,.6); } #ph-big{ display:block; max-width:min(88vw,640px); max-height:78vh; margin:0 auto; border-radius:8px; }
-  .sk-filters{ display:flex; gap:10px; margin:0 0 6px; } .sk-filters label{ flex:1; display:flex; flex-direction:column; gap:3px; font-size:11.5px; font-weight:700; color:var(--ink2); }
+  .sk-filters{ display:flex; gap:10px; margin:0 0 6px; } .sk-filters label{ flex:1; display:flex; flex-direction:column; gap:3px; font-size:12px; font-weight:700; color:var(--ink2); }
   .sk-filters select{ font:inherit; font-size:14px; font-weight:700; border:1px solid var(--line2); border-radius:8px; padding:8px; background:var(--surface); color:var(--ink); }
   .sk-checks{ display:flex; flex-wrap:wrap; gap:5px; margin:8px 0 2px; } .sk-ck{ width:22px; height:22px; border:1.5px solid var(--ink3); border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:900; color:#fff; cursor:pointer; background:transparent; } .sk-ck.on{ background:var(--accent); border-color:var(--accent); } .sk-ck.pre{ background:var(--ink3); border-color:var(--ink3); cursor:default; } .sk-chk-note{ margin-top:4px; } .sk-sc{ width:88px; margin-left:auto; margin-right:6px; padding:4px 6px; font-size:12px; } .sk-card{ border:1px solid var(--line2); border-radius:12px; background:var(--surface); padding:13px 14px; margin:0 0 10px; cursor:pointer; }
   .sk-card.done{ opacity:.7; } .sk-top{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-weight:800; font-size:15px; }
-  .sk-tag{ font-size:10.5px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); border-radius:999px; padding:1px 8px; } .sk-badge{ font-size:10.5px; font-weight:800; border:1px solid var(--line2); color:var(--ink2); border-radius:999px; padding:1px 8px; } .sk-badge.on{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); } .sk-badge.over{ border-color:var(--warn); color:var(--warn); }
+  .sk-tag{ font-size:12px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); border-radius:999px; padding:1px 8px; } .sk-badge{ font-size:12px; font-weight:800; border:1px solid var(--line2); color:var(--ink2); border-radius:999px; padding:1px 8px; } .sk-badge.on{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); } .sk-badge.over{ border-color:var(--warn); color:var(--warn); }
   .sk-meta{ font-size:12px; color:var(--ink2); margin-top:3px; } .sk-meta b{ color:var(--ink); }
   .sk-cnt{ font-weight:800; color:var(--accent-ink); } .sk-remain{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:20px; font-weight:800; } .sk-remain small{ font-size:12px; font-weight:600; color:var(--ink2); margin-left:6px; }
   .sk-row2{ display:flex; justify-content:space-between; align-items:flex-end; gap:8px; margin-top:8px; } .sk-today{ flex:none; }
@@ -472,18 +472,18 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   #sk-fold[hidden], #mp-fold[hidden]{ display:none; }
   .pc-f input[id$="-new"]{ margin-top:6px; }
   .sz-group{ margin:0 0 14px; } .sz-group h4{ margin:0 0 6px; font-size:14px; } .sz-wrap{ overflow-x:auto; border:1px solid var(--line2); border-radius:10px; background:var(--surface); }
-  .sz-tbl{ border-collapse:collapse; width:100%; font-size:13px; white-space:nowrap; } .sz-tbl th, .sz-tbl td{ padding:8px 10px; border-bottom:1px solid var(--line); text-align:right; } .sz-tbl th{ font-size:11px; color:var(--ink2); font-weight:800; } .sz-tbl tr:last-child td{ border-bottom:none; }
+  .sz-tbl{ border-collapse:collapse; width:100%; font-size:13px; white-space:nowrap; } .sz-tbl th, .sz-tbl td{ padding:8px 10px; border-bottom:1px solid var(--line); text-align:right; } .sz-tbl th{ font-size:12px; color:var(--ink2); font-weight:800; } .sz-tbl tr:last-child td{ border-bottom:none; }
   .sz-tbl td:first-child, .sz-tbl th:first-child{ text-align:left; position:sticky; left:0; background:var(--surface); } .sz-tbl tbody tr{ cursor:pointer; } .sz-tbl tbody tr:hover td{ background:var(--pc-soft); }
-  .sz-common{ font-size:10px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); border-radius:999px; padding:0 6px; margin-left:4px; } .sz-sz{ color:var(--ink2); margin-left:4px; } .sz-note{ display:block; font-size:11px; color:var(--ink3); white-space:normal; max-width:180px; }
+  .sz-common{ font-size:12px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); border-radius:999px; padding:0 6px; margin-left:4px; } .sz-sz{ color:var(--ink2); margin-left:4px; } .sz-note{ display:block; font-size:12px; color:var(--ink3); white-space:normal; max-width:180px; }
   .pk-tags{ display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 2px; } .pk-tag{ display:inline-flex; align-items:center; gap:4px; font-size:13px; font-weight:700; border:1px solid var(--line2); background:var(--pc-soft); border-radius:999px; padding:3px 4px 3px 10px; color:var(--ink); } .pk-tag button{ border:0; background:none; color:var(--ink2); font-size:13px; line-height:1; padding:3px 6px; min-height:0; cursor:pointer; }
-  #pp-dlg .pk-tags, #mt-dlg .pk-tags, #cl-dlg .pk-tags{ margin-top:6px; } .sb-cc{ display:inline-block; margin-left:6px; font-size:10.5px; font-weight:800; color:var(--accent-ink); border:1px solid var(--accent); border-radius:999px; padding:0 7px; cursor:pointer; } .sb-ccnote{ font-size:11px; color:var(--ink2); margin:4px 0 0; } .scard.mp-go{ cursor:pointer; } .scard.mp-go:hover{ background:var(--pc-soft); } .pp-club{ font-size:10.5px; font-weight:800; border:1px solid var(--ink3); color:var(--ink2); border-radius:999px; padding:0 7px; margin-left:4px; }
-  .gp-row{ display:flex; align-items:center; gap:6px; margin:0 0 8px; } .gp-row input[type=text]{ flex:1; min-width:0; } .gp-row input[type=number]{ width:64px; flex:none; } .gp-d{ font-size:12px; color:var(--ink2); } .gp-n{ font-size:11px; color:var(--ink3); width:44px; text-align:right; flex:none; } .gp-x{ background:none; border:none; font-size:16px; color:var(--ink3); cursor:pointer; }
+  #pp-dlg .pk-tags, #mt-dlg .pk-tags, #cl-dlg .pk-tags{ margin-top:6px; } .sb-cc{ display:inline-block; margin-left:6px; font-size:12px; font-weight:800; color:var(--accent-ink); border:1px solid var(--accent); border-radius:999px; padding:0 7px; cursor:pointer; } .sb-ccnote{ font-size:12px; color:var(--ink2); margin:4px 0 0; } .scard.mp-go{ cursor:pointer; } .scard.mp-go:hover{ background:var(--pc-soft); } .pp-club{ font-size:12px; font-weight:800; border:1px solid var(--ink3); color:var(--ink2); border-radius:999px; padding:0 7px; margin-left:4px; }
+  .gp-row{ display:flex; align-items:center; gap:6px; margin:0 0 8px; } .gp-row input[type=text]{ flex:1; min-width:0; } .gp-row input[type=number]{ width:64px; flex:none; } .gp-d{ font-size:12px; color:var(--ink2); } .gp-n{ font-size:12px; color:var(--ink3); width:44px; text-align:right; flex:none; } .gp-x{ background:none; border:none; font-size:16px; color:var(--ink3); cursor:pointer; }
   #gp-dlg input, #cl-dlg input[type=text]{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:9px 10px; min-height:40px; }
-  #cl-f-people label{ display:flex; align-items:center; gap:8px; padding:6px 0; font-size:14px; color:var(--ink); } #cl-f-people input{ width:auto; min-height:0; } #cl-f-people .gname{ font-size:11px; font-weight:700; color:var(--ink2); margin-top:8px; } #pp-f-clubs input, #mt-f-clubs input{ width:auto; min-height:0; }
+  #cl-f-people label{ display:flex; align-items:center; gap:8px; padding:6px 0; font-size:14px; color:var(--ink); } #cl-f-people input{ width:auto; min-height:0; } #cl-f-people .gname{ font-size:12px; font-weight:700; color:var(--ink2); margin-top:8px; } #pp-f-clubs input, #mt-f-clubs input{ width:auto; min-height:0; }
   .sh-row:hover{ background:var(--pc-soft); }
   .sh-top{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
   .sh-name{ font-weight:700; font-size:14px; }
-  .sh-badge{ font-size:10.5px; font-weight:700; border-radius:999px; padding:2px 8px; border:1px solid var(--line2); color:var(--ink2); }
+  .sh-badge{ font-size:12px; font-weight:700; border-radius:999px; padding:2px 8px; border:1px solid var(--line2); color:var(--ink2); }
   .sh-badge.sold{ color:var(--good); border-color:var(--good); }
   .sh-meta{ font-size:12px; color:var(--ink2); margin-top:4px; display:flex; flex-wrap:wrap; gap:2px 12px; }
   .sh-meta b{ color:var(--ink); font-weight:600; }
@@ -493,17 +493,17 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .sh-benefit{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .sh-benefit .bt{ flex:1 1 auto; min-width:0; }
   .sh-benefit.done .bt{ text-decoration:line-through; opacity:.6; }
-  .sh-donebtn{ flex:none; border:1px solid var(--accent); background:transparent; color:var(--accent-ink); border-radius:999px; padding:3px 10px; font-size:11.5px; font-weight:800; cursor:pointer; }
+  .sh-donebtn{ flex:none; border:1px solid var(--accent); background:transparent; color:var(--accent-ink); border-radius:999px; padding:3px 10px; font-size:12px; font-weight:800; cursor:pointer; }
   .sh-donebtn.undo{ border-color:var(--line2); color:var(--ink2); }
   .sh-banner .it{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-  .sh-bx{ display:block; margin:6px 0 0 auto; background:none; border:none; color:var(--ink3); font-size:11.5px; cursor:pointer; text-decoration:underline; }
+  .sh-bx{ display:block; margin:6px 0 0 auto; background:none; border:none; color:var(--ink3); font-size:12px; cursor:pointer; text-decoration:underline; }
   .sh-banner .sh-donebtn{ margin-left:auto; border-color:var(--accent); color:var(--accent); }
   .sh-donechk{ display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink); margin:2px 0 6px; }
   .sh-donechk input{ width:auto !important; min-height:0 !important; }
   .sh-penalty{ font-size:12px; color:var(--warn); margin-top:4px; }
   .sh-right{ text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
   .sh-price{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-weight:700; font-size:13.5px; }
-  .sh-price.strike{ text-decoration:line-through; color:var(--ink3); font-size:11.5px; }
+  .sh-price.strike{ text-decoration:line-through; color:var(--ink3); font-size:12px; }
   .sh-real{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-weight:700; font-size:13.5px; color:var(--accent-ink); }
   .sh-profit{ font-size:12.5px; font-weight:700; }
   .sh-profit.pos{ color:var(--good); } .sh-profit.neg{ color:var(--warn); }
@@ -512,7 +512,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   #sh-dlg::backdrop{ background:rgba(0,0,0,.45); }
   #sh-dlg h3{ margin:0 0 4px; font-size:16px; }
   #sh-dlg .pc-f input, #sh-dlg .pc-f select{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
-  #sh-dlg .grp{ margin-top:14px; font-size:11.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--ink2); }
+  #sh-dlg .grp{ margin-top:14px; font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--ink2); }
   .pc-sync{ font-size:12px; color:var(--ink2); align-self:center; }
 
   /* ---------- 공용 상태줄 + 공통 알림 ---------- */
@@ -541,9 +541,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .gf-parts{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
   .gf-p{ border:1px solid var(--line2); border-radius:9px; padding:6px 8px; text-align:center; }
   .gf-p.none{ opacity:.55; }
-  .gf-p span{ display:block; font-size:10.5px; font-weight:700; color:var(--ink2); }
+  .gf-p span{ display:block; font-size:12px; font-weight:700; color:var(--ink2); }
   .gf-p b{ display:block; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:14px; }
-  .gf-p small{ display:block; font-size:10.5px; color:var(--ink2); min-height:13px; }
+  .gf-p small{ display:block; font-size:12px; color:var(--ink2); min-height:13px; }
   .gf-rev{ margin-top:8px; font-size:12.5px; color:var(--ink2); }
   .gd-round{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px; }
   /* ---------- 내 차 ---------- */
@@ -557,20 +557,20 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   #fe-dlg h3, #lv-dlg h3, #rc-dlg h3{ margin:0 0 4px; font-size:16px; }
   #fe-dlg .pc-f input, #fe-dlg .pc-f select, #lv-dlg .pc-f input, #lv-dlg .pc-f select, #rc-dlg .pc-f input, #rc-dlg .pc-f select, #rc-dlg textarea{ font:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:42px; }
   #rc-dlg textarea{ min-height:84px; resize:vertical; }
-  .nf-sum, .nf-two{ display:flex; gap:10px; justify-content:space-between; } .nf-sum > div, .nf-two > div{ flex:1; } .nf-sum small, .nf-two small{ display:block; color:var(--ink2); font-size:11.5px; font-weight:700; } .nf-sum b, .nf-two b{ font:800 16px Manrope,sans-serif; font-variant-numeric:tabular-nums; }
+  .nf-sum, .nf-two{ display:flex; gap:10px; justify-content:space-between; } .nf-sum > div, .nf-two > div{ flex:1; } .nf-sum small, .nf-two small{ display:block; color:var(--ink2); font-size:12px; font-weight:700; } .nf-sum b, .nf-two b{ font:800 16px Manrope,sans-serif; font-variant-numeric:tabular-nums; }
   .nf-big{ font:900 30px Unbounded,sans-serif !important; letter-spacing:-.02em; } .nf-big.neg{ color:var(--warn); }
   .nf-head{ display:flex; align-items:center; gap:8px; width:100%; border:0; background:none; color:var(--ink); font:inherit; padding:0 0 8px; cursor:pointer; text-align:left; } .nf-head b{ font-size:16px; } .nf-arw{ margin-left:auto; color:var(--ink2); }
-  .nf-tag{ display:inline-block; border-radius:99px; padding:2px 9px; font-size:11px; font-weight:800; background:var(--soft); color:var(--ink); } .nf-tag.warn{ background:var(--warn); color:#fff; } .nf-tag.ok{ background:var(--good); color:#fff; }
+  .nf-tag{ display:inline-block; border-radius:99px; padding:2px 9px; font-size:12px; font-weight:800; background:var(--soft); color:var(--ink); } .nf-tag.warn{ background:var(--warn); color:#fff; } .nf-tag.ok{ background:var(--good); color:#fff; }
   .nf-row{ display:flex; justify-content:space-between; gap:8px; width:100%; border:0; border-top:1px solid var(--line); background:none; color:var(--ink); font:inherit; font-size:13.5px; padding:10px 2px; text-align:left; cursor:pointer; } .nf-row b.give{ color:var(--warn); } .nf-row b.recv{ color:var(--good); }
   .nf-ybar{ display:flex; align-items:center; justify-content:center; gap:14px; margin:4px 0 10px; } .nf-ybar b{ font:800 16px Manrope,sans-serif; }
   .nf-bar{ height:10px; background:var(--line); border-radius:6px; overflow:hidden; display:flex; margin-top:8px; } .nf-bar i{ display:block; height:100%; background:var(--accent); } .nf-bar i.p{ background:var(--ink); } .nf-bar.warn i{ background:var(--warn); }
-  .nf-cal{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; } .nf-cal .hd{ font-size:11.5px; font-weight:800; color:var(--ink2); padding:4px 0; }
+  .nf-cal{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; } .nf-cal .hd{ font-size:12px; font-weight:800; color:var(--ink2); padding:4px 0; }
   .nf-cal .dd{ position:relative; min-height:40px; border:1px solid var(--line); border-radius:10px; background:var(--surface); color:var(--ink); font:700 13px Manrope,sans-serif; cursor:pointer; padding:0; } .nf-cal .dd.red{ color:var(--warn); } .nf-cal .dd.blue{ color:#2F6BFF; } .nf-cal .dd:disabled{ background:transparent; border-color:transparent; cursor:default; }
   .nf-cal .dd.today{ outline:2px solid var(--accent); } .nf-cal .dd.used{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); } .nf-cal .dd.plan{ background:var(--ink); border-color:var(--ink); color:var(--bg); } .nf-cal .dd small{ position:absolute; right:3px; bottom:1px; font-size:9px; }
-  .nf-tip{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-top:1px solid var(--line); font-size:13.5px; } .nf-tip small{ display:block; color:var(--ink2); font-size:11.5px; }
-  .nf-dd{ display:flex; align-items:center; gap:10px; width:100%; border:0; border-top:1px solid var(--line); background:none; color:var(--ink); font:inherit; padding:10px 2px; text-align:left; cursor:pointer; } .nf-dd .dn{ font:800 15px Unbounded,sans-serif; min-width:64px; } .nf-dd .dn.soon{ color:var(--warn); } .nf-dd .tx{ flex:1; font-size:13.5px; } .nf-dd .tx small{ display:block; color:var(--ink2); font-size:11.5px; }
+  .nf-tip{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-top:1px solid var(--line); font-size:13.5px; } .nf-tip small{ display:block; color:var(--ink2); font-size:12px; }
+  .nf-dd{ display:flex; align-items:center; gap:10px; width:100%; border:0; border-top:1px solid var(--line); background:none; color:var(--ink); font:inherit; padding:10px 2px; text-align:left; cursor:pointer; } .nf-dd .dn{ font:800 15px Unbounded,sans-serif; min-width:64px; } .nf-dd .dn.soon{ color:var(--warn); } .nf-dd .tx{ flex:1; font-size:13.5px; } .nf-dd .tx small{ display:block; color:var(--ink2); font-size:12px; }
   .tl{ border-left:3px solid var(--line2); margin-left:4px; padding-left:10px; } .tl-r{ display:flex; gap:10px; padding:7px 0; position:relative; font-size:13.5px; } .tl-r:before{ content:""; position:absolute; left:-17px; top:12px; width:9px; height:9px; border-radius:50%; background:var(--ink); } .tl-r.past{ opacity:.45; } .tl-r.now:before{ background:var(--good); box-shadow:0 0 0 4px rgba(31,138,76,.25); } .tl-r.now{ color:var(--good); }
-  .tl-r .tm{ min-width:58px; color:var(--ink2); font-weight:800; font-size:12px; padding-top:1px; } .tl-r .tb{ flex:1; } .tl-r small, .tl-u small{ display:block; color:var(--ink2); font-size:11.5px; } .tl-u{ display:block; padding:2px 0; }
+  .tl-r .tm{ min-width:58px; color:var(--ink2); font-weight:800; font-size:12px; padding-top:1px; } .tl-r .tb{ flex:1; } .tl-r small, .tl-u small{ display:block; color:var(--ink2); font-size:12px; } .tl-u{ display:block; padding:2px 0; }
   .cr-seg{ display:flex; border:1px solid var(--ink); border-radius:12px; overflow:hidden; margin-bottom:14px; background:var(--surface); }
   .cr-seg button{ flex:1; border:0; background:none; padding:10px 4px; font:700 14px inherit; color:var(--ink); cursor:pointer; }
   .cr-seg button.on{ background:var(--accent); color:var(--on-accent); }
@@ -584,8 +584,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .cr-row small{ display:block; color:var(--ink2); font-size:12px; margin-top:2px; }
   .cr-top b:first-child{ white-space:nowrap; }
   .cr-top{ display:flex; justify-content:space-between; align-items:center; gap:8px; } .cr-amt{ font-size:15px; white-space:nowrap; }
-  .cr-tag{ display:inline-block; font-size:11px; font-weight:800; padding:1px 8px; border-radius:99px; background:var(--soft); color:var(--accent-ink); margin-left:4px; } .cr-tag.ok{ background:var(--ink); color:var(--bg); }
-  .cr-car{ font-size:11px; color:var(--ink2); margin-left:6px; }
+  .cr-tag{ display:inline-block; font-size:12px; font-weight:800; padding:1px 8px; border-radius:99px; background:var(--soft); color:var(--accent-ink); margin-left:4px; } .cr-tag.ok{ background:var(--ink); color:var(--bg); }
+  .cr-car{ font-size:12px; color:var(--ink2); margin-left:6px; }
   .cr-good{ color:var(--good); font-size:12px; font-weight:700; margin-top:2px; } .cr-bad{ color:var(--warn); font-size:12px; font-weight:700; margin-top:2px; }
   .cr-bar{ padding:6px 0; } .cr-track{ height:10px; background:var(--line); border-radius:6px; overflow:hidden; margin-top:4px; } .cr-track i{ display:block; height:100%; background:var(--accent); }
   .cr-months{ display:flex; gap:4px; align-items:flex-end; height:90px; padding-top:6px; } .cr-months>div{ flex:1; height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; } .cr-months i{ display:block; width:100%; background:var(--accent); border-radius:3px 3px 0 0; min-height:1px; } .cr-months small{ font-size:10px; color:var(--ink2); margin-top:3px; }
@@ -594,17 +594,17 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .ci-cov input{ min-width:0; border:0; background:none; color:var(--ink); font:inherit; padding:4px 2px; outline:0; box-shadow:none; }
   .ci-cov [data-cv=n]{ font-weight:800; } .ci-cov [data-cv=v]{ text-align:right; font-weight:700; border-bottom:1px solid var(--ink); border-radius:0; }
   .ci-cov .ci-cov-d{ width:100%; color:var(--ink2); font-size:12px; padding-top:3px; }
-  .ci-cov .ci-dl{ font-size:11px; font-weight:800; text-align:right; } .ci-dl.lo{ color:var(--good); } .ci-dl.hi{ color:var(--warn); }
+  .ci-cov .ci-dl{ font-size:12px; font-weight:800; text-align:right; } .ci-dl.lo{ color:var(--good); } .ci-dl.hi{ color:var(--warn); }
   .ci-cov button{ border:0; background:none; color:var(--ink3); font-size:15px; cursor:pointer; padding:0; }
   .ci-sum{ position:sticky; bottom:6px; display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; background:var(--ink); color:var(--bg); border-radius:12px; padding:9px 12px; font-weight:800; font-size:13px; margin:6px 0 10px; } .ci-sum:empty{ display:none; }
   .ci-base{ font-size:12px; color:var(--ink2); margin:0 0 6px; } .ci-base:empty{ display:none; }
   .cr-chips2{ display:flex; gap:6px; flex-wrap:wrap; margin:8px 0 2px; } .cr-chip2{ font-size:12px; border:1px solid var(--line2); border-radius:99px; padding:3px 9px; background:var(--surface); } .cr-chip2 b{ font-weight:800; }
   .sectionhead .pc-btn{ white-space:nowrap; }
   .cr-more{ width:100%; margin-top:8px; border:1px dashed var(--line2); background:none; color:var(--ink); border-radius:10px; padding:7px; font:700 12.5px inherit; cursor:pointer; }
-  .cr-ct{ width:100%; border-collapse:collapse; font-size:12.5px; margin-top:6px; } .cr-ct td{ padding:7px 2px; border-top:1px dashed var(--line2); vertical-align:top; text-align:right; } .cr-ct td:first-child{ text-align:left; white-space:nowrap; } .cr-ct small{ display:block; color:var(--ink2); font-size:11.5px; } .cr-ct tfoot td{ border-top:1px solid var(--ink); font-weight:800; }
+  .cr-ct{ width:100%; border-collapse:collapse; font-size:12.5px; margin-top:6px; } .cr-ct td{ padding:7px 2px; border-top:1px dashed var(--line2); vertical-align:top; text-align:right; } .cr-ct td:first-child{ text-align:left; white-space:nowrap; } .cr-ct small{ display:block; color:var(--ink2); font-size:12px; } .cr-ct tfoot td{ border-top:1px solid var(--ink); font-weight:800; }
   .cr-ct .cr-track{ height:6px; margin-top:3px; }
-  .cc-t{ width:100%; border-collapse:collapse; font-size:12.5px; } .cc-t th, .cc-t td{ padding:7px 6px; border-top:1px dashed var(--line2); text-align:right; white-space:nowrap; vertical-align:top; } .cc-t th:first-child, .cc-t td:first-child{ text-align:left; position:sticky; left:0; background:var(--surface); } .cc-t thead th{ border-top:0; font-size:11px; } .cc-t small{ display:block; color:var(--ink2); font-size:10.5px; white-space:normal; max-width:110px; margin-left:auto; } .cc-t .lo{ color:var(--good); font-weight:800; } .cc-t .hi{ color:var(--warn); font-weight:800; } .cc-t tfoot td{ border-top:1px solid var(--ink); font-weight:800; }
-  .cr-tbl{ display:grid; grid-template-columns:.6fr 1fr 1fr 1fr 1.1fr; gap:6px; padding:7px 0; border-top:1px dashed var(--line2); font-size:12.5px; text-align:right; } .cr-tbl>*:first-child{ text-align:left; } .cr-tbl-h{ border-top:0; color:var(--ink2); font-size:11px; font-weight:700; }
+  .cc-t{ width:100%; border-collapse:collapse; font-size:12.5px; } .cc-t th, .cc-t td{ padding:7px 6px; border-top:1px dashed var(--line2); text-align:right; white-space:nowrap; vertical-align:top; } .cc-t th:first-child, .cc-t td:first-child{ text-align:left; position:sticky; left:0; background:var(--surface); } .cc-t thead th{ border-top:0; font-size:12px; } .cc-t small{ display:block; color:var(--ink2); font-size:12px; white-space:normal; max-width:110px; margin-left:auto; } .cc-t .lo{ color:var(--good); font-weight:800; } .cc-t .hi{ color:var(--warn); font-weight:800; } .cc-t tfoot td{ border-top:1px solid var(--ink); font-weight:800; }
+  .cr-tbl{ display:grid; grid-template-columns:.6fr 1fr 1fr 1fr 1.1fr; gap:6px; padding:7px 0; border-top:1px dashed var(--line2); font-size:12.5px; text-align:right; } .cr-tbl>*:first-child{ text-align:left; } .cr-tbl-h{ border-top:0; color:var(--ink2); font-size:12px; font-weight:700; }
   /* ---------- 구독·결제 ---------- */
   .sb-monthbar{ display:flex; align-items:center; gap:8px; margin-bottom:12px; } .sb-monthbar b{ flex:1; text-align:center; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:14px; }
   #sb-summary{ margin-bottom:12px; } #sb-summary .scard .v{ font-size:14px; }
@@ -613,14 +613,14 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .sb-subtotal{ font-size:12.5px; color:var(--ink2); margin:4px 2px 8px; } .sb-subtotal b{ color:var(--ink); }
   .sb-row{ display:grid; grid-template-columns:40px 1fr auto 36px; align-items:center; gap:2px 10px; padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
   .sb-row:hover{ background:var(--pc-soft); } .sb-row.done{ opacity:.55; }
-  .sb-day{ grid-column:1; grid-row:1 / 3; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-weight:700; font-size:14px; } .sb-day small{ font-family:inherit; font-size:10px; color:var(--ink2); margin-left:1px; }
-  .sb-main{ grid-column:2; grid-row:1; font-weight:700; font-size:14px; } .sb-memo{ font-weight:500; font-size:12px; color:var(--ink2); margin-left:4px; } .sb-cat{ font-size:10.5px; font-weight:700; border:1px solid var(--line2); border-radius:999px; padding:0 6px; margin-left:6px; color:var(--ink2); }
+  .sb-day{ grid-column:1; grid-row:1 / 3; font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-weight:700; font-size:14px; } .sb-day small{ font-family:inherit; font-size:12px; color:var(--ink2); margin-left:1px; }
+  .sb-main{ grid-column:2; grid-row:1; font-weight:700; font-size:14px; } .sb-memo{ font-weight:500; font-size:12px; color:var(--ink2); margin-left:4px; } .sb-cat{ font-size:12px; font-weight:700; border:1px solid var(--line2); border-radius:999px; padding:0 6px; margin-left:6px; color:var(--ink2); }
   .sb-sub{ grid-column:2; grid-row:2; display:flex; gap:4px 10px; flex-wrap:wrap; font-size:12px; color:var(--ink2); } .sb-disc{ color:var(--accent-ink); font-weight:600; }
-  .sb-cost{ grid-column:3; grid-row:1 / 3; text-align:right; } .sb-cost b{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:13.5px; display:block; } .sb-cost small{ font-size:11px; color:var(--ink2); }
+  .sb-cost{ grid-column:3; grid-row:1 / 3; text-align:right; } .sb-cost b{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:13.5px; display:block; } .sb-cost small{ font-size:12px; color:var(--ink2); }
   .sb-ck{ grid-column:4; grid-row:1 / 3; width:30px; height:30px; border-radius:50%; border:1.5px solid var(--line2); background:var(--surface); color:var(--ink3); font-size:14px; font-weight:800; } .sb-row.done .sb-ck{ background:var(--good); border-color:var(--good); color:#fff; }
   @media (min-width:641px){
     .sb-head, .sb-row{ grid-template-columns:56px 1.6fr 1fr 1fr 1.2fr 40px; }
-    .sb-head{ display:grid; gap:10px; padding:0 2px 8px; border-bottom:1.5px solid var(--line2); font-size:10.5px; font-weight:700; color:var(--ink2); }
+    .sb-head{ display:grid; gap:10px; padding:0 2px 8px; border-bottom:1.5px solid var(--line2); font-size:12px; font-weight:700; color:var(--ink2); }
     .sb-day{ grid-row:1; } .sb-main{ grid-column:2; grid-row:1; } .sb-sub{ display:contents; }
     .sb-card{ grid-column:3; grid-row:1; } .sb-cost{ grid-column:4; grid-row:1; } .sb-disc{ grid-column:5; grid-row:1; } .sb-ck{ grid-column:6; grid-row:1; }
   }
@@ -629,13 +629,13 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .pp-big{ font-family:'Unbounded','Malgun Gothic','Apple SD Gothic Neo','Noto Sans CJK KR',sans-serif; font-size:22px; font-weight:800; }
   .pp-row{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
   .pp-row:hover{ background:var(--pc-soft); } .pp-info{ min-width:0; flex:1; } .pp-name{ font-weight:700; font-size:14px; }
-  .pp-meta{ font-size:12px; color:var(--ink2); margin-top:2px; } .pp-warn{ font-size:11.5px; color:var(--warn); margin-top:2px; }
-  .pp-tag{ font-size:10.5px; font-weight:700; border:1px solid var(--line2); border-radius:999px; padding:1px 7px; margin-left:6px; color:var(--ink2); }
-  .pp-st{ font-size:11px; font-weight:800; border-radius:999px; padding:3px 9px; white-space:nowrap; }
+  .pp-meta{ font-size:12px; color:var(--ink2); margin-top:2px; } .pp-warn{ font-size:12px; color:var(--warn); margin-top:2px; }
+  .pp-tag{ font-size:12px; font-weight:700; border:1px solid var(--line2); border-radius:999px; padding:1px 7px; margin-left:6px; color:var(--ink2); }
+  .pp-st{ font-size:12px; font-weight:800; border-radius:999px; padding:3px 9px; white-space:nowrap; }
   .pp-st.ok{ background:var(--pc-down-bg); color:var(--pc-down); } .pp-st.soon{ background:var(--pc-flat-bg); color:var(--accent-ink); } .pp-st.over{ background:var(--pc-up-bg); color:var(--pc-up); }
-  .pp-bar{ display:flex; align-items:center; gap:8px; font-size:12.5px; margin:6px 0; } .pp-bar span{ width:52px; color:var(--ink2); } .pp-bar i{ display:block; height:8px; border-radius:4px; background:var(--accent); } .pp-bar em{ font-style:normal; color:var(--ink2); font-size:11.5px; }
+  .pp-bar{ display:flex; align-items:center; gap:8px; font-size:12.5px; margin:6px 0; } .pp-bar span{ width:52px; color:var(--ink2); } .pp-bar i{ display:block; height:8px; border-radius:4px; background:var(--accent); } .pp-bar em{ font-style:normal; color:var(--ink2); font-size:12px; }
   #mt-f-people label{ display:flex; align-items:center; gap:8px; padding:6px 0; font-size:14px; color:var(--ink); } #mt-f-people input, #pp-f-prefs input{ width:auto; min-height:0; }
-  #mt-f-people .gname{ font-size:11px; font-weight:700; color:var(--ink2); margin-top:8px; }
+  #mt-f-people .gname{ font-size:12px; font-weight:700; color:var(--ink2); margin-top:8px; }
   #gf-dlg, #gr-dlg, #sb-dlg, #pp-dlg, #mt-dlg, #mt-bd-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
   #gf-dlg::backdrop, #gr-dlg::backdrop, #sb-dlg::backdrop, #pp-dlg::backdrop, #mt-dlg::backdrop, #mt-bd-dlg::backdrop{ background:rgba(0,0,0,.45); }
   #gf-dlg h3, #gr-dlg h3, #sb-dlg h3, #pp-dlg h3, #mt-dlg h3, #mt-bd-dlg h3{ margin:0 0 4px; font-size:16px; }
@@ -644,20 +644,20 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   /* ---- 2026-10-18: 구매처·사이즈, 제품 풀다운, 가격추이 요약, 쇼핑 적립금 ---- */
   .pc-filterrow{ margin-bottom:6px; }
   .pc-filterrow .pc-f{ margin-top:0; }
-  .pc-sub2{ display:inline-block; max-width:88px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:10.5px; font-weight:500; vertical-align:top; }
+  .pc-sub2{ display:inline-block; max-width:88px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:500; vertical-align:top; }
   .pc-ov{ display:flex; flex-direction:column; }
   .pc-ovrow{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; font:inherit; background:none; border:0; border-bottom:1px solid var(--line); padding:10px 2px; color:var(--ink); cursor:pointer; min-height:48px; }
   .pc-ovrow:last-child{ border-bottom:0; }
   .pc-ovrow:hover{ background:var(--pc-soft); }
   .pc-ovrow:focus-visible{ outline:3px solid var(--pc); outline-offset:-2px; }
   .pc-ovname{ flex:1; min-width:0; font-size:13.5px; font-weight:700; line-height:1.3; }
-  .pc-ovname small{ display:block; font-weight:500; font-size:11px; color:var(--ink3); margin-top:2px; }
+  .pc-ovname small{ display:block; font-weight:500; font-size:12px; color:var(--ink3); margin-top:2px; }
   .pc-spark{ width:64px; height:20px; flex:none; }
   .pc-ovnum{ flex:none; text-align:right; min-width:70px; }
   .pc-ovnum b{ display:block; font-size:14px; }
-  .pc-ovnum small{ font-size:11px; font-weight:700; }
+  .pc-ovnum small{ font-size:12px; font-weight:700; }
   .pc-lastbox{ margin-top:10px; border:1px solid var(--line); border-radius:8px; padding:6px 10px; background:var(--bg); }
-  .pc-lasthead{ font-size:11px; font-weight:800; color:var(--ink2); padding:4px 0; }
+  .pc-lasthead{ font-size:12px; font-weight:800; color:var(--ink2); padding:4px 0; }
   .pc-lastrow{ display:flex; justify-content:space-between; gap:8px; font-size:12.5px; padding:5px 0; border-top:1px solid var(--line); }
   .pc-lastrow b{ font-variant-numeric:tabular-nums; }
   .sh-autobox{ margin-top:10px; padding:9px 11px; border:1px dashed var(--line2); border-radius:8px; background:var(--bg); font-size:12.5px; color:var(--ink2); }
@@ -678,7 +678,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .td-cfgrow{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:3px 0; } .td-cfgrow label{ display:flex; gap:6px; align-items:center; } .td-cfgrow span{ display:flex; gap:4px; } .td-cfgrow .pc-btn{ padding:2px 9px; min-width:34px; } .td-pre{ margin-top:10px; padding-top:8px; border-top:1px dashed var(--line2); } .td-pbtn{ border:0; background:none; font:inherit; color:inherit; padding:0 4px 0 0; cursor:pointer; }
   .rp-pt{ border-top:1px solid var(--line); padding:8px 0; }
   .td-rvnav{ display:flex; gap:6px; flex-wrap:wrap; margin:2px 0 6px; }
-  .td-rv-h, .td-rv-r{ display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:6px; align-items:baseline; padding:7px 0; font-size:13px; } .td-rv-r{ border-top:1px solid var(--line); } .td-rv-r span small{ display:block; font-size:11px; color:var(--ink2); } .td-rv-r b{ text-align:right; } .td-rv-h b{ text-align:right; font-size:11px; color:var(--ink2); } .td-rv-r b.mute{ color:var(--ink2); font-weight:500; }
+  .td-rv-h, .td-rv-r{ display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:6px; align-items:baseline; padding:7px 0; font-size:13px; } .td-rv-r{ border-top:1px solid var(--line); } .td-rv-r span small{ display:block; font-size:12px; color:var(--ink2); } .td-rv-r b{ text-align:right; } .td-rv-h b{ text-align:right; font-size:12px; color:var(--ink2); } .td-rv-r b.mute{ color:var(--ink2); font-weight:500; }
   .td-more{ margin-top:8px; } .td-more summary{ font-size:12px; color:var(--muted,#888); cursor:pointer; }
   .gsync.pending{ cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
   /* ---- 2026-10-18-g: 하단 탭 + 더보기, 빠른 가이드, 도수치료, 연봉 ---- */
@@ -716,15 +716,15 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .td-bar{ height:9px; background:var(--line); border-radius:6px; overflow:hidden; margin:8px 0 4px; } .td-bar i{ display:block; height:100%; background:var(--accent); } .td-bar.warn i{ background:var(--warn); }
   .td-ag-l{ display:flex; gap:8px; align-items:flex-start; font-size:13.5px; padding:6px 0; } .td-ag-sub{ margin:0 0 6px 22px; } .td-ag-f{ display:flex; flex-direction:column; gap:3px; margin:8px 0; font-size:12.5px; color:var(--ink2); } .td-ag-f input{ width:100%; padding:9px 10px; border:1px solid var(--line2); border-radius:8px; background:var(--surface); color:var(--ink); font-size:14px; }
   .td-sec{ font-size:12px; font-weight:800; color:var(--ink2); margin:10px 2px 0; letter-spacing:-.01em; } .td-sec:first-of-type{ margin-top:2px; }
-  .td-ib{ display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:0; margin-top:10px; font-size:13px; align-items:stretch; } .td-ib>div{ padding:7px 6px 7px 0; border-bottom:1px solid var(--line); display:flex; align-items:center; min-height:48px; box-sizing:border-box; } .td-ib>div+div{ padding-left:8px; } .td-ib .h{ min-height:0; font-size:11.5px; color:var(--ink2); font-weight:700; } .td-ib .l{ display:block; align-self:stretch; } .td-ib .l b{ display:block; font-size:15px; line-height:1.25; } .td-ib .l small{ display:block; font-size:11.5px; color:var(--ink2); line-height:1.25; } .td-ib .g{ color:var(--good); font-weight:800; } .td-ib .w{ color:var(--warn); font-weight:800; } .td-ib .z{ color:var(--ink2); }
+  .td-ib{ display:grid; grid-template-columns:1.1fr 1fr 1fr; gap:0; margin-top:10px; font-size:13px; align-items:stretch; } .td-ib>div{ padding:7px 6px 7px 0; border-bottom:1px solid var(--line); display:flex; align-items:center; min-height:48px; box-sizing:border-box; } .td-ib>div+div{ padding-left:8px; } .td-ib .h{ min-height:0; font-size:12px; color:var(--ink2); font-weight:700; } .td-ib .l{ display:block; align-self:stretch; } .td-ib .l b{ display:block; font-size:15px; line-height:1.25; } .td-ib .l small{ display:block; font-size:12px; color:var(--ink2); line-height:1.25; } .td-ib .g{ color:var(--good); font-weight:800; } .td-ib .w{ color:var(--warn); font-weight:800; } .td-ib .z{ color:var(--ink2); }
   .td-big{ font-size:20px; font-weight:900; } .td-note{ font-size:12.5px; color:var(--ink2); margin:4px 0; line-height:1.5; } .td-note b{ color:var(--ink); } .td-warn{ color:var(--warn); font-weight:700; }
 
   /* 2026-10-19-c */
   #gs-dlg, #hist-dlg, #bulk-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:90vh; overflow-y:auto; background:var(--surface); color:var(--ink); }
   #gs-q{ width:100%; font:inherit; font-size:16px; padding:10px 12px; border:1px solid var(--line2); border-radius:8px; background:var(--bg); color:var(--ink); margin:8px 0; box-sizing:border-box; }
-  .gs-src{ font-size:10.5px; font-weight:800; color:var(--accent-ink); border:1px solid var(--accent); border-radius:999px; padding:1px 7px; white-space:nowrap; }
+  .gs-src{ font-size:12px; font-weight:800; color:var(--accent-ink); border:1px solid var(--accent); border-radius:999px; padding:1px 7px; white-space:nowrap; }
   .hist-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 0; border-bottom:1px solid var(--line); } .hist-row i{ display:block; font-style:normal; font-size:12px; color:var(--ink2); }
-  .bulk-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid var(--line); font-size:14px; } .bulk-row small{ display:block; font-size:11.5px; color:var(--ink2); } .bulk-row input[type=date]{ font:inherit; font-size:14px; padding:6px; border:1px solid var(--line2); border-radius:8px; background:var(--bg); color:var(--ink); }
+  .bulk-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid var(--line); font-size:14px; } .bulk-row small{ display:block; font-size:12px; color:var(--ink2); } .bulk-row input[type=date]{ font:inherit; font-size:14px; padding:6px; border:1px solid var(--line2); border-radius:8px; background:var(--bg); color:var(--ink); }
   #undo-bar{ position:fixed; left:50%; bottom:calc(76px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); z-index:300; background:var(--ink); color:var(--bg); padding:10px 14px; border-radius:10px; display:flex; gap:12px; align-items:center; font-size:13px; font-weight:600; box-shadow:var(--shadow); max-width:92vw; }
   #undo-bar button{ border:0; background:none; color:var(--accent); font:inherit; font-weight:800; cursor:pointer; padding:4px 6px; } #undo-bar[hidden]{ display:none; }
   svg.ch{ width:100%; height:auto; display:block; margin:6px 0 2px; } svg.ch rect{ fill:var(--line2); } svg.ch rect.hi{ fill:var(--accent); } svg.ch line.mk{ stroke:var(--ink); stroke-width:1.5; } svg.ch text{ fill:var(--ink2); font-size:9px; text-anchor:middle; }
@@ -738,13 +738,13 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .mp-st.lock{ border-color:var(--warn); color:var(--warn); font-weight:700; } .mp-st.ok{ border-color:var(--good); }
   .mp-bar{ height:8px; background:var(--line); border-radius:6px; overflow:hidden; margin:6px 0 2px; } .mp-bar i{ display:block; height:100%; background:var(--accent); }
   .mp-row{ display:flex; justify-content:space-between; gap:8px; padding:10px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
-  .mp-row:hover{ background:var(--pc-soft); } .mp-row .l{ min-width:0; } .mp-row .l b{ font-size:14px; } .mp-row .l small{ display:block; font-size:11.5px; color:var(--ink2); margin-top:2px; }
+  .mp-row:hover{ background:var(--pc-soft); } .mp-row .l{ min-width:0; } .mp-row .l b{ font-size:14px; } .mp-row .l small{ display:block; font-size:12px; color:var(--ink2); margin-top:2px; }
   .mp-row .r{ text-align:right; font-size:12.5px; flex:none; } .mp-row .r b{ display:block; font-size:14px; }
-  .mp-chip{ display:inline-block; font-size:10.5px; font-weight:800; padding:1px 7px; border-radius:999px; border:1px solid var(--line2); color:var(--ink2); margin-left:4px; }
+  .mp-chip{ display:inline-block; font-size:12px; font-weight:800; padding:1px 7px; border-radius:999px; border:1px solid var(--line2); color:var(--ink2); margin-left:4px; }
   .mp-chip.warn{ border-color:var(--warn); color:var(--warn); }
   .mp-cyc{ font-size:12.5px; padding:8px 2px; border-bottom:1px solid var(--line); line-height:1.5; }
   .mp-warn{ margin-top:8px; font-size:12.5px; color:var(--warn); font-weight:700; }
-  .py-scroll{ overflow-x:auto; margin-top:12px; } .py-tbl{ width:100%; border-collapse:collapse; font-size:12.5px; } .py-tbl th, .py-tbl td{ padding:9px 6px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; } .py-tbl th:first-child, .py-tbl td:first-child{ text-align:left; position:sticky; left:0; background:var(--surface); } .py-tbl th{ font-size:11px; color:var(--ink2); font-weight:700; } .py-tbl tbody tr{ cursor:pointer; } .py-tbl tbody tr:hover{ background:var(--pc-soft); } .py-tbl td.tot{ font-weight:800; }
+  .py-scroll{ overflow-x:auto; margin-top:12px; } .py-tbl{ width:100%; border-collapse:collapse; font-size:12.5px; } .py-tbl th, .py-tbl td{ padding:9px 6px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; } .py-tbl th:first-child, .py-tbl td:first-child{ text-align:left; position:sticky; left:0; background:var(--surface); } .py-tbl th{ font-size:12px; color:var(--ink2); font-weight:700; } .py-tbl tbody tr{ cursor:pointer; } .py-tbl tbody tr:hover{ background:var(--pc-soft); } .py-tbl td.tot{ font-weight:800; }
   .py-more{ margin-top:14px; } .py-more summary{ cursor:pointer; font-size:13px; font-weight:700; color:var(--ink2); padding:8px 0; }
   .py-row{ padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; } .py-row:hover{ background:var(--pc-soft); }
   .py-top{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; } .py-top b{ font-size:15px; } .py-top span{ font-size:12.5px; color:var(--ink2); } .py-top .py-sal{ margin-left:auto; font-size:15px; font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; }
@@ -760,14 +760,14 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   #gd-f-pick{ border:1px solid var(--line2); border-radius:8px; max-height:260px; overflow-y:auto; } #gd-f-pick button{ display:flex; gap:8px; align-items:flex-start; width:100%; text-align:left; font:inherit; font-size:13.5px; line-height:1.5; color:var(--ink); background:none; border:0; border-bottom:1px solid var(--line); padding:8px 10px; cursor:pointer; } #gd-f-pick button:last-child{ border-bottom:0; } #gd-f-pick button i{ font-style:normal; flex:none; font-size:16px; opacity:.45; } #gd-f-pick button.on{ background:var(--surface2,rgba(0,0,0,.05)); font-weight:800; box-shadow:inset 4px 0 0 var(--accent); } #gd-f-pick button.on i{ opacity:1; color:var(--accent); }
   #sh-sz-wrap{ margin-top:12px; border:1px dashed var(--accent); border-radius:10px; padding:10px 12px; } #sh-sz-wrap[hidden]{ display:none; } #sh-sz-wrap>summary{ cursor:pointer; font-weight:800; font-size:14px; color:var(--accent-ink); } #sh-sz-wrap>summary small{ font-weight:500; color:var(--ink2); }
   .sh-sz-fields{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; } .sh-sz-fields .pc-f{ margin:0; font-size:12px; }
-  .sh-szb{ font:inherit; font-size:11.5px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); background:var(--soft); border-radius:99px; padding:1px 9px; cursor:pointer; }
+  .sh-szb{ font:inherit; font-size:12px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); background:var(--soft); border-radius:99px; padding:1px 9px; cursor:pointer; }
   #szc-dlg{ border:1px solid var(--ink); border-radius:12px; padding:18px; width:min(94vw,480px); max-height:92vh; overflow-y:auto; background:var(--surface); color:var(--ink); } #szc-dlg::backdrop{ background:rgba(0,0,0,.45); } #szc-dlg h3{ margin:0 0 2px; font-size:16px; }
   .szc-tbl{ width:100%; border-collapse:collapse; font-size:13.5px; margin:10px 0 6px; } .szc-tbl th, .szc-tbl td{ padding:7px 4px; text-align:center; border-bottom:1px solid var(--line); } .szc-tbl th:first-child, .szc-tbl td:first-child{ text-align:left; } .szc-up{ color:var(--accent-ink); font-weight:800; } .szc-dn{ color:var(--ink2); font-weight:800; } .szc-sum{ font-size:13.5px; font-weight:700; margin:8px 0; line-height:1.6; }
   #szc-dlg select{ font:inherit; font-size:14px; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:8px 10px; width:100%; }
-  .subbar{ display:flex; gap:6px; align-items:stretch; margin:0 0 8px; } .subbar button{ flex:1; font:inherit; font-size:12.5px; font-weight:700; padding:8px 4px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); border-radius:8px; cursor:pointer; line-height:1.35; } .subbar button.on{ background:var(--ink); color:var(--surface); border-color:var(--ink); } .subbar button small{ display:block; font-weight:500; font-size:11px; opacity:.8; }
+  .subbar{ display:flex; gap:6px; align-items:stretch; margin:0 0 8px; } .subbar button{ flex:1; font:inherit; font-size:12.5px; font-weight:700; padding:8px 4px; border:1px solid var(--line2); background:var(--surface); color:var(--ink); border-radius:8px; cursor:pointer; line-height:1.35; } .subbar button.on{ background:var(--ink); color:var(--surface); border-color:var(--ink); } .subbar button small{ display:block; font-weight:500; font-size:12px; opacity:.8; }
   .subbar .sb-all{ flex:none; padding:8px 10px; border-color:var(--accent); color:var(--accent-ink); }
-  .sbadge{ display:inline-block; margin-left:6px; font-size:10.5px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); border-radius:99px; padding:0 7px; cursor:pointer; vertical-align:middle; white-space:nowrap; } .sbadge.on{ border-color:var(--line2); color:var(--ink2); }
-  .sz-nm{ display:block; font-size:12px; font-weight:500; color:var(--ink2); white-space:normal; max-width:200px; line-height:1.35; margin-top:2px; } .sz-nm.none{ color:var(--accent-ink); } .sz-lk{ font-size:10.5px; border:1px solid var(--line2); border-radius:999px; padding:0 6px; margin-left:4px; color:var(--ink2); }
+  .sbadge{ display:inline-block; margin-left:6px; font-size:12px; font-weight:800; border:1px solid var(--accent); color:var(--accent-ink); border-radius:99px; padding:0 7px; cursor:pointer; vertical-align:middle; white-space:nowrap; } .sbadge.on{ border-color:var(--line2); color:var(--ink2); }
+  .sz-nm{ display:block; font-size:12px; font-weight:500; color:var(--ink2); white-space:normal; max-width:200px; line-height:1.35; margin-top:2px; } .sz-nm.none{ color:var(--accent-ink); } .sz-lk{ font-size:12px; border:1px solid var(--line2); border-radius:999px; padding:0 6px; margin-left:4px; color:var(--ink2); }
   #sz-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #sz-dlg .mp-chk input{ width:auto; }
   .sz-q{ width:100%; font:inherit; font-size:14px; padding:9px 11px; border:1px solid var(--line2); border-radius:8px; background:var(--surface); color:var(--ink); margin:0 0 8px; } .sz-nnbtn{ font:inherit; font-size:12px; font-weight:700; border:1px solid var(--accent); color:var(--accent-ink); background:var(--soft); border-radius:999px; padding:4px 10px; cursor:pointer; margin:0 0 8px; } .sz-nnbtn.on{ background:var(--accent); color:var(--on-accent); }
   .sh-fq{ margin:0 0 10px; } .sh-fq input{ width:100%; font:inherit; font-size:14px; padding:9px 11px; border:1px solid var(--line2); border-radius:8px; background:var(--surface); color:var(--ink); } .sh-fchips{ display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; } .sh-fchips button{ font:inherit; font-size:12px; font-weight:700; border:1px solid var(--line2); background:var(--surface); color:var(--ink); border-radius:999px; padding:4px 10px; cursor:pointer; } .sh-fchips button.on{ background:var(--ink); color:var(--surface); border-color:var(--ink); }
@@ -794,8 +794,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .rm-row{ display:flex; gap:8px; align-items:flex-start; padding:11px 2px; border-bottom:1px solid var(--line); }
   .rm-row .rm-main{ flex:1; min-width:0; cursor:pointer; } .rm-row .rm-t{ font-size:14px; font-weight:700; line-height:1.4; } .rm-row .rm-d{ font-size:12px; color:var(--ink2); margin-top:2px; line-height:1.45; white-space:pre-wrap; }
   .rm-row.done .rm-t{ text-decoration:line-through; color:var(--ink2); } .rm-row .rm-dd{ font-weight:800; color:var(--accent-ink); }
-  .rm-sec{ font-size:11.5px; font-weight:800; color:var(--ink2); margin:12px 0 2px; letter-spacing:.04em; }
-  #gRemind .rmn{ display:inline-block; min-width:16px; margin-left:4px; padding:0 5px; border-radius:9px; background:var(--accent); color:#fff; font-size:10.5px; line-height:16px; text-align:center; }
+  .rm-sec{ font-size:12px; font-weight:800; color:var(--ink2); margin:12px 0 2px; letter-spacing:.04em; }
+  #gRemind .rmn{ display:inline-block; min-width:16px; margin-left:4px; padding:0 5px; border-radius:9px; background:var(--accent); color:#fff; font-size:12px; line-height:16px; text-align:center; }
   .sh-memo{ font-size:12px; color:var(--ink2); margin-top:5px; white-space:pre-wrap; line-height:1.45; }
   .sh-trade{ display:inline-block; margin-top:6px; padding:4px 9px; border:1px solid var(--accent); border-radius:8px; font-size:12px; font-weight:700; color:var(--accent-ink); line-height:1.4; }
   .sh-row.hl, .sb-row.hl{ animation:hlflash 2.4s ease-out 1; } @keyframes hlflash{ 0%,60%{ background:var(--pc-soft); box-shadow:0 0 0 2px var(--accent) inset; } 100%{ background:transparent; box-shadow:none; } }
@@ -810,7 +810,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   textarea.ml{ font:inherit; font-size:15px; line-height:1.5; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:96px; max-height:55vh; resize:vertical; box-sizing:border-box; display:block; }
   .mx{ white-space:pre-wrap; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; cursor:pointer; overflow-wrap:anywhere; }
   .mx.open{ -webkit-line-clamp:unset; display:block; }
-  .md-memo{ font-size:11.5px; color:var(--ink2); margin-top:6px; line-height:1.45; }
+  .md-memo{ font-size:12px; color:var(--ink2); margin-top:6px; line-height:1.45; }
   textarea.ml:focus-visible{ outline:3px solid var(--pc); outline-offset:2px; }
   #md-dlg .pc-f textarea{ font:inherit; font-size:15px; line-height:1.55; color:var(--ink); background:var(--surface); border:1px solid var(--line2); border-radius:8px; padding:10px 11px; width:100%; min-height:220px; max-height:65vh; resize:vertical; box-sizing:border-box; }
   #md-dlg .mp-chk, #md-cl-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #md-dlg .mp-chk input, #md-cl-dlg .mp-chk input{ width:auto; min-height:0; }
@@ -820,11 +820,11 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .md-mo{ margin-top:14px; }
   .md-row{ display:flex; justify-content:space-between; gap:8px; padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; align-items:flex-start; }
   .md-row:hover{ background:var(--pc-soft); } .md-row.done{ opacity:.62; }
-  .md-row .l{ min-width:0; flex:1; } .md-row .l b{ font-size:14px; } .md-row .l small{ display:block; font-size:11.5px; color:var(--ink2); margin-top:2px; }
-  .md-row .r{ text-align:right; font-size:11.5px; color:var(--ink2); flex:none; } .md-row .r b{ display:block; font-size:14px; color:var(--ink); }
+  .md-row .l{ min-width:0; flex:1; } .md-row .l b{ font-size:14px; } .md-row .l small{ display:block; font-size:12px; color:var(--ink2); margin-top:2px; }
+  .md-row .r{ text-align:right; font-size:12px; color:var(--ink2); flex:none; } .md-row .r b{ display:block; font-size:14px; color:var(--ink); }
   .md-ck{ flex:none; padding:2px 6px 0 0; } .md-ck input{ width:20px; height:20px; }
   .md-chips{ display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
-  .md-chip{ font:inherit; display:inline-block; font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px; border:1px solid var(--line2); color:var(--ink2); background:transparent; }
+  .md-chip{ font:inherit; display:inline-block; font-size:12px; font-weight:800; padding:2px 8px; border-radius:999px; border:1px solid var(--line2); color:var(--ink2); background:transparent; }
   button.md-chip{ cursor:pointer; min-height:26px; }
   .md-chip.ok{ border-color:var(--good); color:var(--good); } .md-chip.warn{ border-color:var(--warn); color:var(--warn); } .md-chip.wait{ border-color:var(--accent); color:var(--accent-ink); } .md-chip.mute{ color:var(--ink3); }
   .md-chk{ font-size:12px; color:var(--warn); margin-top:6px; line-height:1.5; }
@@ -845,33 +845,44 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .md-net{ margin:6px 0 12px; padding:12px; border:1px solid var(--ink); border-radius:12px; background:var(--pc-soft); }
   .md-rpbar{ display:flex; align-items:center; gap:8px; margin:5px 0; font-size:12.5px; } .md-rpbar .n{ flex:0 0 96px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:700; }
   .md-rpbar .b{ flex:1; height:10px; background:var(--line); border-radius:6px; overflow:hidden; } .md-rpbar .b i{ display:block; height:100%; background:var(--accent); } .md-rpbar .b i.neg{ background:var(--good); } .md-rpbar .v{ flex:0 0 auto; text-align:right; font-variant-numeric:tabular-nums; }
-  .md-rpg{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0; } .md-rpg > div{ border:1px solid var(--line); border-radius:10px; padding:8px 10px; } .md-rpg b{ display:block; font-size:15px; } .md-rpg small{ color:var(--ink2); font-size:11.5px; }
+  .md-rpg{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:8px 0; } .md-rpg > div{ border:1px solid var(--line); border-radius:10px; padding:8px 10px; } .md-rpg b{ display:block; font-size:15px; } .md-rpg small{ color:var(--ink2); font-size:12px; }
   .md-rph{ font-weight:800; font-size:13.5px; margin:14px 0 4px; } .rm-grp > summary{ cursor:pointer; font-weight:800; padding:8px 2px; }
   .md-net-h{ font-weight:800; font-size:14px; margin-bottom:8px; } .md-net-h small{ font-weight:600; color:var(--ink2); margin-left:4px; }
-  .md-net-eq{ display:flex; align-items:flex-end; flex-wrap:wrap; gap:4px 8px; font-size:11.5px; color:var(--ink2); }
+  .md-net-eq{ display:flex; align-items:flex-end; flex-wrap:wrap; gap:4px 8px; font-size:12px; color:var(--ink2); }
   .md-net-eq span{ display:flex; flex-direction:column; } .md-net-eq b{ font-size:14px; color:var(--ink); } .md-net-eq i{ font-style:normal; padding-bottom:2px; }
   .md-net-eq .big b{ font-size:18px; color:var(--pc); }
-  .md-net-sub{ margin-top:8px; font-size:11.5px; color:var(--ink2); line-height:1.5; }
+  .md-net-sub{ margin-top:8px; font-size:12px; color:var(--ink2); line-height:1.5; }
   .md-oop{ display:block; margin-top:2px; font-weight:800; color:var(--ink); } .md-oop.est{ font-weight:600; color:var(--ink2); }
   .md-mo small{ font-weight:600; margin-left:6px; opacity:.75; }
 .md-row.bd{ border-left:3px solid var(--pc); padding-left:8px; }
-  .md-link{ font:inherit; font-size:11.5px; font-weight:800; color:var(--pc); background:none; border:0; padding:2px 0 2px 6px; cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
+  .md-link{ font:inherit; font-size:12px; font-weight:800; color:var(--pc); background:none; border:0; padding:2px 0 2px 6px; cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
   #md-bd-list .md-ck2{ align-items:flex-start; border-bottom:1px solid var(--line); padding:8px 0; } #md-bd-list .md-ck2 input{ margin-top:3px; } #md-bd-list small{ display:block; color:var(--ink2); }
   .md-bd-mem{ display:flex; flex-wrap:wrap; gap:4px; margin:4px 0; }
   .md-sw{ margin-top:6px; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
   .md-sl{ display:grid; grid-template-columns:30px 1fr; column-gap:6px; width:100%; font:inherit; font-size:12px; text-align:left; background:transparent; color:var(--ink); border:0; border-top:1px solid var(--line); padding:6px 8px; cursor:pointer; }
   .md-sl:first-child{ border-top:0; }
   .md-sl .k{ font-weight:800; grid-row:1 / 3; padding-top:1px; }
-  .md-sl .m{ color:var(--ink2); font-size:11.5px; } .md-sl .m b{ color:var(--ink); font-weight:700; } .md-sl .m small{ display:inline; font-size:10.5px; color:var(--ink3); margin:0; }
+  .md-sl .m{ color:var(--ink2); font-size:12px; } .md-sl .m b{ color:var(--ink); font-weight:700; } .md-sl .m small{ display:inline; font-size:12px; color:var(--ink3); margin:0; }
   .md-sl .a{ margin-top:1px; } .md-sl .a b{ font-weight:800; font-size:13px; }
   .md-sl.ok .a{ color:var(--good); } .md-sl.wait .a{ color:var(--accent-ink); } .md-sl.warn .a{ color:var(--warn); }
   .md-sl.mute{ cursor:default; color:var(--ink3); } .md-sl.mute .m{ grid-row:1 / 3; align-self:center; color:var(--ink3); }
-  .md-sl .df{ font-size:10.5px; color:var(--ink3); margin-left:4px; } .md-sl .df.bad{ color:var(--warn); font-weight:800; }
-  .md-ins{ font-size:11.5px; color:var(--ink2); margin-top:6px; line-height:1.5; } .md-ins b{ color:var(--ink); }
+  .md-sl .df{ font-size:12px; color:var(--ink3); margin-left:4px; } .md-sl .df.bad{ color:var(--warn); font-weight:800; }
+  .md-ins{ font-size:12px; color:var(--ink2); margin-top:6px; line-height:1.5; } .md-ins b{ color:var(--ink); }
     #medView, #md-dlg, #md-cl-dlg, #md-sms-dlg, #md-bd-dlg{ --pc:var(--accent); --pc-soft:var(--soft); --pc-on:var(--on-accent); --pc-up:#D83A41; }
   @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) #medView, :root:not([data-theme="light"]) #md-dlg, :root:not([data-theme="light"]) #md-cl-dlg, :root:not([data-theme="light"]) #md-sms-dlg, :root:not([data-theme="light"]) #md-bd-dlg{ --pc-soft:var(--soft); --pc-up:#FF7A7F; } }
   [data-theme="dark"] #medView, [data-theme="dark"] #md-dlg, [data-theme="dark"] #md-cl-dlg, [data-theme="dark"] #md-sms-dlg, [data-theme="dark"] #md-bd-dlg{ --pc-soft:var(--soft); --pc-up:#FF7A7F; }
   #mp-dlg .mp-chk, #gd-dlg .mp-chk{ display:flex; align-items:center; gap:8px; margin-top:10px; font-size:13px; } #mp-dlg .mp-chk input, #gd-dlg .mp-chk input{ width:auto; min-height:0; }
+/* 2026-11-17-a: 폰에서 누르기 쉽게 — 닫기·넘기기·작은 버튼 최소 40px */
+@media (max-width:640px), (pointer:coarse){
+  .x{ min-width:40px; min-height:40px; }
+  .closebtn{ min-width:40px; min-height:40px; }
+  .navbtn{ width:40px; height:40px; }
+  .miniicon{ min-width:40px; min-height:40px; }
+  .gbtn, .md-f, .sh-donebtn{ min-height:40px; }
+  .pc-btn.small{ min-height:40px; min-width:40px; }
+  .modebtn{ min-height:40px; }
+  .sb-ck{ width:40px; height:40px; }
+}
 </style>
 </head>
 <body>
@@ -1230,7 +1241,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
    <div class="pc-row2" style="margin-top:14px"><label class="pc-f">실비 공제액(원)<input id="md-cfg-ded" type="number" inputmode="numeric" min="0"></label><label class="pc-f">회사 세금(%)<input id="md-cfg-tax" type="number" inputmode="decimal" min="0" step="0.1"></label></div>
    <div class="pc-row2"><label class="pc-f">배우자 공제(원)<input id="md-cfg-sp" type="number" inputmode="numeric" min="0"></label><label class="pc-f">실비 입금 확인 알림(신청 후 N일)<input id="md-cfg-days" type="number" inputmode="numeric" min="0"></label></div>
    <label class="mp-chk" style="margin-top:10px"><input type="checkbox" id="md-cfg-cal"> 📅 회사 의료비 입금 예정일을 구글캘린더에 넣고 당일 아침 9시에 알림 받기</label>
-   <p class="pc-hint" style="margin:2px 0 0">☁ 백업할 때 Apps Script(v23)가 캘린더에 일정을 만들어요. 앱을 열지 않아도 폰 캘린더 알림이 울려요. 입금 확인을 하면 일정이 지워져요. (앱 안 알림은 이 설정과 관계없이 입금 당일에 떠요. 앱을 열어야 보이므로 폰 알림은 이 설정을 켜 두세요.)</p>
+   <p class="pc-hint" style="margin:2px 0 0">☁ 백업할 때 서버가 캘린더에 일정을 만들어요. 앱을 열지 않아도 폰 캘린더 알림이 울려요. 입금 확인을 하면 일정이 지워져요. (앱 안 알림은 이 설정과 관계없이 입금 당일에 떠요. 앱을 열어야 보이므로 폰 알림은 이 설정을 켜 두세요.)</p>
    <p class="td-note">이 설정은 시트 백업에 함께 저장돼요.</p>
   </details>
   <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-md="backup">☁ 지금 백업</button></div>
@@ -1282,7 +1293,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
 </dialog>
 <dialog id="srv-dlg">
   <h3>🩺 서버 연결 점검</h3>
-  <p class="td-note">시트의 Apps Script에 읽기 전용으로 물어봐요. 데이터는 바뀌지 않아요.</p>
+  <p class="td-note">서버에 읽기 전용으로 물어봐요. 데이터는 바뀌지 않아요.</p>
   <div id="srv-list"></div>
   <div style="margin-top:12px;text-align:right"><button type="button" class="pc-btn" id="srv-close">닫기</button></div>
 </dialog>
@@ -1586,7 +1597,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   </div>
   <p class="pc-hint">분 단위로 입력해요(1시간 = 60). 귀가 시간은 비워 둬도 돼요.</p>
   <label class="pc-f">간단 후기<input id="gf-f-review" type="text"></label>
-  <div class="grp" style="margin-top:14px;font-size:11.5px;font-weight:700;color:var(--ink2)">요금 기록</div>
+  <div class="grp" style="margin-top:14px;font-size:12px;font-weight:700;color:var(--ink2)">요금 기록</div>
   <div id="gf-d-rounds"></div>
   <button class="pc-btn wide" data-gf="d-add-round" style="margin-top:8px">+ 요금 기록 추가</button>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-gf="d-cancel">취소</button><button class="pc-btn primary" data-gf="d-save">저장</button></div>
@@ -1624,7 +1635,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   </div>
   <label class="pc-f">특약 · 조건<input id="ci-sp" type="text" placeholder="예: 마일리지 특약, 자기부담금 20만"></label>
   <label class="pc-f">할인<input id="ci-dc" type="text" placeholder="예: 블랙박스 -2%, 온라인 -5%"></label>
-  <div class="grp" style="margin-top:12px;font-size:11.5px;font-weight:700;color:var(--ink2)">담보별 보험료 (선택 · 비교용)</div>
+  <div class="grp" style="margin-top:12px;font-size:12px;font-weight:700;color:var(--ink2)">담보별 보험료 (선택 · 비교용)</div>
   <div class="ci-base" id="ci-base"></div>
   <div id="ci-cov"></div><datalist id="ci-cov-list"></datalist>
   <div class="pc-row2"><button type="button" class="pc-btn small" data-car="cov-add">+ 담보 추가</button><button type="button" class="pc-btn small" data-car="cov-tot">합계를 보험료로</button></div>
@@ -1672,7 +1683,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
 <dialog id="cmk-dlg">
   <h3>정비 교체 주기</h3>
   <p class="pc-hint" style="margin:0 0 8px">항목마다 “몇 개월마다 / 몇 km마다” 바꾸는지 정해요. 0이거나 비워 두면 그 기준은 계산하지 않아요. 기본값은 일반적인 권장 주기라서 차량 설명서에 맞게 고쳐 주세요.</p>
-  <div class="pp-meta" style="display:grid;grid-template-columns:1.4fr 1fr 1fr 34px;gap:6px;font-size:11px"><span>항목</span><span>개월</span><span>km</span><span></span></div>
+  <div class="pp-meta" style="display:grid;grid-template-columns:1.4fr 1fr 1fr 34px;gap:6px;font-size:12px"><span>항목</span><span>개월</span><span>km</span><span></span></div>
   <div id="cmk-rows"></div>
   <button type="button" class="pc-btn small" data-car="mk-add" style="margin-top:6px">+ 항목 추가</button>
   <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-car="mk-cancel">취소</button><button class="pc-btn primary" data-car="mk-save">저장</button></div>
@@ -1692,10 +1703,10 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <label class="pc-f">내용<input id="sb-f-name" type="text"></label>
   <label class="pc-f">메모(선택)<textarea id="sb-f-memo" class="ml" rows="3" placeholder="예: 건강보험"></textarea></label>
   <label class="pc-f">카드 (회의비 카드 구분과 같은 목록)<select id="sb-f-card" data-cb="1"></select><input id="sb-f-card-new" type="text" hidden placeholder="새 카드 이름 (회의비에도 함께 추가돼요)"></label>
-  <div class="grp" style="margin-top:12px;font-size:11.5px;font-weight:700;color:var(--ink2)">⏰ 끝나는 날·갱신일 (선택)</div>
+  <div class="grp" style="margin-top:12px;font-size:12px;font-weight:700;color:var(--ink2)">⏰ 끝나는 날·갱신일 (선택)</div>
   <div class="pc-row2"><label class="pc-f">종류<select id="sb-f-endkind"></select></label><label class="pc-f">날짜<input id="sb-f-enddate" type="date"></label></div>
   <p class="pc-hint" style="margin:0 0 6px">약정 만료·무료체험 종료·갱신일을 넣으면 14일 전부터 알려 드려요.</p>
-  <div class="grp" style="margin-top:12px;font-size:11.5px;font-weight:700;color:var(--ink2)">💳 카드를 바꿔야 하나요?</div>
+  <div class="grp" style="margin-top:12px;font-size:12px;font-weight:700;color:var(--ink2)">💳 카드를 바꿔야 하나요?</div>
   <div class="pc-row2">
     <label class="pc-f">변경할 카드<select id="sb-f-cc" data-cb="1"></select><input id="sb-f-cc-new" type="text" hidden placeholder="새 카드 이름"></label>
     <label class="pc-f">변경 기한(비우면 오늘부터)<input id="sb-f-ccdate" type="date"></label>
@@ -1708,7 +1719,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     <label class="pc-f">값(% 또는 원)<input id="sb-f-dvalue" type="number" min="0" step="any" inputmode="decimal"></label>
   </div>
   <label class="pc-f">할인 설명(선택)<input id="sb-f-dtext" type="text" placeholder="예: 카드 청구할인"></label>
-  <div class="grp" style="margin-top:14px;font-size:11.5px;font-weight:700;color:var(--ink2)">금액이 바뀌었을 때</div>
+  <div class="grp" style="margin-top:14px;font-size:12px;font-weight:700;color:var(--ink2)">금액이 바뀌었을 때</div>
   <div class="pc-row2">
     <label class="pc-f">적용 월(예: 2024-07)<input id="sb-f-hfrom" type="text" maxlength="7" placeholder="YYYY-MM"></label>
     <label class="pc-f"><span id="sb-f-mlabel">이 달 금액만 다르게</span><input id="sb-f-mamount" type="number" min="0" step="any" inputmode="numeric"></label>
@@ -1974,7 +1985,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     <div class="block">
       <h4>Google Sheets 자동 백업</h4>
       <div class="fieldrow">
-        <label>Apps Script 웹앱 URL</label>
+        <label>시트 연결 주소</label>
         <input type="url" id="sheetUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
         <div class="urlsaved" id="urlSavedNote"></div>
       </div>
@@ -2948,7 +2959,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   const curBuild_ = () => { try { return typeof window.APP_BUILD_VERSION === 'string' ? window.APP_BUILD_VERSION.split(' ')[0] : ''; } catch (e) { return ''; } };   // 스크립트2의 빌드 문자열은 window로 공유 (이전엔 못 읽어 _build가 항상 빈 값이었어요)
   async function syncUp(silent){
     const url = data.settings.sheetUrl;
-    if(!url){ if(!silent) showToast('먼저 Apps Script URL을 입력해주세요'); return false; }
+    if(!url){ if(!silent) showToast('먼저 ⚙ 설정에서 시트 연결 주소를 입력해주세요'); return false; }
     if(syncing){ syncAgain = true; return false; }
     syncing = true; syncAgain = false;
     const seqAtStart = changeSeq;
@@ -3023,7 +3034,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       if(!silent) showToast('Google Sheets에 저장하고 확인했습니다');
       return true;
     }catch(e){
-      const why = stage === 'pull' ? '시트에 연결하지 못했어요(인터넷·URL·배포 설정 확인)' : (stage === 'push' ? '시트로 보내지 못했어요' : '시트에 저장됐는지 확인하지 못했어요');
+      const why = stage === 'pull' ? '시트에 연결하지 못했어요(인터넷과 시트 연결 주소 확인)' : (stage === 'push' ? '시트로 보내지 못했어요' : '시트에 저장됐는지 확인하지 못했어요');
       try{ console.warn('sync fail', stage, e); }catch(_e){}
       syncLogAdd({ ok: 0, ms: Date.now() - syncState.t0, how: stage === 'pull' ? '받기 실패' : stage === 'push' ? '보내기 실패' : '확인 실패', why: String(e && e.message || e).slice(0, 120) });
       setSyncStatus('fail', why + (e && e.message && /늦어요|서버 오류/.test(e.message) ? ' · ' + e.message : ''));
@@ -3053,7 +3064,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   window.addEventListener('online', () => { if(isDirty() && data.settings.sheetUrl && data.settings.autoBackup) setTimeout(() => { syncUp(true); }, 600); });
   async function syncDown(){
     const url = data.settings.sheetUrl;
-    if(!url){ showToast('먼저 Apps Script URL을 입력해주세요'); return; }
+    if(!url){ showToast('먼저 ⚙ 설정에서 시트 연결 주소를 입력해주세요'); return; }
     try{
       showToast('불러오는 중...');
       const json = await fetchRemote(url);
@@ -3071,7 +3082,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   }
   async function restoreHistory(){
     const url = data.settings.sheetUrl;
-    if(!url){ showToast('먼저 Apps Script URL을 입력해주세요'); return; }
+    if(!url){ showToast('먼저 ⚙ 설정에서 시트 연결 주소를 입력해주세요'); return; }
     const dlg = el('hist-dlg'), box = el('hist-list');
     box.innerHTML = '<p class="td-note">이전 버전 목록을 불러오는 중…</p>'; if(!dlg.open) dlg.showModal();
     try{
@@ -3128,7 +3139,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     upd(); el('syncNowBtn').addEventListener('click', upd); } }
   async function srvCheck(){
     const url = data.settings.sheetUrl, dlg = el('srv-dlg'), box = el('srv-list');
-    if(!url){ showToast('먼저 Apps Script URL을 입력해주세요'); return; }
+    if(!url){ showToast('먼저 ⚙ 설정에서 시트 연결 주소를 입력해주세요'); return; }
     box.innerHTML = '<p class="td-note">점검 중… (최대 1분)</p>'; if(!dlg.open) dlg.showModal();
     const ex_ = v => String(v == null ? '' : v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])), rows = [], add = (st, t, d) => rows.push('<div class="hist-row"><span><b>' + (st === 1 ? '✅ ' : st === 0 ? '⚠ ' : '❌ ') + ex_(t) + '</b><i>' + ex_(d) + '</i></span></div>');
     const q = a => url + (url.indexOf('?') >= 0 ? '&' : '?') + 'action=' + a + '&t=' + Date.now();
@@ -3176,7 +3187,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     render();
     schedulePeriodicBackup();
     if(e.target.checked){
-      if(!data.settings.sheetUrl){ showToast('먼저 Apps Script URL을 입력해주세요'); }
+      if(!data.settings.sheetUrl){ showToast('먼저 ⚙ 설정에서 시트 연결 주소를 입력해주세요'); }
       else showToast(`${data.settings.periodicIntervalMinutes}분마다 자동 백업됩니다 (이 화면이 열려있는 동안)`);
     }
   });
@@ -3785,9 +3796,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-14-a (삭제 보관함 · 동기화 빨라짐 · 오류 기록 · 글자 크기 / code.gs v26과 짝)';
+const APP_BUILD_VERSION = '2026-11-17-a (사용 편의 1차: 작은 글자 12px로 · 닫기/작은 버튼 40px · 쉬운 말 / code.gs v26과 짝)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['설정 > 문제 해결: 삭제 보관함(30일 복구) · 동기화 기록 · 오류 기록 · 저장공간 / 동기화: 변경 없으면 보내기 생략, 서버 응답으로 바로 확인 / 글자 크기 선택 / 장 휴장일 표 보완', '소비 > 패션·치수표: 치수표에 품목명 추가 · 옷↔치수 추천 연결 · 사이즈 비교(내 기준 ⭐·같은 품목 가장 가까운 사이즈)', '회의비: 상신완료·미상신 구분, 미상신만 모아보기, 한 번에 상신완료', '소비 > 패션: 옷↔치수표 자동 연결 + 옷 카드에서 치수 비교'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
+const APP_RECENT = ['사용 편의 1차: 12px보다 작던 글자를 12px로, 폰에서 닫기 ✕·달 넘기기·작은 버튼을 최소 40px로, "Apps Script 주소"를 "시트 연결 주소"로 바꿈(계산·데이터 변경 없음)', '설정 > 문제 해결: 삭제 보관함(30일 복구) · 동기화 기록 · 오류 기록 · 저장공간 / 동기화: 변경 없으면 보내기 생략, 서버 응답으로 바로 확인 / 글자 크기 선택 / 장 휴장일 표 보완', '소비 > 패션·치수표: 치수표에 품목명 추가 · 옷↔치수 추천 연결 · 사이즈 비교(내 기준 ⭐·같은 품목 가장 가까운 사이즈)', '회의비: 상신완료·미상신 구분, 미상신만 모아보기, 한 번에 상신완료', '소비 > 패션: 옷↔치수표 자동 연결 + 옷 카드에서 치수 비교'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -3812,7 +3823,7 @@ function bkView(){
   const stt = A.state ? A.state() : { status: 'idle', dirty: false, msg: '' }, last = A.last(), auto = A.auto();
   const age = last ? Math.floor((Date.now() - new Date(last).getTime()) / 86400000) : null;
   const lastTxt = last ? '마지막 백업 ' + bkFmt(last) : '아직 백업한 적 없어요';
-  if (!A.hasUrl()) return { k: 'none', dot: '', go: 'settings', text: '☁ 시트 연결 전 — ⚙ 설정에서 Apps Script 주소를 입력하세요', sub: '' };
+  if (!A.hasUrl()) return { k: 'none', dot: '', go: 'settings', text: '☁ 아직 시트에 연결되지 않았어요 — 눌러서 연결하기', sub: '' };
   if (stt.status === 'saving') {
     const sec = Math.max(0, Math.round((Date.now() - (stt.t0 || Date.now())) / 1000)), nm = { pull: '시트 확인', push: '보내는 중', verify: '저장 확인' }[stt.stage] || '';
     return { k: 'saving', dot: '', text: '🔄 백업 중' + (nm ? ' · ' + nm : '') + ' ' + sec + '초' + (sec >= 20 ? ' (시간이 걸려도 오류가 아니에요)' : ''), sub: lastTxt };
@@ -8624,7 +8635,7 @@ function agConnCard(){
   return '<!--c:conn--><details class="td-card td-ag"><summary>🔗 캘린더 · 요약 연결 설정</summary>' +
     '<p class="td-note">이 설정과 키는 <b>이 기기에만</b> 저장되고 백업·동기화에는 들어가지 않아요. 기기마다 한 번씩 입력해 주세요.</p>' +
     '<label class="td-ag-l"><input type="checkbox" data-ag="calOn"' + (c.calOn ? ' checked' : '') + '> 구글 캘린더 일정을 “할 일 · 일정”에 함께 보기</label>' +
-    (c.calOn ? (hasUrl ? '<div class="td-ag-sub"><button type="button" class="pc-btn small" data-ag="loadcals">캘린더 목록 불러오기</button>' + (cs.length ? cs.map(k => '<label class="td-ag-l"><input type="checkbox" data-ag="cal" value="' + esc(k.id) + '"' + (sel.indexOf(k.id) >= 0 ? ' checked' : '') + '> ' + esc(k.name) + '</label>').join('') : '<p class="td-note">“캘린더 목록 불러오기”를 눌러 볼 캘린더를 고르세요.</p>') + '</div>' : '<p class="td-note td-warn">먼저 ⚙ 설정에서 백업 시트(Apps Script) 주소를 입력해 주세요.</p>') : '') +
+    (c.calOn ? (hasUrl ? '<div class="td-ag-sub"><button type="button" class="pc-btn small" data-ag="loadcals">캘린더 목록 불러오기</button>' + (cs.length ? cs.map(k => '<label class="td-ag-l"><input type="checkbox" data-ag="cal" value="' + esc(k.id) + '"' + (sel.indexOf(k.id) >= 0 ? ' checked' : '') + '> ' + esc(k.name) + '</label>').join('') : '<p class="td-note">“캘린더 목록 불러오기”를 눌러 볼 캘린더를 고르세요.</p>') + '</div>' : '<p class="td-note td-warn">먼저 ⚙ 설정에서 시트 연결 주소를 입력해 주세요.</p>') : '') +
     '<label class="td-ag-l"><input type="checkbox" data-ag="mirror"' + (c.mirror === true ? ' checked' : '') + '> 날짜 있는 앱 항목(알림·정기결제·혜택 지급일 등)을 캘린더에도 알림으로 복사 <span class="td-note">(당일 오전 8시 + 전날 오후 6시 알림)</span></label>' +
     '<div class="td-ag-f"><span>머니트레일 서버 주소</span><input type="url" data-ag="moneyUrl" value="' + esc(c.moneyUrl || '') + '" placeholder="https://script.google.com/macros/s/.../exec"></div>' +
     '<div class="td-ag-f"><span>머니트레일 키(SYNC_KEY)</span><input type="password" data-ag="moneyKey" value="' + esc(c.moneyKey || '') + '" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false"></div>' +
@@ -8898,7 +8909,7 @@ function renderGlobal(){
     if (rd.length) list.push({ key: 'rm:' + rd.map(d => d.id + d.date).join(','), act: 'remind', html: '🔔 알림 <b>' + rd.length + '건</b> — ' + (rd.length >= 3 && rd.every(x => rmFam(x) && rmFam(x)[0] === rmFam(rd[0])[0]) ? esc(rmFam(rd[0])[1]) : esc(rd[0].title) + ' (' + esc(rmWhen(rd[0])) + ')' + (rd.length > 1 ? ' 외' : '')) });
     rmNotifyCheck(rd); }
   if (A.hasUrl()) { if (age === null || age >= 7) list.push({ key: 'bk:' + (age === null ? 'never' : 'old'), act: 'backup', html: '☁ ' + (age === null ? '아직 백업한 적이 없어요' : '마지막 백업이 <b>' + age + '일 전</b>이에요') + ' — 눌러서 지금 백업' }); }
-  else list.push({ key: 'nourl', act: 'settings', html: '☁ 시트 연결이 안 되어 있어요 — 눌러서 ⚙ 설정에서 Apps Script URL 입력' });
+  else list.push({ key: 'nourl', act: 'settings', html: '☁ 시트 연결이 안 되어 있어요 — 눌러서 ⚙ 설정에서 시트 연결 주소 입력' });
   if (A.hasUrl() && stt.dirty && stt.since && Date.now() - Date.parse(stt.since) > 600000) list.push({ key: 'dirty', act: 'backup', html: '⚠ <b>시트에 저장되지 않은 변경</b>이 10분 넘게 남아 있어요 — 앱을 지우거나 재설치하기 전에 꼭 눌러서 저장하세요' });
   { const nm = A.newMonth(); if (nm) list.push({ key: 'nm:' + nm, act: 'meeting', html: '📅 회의비: ' + esc(nm) }); }
   {
