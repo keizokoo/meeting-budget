@@ -1909,34 +1909,36 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     <div class="calc" id="sh-f-calc" aria-live="polite"></div>
   </div>
   <div class="sh-listcmp" id="sh-f-listcmp" aria-live="polite"></div>
-  <div class="grp">혜택 1</div>
+  <div id="sh-ben1-wrap"><div class="grp">혜택 1</div>
   <div class="pc-row2">
     <label class="pc-f">혜택명<input id="sh-f-b1name" type="text"></label>
     <label class="pc-f">금액(원)<input id="sh-f-b1amount" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
   <label class="pc-f">지급일<input id="sh-f-b1date" type="date"></label>
-  <label class="sh-donechk"><input type="checkbox" id="sh-f-b1done"> 이 혜택 받음 완료 (알림에서 빠져요)</label>
-  <div class="grp">혜택 2</div>
+  <label class="sh-donechk"><input type="checkbox" id="sh-f-b1done"> 이 혜택 받음 완료 (알림에서 빠져요)</label></div>
+  <div id="sh-ben2-wrap"><div class="grp">혜택 2</div>
   <div class="pc-row2">
     <label class="pc-f">혜택명<input id="sh-f-b2name" type="text"></label>
     <label class="pc-f">금액(원)<input id="sh-f-b2amount" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
   <label class="pc-f">지급일<input id="sh-f-b2date" type="date"></label>
-  <label class="sh-donechk"><input type="checkbox" id="sh-f-b2done"> 이 혜택 받음 완료 (알림에서 빠져요)</label>
+  <label class="sh-donechk"><input type="checkbox" id="sh-f-b2done"> 이 혜택 받음 완료 (알림에서 빠져요)</label></div>
   <div class="grp">재판매</div>
   <label class="pc-f">상태<select id="sh-f-status"><option value="hold">보유중</option><option value="sold">판매완료</option></select></label>
+  <div id="sh-resale-wrap">
   <div class="pc-row2">
     <label class="pc-f">판매일<input id="sh-f-saleDate" type="date"></label>
     <label class="pc-f">판매금액(원)<input id="sh-f-salePrice" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
   <label class="pc-f">위약금(원)<input id="sh-f-penalty" type="number" inputmode="numeric" min="0" step="any"></label>
-  <div class="grp">중고 보상 (민팃 등)</div>
+  </div>
+  <div id="sh-trade-wrap"><div class="grp">중고 보상 (민팃 등)</div>
   <div class="pc-row2">
     <label class="pc-f">업체명<input id="sh-f-tName" type="text" placeholder="예: 민팃"></label>
     <label class="pc-f">예상 보상금(원)<input id="sh-f-tAmount" type="number" inputmode="numeric" min="0" step="any"></label>
   </div>
   <label class="pc-f">보상 가능일<input id="sh-f-tDate" type="date"></label>
-  <label class="sh-donechk"><input type="checkbox" id="sh-f-tRemind"> 보상 가능일에 알림 받기 (3일 전부터 상단에 표시)</label>
+  <label class="sh-donechk"><input type="checkbox" id="sh-f-tRemind"> 보상 가능일에 알림 받기 (3일 전부터 상단에 표시)</label></div>
   <div class="grp">메모</div>
   <label class="pc-f"><textarea id="sh-f-memo" rows="3" placeholder="이 품목에 대해 적어 두고 싶은 내용"></textarea></label>
   <div class="pc-row2" style="margin-top:14px">
@@ -2521,9 +2523,9 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
 
   // 상신(결재 올림) 구분: 지출 항목의 sb=true 면 상신완료, 없으면 미상신
   function renderSubBar(){
-    const all = monthExpenses(currentMonth), no = all.filter(e => !e.sb), yes = all.length - no.length, noAmt = no.reduce((t, e) => t + Number(e.amount || 0), 0);
+    const all = monthExpenses(currentMonth), no = all.filter(e => !e.sb), yes = all.filter(e => e.sb), noAmt = no.reduce((t, e) => t + Number(e.amount || 0), 0), yesAmt = yes.reduce((t, e) => t + Number(e.amount || 0), 0);
     const b = (k, t, sm) => `<button type="button" data-subf="${k}" class="${filterSub === k ? 'on' : ''}">${t}${sm ? `<small>${sm}</small>` : ''}</button>`;
-    el('subBar').innerHTML = b('', '전체', all.length + '건') + b('no', '미상신', no.length + '건 · ' + won(noAmt)) + b('yes', '상신완료', yes + '건') + (no.length ? '<button type="button" class="sb-all" data-suball="1">모두 상신완료</button>' : '');
+    el('subBar').innerHTML = b('', '전체', all.length + '건') + b('no', '미상신', no.length + '건 · ' + won(noAmt)) + b('yes', '상신완료', yes.length + '건 · ' + won(yesAmt)) + (no.length ? '<button type="button" class="sb-all" data-suball="1">모두 상신완료</button>' : '');
   }
   el('subBar').addEventListener('click', e => {
     const f = e.target.closest('[data-subf]');
@@ -3827,9 +3829,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-23-a (쿠폰 캡처 등록 · 만료 알림 / code.gs v27과 짝)';
+const APP_BUILD_VERSION = '2026-11-23-b (회의비 상신완료 금액 표시 · 패션 치수표 종류 매칭 수정 · 패션 입력창 혜택1·2/중고보상 숨김·재판매 상태별 표시) / 이전: 2026-11-23-a (쿠폰 캡처 등록 · 만료 알림 / code.gs v27과 짝)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['소비 > 쿠폰: 캡처 등록 · 만료 임박순 목록 · 오늘 화면 D-day 카드 · 구글캘린더 만료 알림(D-3·당일)', '설정 > 문제 해결: 삭제 보관함(30일 복구) · 동기화 기록 · 오류 기록 · 저장공간 / 동기화: 변경 없으면 보내기 생략, 서버 응답으로 바로 확인 / 글자 크기 선택 / 장 휴장일 표 보완', '소비 > 패션·치수표: 치수표에 품목명 추가 · 옷↔치수 추천 연결 · 사이즈 비교(내 기준 ⭐·같은 품목 가장 가까운 사이즈)'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
+const APP_RECENT = ['회의비: 상신완료 항목도 미상신처럼 금액 표시 / 패션: 내 치수표·치수 연결 목록이 종류(티셔츠/바지 등) 안 맞으면 빠지거나 뒤섞이던 문제 수정 / 패션 입력창: 혜택1·2·중고보상 칸 숨김(기존 데이터는 유지), 재판매 입력은 판매완료일 때만 표시', '소비 > 쿠폰: 캡처 등록 · 만료 임박순 목록 · 오늘 화면 D-day 카드 · 구글캘린더 만료 알림(D-3·당일)', '설정 > 문제 해결: 삭제 보관함(30일 복구) · 동기화 기록 · 오류 기록 · 저장공간 / 동기화: 변경 없으면 보내기 생략, 서버 응답으로 바로 확인 / 글자 크기 선택 / 장 휴장일 표 보완'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -4313,6 +4315,11 @@ function shBrandUI(){
   const bs = []; SH.items.forEach(x => { if (x.brand && bs.indexOf(x.brand) < 0) bs.push(x.brand); }); if (bs.indexOf('8second') < 0) bs.push('8second');
   $('sh-brand-list').innerHTML = bs.map(b => '<option value="' + esc(b) + '">').join('');
 }
+function shBenUI(){   // 패션 항목: 혜택1·혜택2·중고보상 입력칸을 숨기고(기존 데이터는 유지), 재판매 상세는 판매완료일 때만 보이게
+  const fashion = $('sh-f-cat').value === 'fashion';
+  $('sh-ben1-wrap').hidden = fashion; $('sh-ben2-wrap').hidden = fashion; $('sh-trade-wrap').hidden = fashion;
+  $('sh-resale-wrap').hidden = fashion && $('sh-f-status').value !== 'sold';
+}
 function shPhotoUI(){
   const fashion = $('sh-f-cat').value === 'fashion';
   $('sh-photo-wrap').hidden = !fashion && !shPhoto;
@@ -4347,7 +4354,7 @@ function openShop(id){
   if (i) $('sh-f-cat').value = i.cat;
   SF.forEach(f => { $('sh-f-' + f).value = i ? (i[f] == null ? '' : i[f]) : (f === 'qty' ? 1 : (f === 'status' ? 'hold' : '')); });
   { const p1 = i ? (i.p1 != null ? i.p1 : i.points) : '', p2 = i ? i.p2 : ''; $('sh-f-points').value = p1 == null ? '' : p1; $('sh-f-points2').value = p2 ? p2 : ''; }
-  shPhoto = i ? (i.photo || '') : ''; shPhotoUI(); shBrandUI();
+  shPhoto = i ? (i.photo || '') : ''; shPhotoUI(); shBrandUI(); shBenUI();
   cbFill('sh-f-store', allStores(), i ? i.store : ''); cbFill('sh-f-size', allSizes(), i ? (i.size || '') : ''); shSzFill(i);
   $('sh-f-tRemind').checked = !!(i && RM.items.some(r => r.id === 'rm_tr_' + i.id));
   $('sh-f-b1done').checked = !!(i && Shop.isDone(i.b1done)); $('sh-f-b2done').checked = !!(i && Shop.isDone(i.b2done));
@@ -4401,14 +4408,15 @@ function szNameSim(a, b){   // 품목명이 비슷한가(포함 관계 또는 �
 }
 function szScore(z, it){ let s = 0; if (z.name && szNameSim(z.name, it.item)) s += 3; if (it.brand && szSame(z.brand, it.brand)) s += 2; if (it.size && szSame(z.size, it.size)) s += 1; return s; }
 function shSzCur(){ let size = ''; try { size = cbGet('sh-f-size'); } catch (e) { size = ''; } return { item: $('sh-f-item').value, brand: $('sh-f-brand').value.trim(), size }; }
-function shSzLinkUI(){
-  const cur = shSzLink ? SZ.items.find(x => x.id === shSzLink) : null, me = shSzCur();
+function shSzLinkUI(){   // 옷 종류(sh-sz-kind)와 치수표 항목의 종류(kind)가 똑같은 것만 보여줌(다른 종류가 섞여 보이던 문제 수정)
+  const cur = shSzLink ? SZ.items.find(x => x.id === shSzLink) : null, me = shSzCur(), kind = $('sh-sz-kind').value;
   let h = '<option value="">' + (cur ? '연결됨: ' + esc(szLabel(cur)) : '연결 없음 (아래에 치수를 적으면 새로 만들어요)') + '</option>';
   if (cur) h += '<option value="__unlink__">연결 끊기 (치수표에는 그대로 남아요)</option>';
-  const cands = SZ.items.filter(x => x.id !== shSzLink).map(x => ({ x, s: szScore(x, me) })).sort((a, b) => b.s - a.s || String(b.x.u).localeCompare(String(a.x.u))), good = cands.filter(c => c.s >= 3), rest = cands.filter(c => c.s < 3);
+  const pool = SZ.items.filter(x => x.id !== shSzLink && x.kind === kind);
+  const cands = pool.map(x => ({ x, s: szScore(x, me) })).sort((a, b) => b.s - a.s || String(b.x.u).localeCompare(String(a.x.u))), good = cands.filter(c => c.s >= 3), rest = cands.filter(c => c.s < 3);
   const opt = c => '<option value="' + esc(c.x.id) + '">' + esc(szLabel(c.x)) + '</option>';
   if (good.length) h += '<optgroup label="💡 비슷한 치수 (추천)">' + good.map(opt).join('') + '</optgroup>';
-  if (rest.length) h += '<optgroup label="치수표 전체">' + rest.map(opt).join('') + '</optgroup>';
+  if (rest.length) h += '<optgroup label="' + esc(kind) + ' 치수표 전체">' + rest.map(opt).join('') + '</optgroup>';
   $('sh-sz-link').innerHTML = h;
   const sug = !cur && good.length ? good[0].x : null; $('sh-sz-sug').hidden = !sug;
   if (sug) $('sh-sz-sug').innerHTML = '💡 비슷한 치수가 있어요: <b>' + esc(szLabel(sug)) + '</b> <button type="button" class="pc-btn small primary" data-sug="' + esc(sug.id) + '">이 치수와 연결</button>';
@@ -6163,9 +6171,14 @@ const SZ_DIA = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHB
 const SZ_BASE = Object.keys(Size.KINDS), SZ_OTHER = ['어깨', '가슴', '허리', '엉덩이', '기장', '소매', '총장'];
 optReg(() => { Object.keys(Size.KINDS).forEach(k => { if (SZ_BASE.indexOf(k) < 0) delete Size.KINDS[k]; }); optActive('szKinds').forEach(x => { if (!Size.KINDS[x.label]) Size.KINDS[x.label] = SZ_OTHER; }); Size.KIND_KEYS.length = 0; Object.keys(Size.KINDS).forEach(k => Size.KIND_KEYS.push(k)); });
 const SIZE_KEY = 'size_chart_v1';
+const SZ_KIND_ALIAS = { '티': '티셔츠', '반팔': '티셔츠', '긴팔': '티셔츠', '맨투맨': '니트·맨투맨', '니트': '니트·맨투맨', '후드': '니트·맨투맨', '스웨터': '니트·맨투맨', '가디건': '니트·맨투맨', '원피스': '원피스·스커트', '스커트': '원피스·스커트', '치마': '원피스·스커트', '청바지': '바지', '슬랙스': '바지', '팬츠': '바지' };
+function szKindNorm(k){   // 종류 표기가 달라서(예: 티/티셔츠) 치수표에서 통째로 빠지지 않도록, 모르는 표기는 버리지 않고 '기타'로 받아줌
+  k = String(k || '').trim();
+  return Size.KINDS[k] ? k : (SZ_KIND_ALIAS[k] || '기타');
+}
 function szNorm(o){
   o = o && typeof o === 'object' ? o : {};
-  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id && Size.KINDS[i.kind]).map(i => ({ id: String(i.id), kind: i.kind, brand: String(i.brand || '').trim(), size: String(i.size || ''), note: String(i.note || ''), m: Size.cleanM(i.kind, i.m), name: String(i.name || '').trim(), base: i.base === true || i.base === 'true', shId: String(i.shId || ''), u: String(i.u || '') }));
+  const items = (Array.isArray(o.items) ? o.items : []).filter(i => i && i.id).map(i => { const kind = szKindNorm(i.kind); return { id: String(i.id), kind, brand: String(i.brand || '').trim(), size: String(i.size || ''), note: String(i.note || ''), m: Size.cleanM(kind, i.m), name: String(i.name || '').trim(), base: i.base === true || i.base === 'true', shId: String(i.shId || ''), u: String(i.u || '') }; });
   return { items, del: cleanDel(o.del) };
 }
 let SZ = loadK(SIZE_KEY, { items: [], del: {} }, szNorm), szOpen = false, szEditing = null, szFilter = (function () { try { const o = JSON.parse(localStorage.getItem('sz_filter_v1') || '{}'); return { kind: o.kind || 'all', brand: o.brand == null ? 'all' : o.brand }; } catch (e) { return { kind: 'all', brand: 'all' }; } })();
@@ -9190,9 +9203,10 @@ $('sh-photo-file').addEventListener('change', e => {
   shrinkImage(f).then(d => { shPhoto = d; shPhotoUI(); }).catch(() => toast('사진을 불러오지 못했어요. 다른 사진으로 시도해 주세요.'));
 });
 $('sh-photo-del').addEventListener('click', () => { shPhoto = ''; shPhotoUI(); });
-$('sh-f-cat').addEventListener('change', shPhotoUI); $('sh-f-cat').addEventListener('change', shBrandUI); $('sh-f-cat').addEventListener('change', shSzUI);
+$('sh-f-cat').addEventListener('change', shPhotoUI); $('sh-f-cat').addEventListener('change', shBrandUI); $('sh-f-cat').addEventListener('change', shSzUI); $('sh-f-cat').addEventListener('change', shBenUI);
+$('sh-f-status').addEventListener('change', shBenUI);
 $('sh-f-item').addEventListener('input', () => { if (shSzKindTouched || shSzLink) return; const k = szGuessKind($('sh-f-item').value); if ($('sh-sz-kind').value !== k) { $('sh-sz-kind').value = k; shSzFieldsUI(k, shSzRead()); } });
-$('sh-sz-kind').addEventListener('change', e => { shSzKindTouched = true; shSzFieldsUI(e.target.value, shSzRead()); });
+$('sh-sz-kind').addEventListener('change', e => { shSzKindTouched = true; shSzFieldsUI(e.target.value, shSzRead()); shSzLinkUI(); });
 $('sh-sz-link').addEventListener('change', e => shSzPick(e.target.value));
 $('sh-sz-sug').addEventListener('click', e => { const b = e.target.closest('[data-sug]'); if (b) shSzPick(b.dataset.sug); });
 ['sh-f-item', 'sh-f-brand'].forEach(id => $(id).addEventListener('input', () => { if (!shSzLink) shSzLinkUI(); })); $('sh-f-size').addEventListener('change', () => { if (!shSzLink) shSzLinkUI(); });
