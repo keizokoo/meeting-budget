@@ -451,7 +451,8 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .sh-row{ display:grid; grid-template-columns:1fr auto; gap:10px; padding:14px 2px; border-bottom:1px solid var(--line); cursor:pointer; }
   .sh-lc{ display:flex; gap:10px; align-items:flex-start; min-width:0; } .sh-info{ min-width:0; flex:1; }
   .sh-thumb{ width:64px; height:64px; object-fit:cover; border-radius:8px; border:1px solid var(--line2); flex:none; cursor:zoom-in; background:var(--surface); }
-  .sh-photo-row{ display:flex; gap:12px; align-items:center; margin:6px 0 2px; } #sh-photo-prev{ width:96px; height:96px; object-fit:cover; border-radius:10px; border:1px solid var(--line2); } .sh-photo-btns{ display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
+  .sh-photo-row{ display:flex; gap:12px; align-items:center; margin:6px 0 2px; } #sh-photo-prev, #cp-photo-prev{ width:96px; height:96px; object-fit:cover; border-radius:10px; border:1px solid var(--line2); } .sh-photo-btns{ display:flex; flex-direction:column; gap:6px; align-items:flex-start; }
+  .sh-badge.cp-soon{ color:var(--warn); border-color:var(--warn); }
   #ph-dlg{ padding:12px; border:1px solid var(--ink); border-radius:12px; max-width:94vw; background:var(--surface); } #ph-dlg::backdrop{ background:rgba(0,0,0,.6); } #ph-big{ display:block; max-width:min(88vw,640px); max-height:78vh; margin:0 auto; border-radius:8px; }
   .sk-filters{ display:flex; gap:10px; margin:0 0 6px; } .sk-filters label{ flex:1; display:flex; flex-direction:column; gap:3px; font-size:11.5px; font-weight:700; color:var(--ink2); }
   .sk-filters select{ font:inherit; font-size:14px; font-weight:700; border:1px solid var(--line2); border-radius:8px; padding:8px; background:var(--surface); color:var(--ink); }
@@ -1089,6 +1090,18 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <input id="sh-csv" type="file" accept=".csv,text/csv" hidden>
   <p class="pc-hint" id="sh-note"></p>
   <p class="pc-sync" id="sh-sync"></p>
+ </div>
+</div>
+
+<!-- ===== [신규] 쿠폰 영역 ===== -->
+<div id="couponView" hidden>
+ <div class="pc-wrap">
+  <div class="sectionhead"><h3>🎟 쿠폰</h3><button class="pc-btn small primary" data-cp="add">+ 쿠폰 등록</button></div>
+  <p class="pc-hint" style="margin-top:-6px">쿠폰함 캡처를 올려 등록하면 만료 전에 구글캘린더로 알려 드려요(만료 3일 전·당일 오전 9시, ☁ 백업할 때 만들어져요).</p>
+  <div id="cp-list"></div>
+  <div id="cp-past-wrap" style="margin-top:10px"></div>
+  <div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-cp="backup">☁ 지금 백업</button></div>
+  <p class="pc-sync" id="cp-sync"></p>
  </div>
 </div>
 
@@ -1933,6 +1946,31 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   <button id="sh-d-delete" class="pc-btn danger wide" data-sh="d-delete">이 항목 삭제</button>
 </dialog>
 
+<dialog id="cp-dlg">
+  <h3 id="cp-d-title">쿠폰 등록</h3>
+  <div class="sh-photo-row">
+    <img id="cp-photo-prev" alt="쿠폰 캡처 미리보기" hidden>
+    <div class="sh-photo-btns">
+      <input type="file" id="cp-photo-file" accept="image/*" hidden>
+      <button type="button" class="pc-btn small" id="cp-photo-pick">📷 캡처 첨부(선택)</button>
+      <button type="button" class="pc-btn small danger" id="cp-photo-del" hidden>캡처 삭제</button>
+    </div>
+  </div>
+  <label class="pc-f">쿠폰명<input id="cp-f-name" type="text" placeholder="예: 스타벅스 1+1 아메리카노 쿠폰"></label>
+  <label class="pc-f">만료일<input id="cp-f-exp" type="date"></label>
+  <div class="pc-row2">
+    <label class="pc-f">브랜드(선택)<input id="cp-f-brand" type="text" placeholder="예: 스타벅스"></label>
+    <label class="pc-f">할인금액(원, 선택)<input id="cp-f-amt" type="number" inputmode="numeric" min="0" step="100"></label>
+  </div>
+  <label class="pc-f">사용 조건 메모(선택)<textarea id="cp-f-cond" rows="2" placeholder="예: 카카오페이로 결제 시"></textarea></label>
+  <label class="pc-f">출처(선택)<input id="cp-f-src" type="text" list="cp-src-list" placeholder="예: 카카오페이"></label>
+  <datalist id="cp-src-list"><option value="카카오페이"><option value="카카오페이 쿠폰함"></datalist>
+  <div class="pc-row2" style="margin-top:14px"><button class="pc-btn" data-cp="d-cancel">취소</button><button class="pc-btn primary" data-cp="d-save">저장</button></div>
+  <button class="pc-btn wide" data-cp="d-save-next" id="cp-d-save-next" style="margin-top:8px">＋ 같은 캡처에서 쿠폰 하나 더 등록</button>
+  <button class="pc-btn wide" data-cp="d-used" id="cp-d-used" style="margin-top:8px" hidden></button>
+  <button class="pc-btn danger wide" data-cp="d-delete" id="cp-d-delete" hidden>이 쿠폰 삭제</button>
+</dialog>
+
 <dialog id="rm-dlg">
   <div id="rm-listbox">
     <h3>🔔 알림</h3>
@@ -2043,6 +2081,10 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       <h4>앱을 열 때 처음 보이는 화면</h4>
       <select id="start-mode" style="width:100%"></select>
       <label class="nv-fab" style="margin-top:10px"><input type="checkbox" id="nav-fab"> 📌 빠른 가이드 버튼(오른쪽 아래) 보이기</label>
+    </div>
+    <div class="block">
+      <h4>보이는 기능 선택</h4>
+      <label class="nv-fab"><input type="checkbox" id="nav-hide-coupon"> 🎟 소비 > 쿠폰 탭 보이기</label>
     </div>
     <div class="dsec">알림</div>
     <div class="block">
@@ -2162,7 +2204,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
    화면마다 삭제 코드가 달라(60여 곳) 저장 직전·직후를 비교하는 방식으로 한 곳에서 잡는다. 저장 자체는 절대 막지 않는다. */
 (function(){
   var TRASH_KEY = 'trash_v1', KEEP_MS = 30 * 86400000, MAX = 300, BIG = 30000;
-  var WATCH = { shopping_history_app_v1:'소비', meeting_budget_app_v1:'회의비', price_check_app_v2:'가격체크', people_v1:'인맥', skin_care_v1:'피부관리', manual_care_v1:'도수치료', gift_ledger_v1:'경조사', leave_v1:'연차', medical_exp_v1:'의료비', subscriptions_v1:'구독·보험', car_mgmt_v1:'내 차', golf_history_v1:'골프', size_chart_v1:'치수표', guide_v1:'가이드', salary_hist_v1:'연봉', reminders_v1:'알림' };
+  var WATCH = { shopping_history_app_v1:'소비', meeting_budget_app_v1:'회의비', price_check_app_v2:'가격체크', people_v1:'인맥', skin_care_v1:'피부관리', manual_care_v1:'도수치료', gift_ledger_v1:'경조사', leave_v1:'연차', medical_exp_v1:'의료비', subscriptions_v1:'구독·보험', car_mgmt_v1:'내 차', golf_history_v1:'골프', size_chart_v1:'치수표', guide_v1:'가이드', salary_hist_v1:'연봉', reminders_v1:'알림', coupons_app_v1:'쿠폰' };
   var prev = {}, paused = false, rawSet = Storage.prototype.setItem;
   function index(obj){
     var o = {}; if(!obj || typeof obj !== 'object') return o;
@@ -3785,9 +3827,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-14-a (삭제 보관함 · 동기화 빨라짐 · 오류 기록 · 글자 크기 / code.gs v26과 짝)';
+const APP_BUILD_VERSION = '2026-11-23-a (쿠폰 캡처 등록 · 만료 알림 / code.gs v27과 짝)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['설정 > 문제 해결: 삭제 보관함(30일 복구) · 동기화 기록 · 오류 기록 · 저장공간 / 동기화: 변경 없으면 보내기 생략, 서버 응답으로 바로 확인 / 글자 크기 선택 / 장 휴장일 표 보완', '소비 > 패션·치수표: 치수표에 품목명 추가 · 옷↔치수 추천 연결 · 사이즈 비교(내 기준 ⭐·같은 품목 가장 가까운 사이즈)', '회의비: 상신완료·미상신 구분, 미상신만 모아보기, 한 번에 상신완료', '소비 > 패션: 옷↔치수표 자동 연결 + 옷 카드에서 치수 비교'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
+const APP_RECENT = ['소비 > 쿠폰: 캡처 등록 · 만료 임박순 목록 · 오늘 화면 D-day 카드 · 구글캘린더 만료 알림(D-3·당일)', '설정 > 문제 해결: 삭제 보관함(30일 복구) · 동기화 기록 · 오류 기록 · 저장공간 / 동기화: 변경 없으면 보내기 생략, 서버 응답으로 바로 확인 / 글자 크기 선택 / 장 휴장일 표 보완', '소비 > 패션·치수표: 치수표에 품목명 추가 · 옷↔치수 추천 연결 · 사이즈 비교(내 기준 ⭐·같은 품목 가장 가까운 사이즈)'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -3836,7 +3878,7 @@ function bkTicker(){
 function syncNote(){
   const A = window.AppSync, v = bkView();
   const t = !v ? '' : v.text + (v.k === 'none' ? '' : (A.auto() ? ' · 자동 백업 켜짐' : ' · 자동 백업 꺼짐'));
-  ['pc-sync', 'sh-sync', 'sb-sync', 'pp-sync', 'sk-sync', 'mp-sync', 'py-sync', 'gd-sync', 'md-sync'].forEach(id => { const el = $(id); if (el) el.textContent = t; });
+  ['pc-sync', 'sh-sync', 'sb-sync', 'pp-sync', 'sk-sync', 'mp-sync', 'py-sync', 'gd-sync', 'md-sync', 'cp-sync'].forEach(id => { const el = $(id); if (el) el.textContent = t; });
 }
 function changed(){
   try {
@@ -4433,6 +4475,22 @@ function migrateAutoLink(MK){
 }
 function migrateAG(){ migrateAutoLink('mig_ag_v1'); }
 function migrateAH(){ migrateAutoLink('mig_ah_v1'); }
+/* 1회 마이그레이션(mig_ai_v1): 캡처해 둔 쿠폰 2건(스타벅스 1+1 아메리카노 · 푸드위크 브랜드 1,000원 할인) 초기 등록 — 출처 카카오페이 쿠폰함, 만료 2026-11-30, 미사용 */
+function migrateAI(){
+  const MK = 'mig_ai_v1'; try { if (localStorage.getItem(MK) === '1') return; } catch (e) { return; }
+  const U = nowIso(), seeds = [
+    { id: 'cp_seed_sbux_1p1', name: '스타벅스 1+1 아메리카노 쿠폰', brand: '스타벅스', cond: '카카오페이로 결제 시 · 카카오페이 결제전용', amt: '', exp: '2026-11-30' },
+    { id: 'cp_seed_foodweek_1000', name: '푸드위크 브랜드 1,000원 할인', brand: '브랜드픽 - 푸드 위크', cond: '페이머니 3,000원 이상 결제 시 · 매장결제', amt: 1000, exp: '2026-11-30' }
+  ];
+  let ch = false;
+  seeds.forEach(sd => {
+    if (CP.del[sd.id] || CP.items.some(x => x.id === sd.id || (x.name === sd.name && x.exp === sd.exp))) return;
+    CP.items.push(Object.assign({ src: '카카오페이 쿠폰함', img: '', used: false, usedAt: '', calIds: [], calPending: true, u: U }, sd));
+    ch = true;
+  });
+  if (ch) { CP = cpNorm(CP); cpSave(); changed(); }
+  try { localStorage.setItem(MK, '1'); } catch (e) { /* 무시 */ }
+}
 // 비교 기준(자동 고정): ① ⭐ 내 기준 ② 착용감 “딱 맞음”인 옷의 치수(최근 구매) ③ 공통 치수 ④ 같은 종류의 최근 치수
 function szcAutoBase(z){
   const same = SZ.items.filter(x => x.kind === z.kind && x.id !== z.id).sort((a, b) => String(b.u).localeCompare(String(a.u)));
@@ -6183,14 +6241,14 @@ function delSize(){
 const FEATURES = [
   { k: 'today', label: '오늘', ic: '🏠', id: 'modeToday' }, { k: 'meeting', label: '회의비', ic: '💰', id: 'modeMeeting' }, { k: 'shop', label: '보유품목', ic: '🛍', id: 'modeShop' }, { k: 'price', label: '구매가격분석', ic: '📈', id: 'modePrice' },
   { k: 'sub', label: '구독·보험', ic: '🔁', id: 'modeSub' }, { k: 'car', label: '내 차', ic: '🚗', id: 'modeCar' }, { k: 'people', label: '인맥', ic: '👥', id: 'modePeople' }, { k: 'med', label: '의료비', ic: '🏥', id: 'modeMed' }, { k: 'manual', label: '도수치료', ic: '🦵', id: 'modeManual' }, { k: 'skin', label: '피부관리', ic: '🧴', id: 'modeSkin' },
-  { k: 'pay', label: '연봉', ic: '💼', id: 'modePay' }, { k: 'leave', label: '연차', ic: '🏖', id: 'modeLeave' }, { k: 'guide', label: '가이드', ic: '📌', id: 'modeGuide' }];
+  { k: 'pay', label: '연봉', ic: '💼', id: 'modePay' }, { k: 'leave', label: '연차', ic: '🏖', id: 'modeLeave' }, { k: 'guide', label: '가이드', ic: '📌', id: 'modeGuide' }, { k: 'coupon', label: '쿠폰', ic: '🎟', id: 'modeCoupon' }];
 const NAV_KEY = 'nav_cfg_v1';
-const GROUPS = [{ g: 'home', label: '🏠 오늘', ks: ['today'] }, { g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'car', 'pay', 'leave'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price'] }, { g: 'me', label: '🙂 나', ks: ['people', 'med', 'manual', 'skin', 'guide'] }];
+const GROUPS = [{ g: 'home', label: '🏠 오늘', ks: ['today'] }, { g: 'money', label: '💰 돈', ks: ['meeting', 'sub', 'car', 'pay', 'leave'] }, { g: 'spend', label: '🛍 소비', ks: ['shop', 'price', 'coupon'] }, { g: 'me', label: '🙂 나', ks: ['people', 'med', 'manual', 'skin', 'guide'] }];
 const groupOf = k => GROUPS.find(x => x.ks.indexOf(k) >= 0), lastIn = {};
 function navNorm(o){
   o = o && typeof o === 'object' ? o : {};
   const keys = FEATURES.map(f => f.k);
-  return { hidden: [], fab: o.fab !== false };
+  return { hidden: Array.isArray(o.hidden) ? o.hidden.filter(k => keys.indexOf(k) >= 0) : [], fab: o.fab !== false };
 }
 let NAV = (function () { try { return navNorm(JSON.parse(localStorage.getItem(NAV_KEY) || 'null')); } catch (e) { return navNorm(null); } })();
 function navSave(){ try { localStorage.setItem(NAV_KEY, JSON.stringify(NAV)); } catch (e) { /* 무시 */ } }
@@ -6239,6 +6297,7 @@ function renderSetCfg(){
   const sel = $('start-mode'); if (sel) { let cur = 'today'; try { const sv = localStorage.getItem(START_KEY); cur = sv === null ? 'today' : (sv || 'last'); } catch (e) { /* 무시 */ }
     sel.innerHTML = '<option value="last">마지막으로 보던 화면</option>' + GROUPS.map(g => g.ks.map(k => { const f = FEATURES.find(x => x.k === k); return '<option value="' + f.k + '">' + g.label + ' › ' + f.label + '</option>'; }).join('')).join(''); sel.value = MODE_VIEWS[cur] ? cur : 'last'; }
   const fb = $('nav-fab'); if (fb) fb.checked = !!NAV.fab;
+  const nhc = $('nav-hide-coupon'); if (nhc) nhc.checked = navVisible('coupon');
   const nb = $('set-rm-notify'); if (nb) nb.textContent = rmNotifyOn && 'Notification' in window && Notification.permission === 'granted' ? '🔕 기기 알림 끄기' : '🔔 기기 알림 켜기';
   renderOptCfg(); renderCarCfg();
 }
@@ -7551,10 +7610,10 @@ window.AppSettings = { refresh: function () {
   renderSetCfg(); const pc = $('py-sync-chk'); if (pc) pc.checked = !pyNoSync();
 } };
 window.AppExtras = {
-  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'medical', 'guide', 'pay', 'reminders', 'opts', 'car', 'gift', 'leave'],
+  keys: ['priceCheck', 'shopping', 'golf', 'subs', 'people', 'skin', 'sizes', 'manual', 'medical', 'guide', 'pay', 'reminders', 'opts', 'car', 'gift', 'leave', 'coupons'],
   exportSync(){
     return { priceCheck: { items: S.items, records: S.records, del: S.del }, shopping: { items: SH.items, del: SH.del },
-      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, car: { ins: CAR.ins, wash: CAR.wash, maint: CAR.maint, cfg: CAR.cfg, del: CAR.del }, gift: { items: FE.items, del: FE.del }, leave: { items: LV.items, cfg: LV.cfg, del: LV.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, medical: { items: MD.items, claims: MD.claims, cfg: MD.cfg, del: MD.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
+      golf: { courses: G.courses, rounds: G.rounds, del: G.del }, subs: { items: SB.items, pays: SB.pays, cfg: SB.cfg, del: SB.del }, car: { ins: CAR.ins, wash: CAR.wash, maint: CAR.maint, cfg: CAR.cfg, del: CAR.del }, gift: { items: FE.items, del: FE.del }, leave: { items: LV.items, cfg: LV.cfg, del: LV.del }, people: { people: Q.people, meets: Q.meets, clubs: Q.clubs, cfg: Q.cfg, del: Q.del }, skin: { items: SK.items, sessions: SK.sessions, del: SK.del }, sizes: { items: SZ.items, del: SZ.del }, manual: { items: MP.items, del: MP.del }, medical: { items: MD.items, claims: MD.claims, cfg: MD.cfg, del: MD.del }, guide: { items: GD.items, del: GD.del }, reminders: { items: RM.items, del: RM.del }, opts: OPT, coupons: { items: CP.items, del: CP.del }, ...(pyNoSync() ? {} : { pay: { items: PY.items, del: PY.del } }) };
   },
   strip(obj){ this.keys.forEach(k => { delete obj[k]; }); delete obj.inbox; },
   importSync(json){
@@ -7648,6 +7707,10 @@ window.AppExtras = {
     if (ok('reminders')) {
       const r = json.reminders, m = Shop.mergeById(RM.items, r.items, RM.del, cleanDel(r.del));
       RM = rmNorm({ items: m.items, del: m.del }); rmSave(); ch = true;
+    }
+    if (ok('coupons')) {
+      const r = json.coupons, m = Shop.mergeById(CP.items, r.items, CP.del, cleanDel(r.del));
+      CP = cpNorm({ items: m.items, del: m.del }); cpSave(); ch = true;
     }
     if (ok('pay') && !pyNoSync()) {
       const r = json.pay, m = Shop.mergeById(PY.items, r.items, PY.del, cleanDel(r.del));
@@ -7774,6 +7837,107 @@ $('rm-dlg').addEventListener('click', e => {
   else if (a === 'done') { const r = RM.items.find(x => x.id === id); if (r) { r.done = !r.done; r.u = nowIso(); rmSave(); changed(); rmRender(); renderGlobal(); } }
   else if (a === 'go') { const r = RM.items.find(x => x.id === id); if (r && r.link.indexOf('shop:') === 0) { $('rm-dlg').close(); gotoShop(r.link.slice(5)); } else if (r && r.link.indexOf('sub:') === 0) { $('rm-dlg').close(); sbGoto([r.link.slice(4)], {}); } else if (r && r.link.indexOf('mpb:') === 0) { $('rm-dlg').close(); setMode('manual'); setTimeout(() => { const rw = document.querySelector('#mp-panel .mp-row[data-id="' + r.link.slice(4) + '"]'); if (rw) { rw.scrollIntoView({ behavior: 'smooth', block: 'center' }); rw.classList.add('hl'); setTimeout(() => rw.classList.remove('hl'), 2600); } }, 120); } }
 });
+
+/* =====================================================================
+   쿠폰 캡처 등록 · 만료 알림(2026-11-23 추가) — 저장은 늘 성공시키고, 캘린더 이벤트는 다음 동기화(백업) 때 서버가 만든다/정리한다.
+   ===================================================================== */
+const CP_KEY = 'coupons_app_v1';
+function cpNorm(o){
+  o = o && typeof o === 'object' ? o : {};
+  const items = (Array.isArray(o.items) ? o.items : []).filter(x => x && x.id && String(x.name || '').trim() && /^\d{4}-\d{2}-\d{2}$/.test(String(x.exp || ''))).map(x => ({
+    id: String(x.id), name: String(x.name).trim(), brand: String(x.brand || ''), cond: String(x.cond || ''), exp: String(x.exp),
+    amt: x.amt === '' || x.amt == null || isNaN(x.amt) ? '' : Number(x.amt), src: String(x.src || ''), img: String(x.img || ''),
+    used: x.used === true || x.used === 'true', usedAt: String(x.usedAt || ''),
+    calIds: Array.isArray(x.calIds) ? x.calIds.filter(s => typeof s === 'string') : [], calPending: x.calPending === true,
+    u: String(x.u || '') }));
+  return { items, del: cleanDel(o.del) };
+}
+let CP = loadK(CP_KEY, { items: [], del: {} }, cpNorm), cpEditing = null, cpPhoto = '';
+function cpSave(){ saveK(CP_KEY, CP); }
+function cpPhotoUI(){
+  $('cp-photo-prev').hidden = !cpPhoto; if (cpPhoto) $('cp-photo-prev').src = cpPhoto; else $('cp-photo-prev').removeAttribute('src');
+  $('cp-photo-del').hidden = !cpPhoto; $('cp-photo-pick').textContent = cpPhoto ? '📷 캡처 바꾸기' : '📷 캡처 첨부(선택)';
+}
+function openCoupon(id, pre){
+  const it = id ? CP.items.find(x => x.id === id) : null; if (id && !it) return;
+  cpEditing = id || null;
+  $('cp-d-title').textContent = it ? '쿠폰 수정' : '쿠폰 등록';
+  $('cp-f-name').value = it ? it.name : (pre ? pre.name || '' : '');
+  $('cp-f-brand').value = it ? it.brand : (pre ? pre.brand || '' : '');
+  $('cp-f-cond').value = it ? it.cond : '';
+  $('cp-f-exp').value = it ? it.exp : '';
+  $('cp-f-amt').value = it && it.amt !== '' ? it.amt : '';
+  $('cp-f-src').value = it ? it.src : (pre ? pre.src || '' : '');
+  cpPhoto = it ? (it.img || '') : (pre ? pre.img || '' : ''); cpPhotoUI();
+  $('cp-d-save-next').hidden = !!it; $('cp-d-delete').hidden = !it;
+  $('cp-d-used').hidden = !it; if (it) $('cp-d-used').textContent = it.used ? '↩ 사용 전으로 되돌리기' : '✅ 사용완료로 표시';
+  if (!$('cp-dlg').open) $('cp-dlg').showModal();
+  setTimeout(() => $('cp-f-name').focus(), 60);
+}
+function saveCoupon(next){
+  const name = $('cp-f-name').value.trim(), exp = $('cp-f-exp').value;
+  if (!name) { toast('쿠폰명을 입력해 주세요.'); return; }
+  if (!exp) { toast('만료일을 선택해 주세요.'); return; }
+  const amtV = $('cp-f-amt').value;
+  const d = { name, brand: $('cp-f-brand').value.trim(), cond: $('cp-f-cond').value.trim(), exp, amt: amtV === '' ? '' : Number(amtV), src: $('cp-f-src').value.trim(), img: cpPhoto, u: nowIso() };
+  let c = null;
+  if (cpEditing) { c = CP.items.find(x => x.id === cpEditing); if (c) Object.assign(c, d, { calPending: true }); }
+  else { c = Object.assign({ id: uid('cp'), used: false, usedAt: '', calIds: [], calPending: true }, d); CP.items.push(c); }
+  CP = cpNorm(CP); cpSave(); changed(); $('cp-dlg').close();
+  if (next) { toast('저장했어요. 같은 캡처에서 다음 쿠폰을 입력하세요.'); renderAll(); openCoupon(null, { brand: d.brand, src: d.src, img: d.img }); return; }
+  toast('저장했어요.'); renderAll();
+}
+function cpToggleUsed(id){
+  const c = CP.items.find(x => x.id === id); if (!c) return;
+  c.used = !c.used; c.usedAt = c.used ? nowIso() : ''; c.u = nowIso(); c.calPending = true;
+  cpSave(); changed(); toast(c.used ? '사용완료로 표시했어요.' : '사용 전으로 되돌렸어요.'); renderAll();
+}
+function deleteCoupon(){
+  if (!cpEditing || !confirm('이 쿠폰을 삭제할까요? 만들어 둔 캘린더 알림도 다음 동기화 때 정리돼요.')) return;
+  CP.items = CP.items.filter(x => x.id !== cpEditing); CP.del[cpEditing] = nowIso(); cpSave(); changed(); $('cp-dlg').close(); renderAll();
+}
+function cpRowHtml(c){
+  const d = Life.dd(todayStr(), c.exp), expired = d !== null && d < 0, soon = !expired && d !== null && d <= 3;
+  const dtxt = expired ? '만료' : (d === 0 ? '오늘 만료' : 'D-' + d);
+  return '<div class="sh-row" data-cp="edit" data-id="' + esc(c.id) + '" tabindex="0"><div class="sh-lc">' +
+    (c.img ? '<img class="sh-thumb" src="' + c.img + '" alt="쿠폰 캡처" data-cp="photo" data-id="' + esc(c.id) + '">' : '') +
+    '<div class="sh-info"><div class="sh-top"><span class="sh-name">' + esc(c.name) + '</span>' +
+    '<span class="sh-badge' + (soon ? ' cp-soon' : '') + '">' + esc(dtxt) + '</span>' +
+    (c.calPending ? '<span class="sh-badge">📅 캘린더 알림 대기 중</span>' : '') + '</div>' +
+    '<div class="sh-meta">' + (c.brand ? '<span>브랜드 <b>' + esc(c.brand) + '</b></span>' : '') + '<span>만료 <b>' + esc(c.exp) + '</b></span>' + (c.amt !== '' ? '<span>할인 <b>' + won(c.amt) + '</b></span>' : '') + (c.src ? '<span>출처 <b>' + esc(c.src) + '</b></span>' : '') + '</div>' +
+    (c.cond ? '<div class="sh-memo mx">' + esc(c.cond) + '</div>' : '') + '</div></div>' +
+    '<div class="sh-right"><button type="button" class="pc-btn small primary" data-cp="done" data-id="' + esc(c.id) + '">' + (c.used ? '↩ 되돌리기' : '✅ 사용완료') + '</button></div></div>';
+}
+function renderCoupon(){
+  const t = todayStr();
+  const active = CP.items.filter(c => !c.used && !(Life.dd(t, c.exp) < 0)).sort((a, b) => a.exp < b.exp ? -1 : a.exp > b.exp ? 1 : 0);
+  const past = CP.items.filter(c => c.used || Life.dd(t, c.exp) < 0).sort((a, b) => (b.usedAt || b.exp).localeCompare(a.usedAt || a.exp));
+  $('cp-list').innerHTML = active.length ? active.map(cpRowHtml).join('') : '<div class="empty">아직 등록된 쿠폰이 없어요. “+ 쿠폰 등록”으로 캡처를 올려 보세요.</div>';
+  $('cp-past-wrap').innerHTML = past.length ? '<details class="pc-card"><summary>지난 쿠폰 ' + past.length + '건</summary>' + past.map(cpRowHtml).join('') + '</details>' : '';
+}
+function cpPendingClear(){   // 백업(동기화)이 성공하면, 그 사이 등록·수정한 쿠폰의 "캘린더 알림 대기 중" 표시를 내림(서버가 그때 이벤트를 만들었다고 봄)
+  let ch = false; CP.items.forEach(c => { if (c.calPending) { c.calPending = false; ch = true; } });
+  if (ch) { cpSave(); if (mode === 'coupon') renderCoupon(); }
+}
+$('couponView').addEventListener('click', e => {
+  const el = e.target.closest('[data-cp]'); if (!el) return;
+  const a = el.dataset.cp, id = el.dataset.id;
+  if (a === 'add') openCoupon(null); else if (a === 'edit') openCoupon(id); else if (a === 'done') { e.stopPropagation(); cpToggleUsed(id); }
+  else if (a === 'photo') { e.stopPropagation(); const c = CP.items.find(x => x.id === id); if (c && c.img) { $('ph-big').src = c.img; $('ph-dlg').showModal(); } }
+  else if (a === 'backup') doBackup();
+});
+$('cp-dlg').addEventListener('click', e => {
+  const el = e.target.closest('[data-cp]'); if (!el) return;
+  const a = el.dataset.cp;
+  if (a === 'd-cancel') $('cp-dlg').close(); else if (a === 'd-save') saveCoupon(); else if (a === 'd-save-next') saveCoupon(true);
+  else if (a === 'd-delete') deleteCoupon(); else if (a === 'd-used') { if (cpEditing) cpToggleUsed(cpEditing); $('cp-dlg').close(); }
+});
+$('cp-photo-pick').addEventListener('click', () => $('cp-photo-file').click());
+$('cp-photo-file').addEventListener('change', e => {
+  const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return;
+  shrinkImage(f).then(d => { cpPhoto = d; cpPhotoUI(); }).catch(() => toast('캡처를 불러오지 못했어요. 다른 사진으로 시도해 주세요.'));
+});
+$('cp-photo-del').addEventListener('click', () => { cpPhoto = ''; cpPhotoUI(); });
 
 /* ---------- 이번 버전(2026-10-18-t) 1회성 반영: 보톡스 6건 → 체크박스 1개 관리(횟수 제한 없음, 시술별 가격)로 합침 + 25.8.30 삭제 / 다리 제모 시술일 3건 ---------- */
 function migrateQ(){
@@ -8345,7 +8509,7 @@ $('gSearch').addEventListener('click', () => { $('gs-dlg').showModal(); $('gs-q'
 $('gs-res').addEventListener('click', e => { const b = e.target.closest('[data-gs]'); if (!b) return; const h = $('gs-res')._hits && $('gs-res')._hits[Number(b.dataset.gs)]; if (h) gsGo(h); });
 
 /* A9 오늘 화면 카드 켜기/끄기 (이 기기에만 저장) */
-const TD_CARDS = [['direction', '나의 방향 한 줄'], ['timeline', '오늘 시간표'], ['tasks', '할 일 · 일정'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['assets', '자산 합계'], ['body', '오늘 체중·식단'], ['conn', '캘린더·요약 연결 설정'], ['quick', '빠른 입력'], ['review', '이번 달 돌아보기'], ['backup', '백업'], ['check', '데이터 점검']];
+const TD_CARDS = [['direction', '나의 방향 한 줄'], ['timeline', '오늘 시간표'], ['tasks', '할 일 · 일정'], ['coupon', '쿠폰 만료 임박'], ['med', '의료비 정산'], ['meeting', '이번 달 회의비'], ['cards', '카드별 이번 달 결제'], ['trend', '최근 6개월 회의비 추이'], ['assets', '자산 합계'], ['body', '오늘 체중·식단'], ['conn', '캘린더·요약 연결 설정'], ['quick', '빠른 입력'], ['review', '이번 달 돌아보기'], ['backup', '백업'], ['check', '데이터 점검']];
 function tdPrefs(){ try { const o = JSON.parse(localStorage.getItem('td_cards_v1') || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
 const TD_ORD_KEY = 'td_order_v1', TD_PRE_KEY = 'td_presets_v1';
 function tdOrderGet(){ try { const a = JSON.parse(localStorage.getItem(TD_ORD_KEY) || '[]'); return Array.isArray(a) ? a.filter((k, i) => TD_CARDS.some(c => c[0] === k) && a.indexOf(k) === i) : []; } catch (e) { return []; } }
@@ -8722,6 +8886,14 @@ function renderToday(quiet){
       h += '<!--c:med--><div class="td-card"><h3>🏥 의료비 정산</h3>' + (al.coToday.length ? '<p class="td-note td-warn" style="font-size:14px"><b>🏢 오늘 회사 입금 예정 ' + al.coToday.length + '건 · 예상 ' + won(al.coToday.reduce((a, x) => a + x.claim.exp, 0)) + '</b></p>' : '') + '<div class="td-big">' + openN + '건 <span class="td-note">진행중</span></div><p class="td-note">신청 전: 회사 <b>' + al.coNone.length + '</b> · 실비 <b>' + al.insNone.length + '</b> / 입금 대기: 회사 <b>' + coW + '</b> · 실비 <b>' + inW + '</b>' + (al.coLate.length + al.insLate.length ? ' <span class="td-warn">· 확인 필요 ' + (al.coLate.length + al.insLate.length) + '</span>' : '') + '</p><button type="button" class="pc-btn small" data-td="go" data-act="med">의료비 열기</button></div>';
     }
   } catch (er) { /* 의료비 오류가 오늘 화면을 막지 않게 */ }
+  // 쿠폰 만료 임박
+  try {
+    const cpDue = CP.items.filter(c => !c.used && Life.dd(t, c.exp) !== null && Life.dd(t, c.exp) >= 0 && Life.dd(t, c.exp) <= 7).sort((a, b) => a.exp < b.exp ? -1 : a.exp > b.exp ? 1 : 0);
+    if (cpDue.length) {
+      h += '<!--c:coupon--><div class="td-card"><h3>🎟 쿠폰 만료 임박</h3>' + cpDue.slice(0, 3).map(c => { const d = Life.dd(t, c.exp); return '<button type="button" class="td-row' + (d <= 3 ? ' soon' : '') + '" data-td="go" data-act="coupon" data-id="' + esc(c.id) + '"><span class="ic">🎟</span><span class="tx"><b>' + esc(c.name) + '</b>' + (c.brand ? '<i>' + esc(c.brand) + '</i>' : '') + '</span><span class="dd">' + (d === 0 ? '오늘 만료' : 'D-' + d) + '</span></button>'; }).join('') +
+        (cpDue.length > 3 ? '<p class="td-note">외 ' + (cpDue.length - 3) + '건 · <button type="button" class="pc-btn small" data-td="go" data-act="coupon">전체 보기</button></p>' : '') + '</div>';
+    }
+  } catch (er) { /* 쿠폰 오류가 오늘 화면을 막지 않게 */ }
   // 이번 달 돌아보기 (이번 달 vs 지난 달)
   try {
     const mAdd = (m, k) => { const a = m.split('-').map(Number), d = new Date(Date.UTC(a[0], a[1] - 1 + k, 1)); return d.toISOString().slice(0, 7); }, mk = mAdd(t.slice(0, 7), window.__tdRvOff || 0), pm = mAdd(mk, -1), rows = [], isNow = mk === t.slice(0, 7);
@@ -8776,6 +8948,7 @@ function tdGo(act, id){
   else if (act === 'photo') { recompressPhotos(); } else if (act === 'golf') { shCat = 'golf'; szOpen = false; setMode('shop'); } else if (act === 'backup') { doBackup(); setTimeout(renderToday, 900); } else if (act === 'settings') { window.AppSync.openSettings(); }
   else if (act === 'qk-exp') qkExpOpen(); else if (act === 'qk-meet') { if (!Q.people.length) { toast('먼저 인맥 탭에서 사람을 등록해 주세요.'); return; } openMeet(null, null); } else if (act === 'qk-skin') qkSkinOpen(); else if (act === 'qk-med') { mdSmsOpen(); }
   else if (act === 'chkall') { window.__tdChkAll = !window.__tdChkAll; renderToday(); } else if (act === 'wizard') { setMode('med'); mdWzOpen(); } else if (act === 'skin') { setMode('skin'); if (id) { try { openSkin(id); } catch (e) { /* 무시 */ } } } else if (act === 'people-log') { ppTab = 'log'; setMode('people'); }
+  else if (act === 'coupon') { setMode('coupon'); if (id) setTimeout(() => openCoupon(id), 60); }
 }
 /* ---------- 오늘 화면 빠른 입력 ---------- */
 function qkExpOpen(){
@@ -8917,7 +9090,7 @@ function renderGlobal(){
   if (gbox.dataset.sig !== html) { gbox.dataset.sig = html; gbox.innerHTML = html; }
   gbox.hidden = mode === 'today';   // 오늘 화면에서는 같은 내용을 본문에 보여주므로 상단 알림은 숨김
 }
-if (window.AppSync) window.AppSync.onState = () => { bkTicker(); renderGlobal(); syncNote(); if (mode === 'today' && window.AppSync.state().status !== 'saving') { clearTimeout(window.__tdT); window.__tdT = setTimeout(() => { try { renderToday(); } catch (e) { /* 무시 */ } }, 150); } };
+if (window.AppSync) window.AppSync.onState = () => { bkTicker(); renderGlobal(); syncNote(); if (window.AppSync.state().status === 'ok') { try { cpPendingClear(); } catch (e) { /* 무시 */ } } if (mode === 'today' && window.AppSync.state().status !== 'saving') { clearTimeout(window.__tdT); window.__tdT = setTimeout(() => { try { renderToday(); } catch (e) { /* 무시 */ } }, 150); } };
 $('gBar').addEventListener('click', e => {
   const x = e.target.closest('[data-g="x"]');
   if (x) { dismissAlert(x.dataset.key); renderGlobal(); if (mode === 'shop') checkBenefits(); e.stopPropagation(); return; }
@@ -8937,7 +9110,7 @@ $('gBar').addEventListener('keydown', e => { if (e.key === 'Enter') { const el =
 
 /* ---------- 모드 / 화면 ---------- */
 let mode = 'meeting';
-const MODE_VIEWS = { today: 'todayView', meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', car: 'carView', leave: 'leaveView', people: 'peopleView', skin: 'skinView', manual: 'skinView', med: 'medView', pay: 'payView', guide: 'guideView' };
+const MODE_VIEWS = { today: 'todayView', meeting: 'mtgView', price: 'priceView', shop: 'shopView', sub: 'subView', car: 'carView', leave: 'leaveView', people: 'peopleView', skin: 'skinView', manual: 'skinView', med: 'medView', pay: 'payView', guide: 'guideView', coupon: 'couponView' };
 function setMode(m){
   if (!MODE_VIEWS[m] || !navVisible(m)) m = firstVisibleMode();
   mode = m; { const g = groupOf(m); if (g) lastIn[g.g] = m; }
@@ -8965,6 +9138,7 @@ function renderAll(){
   else if (mode === 'med') renderMed();
   else if (mode === 'pay') renderPay();
   else if (mode === 'guide') renderGuide();
+  else if (mode === 'coupon') renderCoupon();
   else if (mode === 'today') renderToday();
   syncNote(); renderGlobal();
 }
@@ -9220,6 +9394,11 @@ $('quickSheet').addEventListener('click', e => {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') $('quickSheet').hidden = true; });
 $('quickFab').addEventListener('click', () => openQuick());
 $('nav-fab').addEventListener('change', e => { NAV.fab = e.target.checked; NAV = navNorm(NAV); navSave(); renderNav(); });
+$('nav-hide-coupon').addEventListener('change', e => {
+  NAV.hidden = e.target.checked ? NAV.hidden.filter(k => k !== 'coupon') : NAV.hidden.concat('coupon');
+  NAV = navNorm(NAV); navSave(); renderNav();
+  if (!navVisible('coupon') && mode === 'coupon') setMode(firstVisibleMode());
+});
 $('start-mode').addEventListener('change', e => { try { localStorage.setItem(START_KEY, e.target.value); } catch (er) { /* 무시 */ } toast('다음에 앱을 열 때부터 적용돼요.'); });
 $('set-rm-open').addEventListener('click', () => { $('drawerClose').click(); rmOpen(); });
 $('set-rm-notify').addEventListener('click', () => { rmToggleNotify(); setTimeout(renderSetCfg, 600); });
@@ -9368,7 +9547,7 @@ mnyScan(document.body);
 new MutationObserver(ms => { ms.forEach(m => m.addedNodes.forEach(mnyScan)); }).observe(document.body, { childList: true, subtree: true });
 
 setTimeout(() => { try { const L = rpLoad(); if (!L.length || Date.now() - Date.parse(L[0].at) > 20 * 3600000) rpTake('자동 (하루 한 번)'); } catch (e) { /* 무시 */ } }, 4000);
-migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); migrateAE(); migrateAF(); migrateAG(); migrateAH(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
+migrateQ(); migrateR(); migrateS(); migrateT(); migrateU(); migrateV(); migrateW(); migrateX(); migrateY(); migrateZ(); migrateAA(); migrateAB(); migrateAC(); migrateAD(); migrateAE(); migrateAF(); migrateAG(); migrateAH(); migrateAI(); try { mpAlertSync(); mpbSync(); carAlertSync(); rsAlertSync(); sbEndSync(); } catch (e) { /* 무시 */ }
 rmPurge();
 let startMode = 'today';
 try { const st = localStorage.getItem(START_KEY), v = st === null ? 'today' : (st && st !== 'last' && MODE_VIEWS[st] ? st : localStorage.getItem(MODE_KEY)); startMode = MODE_VIEWS[v] ? v : 'today'; } catch (e) { /* 기본값 */ }
