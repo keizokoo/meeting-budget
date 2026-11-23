@@ -10,6 +10,11 @@
  *  3) 동시에 두 기기가 저장해도 섞이지 않도록 잠금(LockService) 사용
  *  4) 읽기 쉬운 표 정리에 문제가 생겨도 원본(RAW_JSON) 저장은 먼저 끝내고, 경고만 돌려줍니다.
  *
+ * v28 변경점 (2026-11-23) — 앱 2026-11-23-c(세탁 전/후 치수 · 벨트 제외)와 짝
+ *  1) '치수표' 표에서 벨트 종류는 제외(앱에서도 숨김, 쇼핑이력 벨트 데이터는 그대로 둠).
+ *  2) 옷에 세탁 후 치수(m2)가 있으면 '치수표' 표에 그 값을 "현재 치수"로 적고, 메모에 "세탁 후 치수"를 덧붙임.
+ *     (원본 백업 RAW_JSON에는 세탁 전·후 값이 둘 다 그대로 저장되고, 이 표는 보기 좋은 요약일 뿐입니다.)
+ *
  * v27 변경점 (2026-11-23) — 앱 2026-11-23-a와 짝
  *  1) 쿠폰(쿠폰함 캡처 등록) 지원: 앱의 '쿠폰' 탭에서 미사용 + 만료일이 앞으로인 쿠폰마다 캘린더 일정 2개(만료 3일 전·당일 오전 9시 팝업 알림)를 만듭니다(syncCouponCalendar_, 시트 '쿠폰_캘린더맵').
  *     사용완료·삭제·만료 지남 쿠폰의 일정은 자동으로 정리됩니다. 사람 예약·의료비 캘린더와 같은 구조를 그대로 따릅니다.
@@ -104,7 +109,7 @@
  * priceCheck(가격), shopping(쇼핑), golf(골프장), subs(구독·결제), people(인맥) 항목이 같이 들어 있습니다.
  */
 
-var CODE_VERSION = 'v27 (2026-11-23)';
+var CODE_VERSION = 'v28 (2026-11-23)';
 var RAW_SHEET = 'RAW_JSON';
 var CHUNK_SIZE = 40000;   // 시트 한 칸 한도(50,000자)보다 작게
 var HIST_SHEET = 'RAW_HISTORY';
@@ -332,14 +337,22 @@ function writeReadable_(ss, payload) {
   }
 
   // 치수표(패션): 옷 종류별 → 공통 먼저, 브랜드순
+  // v28: 벨트는 치수가 필요 없어 이 표에서 제외(앱에서도 숨김, 데이터는 그대로 둠).
+  //      세탁 후 치수(m2)가 있으면 그 값을 "현재 치수"로 적고, 메모에 "세탁 후 치수"를 덧붙임(세탁 전 값은 앱의 내 치수표에서 확인).
   if (payload.sizes) {
     var zf = ['목', '어깨', '가슴', '기장', '소매', '소매통', '소맷부리', '허리', '엉덩이', '허벅지', '밑위', '밑단', '총장'];
     var zl = { 목: '목둘레', 어깨: '어깨너비', 가슴: '가슴둘레(상의)·가슴', 기장: '옷길이·기장', 소매: '소매길이', 소매통: '소매통너비', 소맷부리: '소맷부리너비', 밑단: '밑단(상의=둘레)' };
     var zRows = [['옷 종류', '브랜드', '사이즈'].concat(zf.map(function (f) { return zl[f] || f; })).concat(['메모'])];
-    (payload.sizes.items || []).slice().sort(function (a, b) {
+    (payload.sizes.items || []).filter(function (i) { return (i.kind || '') !== '벨트'; }).slice().sort(function (a, b) {
       return (a.kind || '') < (b.kind || '') ? -1 : (a.kind || '') > (b.kind || '') ? 1 : ((a.brand ? 1 : 0) - (b.brand ? 1 : 0)) || ((a.brand || '') < (b.brand || '') ? -1 : (a.brand || '') > (b.brand || '') ? 1 : 0);
     }).forEach(function (i) {
-      zRows.push([i.kind || '', i.brand || '공통', i.size || ''].concat(zf.map(function (f) { return i.m && i.m[f] != null ? i.m[f] : ''; })).concat([i.note || '']));
+      var hasW = i.m2 && Object.keys(i.m2).length > 0;
+      var note = i.note || '';
+      if (hasW) note = (note ? note + ' · ' : '') + '세탁 후 치수';
+      zRows.push([i.kind || '', i.brand || '공통', i.size || ''].concat(zf.map(function (f) {
+        var v = (hasW && i.m2[f] != null) ? i.m2[f] : (i.m && i.m[f] != null ? i.m[f] : '');
+        return v;
+      })).concat([note]));
     });
     writeTable_(ss, '치수표', zRows);
   }
