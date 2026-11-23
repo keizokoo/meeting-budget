@@ -1,5 +1,5 @@
 /**
- * 마이라이프(회의비 · 가격 · 쇼핑 · 구독 · 인맥 · 의료비) - Google Sheets 백업용 Apps Script (v26)
+ * 마이라이프(회의비 · 가격 · 쇼핑 · 구독 · 인맥 · 의료비 · 쿠폰) - Google Sheets 백업용 Apps Script (v27)
  *
  * 앱의 [지금 백업] / [시트에서 불러오기] 버튼(그리고 자동 백업)이 호출하는 서버 역할을 합니다.
  *
@@ -9,6 +9,10 @@
  *  2) 사람이 보기 좋은 표 자동 생성: 예산현황 / 지출내역 / 가격체크_구매이력 / 쇼핑이력 / 골프장 / 골프_요금기록 / 구독결제 / 인맥_사람 / 인맥_모임 / 인맥_이력 / 도수치료 / 연봉이력 / 가이드
  *  3) 동시에 두 기기가 저장해도 섞이지 않도록 잠금(LockService) 사용
  *  4) 읽기 쉬운 표 정리에 문제가 생겨도 원본(RAW_JSON) 저장은 먼저 끝내고, 경고만 돌려줍니다.
+ *
+ * v27 변경점 (2026-11-23) — 앱 2026-11-23-a와 짝
+ *  1) 쿠폰(쿠폰함 캡처 등록) 지원: 앱의 '쿠폰' 탭에서 미사용 + 만료일이 앞으로인 쿠폰마다 캘린더 일정 2개(만료 3일 전·당일 오전 9시 팝업 알림)를 만듭니다(syncCouponCalendar_, 시트 '쿠폰_캘린더맵').
+ *     사용완료·삭제·만료 지남 쿠폰의 일정은 자동으로 정리됩니다. 사람 예약·의료비 캘린더와 같은 구조를 그대로 따릅니다.
  *
  * v26 변경점 (2026-11-14) — 앱 2026-11-14-a와 짝
  *  1) 저장 응답에 rev(앱이 보낸 저장 번호)·codeVersion·serverMs 추가 → 앱이 시트를 다시 읽지 않고 응답만으로 저장을 확인(동기화 시간 단축).
@@ -100,7 +104,7 @@
  * priceCheck(가격), shopping(쇼핑), golf(골프장), subs(구독·결제), people(인맥) 항목이 같이 들어 있습니다.
  */
 
-var CODE_VERSION = 'v26 (2026-11-14)';
+var CODE_VERSION = 'v27 (2026-11-23)';
 var RAW_SHEET = 'RAW_JSON';
 var CHUNK_SIZE = 40000;   // 시트 한 칸 한도(50,000자)보다 작게
 var HIST_SHEET = 'RAW_HISTORY';
@@ -134,6 +138,7 @@ function doPost(e) {
     try { var cw = syncCalendar_(ss, payload.people); if (cw) warnings.push(cw); } catch (err) { warnings.push('캘린더 동기화 실패: ' + String(err)); }
     try { var mw = syncMedCalendar_(ss, payload.medical); if (mw) warnings.push(mw); } catch (err) { warnings.push('의료비 캘린더 동기화 실패: ' + String(err)); }
     try { var aw = syncAgendaCalendar_(ss, payload._agenda); if (aw) warnings.push(aw); } catch (err) { warnings.push('할 일 캘린더 동기화 실패: ' + String(err)); }
+    try { var kw = syncCouponCalendar_(ss, payload.coupons); if (kw) warnings.push(kw); } catch (err) { warnings.push('쿠폰 캘린더 동기화 실패: ' + String(err)); }
 
     return json_({ ok: true, savedAt: new Date().toISOString(), chunks: info.chunks, length: text.length, warnings: warnings, rev: String(payload._rev || ''), codeVersion: CODE_VERSION, serverMs: Date.now() - t0_ });
   } catch (err) {
@@ -678,6 +683,57 @@ function syncAgendaCalendar_(ss, ag) {
   writeAgendaMap_(ss, out);
   return fail ? ('할 일 캘린더 일부 실패 ' + fail + '건') : '';
 }
+
+/* ---------- 쿠폰 만료 알림 → 구글캘린더 (앱의 '쿠폰' 탭, 미사용 + 만료일이 앞으로인 쿠폰만, 항상 켜짐) ---------- */
+var COUPON_CAL_SHEET = '쿠폰_캘린더맵';
+function readCouponCalMap_(ss) {
+  var sh = ss.getSheetByName(COUPON_CAL_SHEET), map = {};
+  if (!sh || sh.getLastRow() < 2) return map;
+  sh.getRange(2, 1, sh.getLastRow() - 1, 4).getValues().forEach(function (r) { if (r[0]) map[String(r[0])] = { ev: String(r[1] || ''), sig: String(r[2] || ''), cid: String(r[3] || '') }; });
+  return map;
+}
+function writeCouponCalMap_(ss, map) {
+  var sh = ss.getSheetByName(COUPON_CAL_SHEET) || ss.insertSheet(COUPON_CAL_SHEET);
+  var rows = [['키(d3:쿠폰ID · day:쿠폰ID)', '캘린더 일정 ID', '내용 서명(변경 감지용)', '쿠폰 ID']];
+  Object.keys(map).forEach(function (k) { var x = map[k]; rows.push([k, x.ev, x.sig, x.cid]); });
+  sh.clearContents(); sh.getRange(1, 1, rows.length, 4).setValues(rows);
+}
+// cp = { items: [{ id, name, brand, cond, amt, exp, used }], del: {} } — 앱이 백업할 때 함께 보냄(coupons 가지). 없으면(옛 앱) 아무것도 하지 않음.
+function syncCouponCalendar_(ss, cp) {
+  if (!cp || typeof cp !== 'object') return '';
+  var items = cp.items || [], del = cp.del || {};
+  var today = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd');
+  var cal = getCal_(), map = readCouponCalMap_(ss), out = {}, fail = 0;
+  items.forEach(function (c) {
+    if (!c || !c.id || del[c.id] || c.used || !c.exp || c.exp < today) return;
+    var name = String(c.name || '쿠폰'), cond = String(c.cond || ''), amt = Number(c.amt);
+    var desc = (cond ? '조건: ' + cond + '\n' : '') + (amt ? '할인: ' + Math.round(amt).toLocaleString('en-US') + '원\n' : '') + '\n— 마이라이프 쿠폰 알림. 사용했으면 앱에서 "사용완료"로 표시해 주세요.';
+    var plans = [];
+    var d3 = new Date(Utilities.parseDate(c.exp, 'Asia/Seoul', 'yyyy-MM-dd').getTime() - 3 * 86400000);
+    var d3s = Utilities.formatDate(d3, 'Asia/Seoul', 'yyyy-MM-dd');
+    if (d3s >= today) plans.push({ k: 'd3:' + c.id, date: d3s, title: '🎟 [D-3] ' + name + ' 쿠폰 만료' });
+    plans.push({ k: 'day:' + c.id, date: c.exp, title: '🎟 [오늘 만료] ' + name + ' 쿠폰 만료' });
+    plans.forEach(function (p) {
+      var sig = [p.title, p.date, desc].join('|'), prev = map[p.k];
+      if (prev && prev.sig === sig && prev.ev) { out[p.k] = prev; return; }
+      try {
+        if (prev && prev.ev) delEvent_(cal, prev.ev);
+        var st = Utilities.parseDate(p.date + ' 09:00', 'Asia/Seoul', 'yyyy-MM-dd HH:mm');
+        var ev = cal.createEvent(p.title, st, new Date(st.getTime() + 30 * 60 * 1000), { description: desc });
+        try { ev.removeAllReminders(); ev.addPopupReminder(0); } catch (x) { /* 알림 설정 실패는 무시 */ }
+        out[p.k] = { ev: ev.getId(), sig: sig, cid: c.id };
+      } catch (err) { fail++; if (prev) out[p.k] = prev; }
+    });
+  });
+  // 사용완료·삭제·만료 지남 쿠폰의 일정 정리
+  Object.keys(map).forEach(function (k) {
+    if (out[k]) return;
+    try { delEvent_(cal, map[k].ev); } catch (err) { fail++; out[k] = map[k]; }
+  });
+  writeCouponCalMap_(ss, out);
+  return fail ? ('쿠폰 캘린더 일부 실패 ' + fail + '건') : '';
+}
+
 function calsList_() {
   try {
     return { ok: true, cals: CalendarApp.getAllCalendars().map(function (c) { return { id: c.getId(), name: c.getName(), color: c.getColor(), mine: c.isMyPrimaryCalendar() }; }) };
@@ -687,7 +743,7 @@ function agendaList_(calIds, days) {
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet(), tz = 'Asia/Seoul';
     var n = Math.max(1, Math.min(14, Number(days) || 7)), skip = {};
-    [readCalMap_(ss), readMedCalMap_(ss), readAgendaMap_(ss)].forEach(function (m) { Object.keys(m).forEach(function (k) { if (m[k].ev) skip[m[k].ev] = 1; }); });
+    [readCalMap_(ss), readMedCalMap_(ss), readAgendaMap_(ss), readCouponCalMap_(ss)].forEach(function (m) { Object.keys(m).forEach(function (k) { if (m[k].ev) skip[m[k].ev] = 1; }); });
     var start = Utilities.parseDate(Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd') + ' 00:00', tz, 'yyyy-MM-dd HH:mm'), end = new Date(start.getTime() + n * 86400000);
     var ids = String(calIds || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean).slice(0, 8), out = [];
     ids.forEach(function (id) {
