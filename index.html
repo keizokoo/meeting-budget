@@ -3835,9 +3835,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-23-c (내 치수표: 세탁 전/후 치수 2세트 등록 · 벨트 제외 / code.gs v28과 짝) / 이전: 2026-11-23-b (회의비 상신완료 금액 표시 · 패션 치수표 종류 매칭 수정 · 패션 입력창 혜택1·2/중고보상 숨김·재판매 상태별 표시)';
+const APP_BUILD_VERSION = '2026-11-23-e (되돌림: 패션·치수표 합치기 시안을 앱에서 빼고 별도 아티팩트로 대체 / code.gs 변경 없음) / 이전: 2026-11-23-c (내 치수표: 세탁 전/후 치수 2세트 등록 · 벨트 제외 / code.gs v28과 짝)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['내 치수표: 옷마다 "세탁 전"·"세탁 후" 치수를 따로 등록(세탁 후가 있으면 그걸 현재 치수로 보여주고, 세탁 전은 참고로 같이 표시 · 비교·추천도 세탁 후 기준) / 벨트는 치수가 필요 없어 종류 목록·입력창·치수표 화면에서 제외(쇼핑 이력 데이터는 그대로)', '회의비: 상신완료 항목도 미상신처럼 금액 표시 / 패션: 내 치수표·치수 연결 목록이 종류(티셔츠/바지 등) 안 맞으면 빠지거나 뒤섞이던 문제 수정 / 패션 입력창: 혜택1·2·중고보상 칸 숨김(기존 데이터는 유지), 재판매 입력은 판매완료일 때만 표시', '소비 > 쿠폰: 캡처 등록 · 만료 임박순 목록 · 오늘 화면 D-day 카드 · 구글캘린더 만료 알림(D-3·당일)'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
+const APP_RECENT = ['패션·치수표 합치기 시안을 앱 설정 화면에 넣었다가 되돌림 — 시안은 앱 안이 아니라 별도 HTML(아티팩트)로 따로 보여드림, 지금 이 화면은 바뀐 내용 없음', '내 치수표: 옷마다 "세탁 전"·"세탁 후" 치수를 따로 등록(세탁 후가 있으면 그걸 현재 치수로 보여주고, 세탁 전은 참고로 같이 표시 · 비교·추천도 세탁 후 기준) / 벨트는 치수가 필요 없어 종류 목록·입력창·치수표 화면에서 제외(쇼핑 이력 데이터는 그대로)', '회의비: 상신완료 항목도 미상신처럼 금액 표시 / 패션: 내 치수표·치수 연결 목록이 종류(티셔츠/바지 등) 안 맞으면 빠지거나 뒤섞이던 문제 수정 / 패션 입력창: 혜택1·2·중고보상 칸 숨김(기존 데이터는 유지), 재판매 입력은 판매완료일 때만 표시'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
