@@ -25,6 +25,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     --accent:#FF4D00; --on-accent:#0F0800; --accent-ink:var(--accent); --soft:#FFF1E8;
     --warn:#D9391F; --on-warn:#FFFFFF;
     --good:#1F8A4C;
+    --sched:#0E7D86;
     --shadow: 0 14px 34px -20px rgba(10,10,10,.16);
   }
   @media (prefers-color-scheme: dark){
@@ -34,6 +35,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
       --accent:#FF7A33; --on-accent:#0F0800; --soft:#2B1B12;
       --warn:#FF5C4D; --on-warn:#170300;
       --good:#3FBE75;
+      --sched:#45D6CC;
       --shadow: 0 14px 34px -20px rgba(0,0,0,.55);
     }
   }
@@ -43,6 +45,7 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
     --accent:#FF7A33; --on-accent:#0F0800; --soft:#2B1B12;
     --warn:#FF5C4D; --on-warn:#170300;
     --good:#3FBE75;
+    --sched:#45D6CC;
     --shadow: 0 14px 34px -20px rgba(0,0,0,.55);
   }
   /* ---------- 앱 스타일 (설정 > 화면) ---------- */
@@ -561,13 +564,15 @@ try{ var __st = localStorage.getItem('mylife_style_v1'); if(__st && /^(blue|gree
   .nf-sum, .nf-two{ display:flex; gap:10px; justify-content:space-between; } .nf-sum > div, .nf-two > div{ flex:1; } .nf-sum small, .nf-two small{ display:block; color:var(--ink2); font-size:11.5px; font-weight:700; } .nf-sum b, .nf-two b{ font:800 16px Manrope,sans-serif; font-variant-numeric:tabular-nums; }
   .nf-big{ font:900 30px Unbounded,sans-serif !important; letter-spacing:-.02em; } .nf-big.neg{ color:var(--warn); }
   .nf-head{ display:flex; align-items:center; gap:8px; width:100%; border:0; background:none; color:var(--ink); font:inherit; padding:0 0 8px; cursor:pointer; text-align:left; } .nf-head b{ font-size:16px; } .nf-arw{ margin-left:auto; color:var(--ink2); }
-  .nf-tag{ display:inline-block; border-radius:99px; padding:2px 9px; font-size:11px; font-weight:800; background:var(--soft); color:var(--ink); } .nf-tag.warn{ background:var(--warn); color:#fff; } .nf-tag.ok{ background:var(--good); color:#fff; }
+  .nf-tag{ display:inline-block; border-radius:99px; padding:2px 9px; font-size:11px; font-weight:800; background:var(--soft); color:var(--ink); } .nf-tag.warn{ background:var(--warn); color:#fff; } .nf-tag.ok{ background:var(--good); color:#fff; } .nf-tag.sched{ background:var(--sched); color:#fff; } .nf-tag.used{ background:var(--accent); color:var(--on-accent); }
+  .lv-chips{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .lv-chip{ font:inherit; font-weight:700; font-size:12.5px; padding:6px 12px; border-radius:999px; border:1px solid var(--line2); background:var(--surface); color:var(--ink2); min-height:32px; cursor:pointer; } .lv-chip.on{ background:var(--ink); border-color:var(--ink); color:var(--bg); }
   .nf-row{ display:flex; justify-content:space-between; gap:8px; width:100%; border:0; border-top:1px solid var(--line); background:none; color:var(--ink); font:inherit; font-size:13.5px; padding:10px 2px; text-align:left; cursor:pointer; } .nf-row b.give{ color:var(--warn); } .nf-row b.recv{ color:var(--good); }
   .nf-ybar{ display:flex; align-items:center; justify-content:center; gap:14px; margin:4px 0 10px; } .nf-ybar b{ font:800 16px Manrope,sans-serif; }
-  .nf-bar{ height:10px; background:var(--line); border-radius:6px; overflow:hidden; display:flex; margin-top:8px; } .nf-bar i{ display:block; height:100%; background:var(--accent); } .nf-bar i.p{ background:var(--ink); } .nf-bar.warn i{ background:var(--warn); }
+  .nf-bar{ height:10px; background:var(--line); border-radius:6px; overflow:hidden; display:flex; margin-top:8px; } .nf-bar i{ display:block; height:100%; background:var(--accent); } .nf-bar i.s{ background:var(--sched); } .nf-bar i.p{ background:var(--ink); } .nf-bar.warn i{ background:var(--warn); }
   .nf-cal{ display:grid; grid-template-columns:repeat(7,1fr); gap:4px; text-align:center; } .nf-cal .hd{ font-size:11.5px; font-weight:800; color:var(--ink2); padding:4px 0; }
   .nf-cal .dd{ position:relative; min-height:40px; border:1px solid var(--line); border-radius:10px; background:var(--surface); color:var(--ink); font:700 13px Manrope,sans-serif; cursor:pointer; padding:0; } .nf-cal .dd.red{ color:var(--warn); } .nf-cal .dd.blue{ color:#2F6BFF; } .nf-cal .dd:disabled{ background:transparent; border-color:transparent; cursor:default; }
-  .nf-cal .dd.today{ outline:2px solid var(--accent); } .nf-cal .dd.used{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); } .nf-cal .dd.plan{ background:var(--ink); border-color:var(--ink); color:var(--bg); } .nf-cal .dd small{ position:absolute; right:3px; bottom:1px; font-size:9px; }
+  .nf-cal .dd.today{ outline:2px solid var(--accent); } .nf-cal .dd.used{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); } .nf-cal .dd.sched{ background:var(--surface); border:2px solid var(--sched); color:var(--sched); } .nf-cal .dd.plan{ background:var(--ink); border-color:var(--ink); color:var(--bg); } .nf-cal .dd small{ position:absolute; right:3px; bottom:1px; font-size:9px; }
   .nf-tip{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 0; border-top:1px solid var(--line); font-size:13.5px; } .nf-tip small{ display:block; color:var(--ink2); font-size:11.5px; }
   .nf-dd{ display:flex; align-items:center; gap:10px; width:100%; border:0; border-top:1px solid var(--line); background:none; color:var(--ink); font:inherit; padding:10px 2px; text-align:left; cursor:pointer; } .nf-dd .dn{ font:800 15px Unbounded,sans-serif; min-width:64px; } .nf-dd .dn.soon{ color:var(--warn); } .nf-dd .tx{ flex:1; font-size:13.5px; } .nf-dd .tx small{ display:block; color:var(--ink2); font-size:11.5px; }
   .tl{ border-left:3px solid var(--line2); margin-left:4px; padding-left:10px; } .tl-r{ display:flex; gap:10px; padding:7px 0; position:relative; font-size:13.5px; } .tl-r:before{ content:""; position:absolute; left:-17px; top:12px; width:9px; height:9px; border-radius:50%; background:var(--ink); } .tl-r.past{ opacity:.45; } .tl-r.now:before{ background:var(--good); box-shadow:0 0 0 4px rgba(31,138,76,.25); } .tl-r.now{ color:var(--good); }
@@ -3835,9 +3840,9 @@ document.addEventListener('click', e => {   // 메모: 2줄로 줄여 보이다�
   const m = e.target.closest && e.target.closest('.mx'); if (!m) return;
   if (m.classList.contains('open') || m.scrollHeight > m.clientHeight + 1) { m.classList.toggle('open'); e.stopPropagation(); e.preventDefault(); }
 }, true);
-const APP_BUILD_VERSION = '2026-11-23-c (내 치수표: 세탁 전/후 치수 2세트 등록 · 벨트 제외 / code.gs v28과 짝) / 이전: 2026-11-23-b (회의비 상신완료 금액 표시 · 패션 치수표 종류 매칭 수정 · 패션 입력창 혜택1·2/중고보상 숨김·재판매 상태별 표시)';
+const APP_BUILD_VERSION = '2026-11-23-d (연차: 예정 · 사용 완료 구분 추가 — 새 필드 없이 날짜만으로 자동 판정) / 이전: 2026-11-23-c (내 치수표: 세탁 전/후 치수 2세트 등록 · 벨트 제외 / code.gs v28과 짝)';
 window.APP_BUILD_VERSION = APP_BUILD_VERSION;
-const APP_RECENT = ['내 치수표: 옷마다 "세탁 전"·"세탁 후" 치수를 따로 등록(세탁 후가 있으면 그걸 현재 치수로 보여주고, 세탁 전은 참고로 같이 표시 · 비교·추천도 세탁 후 기준) / 벨트는 치수가 필요 없어 종류 목록·입력창·치수표 화면에서 제외(쇼핑 이력 데이터는 그대로)', '회의비: 상신완료 항목도 미상신처럼 금액 표시 / 패션: 내 치수표·치수 연결 목록이 종류(티셔츠/바지 등) 안 맞으면 빠지거나 뒤섞이던 문제 수정 / 패션 입력창: 혜택1·2·중고보상 칸 숨김(기존 데이터는 유지), 재판매 입력은 판매완료일 때만 표시', '소비 > 쿠폰: 캡처 등록 · 만료 임박순 목록 · 오늘 화면 D-day 카드 · 구글캘린더 만료 알림(D-3·당일)'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
+const APP_RECENT = ['연차: 기록한 날짜가 오늘보다 뒤면 "예정", 오늘·지난 날이면 "사용 완료"로 자동 구분(날짜가 지나면 저절로 사용 완료로 바뀜, 새 필드 없음) — 요약에 예정 일수 추가, 달력은 주황(사용)·청록 테두리(예정)·검정(저장 전 임시 계획) 3색 구분, 사용 내역에 전체/예정/사용 완료 필터 칩과 배지 추가', '내 치수표: 옷마다 "세탁 전"·"세탁 후" 치수를 따로 등록(세탁 후가 있으면 그걸 현재 치수로 보여주고, 세탁 전은 참고로 같이 표시 · 비교·추천도 세탁 후 기준) / 벨트는 치수가 필요 없어 종류 목록·입력창·치수표 화면에서 제외(쇼핑 이력 데이터는 그대로)', '회의비: 상신완료 항목도 미상신처럼 금액 표시 / 패션: 내 치수표·치수 연결 목록이 종류(티셔츠/바지 등) 안 맞으면 빠지거나 뒤섞이던 문제 수정 / 패션 입력창: 혜택1·2·중고보상 칸 숨김(기존 데이터는 유지), 재판매 입력은 판매완료일 때만 표시'];   // 최근 3개만, 한 줄 요약(새 빌드 때 맨 앞에 추가)
 const APP_NAME = '마이라이프';
 const $ = id => document.getElementById(id);
 const PRICE_KEY = 'price_check_app_v2', SHOP_KEY = 'shopping_history_app_v1', MODE_KEY = 'app_mode_v1', NOTIFY_KEY = 'shopping_notify_v1';
@@ -5195,8 +5200,9 @@ function lvNorm(o){
   const items = (Array.isArray(o.items) ? o.items : []).filter(r => r && r.id && nfDate(r.date)).map(r => ({ id: String(r.id), date: String(r.date), days: Number(r.days) === 0.5 ? 0.5 : 1, memo: String(r.memo || ''), u: String(r.u || '') }));
   return { items, cfg: { tot, u: String(c.u || '') }, del: cleanDel(o.del) };
 }
-let LV = loadK(LV_KEY, { items: [], cfg: { tot: {}, u: '' }, del: {} }, lvNorm), lvY = Number(todayStr().slice(0, 4)), lvM = Number(todayStr().slice(5, 7)), lvEditing = null;
+let LV = loadK(LV_KEY, { items: [], cfg: { tot: {}, u: '' }, del: {} }, lvNorm), lvY = Number(todayStr().slice(0, 4)), lvM = Number(todayStr().slice(5, 7)), lvEditing = null, lvHistFilter = 'all';
 const lvPlan = [];
+const lvIsSched = s => s > todayStr();   // 날짜 자동 판정: 오늘보다 뒤면 예정, 오늘 포함 지난 날이면 사용 완료(별도 필드 없음)
 function lvSave(){ saveK(LV_KEY, LV); }
 const lvTotal = y => LV.cfg.tot[String(y)] != null ? LV.cfg.tot[String(y)] : LV_DEFAULT_TOTAL;
 const lvIsOff = s => { const w = nfWd(s); return w === 0 || w === 6 || LV_HOL.indexOf(s) >= 0; };
@@ -5217,14 +5223,16 @@ function lvTips(){
   }
   return Object.keys(out).map(k => out[k]).sort((a, b) => a.from.localeCompare(b.from)).slice(0, 5);
 }
-function lvUsedYear(y){ return LV.items.filter(r => r.date.slice(0, 4) === String(y)).reduce((a, r) => a + r.days, 0); }
+function lvUsedYear(y){ return LV.items.filter(r => r.date.slice(0, 4) === String(y) && !lvIsSched(r.date)).reduce((a, r) => a + r.days, 0); }
+function lvSchedYear(y){ return LV.items.filter(r => r.date.slice(0, 4) === String(y) && lvIsSched(r.date)).reduce((a, r) => a + r.days, 0); }
 function lvRender(){
   const box = $('lv-body'); if (!box) return;
-  const t = todayStr(), tot = lvTotal(lvY), used = lvUsedYear(lvY), plan = lvPlan.filter(d => d.slice(0, 4) === String(lvY)).length, remain = tot - used - plan;
+  const t = todayStr(), tot = lvTotal(lvY), used = lvUsedYear(lvY), sched = lvSchedYear(lvY), plan = lvPlan.filter(d => d.slice(0, 4) === String(lvY)).length, remain = tot - used - sched, remainShow = remain - plan;
   const isSet = LV.cfg.tot[String(lvY)] != null;
+  const usedPct = tot > 0 ? Math.min(100, used / tot * 100) : 0, schedPct = tot > 0 ? Math.min(Math.max(0, 100 - usedPct), sched / tot * 100) : 0, planPct = tot > 0 ? Math.min(Math.max(0, 100 - usedPct - schedPct), plan / tot * 100) : 0;
   let h = '<div class="nf-ybar"><button type="button" class="toolbtn" data-lv="yprev" aria-label="이전 해">‹</button><b>' + lvY + '년</b><button type="button" class="toolbtn" data-lv="ynext" aria-label="다음 해">›</button></div>';
-  h += '<div class="pc-card"><div class="nf-two"><div><small>' + (plan ? '계획 반영 후 잔여' : '잔여 연차') + '</small><b class="nf-big' + (remain < 0 ? ' neg' : '') + '">' + remain + '일</b></div><div style="text-align:right"><small>총 ' + tot + '일 · 사용 ' + used + '일' + (plan ? ' · 계획 ' + plan + '일' : '') + '</small></div></div>' +
-    '<div class="nf-bar"><i style="width:' + Math.min(100, tot > 0 ? used / tot * 100 : 0) + '%"></i><i class="p" style="width:' + Math.min(100 - Math.min(100, tot > 0 ? used / tot * 100 : 0), tot > 0 ? plan / tot * 100 : 0) + '%"></i></div>' +
+  h += '<div class="pc-card"><div class="nf-two"><div><small>' + (plan ? '계획 반영 후 잔여' : '잔여 연차') + '</small><b class="nf-big' + ((plan ? remainShow : remain) < 0 ? ' neg' : '') + '">' + (plan ? remainShow : remain) + '일</b></div><div style="text-align:right"><small>총 ' + tot + '일 · 사용 ' + used + '일 · 예정 ' + sched + '일' + (plan ? ' · 계획 ' + plan + '일' : '') + '</small></div></div>' +
+    '<div class="nf-bar"><i style="width:' + usedPct + '%"></i><i class="s" style="width:' + schedPct + '%"></i><i class="p" style="width:' + planPct + '%"></i></div>' +
     (remain < 0 ? '<p class="pc-hint" style="color:var(--warn)">총 연차보다 ' + (-remain) + '일 많아요.</p>' : '') +
     '<label class="pc-f" style="margin-top:10px">' + lvY + '년 총 연차 일수 (이월·추가 포함)<input id="lv-total" type="number" min="0" step="0.5" inputmode="decimal" value="' + tot + '"></label>' +
     (isSet ? '' : '<p class="pc-hint" style="margin:4px 0 0">아직 정하지 않아 임시값 ' + LV_DEFAULT_TOTAL + '일로 계산 중이에요. 회사 기준 일수를 입력해 주세요.</p>') + '</div>';
@@ -5232,11 +5240,11 @@ function lvRender(){
   const first = lvY + '-' + String(lvM).padStart(2, '0') + '-01', n = new Date(lvY, lvM, 0).getDate(), w0 = nfWd(first);
   let cal = ['일', '월', '화', '수', '목', '금', '토'].map(x => '<div class="hd">' + x + '</div>').join('') + '<div></div>'.repeat(w0);
   for (let d = 1; d <= n; d++) {
-    const s = lvY + '-' + String(lvM).padStart(2, '0') + '-' + String(d).padStart(2, '0'), w = nfWd(s), u = lvUsedOn(s), hol = LV_HOL.indexOf(s) >= 0, pl = lvPlan.indexOf(s) >= 0, off = lvIsOff(s);
-    cal += '<button type="button" class="dd' + (u ? ' used' : '') + (pl ? ' plan' : '') + (hol || w === 0 ? ' red' : w === 6 ? ' blue' : '') + (s === t ? ' today' : '') + '" data-lv="cell" data-d="' + s + '"' + (off && !u ? ' disabled' : '') + '>' + d + (u && u < 1 ? '<small>반</small>' : '') + '</button>';
+    const s = lvY + '-' + String(lvM).padStart(2, '0') + '-' + String(d).padStart(2, '0'), w = nfWd(s), u = lvUsedOn(s), sch = u > 0 && lvIsSched(s), hol = LV_HOL.indexOf(s) >= 0, pl = lvPlan.indexOf(s) >= 0, off = lvIsOff(s);
+    cal += '<button type="button" class="dd' + (u && !sch ? ' used' : '') + (sch ? ' sched' : '') + (pl ? ' plan' : '') + (hol || w === 0 ? ' red' : w === 6 ? ' blue' : '') + (s === t ? ' today' : '') + '" data-lv="cell" data-d="' + s + '"' + (off && !u ? ' disabled' : '') + '>' + d + (u && u < 1 ? '<small>반</small>' : '') + '</button>';
   }
   h += '<div class="pc-card"><div class="nf-ybar" style="margin-top:0"><button type="button" class="toolbtn" data-lv="mprev" aria-label="이전 달">‹</button><b>' + lvY + '년 ' + lvM + '월</b><button type="button" class="toolbtn" data-lv="mnext" aria-label="다음 달">›</button></div><div class="nf-cal">' + cal + '</div>' +
-    '<p class="pc-hint" style="margin:8px 0 0">쓸 날을 눌러 계획해 보세요(검정). 주황은 이미 쓴 연차, 빨강은 공휴일이에요. 공휴일 표는 2027년까지 들어 있어요.</p></div>';
+    '<p class="pc-hint" style="margin:8px 0 0">쓸 날을 눌러 계획해 보세요(검정, 저장 전). 주황은 사용 완료, 청록 테두리는 예정(저장된 미래 연차), 빨강은 공휴일이에요. 공휴일 표는 2027년까지 들어 있어요.</p></div>';
   // 계획
   if (lvPlan.length) {
     const ps = lvPlan.slice().sort(), seen = {};
@@ -5248,9 +5256,13 @@ function lvRender(){
   const tips = lvTips();
   h += '<div class="pc-card"><b>💡 연휴 만들기 추천 <small style="font-weight:500;color:var(--ink2)">(앞으로 6개월)</small></b>' + (tips.length ? tips.map(x => '<div class="nf-tip"><span>' + nfMd(x.from) + '(' + nfWdK(x.from) + ')~' + nfMd(x.to) + '(' + nfWdK(x.to) + ') <b>' + x.len + '일 연휴</b><small>연차 ' + x.need + '일 · ' + x.ds.map(nfMd).join(', ') + '</small></span><button type="button" class="pc-btn small" data-lv="tip" data-ds="' + x.ds.join(',') + '">계획에 추가</button></div>').join('') : '<p class="pc-hint" style="margin:6px 0 0">연차 1~2일로 4일 이상 쉴 수 있는 날이 아직 없어요.</p>') + '</div>';
   // 내역
-  const rows = LV.items.filter(r => r.date.slice(0, 4) === String(lvY)).sort((a, b) => b.date.localeCompare(a.date));
+  const yearRows = LV.items.filter(r => r.date.slice(0, 4) === String(lvY));
+  const schedRows = yearRows.filter(r => lvIsSched(r.date)).sort((a, b) => a.date.localeCompare(b.date));
+  const usedRows = yearRows.filter(r => !lvIsSched(r.date)).sort((a, b) => b.date.localeCompare(a.date));
+  const rows = lvHistFilter === 'sched' ? schedRows : lvHistFilter === 'used' ? usedRows : schedRows.concat(usedRows);
   h += '<div class="pc-card"><div class="pc-headrow"><h3>사용 내역</h3><button type="button" class="pc-btn small primary" data-lv="add">+ 연차 기록</button></div>' +
-    (rows.length ? rows.map(r => '<button type="button" class="nf-row" data-lv="edit" data-id="' + esc(r.id) + '"><span>' + esc(r.date) + ' (' + nfWdK(r.date) + ')' + (r.memo ? ' · ' + esc(r.memo) : '') + '</span><b>' + (r.days < 1 ? '반차' : '1일') + '</b></button>').join('') : '<p class="pc-hint" style="margin:0">' + lvY + '년 기록이 없어요.</p>') + '</div>';
+    '<div class="lv-chips"><button type="button" class="lv-chip' + (lvHistFilter === 'all' ? ' on' : '') + '" data-lvf="all">전체 ' + yearRows.length + '</button><button type="button" class="lv-chip' + (lvHistFilter === 'sched' ? ' on' : '') + '" data-lvf="sched">예정 ' + schedRows.length + '</button><button type="button" class="lv-chip' + (lvHistFilter === 'used' ? ' on' : '') + '" data-lvf="used">사용 완료 ' + usedRows.length + '</button></div>' +
+    (rows.length ? rows.map(r => { const sch = lvIsSched(r.date); return '<button type="button" class="nf-row" data-lv="edit" data-id="' + esc(r.id) + '"><span>' + esc(r.date) + ' (' + nfWdK(r.date) + ')' + (r.memo ? ' · ' + esc(r.memo) : '') + '</span><b><span class="nf-tag ' + (sch ? 'sched' : 'used') + '" style="margin-right:6px">' + (sch ? '예정' : '사용') + '</span>' + (r.days < 1 ? '반차' : '1일') + '</b></button>'; }).join('') : '<p class="pc-hint" style="margin:0">' + (lvHistFilter === 'all' ? lvY + '년 기록이 없어요.' : lvHistFilter === 'sched' ? '예정된 연차가 없어요.' : '사용 완료한 연차가 없어요.') + '</p>') + '</div>';
   h += '<div class="toolbar" style="margin:10px 0"><button class="toolbtn" data-lv="backup">☁ 지금 백업</button></div>';
   box.innerHTML = h;
 }
@@ -5268,13 +5280,14 @@ function lvSaveRec(){
   const rec = { date, days, memo: $('lv-memo').value.trim(), u: nowIso() };
   if (ex) Object.assign(ex, rec); else LV.items.push(Object.assign({ id: uid('lv') }, rec));
   lvY = Number(date.slice(0, 4)); lvM = Number(date.slice(5, 7));
-  lvSave(); changed(); $('lv-dlg').close(); toast('저장했어요.'); renderAll();
+  lvSave(); changed(); $('lv-dlg').close(); toast((lvIsSched(date) ? '예정으로' : '사용으로') + ' 저장했어요.'); renderAll();
 }
 function lvDelRec(){
   const r = LV.items.find(x => x.id === lvEditing); if (!r || !confirm('이 연차 기록을 삭제할까요?')) return;
   LV.items = LV.items.filter(x => x.id !== r.id); LV.del[r.id] = nowIso(); lvSave(); changed(); $('lv-dlg').close(); renderAll();
 }
 $('leaveView').addEventListener('click', e => {
+  const ef = e.target.closest('[data-lvf]'); if (ef) { lvHistFilter = ef.dataset.lvf; lvRender(); return; }
   const el = e.target.closest('[data-lv]'); if (!el) return; const a = el.dataset.lv;
   if (a === 'yprev') { lvY--; lvRender(); } else if (a === 'ynext') { lvY++; lvRender(); }
   else if (a === 'mprev') { lvM--; if (lvM < 1) { lvM = 12; lvY--; } lvRender(); }
@@ -5283,8 +5296,11 @@ $('leaveView').addEventListener('click', e => {
   else if (a === 'tip') { el.dataset.ds.split(',').forEach(s => { if (lvPlan.indexOf(s) < 0) lvPlan.push(s); }); const f = el.dataset.ds.split(',')[0]; lvY = Number(f.slice(0, 4)); lvM = Number(f.slice(5, 7)); lvRender(); }
   else if (a === 'plan-clear') { lvPlan.length = 0; lvRender(); }
   else if (a === 'plan-rec') {
-    if (!lvPlan.length || !confirm('계획한 ' + lvPlan.length + '일을 연차(1일씩)로 기록할까요?')) return;
-    const t = nowIso(); lvPlan.slice().sort().forEach(s => { if (lvUsedOn(s) === 0) LV.items.push({ id: uid('lv'), date: s, days: 1, memo: '', u: t }); }); lvPlan.length = 0; lvSave(); changed(); toast('기록했어요.'); renderAll();
+    if (!lvPlan.length) return;
+    const ps = lvPlan.slice().sort(), schedN = ps.filter(lvIsSched).length, usedN = ps.length - schedN;
+    const label = schedN && usedN ? ('예정 ' + schedN + '일 · 사용 ' + usedN + '일로') : schedN ? '예정으로' : '사용으로';
+    if (!confirm('계획한 ' + ps.length + '일을 ' + label + ' 기록할까요?')) return;
+    const nt = nowIso(); ps.forEach(s => { if (lvUsedOn(s) === 0) LV.items.push({ id: uid('lv'), date: s, days: 1, memo: '', u: nt }); }); lvPlan.length = 0; lvSave(); changed(); toast('계획한 ' + ps.length + '일을 ' + label + ' 기록했어요.'); renderAll();
   }
   else if (a === 'add') lvOpen(null); else if (a === 'edit') lvOpen(el.dataset.id); else if (a === 'backup') doBackup();
 });
@@ -8515,7 +8531,7 @@ function gsItems(){
   tr(() => CAR.maint.forEach(r => add('내 차', '🔧', carName(r.car) + ' 정비 ' + (r.kind || ''), [r.date, r.km === '' ? '' : carKm(r.km), r.cost === '' ? '' : won(r.cost)].filter(Boolean).join(' · '), [r.place, r.memo].join(' '), 'car', r.id)));
   tr(() => Q.people.forEach(p => add('인맥', '🙂', p.name, p.group, p.memo, 'people-list', p.id)));
   tr(() => FE.items.forEach(r => add('경조사', '💐', feWho(r) + ' ' + r.kind, [r.date, (r.dir === 'give' ? '낸 ' : '받은 ') + won(r.amount)].join(' · '), r.memo, 'people-gift', r.id)));
-  tr(() => LV.items.forEach(r => add('연차', '🏖', '연차 ' + r.date, r.days < 1 ? '반차' : '1일', r.memo, 'leave', r.id)));
+  tr(() => LV.items.forEach(r => add('연차', '🏖', '연차 ' + r.date, (lvIsSched(r.date) ? '예정 · ' : '사용 · ') + (r.days < 1 ? '반차' : '1일'), r.memo, 'leave', r.id)));
   tr(() => Q.meets.forEach(m => add('만남', '👥', meetNames(m), m.date + (m.place ? ' · ' + m.place : ''), [m.memo, mtTypeLabel(m), m.place].join(' '), 'people-log', m.id)));
   tr(() => GD.items.forEach(g => add('가이드', '📌', g.title, '', (g.lines || []).join(' '), 'guide', g.id)));
   tr(() => SK.items.forEach(i => add('피부', '✨', i.name, [i.clinic, i.func].filter(Boolean).join(' · '), i.memo, 'skin', i.id)));
